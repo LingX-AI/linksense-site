@@ -1,0 +1,160 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/noto-sans-sc';
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter Variable', 'Noto Sans SC Variable', sans-serif;
+  --color-background: #ffffff;
+  --color-foreground: #151619;
+  --color-primary: #1765ed;
+  --color-muted: #f3f4f6;
+  --color-muted-foreground: #666971;
+  --color-border: #e2e4e9;
+  --color-cloud: #edf3fc;
+  --color-lilac: #e8e4f4;
+  --color-mint: #e4eee7;
+  --color-ink: #171b24;
+  --color-ring: #1765ed;
+  --text-hero: clamp(3rem, 6.7vw, 7rem);
+  --text-section: clamp(2.35rem, 5.2vw, 5.1rem);
+  --text-feature: clamp(1.75rem, 3.2vw, 3rem);
+  --radius-section: 4.5rem;
+  --radius-media: 1.8rem;
+  --spacing-gutter: clamp(1.5rem, 6.7vw, 7rem);
+  --spacing-section: clamp(5rem, 9vw, 9rem);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    scrollbar-gutter: stable;
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+  }
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+  html[lang='ja-JP'] {
+    --font-sans: 'Inter Variable', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  }
+  body {
+    margin: 0;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  button,
+  a,
+  input,
+  select,
+  summary {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button,
+  summary {
+    cursor: pointer;
+  }
+  ::selection {
+    background: #1765ed;
+    color: white;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 5px;
+  }
+  dialog::backdrop {
+    background: rgb(0 0 0 / 0.78);
+    backdrop-filter: blur(8px);
+  }
+}
+
+/* These masks and capped fills are the reference's visual effects, not layout styling. */
+.pill-fill::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50% 50% 0 0;
+  background: var(--color-background);
+  transform: translateY(102%);
+  transition:
+    transform 0.5s cubic-bezier(0.4, 0, 0, 1),
+    border-radius 0.9s;
+}
+.pill-fill:hover::before,
+.pill-fill:focus-visible::before {
+  transform: translateY(0);
+  border-radius: 0;
+}
+.pill-fill .pill-label {
+  display: grid;
+  overflow: hidden;
+}
+.pill-fill .pill-label > span {
+  grid-area: 1/1;
+  transition: transform 0.5s var(--ease-out-expo);
+}
+.pill-fill .pill-label > span + span {
+  color: var(--color-foreground);
+  transform: translateY(130%);
+}
+.pill-fill:hover .pill-label > span:first-child,
+.pill-fill:focus-visible .pill-label > span:first-child {
+  transform: translateY(-130%);
+}
+.pill-fill:hover .pill-label > span + span,
+.pill-fill:focus-visible .pill-label > span + span {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .pill-fill::before,
+  .pill-fill .pill-label > span {
+    transition: none;
+  }
+}
+
+/* Native dialog keeps its top layer through entry and exit; unsupported browsers use direct open/close. */
+dialog {
+  opacity: 0;
+  transform: translateY(-1rem);
+  transition:
+    opacity 0.25s,
+    transform 0.4s var(--ease-out-expo),
+    display 0.4s allow-discrete,
+    overlay 0.4s allow-discrete;
+}
+dialog[open] {
+  opacity: 1;
+  transform: translateY(0);
+}
+@starting-style {
+  dialog[open] {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  dialog,
+  dialog[open] {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Sibling logo emphasis from the reference; labels remain available without hover. */
+.integration-logos:has(a:hover) a:not(:hover) {
+  opacity: 0.25;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .reel-play-hint {
+    opacity: 0;
+  }
+  .reel-trigger:focus-visible .reel-play-hint {
+    opacity: 1;
+  }
+}
