@@ -40,7 +40,10 @@ function Scene({ kind }: { kind: 'work' | 'knowledge' | 'apps' | 'auto' }) {
   const paper = 'rounded-xl bg-white p-6 shadow-xl shadow-black/5 md:p-8'
   return (
     <div
-      className="relative flex min-h-100 items-center justify-center overflow-hidden p-7 md:min-h-130 md:p-12"
+      className={cn(
+        'relative flex items-center justify-center overflow-hidden',
+        kind !== 'knowledge' && 'min-h-100 p-7 md:min-h-130 md:p-12',
+      )}
       aria-hidden="true"
     >
       {kind === 'work' && (
@@ -81,14 +84,14 @@ function Scene({ kind }: { kind: 'work' | 'knowledge' | 'apps' | 'auto' }) {
         </div>
       )}
       {kind === 'knowledge' && (
-        <div className="w-full max-w-90">
+        <div className="flex min-h-100 w-full flex-col md:min-h-130">
           <div
             className={cn(
               paper,
-              'rotate-2 text-foreground transition-transform duration-1000 group-hover:rotate-0',
+              'flex flex-1 flex-col rounded-none p-10 pt-18 text-foreground shadow-none md:p-12 md:pt-20',
             )}
           >
-            <span className="inline-flex items-center gap-2 rounded-full bg-lilac px-3 py-1 text-xs">
+            <span className="inline-flex w-fit items-center gap-2 rounded-full bg-lilac px-3 py-1 text-xs">
               <BookOpen className="size-3" />
               {t('policy')}
             </span>
@@ -100,12 +103,12 @@ function Scene({ kind }: { kind: 'work' | 'knowledge' | 'apps' | 'auto' }) {
               <div className="h-2 w-4/5 rounded bg-muted" />
               <div className="h-2 w-11/12 rounded bg-muted" />
             </div>
-            <div className="mt-8 flex items-center justify-between border-t border-border pt-4 text-xs text-primary">
+            <div className="mt-auto flex items-center justify-between border-t border-border pt-4 text-xs text-primary">
               <span>{t('source')}</span>
               <ArrowUpRight className="size-4" />
             </div>
           </div>
-          <div className="mx-auto mt-5 w-4/5 rounded-xl border border-white/20 bg-white/10 p-4 text-sm text-white/80">
+          <div className="border-t border-white/20 bg-white/10 px-10 pt-5 pb-12 text-sm text-white/80 md:px-12">
             <Folder className="mr-3 inline size-4" />
             {t('materials')}
           </div>
