@@ -34,9 +34,11 @@ pnpm preview
 
 运行 `pnpm build`，发布 `dist/`。托管服务必须把 `/install`、`/start` 等 SPA 路径回退到 `/index.html`，并正确返回现有静态文件。
 
-Cloudflare Workers Builds 从 GitHub 仓库 `LingX-AI/linksense-site` 的 `main` 分支构建。构建命令为 `pnpm build`，部署命令为 `pnpm deploy`，Node.js 使用 24。生产域名配置为 `linksense.guygubaby.top`。
+当前使用本地构建后，通过 Cloudflare Dashboard 的 **Upload your static files** 手动发布到 `linksense-site` Worker。选择 `dist/` 文件夹，资源目录设置为 `/`，Not found handling 设置为 `single-page-application`。Node.js 使用 24，生产域名为 `linksense.guygubaby.top`。
 
-`cloudflare.config.ts` 配置 SPA 回退、域名和可观测性；`wrangler.config.ts` 是 Cloudflare CLI 自动生成的静态资源构建适配配置，资源目录为 `dist/`。发布通过 `cf` 执行。检查部署配置而不发布：`pnpm exec cf deploy --dry-run`。
+GitHub 仓库 `LingX-AI/linksense-site` 用于保存源码，尚未连接 Cloudflare 自动构建；推送提交不会自动发布。
+
+`cloudflare.config.ts` 和 `wrangler.config.ts` 保留给可选的 CLI 发布流程，包含 SPA 回退、域名和静态资源目录 `dist/`；Dashboard 上传不会读取这两个文件。CLI 发布需先完成 Cloudflare 登录，然后执行 `pnpm build && pnpm deploy`。检查 CLI 部署配置而不发布：`pnpm exec cf deploy --dry-run`。
 
 部署到其他静态托管服务时，应单独配置 SPA 回退。Nginx 可使用 `try_files $uri $uri/ /index.html;`。
 

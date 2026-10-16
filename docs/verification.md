@@ -25,3 +25,11 @@ Reviewed on 2026-10-16. Reference: https://cuberto.com/. LinkSense keeps its own
 No product installation scripts were executed. No performance score, real-device Safari/Android/iOS check, or screen-reader certification is claimed. Vite reports a JavaScript chunk above 500kB; production transfer and interaction performance have not been benchmarked.
 
 At a simulated 390px viewport with reduced motion enabled, the document width remains 390px, the custom cursor is hidden, the decorative preview is paused, and the explicit play hint remains visible. Temporary browser emulation was reset after checking.
+
+## Production deployment
+
+On 2026-10-16, built locally from source commit `906b50f` and uploaded `dist/` through the Cloudflare Dashboard to the assets-only `linksense-site` Worker. Dashboard version `c9e3db78` is marked Ready at 100%. Git integration is not configured; commits do not trigger deployment.
+
+The asset root is `/`, HTML handling is `auto-trailing-slash`, and not-found handling is `single-page-application`. The custom domain `https://linksense.guygubaby.top` is bound to production.
+
+Verified over HTTPS: `/`, `/install?edition=full&platform=macos` and `/start` return 200 HTML; the product poster returns 200 JPEG. The deployed JavaScript and MP4 return the correct media types and match the local build's SHA-256 hashes. The MP4 responded with the full file (200) to a Range request. In Chrome, the installation deep link renders Agent install for Full/macOS, the product video plays to its end with no media error, and no browser console errors were recorded.
