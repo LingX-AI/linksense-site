@@ -98,6 +98,10 @@ export function ProductReel() {
         <span className="reel-play-hint pointer-events-none absolute top-1/2 left-1/2 flex size-18 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-foreground">
           <Play className="ml-1 size-5 fill-current" aria-hidden="true" />
         </span>
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-10 rounded-media border border-border"
+        />
       </motion.button>
       <Button
         variant="light"
