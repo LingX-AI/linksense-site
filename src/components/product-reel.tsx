@@ -67,17 +67,16 @@ export function ProductReel() {
         initial={
           reduced
             ? false
-            : { clipPath: 'inset(5% 10% round 28px)', scale: 0.9, opacity: 0 }
+            : { scale: 0.9, opacity: 0 }
         }
         whileInView={{
-          clipPath: 'inset(0% 0% round 28px)',
           scale: 1,
           opacity: 1,
         }}
         viewport={{ once: true }}
         transition={{ duration: reduced ? 0 : 2.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div data-parallax className="absolute inset-0">
+        <div className="absolute inset-0">
           <video
             ref={video}
             width={1920}
@@ -90,7 +89,7 @@ export function ProductReel() {
             preload="none"
             poster="/media/linksense-intro-v6.jpg"
             aria-hidden="true"
-            className="size-full object-cover"
+            className="size-full object-contain"
           >
             <source src="/media/linksense-intro-v6.mp4" type="video/mp4" />
           </video>
@@ -152,7 +151,7 @@ export function ProductReel() {
           playsInline
           preload="none"
           poster="/media/linksense-intro-v6.jpg"
-          className="w-full rounded-xl"
+          className="max-h-[calc(100dvh-8rem)] w-full rounded-xl object-contain"
         >
           <source src="/media/linksense-intro-v6.mp4" type="video/mp4" />
         </video>
