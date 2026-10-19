@@ -33,3 +33,13 @@ On 2026-10-16, built locally from source commit `906b50f` and uploaded `dist/` t
 The asset root is `/`, HTML handling is `auto-trailing-slash`, and not-found handling is `single-page-application`. The custom domain `https://linksense.guygubaby.top` is bound to production.
 
 Verified over HTTPS: `/`, `/install?edition=full&platform=macos` and `/start` return 200 HTML; the product poster returns 200 JPEG. The deployed JavaScript and MP4 return the correct media types and match the local build's SHA-256 hashes. The MP4 responded with the full file (200) to a Range request. In Chrome, the installation deep link renders Agent install for Full/macOS, the product video plays to its end with no media error, and no browser console errors were recorded.
+
+## Hero introduction video — 2026-10-19
+
+Source commit `e15a9a0` replaces only the Hero preview and its full player with the approved v6 introduction film and matching poster. The existing hover/cursor behavior is retained. Feature-card previews still use the product recording. The Hero stays 16:9 on mobile so the film's titles are not cropped; both video elements declare 1920×1080 intrinsic dimensions. The preview remains muted and viewport-controlled, while the explicit full player includes the selected Sonor #2 music and quiet UI accents. Media credits and the Mixkit license are recorded in `public/media/README.md`.
+
+`pnpm build` passed, including TypeScript checking. In the Codex browser, the new preview loads as muted and the full dialog plays the 30-second video with audio enabled and no media or console error. At an emulated 390px width the Hero measured approximately 338×190px and the document width remained 390px. Browser emulation was reset after verification. Real-device Safari/iOS/Android playback was not tested.
+
+Built locally and uploaded through the Cloudflare Dashboard to the existing `linksense-site` Worker. Production version `900b0694` is Ready at 100%, with asset root `/`, `auto-trailing-slash` HTML handling and `single-page-application` fallback preserved. The custom domain remains `https://linksense.guygubaby.top`.
+
+Production `/` and `/install?edition=full&platform=macos` return 200 HTML. The new MP4 and JPEG return their correct media types and match the local build byte for byte. Video SHA-256: `121641edb22fd618b3a36cd2faf82e4257e3ae930b321753ef7cfa3aebaa3058`. The production full player was observed at 15.7 seconds of 30, unmuted and playing, with no media or console error. No unrelated test suites or performance benchmarks were run for this media replacement; the existing large JavaScript chunk warning remains.
