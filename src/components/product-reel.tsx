@@ -63,7 +63,7 @@ export function ProductReel() {
         aria-label={t('play')}
         data-cursor={t('play')}
         data-cursor-mode="play"
-        className="reel-trigger relative block aspect-[355/400] w-full overflow-hidden rounded-media bg-muted text-foreground outline-none focus-visible:ring-3 focus-visible:ring-primary focus-visible:ring-offset-8 md:aspect-video"
+        className="reel-trigger relative block aspect-video w-full overflow-hidden rounded-media bg-muted text-foreground outline-none focus-visible:ring-3 focus-visible:ring-primary focus-visible:ring-offset-8"
         initial={
           reduced
             ? false
@@ -80,17 +80,19 @@ export function ProductReel() {
         <div data-parallax className="absolute inset-0">
           <video
             ref={video}
+            width={1920}
+            height={1080}
             onPlay={() => setPlaying(true)}
             onPause={() => setPlaying(false)}
             muted
             loop
             playsInline
             preload="none"
-            poster="/media/product-poster.jpg"
+            poster="/media/linksense-intro-v6.jpg"
             aria-hidden="true"
             className="size-full object-cover"
           >
-            <source src="/media/product-demo.mp4" type="video/mp4" />
+            <source src="/media/linksense-intro-v6.mp4" type="video/mp4" />
           </video>
         </div>
         <span className="reel-play-hint pointer-events-none absolute top-1/2 left-1/2 flex size-18 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-foreground">
@@ -140,13 +142,15 @@ export function ProductReel() {
         </div>
         <video
           ref={fullVideo}
+          width={1920}
+          height={1080}
           controls
           playsInline
           preload="none"
-          poster="/media/product-poster.jpg"
+          poster="/media/linksense-intro-v6.jpg"
           className="w-full rounded-xl"
         >
-          <source src="/media/product-demo.mp4" type="video/mp4" />
+          <source src="/media/linksense-intro-v6.mp4" type="video/mp4" />
         </video>
       </dialog>
     </div>
