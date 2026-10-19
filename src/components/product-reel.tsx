@@ -148,6 +148,7 @@ export function ProductReel() {
           width={1920}
           height={1080}
           controls
+          muted
           playsInline
           preload="none"
           poster="/media/linksense-intro-v6.jpg"
