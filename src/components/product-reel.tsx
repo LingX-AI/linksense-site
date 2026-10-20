@@ -1,5 +1,6 @@
+import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView, useReducedMotion } from 'motion/react'
+import { motion, useInView } from 'motion/react'
 import { useTranslation } from 'react-i18next'
 import { Pause, Play, X } from 'lucide-react'
 import { Button } from './ui/button'
@@ -64,11 +65,7 @@ export function ProductReel() {
         data-cursor={t('play')}
         data-cursor-mode="play"
         className="reel-trigger relative block aspect-video w-full overflow-hidden rounded-media bg-muted text-foreground outline-none focus-visible:ring-3 focus-visible:ring-primary focus-visible:ring-offset-8"
-        initial={
-          reduced
-            ? false
-            : { scale: 0.9, opacity: 0 }
-        }
+        initial={reduced ? false : { scale: 0.9, opacity: 0 }}
         whileInView={{
           scale: 1,
           opacity: 1,

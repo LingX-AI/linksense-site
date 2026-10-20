@@ -1,27 +1,34 @@
 import { useContext, useId, useLayoutEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  ArrowUpRight,
-  BookOpen,
-  FileText,
-  Layers3,
-  Plus,
-  Workflow,
-} from 'lucide-react'
+import { ArrowUpRight, BookOpen, FileText, Layers3, Plus } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { gsap, ScrollTrigger } from '@/lib/animation'
 import { serviceStack, type ServiceSize } from '@/lib/motion-geometry'
 import { EntryContext } from '@/lib/transition-context'
+import { WorkflowDemo } from './workflow-demo'
 
 const services = [
-  { title: 'workTitle', body: 'workBody', Icon: FileText, to: '/start' },
+  {
+    title: 'workTitle',
+    body: 'workBody',
+    Icon: FileText,
+    to: '/start',
+    kind: 'work',
+  },
   {
     title: 'knowledgeTitle',
     body: 'knowledgeBody',
     Icon: BookOpen,
     to: '/install',
+    kind: 'knowledge',
   },
-  { title: 'appsTitle', body: 'appsBody', Icon: Layers3, to: '/start' },
+  {
+    title: 'appsTitle',
+    body: 'appsBody',
+    Icon: Layers3,
+    to: '/start',
+    kind: 'apps',
+  },
 ] as const
 
 export function Services() {
@@ -214,7 +221,7 @@ export function Services() {
   }, [ready, i18n.language])
   return (
     <div ref={list} data-testid="services" className="space-y-4">
-      {services.map(({ title, body, Icon, to }, index) => (
+      {services.map(({ title, body, Icon, to, kind }, index) => (
         <article
           key={title}
           data-service
@@ -242,7 +249,7 @@ export function Services() {
             id={`${id}-${index}`}
             className="overflow-hidden"
           >
-            <div className="grid gap-8 pt-8 md:grid-cols-[1.3fr_1fr]">
+            <div className="grid items-start gap-8 pt-8 md:grid-cols-[.8fr_1.2fr] lg:gap-16">
               <div className="flex flex-col justify-between gap-7">
                 <p className="max-w-150 text-lg leading-relaxed opacity-65">
                   {t(body)}
@@ -252,13 +259,8 @@ export function Services() {
                   <ArrowUpRight className="size-4" />
                 </Link>
               </div>
-              <div
-                data-service-visual
-                className="flex items-center justify-center gap-4 rounded-2xl border border-white/15 bg-white/5 p-8"
-              >
-                <Icon className="size-12 text-white/80" />
-                <Workflow className="size-7 text-white/30" />
-                <Layers3 className="size-12 text-white/80" />
+              <div data-service-visual>
+                <WorkflowDemo kind={kind} />
               </div>
             </div>
           </div>

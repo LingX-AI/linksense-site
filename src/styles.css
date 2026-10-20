@@ -11,11 +11,9 @@
   --color-muted-foreground: #666971;
   --color-border: #e2e4e9;
   --color-cloud: #edf3fc;
-  --color-lilac: #e8e4f4;
-  --color-mint: #e4eee7;
   --color-ink: #171b24;
   --color-ring: #1765ed;
-  --text-hero: clamp(3rem, 6.7vw, 7rem);
+  --text-hero: clamp(2.75rem, 4.6vw, 5.25rem);
   --text-section: clamp(2.35rem, 5.2vw, 5.1rem);
   --text-feature: clamp(1.75rem, 3.2vw, 3rem);
   --radius-section: 4.5rem;
@@ -23,6 +21,15 @@
   --spacing-gutter: clamp(1.5rem, 6.7vw, 7rem);
   --spacing-section: clamp(5rem, 9vw, 9rem);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* A quiet construction grid makes the capability connections easier to follow. */
+.capability-stage {
+  background-image: radial-gradient(
+    var(--color-border) 0.7px,
+    transparent 0.7px
+  );
+  background-size: 22px 22px;
 }
 
 @layer base {

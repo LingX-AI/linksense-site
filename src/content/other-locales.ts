@@ -1,6 +1,8 @@
 import type { Messages } from './messages'
+import { experienceCopy } from './experience-copy'
 
 export const es: Messages = {
+  ...experienceCopy['es-ES'],
   agentTitle: 'Instalar con un agente',
   agentBody:
     'Copia este mensaje en tu agente de programación. Incluye el despliegue y la plataforma elegidos, las comprobaciones y la guía oficial.',
@@ -53,7 +55,7 @@ export const es: Messages = {
   hero1: 'De una idea individual.',
   hero2: 'A una capacidad de todo el equipo.',
   heroBody:
-    'Investiga, crea y completa el trabajo. Convierte los métodos que funcionan en habilidades y aplicaciones para tu equipo. Con tu infraestructura y tus modelos.',
+    'Trabaja con IA. Conserva lo que funciona. Dale a tu equipo conocimientos, habilidades y herramientas para repetirlo.',
   watch: 'Descubre LinkSense en acción',
   play: 'Reproducir demostración',
   pause: 'Pausar demostración',
@@ -171,6 +173,7 @@ export const es: Messages = {
 }
 
 export const pt: Messages = {
+  ...experienceCopy['pt-BR'],
   agentTitle: 'Instalar com um agente',
   agentBody:
     'Envie este pedido ao seu agente de programação. Ele inclui a implantação e a plataforma escolhidas, verificações e o guia oficial.',
@@ -222,7 +225,7 @@ export const pt: Messages = {
   hero1: 'Da ideia de uma pessoa.',
   hero2: 'À capacidade de toda a equipe.',
   heroBody:
-    'Pesquise, crie e conclua o trabalho. Transforme métodos que funcionam em habilidades e aplicativos para a equipe. Na sua infraestrutura, com seus modelos.',
+    'Trabalhe com IA. Preserve o que funciona. Dê à equipe conhecimento, habilidades e ferramentas para repetir os resultados.',
   watch: 'Veja o LinkSense em ação',
   play: 'Reproduzir demonstração',
   pause: 'Pausar demonstração',
@@ -339,6 +342,7 @@ export const pt: Messages = {
 }
 
 export const fr: Messages = {
+  ...experienceCopy['fr-FR'],
   agentTitle: 'Installer avec un agent',
   agentBody:
     'Transmettez ce message à votre agent de programmation. Il comprend le déploiement choisi, la plateforme, les vérifications et le guide officiel.',
@@ -391,7 +395,7 @@ export const fr: Messages = {
   hero1: 'De l’idée d’une personne.',
   hero2: 'Au savoir-faire de toute une équipe.',
   heroBody:
-    'Recherchez, créez et faites avancer le travail. Transformez les méthodes efficaces en compétences et applications pour votre équipe. Sur votre infrastructure, avec vos modèles.',
+    'Travaillez avec l’IA. Conservez ce qui fonctionne. Donnez à votre équipe les connaissances, compétences et outils pour recommencer.',
   watch: 'Voir LinkSense à l’œuvre',
   play: 'Lire la démonstration',
   pause: 'Mettre la démonstration en pause',
@@ -509,6 +513,7 @@ export const fr: Messages = {
 }
 
 export const ja: Messages = {
+  ...experienceCopy['ja-JP'],
   agentTitle: 'AI エージェントでインストール',
   agentBody:
     'この手順をコーディングエージェントに渡してください。選択した構成と OS、環境の確認項目、公式ガイドを含みます。',
@@ -558,7 +563,7 @@ export const ja: Messages = {
   hero1: '一人のアイデアを、',
   hero2: 'チーム全体の力に。',
   heroBody:
-    '調査、資料作成、業務の実行まで。役立つ手順をスキルやアプリにまとめ、チームで活用できます。自社の環境で、選んだモデルとともに。',
+    'AI と仕事を進め、役立つ方法を残す。知識、スキル、ツールをチーム全体で再利用できます。',
   watch: 'LinkSense の動作を見る',
   play: '製品デモを再生',
   pause: '製品デモを一時停止',

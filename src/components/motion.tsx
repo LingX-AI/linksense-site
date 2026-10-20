@@ -1,3 +1,4 @@
+import { useReducedMotion } from '@/lib/use-reduced-motion'
 import {
   Fragment,
   useContext,
@@ -6,7 +7,7 @@ import {
   useRef,
   type ReactNode,
 } from 'react'
-import { motion, useReducedMotion } from 'motion/react'
+import { motion } from 'motion/react'
 import { useRouterState } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { ArrowUpRight, Play } from 'lucide-react'

@@ -1,4 +1,5 @@
 import { es, pt, fr, ja } from './other-locales'
+import { experienceCopy } from './experience-copy'
 
 export const locales = [
   'en-US',
@@ -20,6 +21,7 @@ export const languageNames: Record<Locale, string> = {
 }
 
 const en = {
+  ...experienceCopy['en-US'],
   agentTitle: 'Agent install',
   agentBody:
     'Give this prompt to your coding agent. It includes your selected deployment and platform, environment checks and the official installation instructions.',
@@ -70,7 +72,7 @@ const en = {
   hero1: 'From one person’s idea.',
   hero2: 'To a whole team’s capability.',
   heroBody:
-    'Research, create and get work done. Turn what works into skills and applications your team can use. On your infrastructure, with your models.',
+    'Work with AI. Keep what works. Give your team the knowledge, skills and tools to do it again.',
   watch: 'See LinkSense at work',
   play: 'Play product demo',
   pause: 'Pause product demo',
@@ -188,6 +190,7 @@ const en = {
 export type MessageKey = keyof typeof en
 export type Messages = Record<MessageKey, string>
 const zh: Messages = {
+  ...experienceCopy['zh-CN'],
   agentTitle: '用 AI 助手安装',
   agentBody:
     '将这段提示交给你的 AI 编程助手。提示包含当前选择的部署方案、操作系统、环境检查和官方安装说明。',
@@ -237,7 +240,7 @@ const zh: Messages = {
   hero1: '从一个人的想法，',
   hero2: '到整个团队的能力。',
   heroBody:
-    '让 AI 研究资料、处理文件、交付成果。把验证有效的方法沉淀为技能和应用，在自己的基础设施上，让整个团队一起用起来。',
+    '与 AI 一起完成工作，留下有效的方法，让知识、技能和工具成为整个团队的能力。',
   watch: '看看 LinkSense 如何工作',
   play: '播放产品演示',
   pause: '暂停产品演示',

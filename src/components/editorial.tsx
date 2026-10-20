@@ -1,9 +1,10 @@
+import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { useTranslation } from 'react-i18next'
 import { useRef } from 'react'
-import { useInView, useReducedMotion } from 'motion/react'
+import { useInView } from 'motion/react'
 import NumberFlow from '@number-flow/react'
 import { Link } from '@tanstack/react-router'
-import { ArrowUpRight, Box, FileText, Layers3, Terminal } from 'lucide-react'
+import { ArrowUpRight, Box, FileText, Terminal } from 'lucide-react'
 import { RevealText } from './motion'
 import { repository } from '@/lib/product'
 
@@ -35,61 +36,6 @@ function ViewportNumber({ value }: { value: number }) {
   )
 }
 
-export function MethodCards() {
-  const { t } = useTranslation()
-  const cards = [
-    {
-      title: 'method1',
-      body: 'method1body',
-      Icon: FileText,
-      style: '-rotate-6 md:translate-y-6',
-    },
-    { title: 'method2', body: 'method2body', Icon: Layers3, style: 'rotate-3' },
-    {
-      title: 'method3',
-      body: 'method3body',
-      Icon: Box,
-      style: '-rotate-3 md:translate-y-10',
-    },
-  ] as const
-  return (
-    <section className="px-gutter py-section">
-      <div className="mx-auto max-w-320">
-        <RevealText className="max-w-220 text-section">
-          {t('methodsTitle')}
-        </RevealText>
-        <div className="group/prompts mt-20 grid gap-10 px-3 md:grid-cols-3 md:gap-5">
-          {cards.map(({ title, body, Icon, style }) => (
-            <div data-batch key={title}>
-              <article
-                className={`flex min-h-80 flex-col rounded-3xl bg-muted p-8 transition-transform duration-1000 ease-out-expo group-focus-within/prompts:translate-y-0 group-focus-within/prompts:rotate-0 group-hover/prompts:translate-y-0 group-hover/prompts:rotate-0 ${style}`}
-              >
-                <Icon
-                  className="mb-10 size-8 text-primary"
-                  aria-hidden="true"
-                />
-                <h3 className="text-2xl font-medium tracking-tight">
-                  {t(title)}
-                </h3>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                  {t(body)}
-                </p>
-                <Link
-                  to="/start"
-                  className="mt-8 flex w-fit items-center gap-2 text-sm"
-                >
-                  {t('start')}
-                  <ArrowUpRight className="size-4" />
-                </Link>
-              </article>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
 export function OrganizationProof() {
   const { t } = useTranslation()
   return (
@@ -100,9 +46,9 @@ export function OrganizationProof() {
         </RevealText>
         <div className="mt-14 grid gap-5 md:grid-cols-3">
           {[
-            { number: 6, label: 'languages', background: 'bg-cloud' },
-            { number: 2, label: 'deployments', background: 'bg-lilac' },
-            { number: 5, label: 'channels', background: 'bg-mint' },
+            { number: 6, label: 'languages', background: 'bg-muted' },
+            { number: 2, label: 'deployments', background: 'bg-muted' },
+            { number: 5, label: 'channels', background: 'bg-muted' },
           ].map(({ number, label, background }) => (
             <div
               data-proof-tile
