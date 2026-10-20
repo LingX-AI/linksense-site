@@ -2,7 +2,9 @@ import type { Locale } from './messages'
 
 const en = {
   mapTitle: 'Connected by design.',
-  mapHint: 'Choose a capability. Follow its connection.',
+  mapHint: 'Three capabilities. One connected application.',
+  mapPause: 'Pause animation',
+  mapPlay: 'Play animation',
   mapApplication: 'Application',
   mapTeam: 'Authorized users & groups',
   mapKnowledgeBody:
@@ -50,7 +52,9 @@ export const experienceCopy = {
   'en-US': en,
   'zh-CN': {
     mapTitle: '让能力，连接起来。',
-    mapHint: '点选一种能力，查看它如何连接。',
+    mapHint: '三种能力，连接为团队可用的应用。',
+    mapPause: '暂停动画',
+    mapPlay: '播放动画',
     mapApplication: '应用',
     mapTeam: '已授权的用户与用户组',
     mapKnowledgeBody: '让回答连接组织文档及其来源。此能力需要 Full 部署。',
@@ -86,7 +90,9 @@ export const experienceCopy = {
   },
   'es-ES': {
     mapTitle: 'Capacidades conectadas.',
-    mapHint: 'Elige una capacidad y sigue su conexión.',
+    mapHint: 'Tres capacidades. Una aplicación conectada.',
+    mapPause: 'Pausar animación',
+    mapPlay: 'Reproducir animación',
     mapApplication: 'Aplicación',
     mapTeam: 'Usuarios y grupos autorizados',
     mapKnowledgeBody:
@@ -129,7 +135,9 @@ export const experienceCopy = {
   },
   'pt-BR': {
     mapTitle: 'Capacidades conectadas.',
-    mapHint: 'Escolha uma capacidade e acompanhe a conexão.',
+    mapHint: 'Três capacidades. Um aplicativo conectado.',
+    mapPause: 'Pausar animação',
+    mapPlay: 'Reproduzir animação',
     mapApplication: 'Aplicativo',
     mapTeam: 'Usuários e grupos autorizados',
     mapKnowledgeBody:
@@ -172,7 +180,9 @@ export const experienceCopy = {
   },
   'fr-FR': {
     mapTitle: 'Des capacités reliées.',
-    mapHint: 'Choisissez une capacité et suivez sa connexion.',
+    mapHint: 'Trois capacités. Une application connectée.',
+    mapPause: 'Mettre en pause',
+    mapPlay: 'Lancer l’animation',
     mapApplication: 'Application',
     mapTeam: 'Utilisateurs et groupes autorisés',
     mapKnowledgeBody:
@@ -215,7 +225,9 @@ export const experienceCopy = {
   },
   'ja-JP': {
     mapTitle: '能力を、つなぐ。',
-    mapHint: '能力を選んで、つながりを確認できます。',
+    mapHint: '3 つの能力を、1 つのアプリにつなげる。',
+    mapPause: 'アニメーションを停止',
+    mapPlay: 'アニメーションを再生',
     mapApplication: 'アプリ',
     mapTeam: '許可されたユーザーとグループ',
     mapKnowledgeBody:

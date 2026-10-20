@@ -59,7 +59,7 @@ async function translations() {
   return i18n
 }
 
-it('updates the selected capability, its connection and its accessible explanation', async () => {
+it('lets each connected capability show its explanation while all connections stay active', async () => {
   const screen = render(
     <I18nextProvider i18n={await translations()}>
       <CapabilityMap />
@@ -69,10 +69,10 @@ it('updates the selected capability, its connection and its accessible explanati
     name: 'Knowledge',
   })
   const skill = screen.getByRole('button', { name: 'Skill' })
-  expect(knowledge.getAttribute('aria-pressed')).toBe('true')
+  expect(knowledge.getAttribute('data-current')).toBe('true')
   fireEvent.click(skill)
-  expect(skill.getAttribute('aria-pressed')).toBe('true')
-  expect(knowledge.getAttribute('aria-pressed')).toBe('false')
+  expect(skill.getAttribute('data-current')).toBe('true')
+  expect(knowledge.getAttribute('data-current')).toBe('false')
   const description = document.getElementById(
     skill.getAttribute('aria-controls')!,
   )
@@ -84,7 +84,7 @@ it('updates the selected capability, its connection and its accessible explanati
     messages['en-US'].mapToolsBody,
   )
   expect(screen.container.querySelectorAll('path.stroke-primary')).toHaveLength(
-    2,
+    4,
   )
 })
 

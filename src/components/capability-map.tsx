@@ -1,9 +1,16 @@
 import { useReducedMotion } from '@/lib/use-reduced-motion'
-import { useContext, useId, useLayoutEffect, useRef, useState } from 'react'
+import {
+  useContext,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import { useInView } from 'motion/react'
 import { gsap } from '@/lib/animation'
 import { useTranslation } from 'react-i18next'
-import { BookOpen, Network, Sparkles, Users } from 'lucide-react'
+import { BookOpen, Network, Pause, Play, Sparkles, Users } from 'lucide-react'
 import { capabilityPath } from '@/lib/capability-path'
 import { cn } from '@/lib/utils'
 import { EntryContext } from '@/lib/transition-context'
@@ -23,12 +30,40 @@ export function CapabilityMap() {
   const [selected, setSelected] =
     useState<(typeof sources)[number]['id']>('knowledge')
   const [replay, setReplay] = useState(0)
+  const [paused, setPaused] = useState(false)
   const stage = useRef<HTMLDivElement>(null)
   const id = useId()
   const { t, i18n } = useTranslation()
   const reduced = useReducedMotion()
   const ready = useContext(EntryContext)
   const visible = useInView(stage, { amount: 0.4 })
+
+  useEffect(() => {
+    if (!ready || !visible || reduced || paused) return
+    let timer: ReturnType<typeof setInterval> | undefined
+    const update = () => {
+      clearInterval(timer)
+      if (!document.hidden) {
+        timer = setInterval(
+          () =>
+            setSelected(
+              (current) =>
+                sources[
+                  (sources.findIndex((source) => source.id === current) + 1) %
+                    sources.length
+                ].id,
+            ),
+          4000,
+        )
+      }
+    }
+    update()
+    document.addEventListener('visibilitychange', update)
+    return () => {
+      clearInterval(timer)
+      document.removeEventListener('visibilitychange', update)
+    }
+  }, [ready, visible, reduced, paused, replay])
 
   useLayoutEffect(() => {
     const root = stage.current
@@ -40,14 +75,15 @@ export function CapabilityMap() {
     ]
     const paths = [...root.querySelectorAll<SVGPathElement>('[data-map-path]')]
     const endPath = root.querySelector<SVGPathElement>('[data-map-output]')!
-    const activePath = root.querySelector<SVGPathElement>('[data-map-active]')!
+    const flowPaths = [
+      ...root.querySelectorAll<SVGPathElement>('[data-map-flow]'),
+    ]
     const outputPath = root.querySelector<SVGPathElement>(
       '[data-map-output-active]',
     )!
     const packets = [
       ...root.querySelectorAll<SVGCircleElement>('[data-map-packet]'),
     ]
-    const sourceIndex = sources.findIndex((source) => source.id === selected)
     const draw = () => {
       const box = root.getBoundingClientRect()
       const point = (node: HTMLElement, bottom: boolean) => {
@@ -67,7 +103,9 @@ export function CapabilityMap() {
         'd',
         capabilityPath(point(app, true), point(team, false)),
       )
-      activePath.setAttribute('d', paths[sourceIndex].getAttribute('d')!)
+      flowPaths.forEach((path, index) =>
+        path.setAttribute('d', paths[index].getAttribute('d')!),
+      )
       outputPath.setAttribute('d', endPath.getAttribute('d')!)
     }
     const observer = new ResizeObserver(draw)
@@ -108,9 +146,9 @@ export function CapabilityMap() {
       )
       timeline.to(packet, { opacity: 0, duration: 0.12 }, at + duration - 0.12)
     }
-    if (ready && visible && !reduced) {
+    if (ready && visible && !reduced && !paused) {
       timeline.fromTo(
-        activePath,
+        flowPaths,
         { strokeDashoffset: 1 },
         { strokeDashoffset: 0, duration: 0.65, ease: 'power2.out' },
         0,
@@ -121,8 +159,10 @@ export function CapabilityMap() {
         { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' },
         1,
       )
-      movePacket(activePath, packets[0], 0.25, 0.85)
-      movePacket(outputPath, packets[1], 1.05, 0.7)
+      flowPaths.forEach((path, index) =>
+        movePacket(path, packets[index], 0.25, 0.85),
+      )
+      movePacket(outputPath, packets[3], 1.05, 0.7)
       timeline.fromTo(
         root.querySelector('[data-map-core]'),
         { scale: 0.97 },
@@ -138,7 +178,7 @@ export function CapabilityMap() {
     }
     const visibility = () => {
       if (document.hidden) timeline.pause()
-      else if (ready && visible && !reduced) timeline.play()
+      else if (ready && visible && !reduced && !paused) timeline.play()
     }
     document.addEventListener('visibilitychange', visibility)
     visibility()
@@ -147,7 +187,7 @@ export function CapabilityMap() {
       timeline.revert()
       document.removeEventListener('visibilitychange', visibility)
     }
-  }, [i18n.language, selected, replay, visible, reduced, ready])
+  }, [i18n.language, selected, replay, visible, reduced, ready, paused])
 
   return (
     <section
@@ -159,10 +199,21 @@ export function CapabilityMap() {
         <h2 id={`${id}-title`} className="text-sm font-medium">
           {t('mapTitle')}
         </h2>
-        <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <span className="size-1 rounded-full bg-primary" />
-          LinkSense
-        </span>
+        <button
+          type="button"
+          onClick={() => setPaused((value) => !value)}
+          disabled={reduced}
+          aria-label={t(paused ? 'mapPlay' : 'mapPause')}
+          aria-pressed={paused}
+          className="flex min-h-11 items-center gap-2 rounded-xl px-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-40"
+        >
+          {paused ? (
+            <Play className="size-3.5" aria-hidden="true" />
+          ) : (
+            <Pause className="size-3.5" aria-hidden="true" />
+          )}
+          {t(paused ? 'mapPlay' : 'mapPause')}
+        </button>
       </div>
       <div
         ref={stage}
@@ -181,14 +232,17 @@ export function CapabilityMap() {
             />
           ))}
           <path data-map-output className="stroke-border" strokeWidth="1" />
-          <path
-            data-map-active
-            className="stroke-primary"
-            strokeWidth="2"
-            pathLength="1"
-            strokeDasharray="1"
-            strokeDashoffset="0"
-          />
+          {sources.map((source) => (
+            <path
+              key={source.id}
+              data-map-flow
+              className="stroke-primary"
+              strokeWidth="2"
+              pathLength="1"
+              strokeDasharray="1"
+              strokeDashoffset="0"
+            />
+          ))}
           <path
             data-map-output-active
             className="stroke-primary"
@@ -199,24 +253,22 @@ export function CapabilityMap() {
           />
           <circle data-map-packet r="3.5" className="fill-primary opacity-0" />
           <circle data-map-packet r="3.5" className="fill-primary opacity-0" />
+          <circle data-map-packet r="3.5" className="fill-primary opacity-0" />
+          <circle data-map-packet r="3.5" className="fill-primary opacity-0" />
         </svg>
         {sources.map(({ id: sourceId, label, Icon }) => (
           <button
             key={sourceId}
             type="button"
             data-map-source
-            aria-pressed={selected === sourceId}
+            data-current={selected === sourceId}
             aria-controls={`${id}-detail`}
+            aria-describedby={`${id}-${sourceId}`}
             onClick={() => {
               setSelected(sourceId)
               setReplay((value) => value + 1)
             }}
-            className={cn(
-              'relative z-10 flex min-h-24 min-w-0 flex-col items-center justify-center gap-3 rounded-2xl border bg-background px-2 py-4 text-center text-xs transition-[border-color,color,box-shadow] duration-300 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 sm:text-sm',
-              selected === sourceId
-                ? 'border-primary text-primary shadow-lg shadow-primary/5'
-                : 'border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground',
-            )}
+            className="relative z-10 flex min-h-24 min-w-0 flex-col items-center justify-center gap-3 rounded-2xl border border-primary bg-background px-2 py-4 text-center text-xs text-primary shadow-lg shadow-primary/5 transition-colors duration-300 outline-none hover:bg-cloud/50 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 sm:text-sm"
           >
             <Icon className="size-5" aria-hidden="true" />
             <span>{label ? t(label) : 'MCP'}</span>
@@ -236,10 +288,6 @@ export function CapabilityMap() {
             />
             <span className="text-xs text-white/70">{t('mapApplication')}</span>
           </div>
-          <span
-            aria-hidden="true"
-            className="absolute top-1/2 -right-1.5 size-3 -translate-y-1/2 rounded-full border-3 border-background bg-primary"
-          />
         </div>
         <div
           data-map-team
@@ -253,13 +301,14 @@ export function CapabilityMap() {
         <p className="text-xs text-muted-foreground">{t('mapHint')}</p>
         <div
           id={`${id}-detail`}
-          aria-live="polite"
+          aria-live={paused || reduced ? 'polite' : 'off'}
           aria-atomic="true"
           className="mt-2 grid text-sm leading-relaxed text-foreground/75"
         >
           {sources.map((source) => (
             <p
               key={source.id}
+              id={`${id}-${source.id}`}
               aria-hidden={source.id !== selected}
               className={cn(
                 'col-start-1 row-start-1',
