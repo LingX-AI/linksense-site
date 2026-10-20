@@ -1,6 +1,6 @@
 import { useContext, useId, useLayoutEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ArrowUpRight, BookOpen, FileText, Layers3, Plus } from 'lucide-react'
+import { ArrowUpRight, Plus } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { gsap, ScrollTrigger } from '@/lib/animation'
 import { serviceStack, type ServiceSize } from '@/lib/motion-geometry'
@@ -11,21 +11,18 @@ const services = [
   {
     title: 'workTitle',
     body: 'workBody',
-    Icon: FileText,
     to: '/start',
     kind: 'work',
   },
   {
     title: 'knowledgeTitle',
     body: 'knowledgeBody',
-    Icon: BookOpen,
     to: '/install',
     kind: 'knowledge',
   },
   {
     title: 'appsTitle',
     body: 'appsBody',
-    Icon: Layers3,
     to: '/start',
     kind: 'apps',
   },
@@ -58,7 +55,10 @@ export function Services() {
           (body) => body.firstElementChild as HTMLElement,
         )
         const buttons = cards.map((card) =>
-          card.querySelector<HTMLButtonElement>('button')!,
+          card.querySelector<HTMLButtonElement>('[data-service-toggle]')!,
+        )
+        const artworks = cards.map((card) =>
+          card.querySelector<HTMLElement>('[data-service-art]')!,
         )
         const desktop =
           context.conditions?.desktop && !context.conditions?.reduced
@@ -95,9 +95,9 @@ export function Services() {
               opacity: Math.max(0, (item.progress - 0.5) * 2),
             })
             gsap.set(cards[index].querySelector('[data-service-visual]'), {
-              scale: 0.85 + item.progress * 0.15,
-              rotation: (1 - item.progress) * -5,
+              y: (1 - item.progress) * 24,
             })
+            gsap.set(artworks[index], { opacity: item.progress })
             setAccessible(index, item.progress > 0.95)
           })
         }
@@ -187,6 +187,7 @@ export function Services() {
             height: expanded ? 'auto' : 0,
             opacity: expanded ? 1 : 0,
           })
+          gsap.set(artworks[index], { opacity: expanded ? 1 : 0 })
           const toggle = () => {
             const open = button.getAttribute('aria-expanded') !== 'true'
             setAccessible(index, open)
@@ -194,6 +195,12 @@ export function Services() {
               backgroundColor: open ? '#171b24' : '#f3f4f6',
               color: open ? '#ffffff' : '#151619',
               duration: context.conditions?.reduced ? 0 : 0.4,
+              overwrite: true,
+            })
+            gsap.to(artworks[index], {
+              opacity: open ? 1 : 0,
+              duration: context.conditions?.reduced ? 0 : 0.4,
+              overwrite: true,
             })
             gsap.to(bodies[index], {
               height: open ? contents[index].offsetHeight : 0,
@@ -212,7 +219,7 @@ export function Services() {
         })
         return () => {
           listeners.forEach((remove) => remove())
-          gsap.killTweensOf([...cards, ...bodies])
+          gsap.killTweensOf([...cards, ...bodies, ...artworks])
         }
       },
       root,
@@ -221,45 +228,102 @@ export function Services() {
   }, [ready, i18n.language])
   return (
     <div ref={list} data-testid="services" className="space-y-4">
-      {services.map(({ title, body, Icon, to, kind }, index) => (
+      {services.map(({ title, body, to, kind }, index) => (
         <article
           key={title}
           data-service
-          className="overflow-hidden rounded-3xl bg-muted p-7 md:p-10"
+          className="relative isolate overflow-hidden rounded-3xl bg-ink p-6 text-white md:p-11 lg:p-12"
         >
           <div
-            data-service-heading
-            className="flex items-center justify-between gap-5"
+            data-service-art
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
           >
-            <h3 className="flex items-center gap-5 text-feature leading-tight tracking-tight">
-              <Icon className="size-7 shrink-0 opacity-60" aria-hidden="true" />
+            <svg
+              viewBox="0 0 640 640"
+              fill="none"
+              className="absolute -top-1/4 -right-1/4 h-full min-h-120 w-full text-white md:right-0 md:w-3/5"
+            >
+              {kind === 'work'
+                ? [0, 1, 2, 3, 4].map((plane) => (
+                    <path
+                      key={plane}
+                      d={`M${120 + plane * 80} -120 L${-120 + plane * 80} 760 H${-45 + plane * 80} L${195 + plane * 80} -120 Z`}
+                      fill="currentColor"
+                      fillOpacity="0.025"
+                      stroke="currentColor"
+                      strokeOpacity="0.06"
+                    />
+                  ))
+                : kind === 'knowledge'
+                  ? [250, 190, 130, 70].map((radius) => (
+                      <circle
+                        key={radius}
+                        cx="360"
+                        cy="310"
+                        r={radius}
+                        fill="currentColor"
+                        fillOpacity="0.025"
+                        stroke="currentColor"
+                        strokeOpacity="0.06"
+                      />
+                    ))
+                  : [0, 1, 2, 3].map((plane) => (
+                      <path
+                        key={plane}
+                        d={`M360 ${60 + plane * 68} L${80 + plane * 34} 580 H${640 - plane * 34} Z`}
+                        fill="currentColor"
+                        fillOpacity="0.025"
+                        stroke="currentColor"
+                        strokeOpacity="0.06"
+                      />
+                    ))}
+            </svg>
+          </div>
+          <div
+            data-service-heading
+            className="relative flex items-start justify-between gap-6"
+          >
+            <h3 className="max-w-3/4 text-service leading-tight font-normal tracking-tight md:max-w-1/2">
               {t(title)}
             </h3>
+            <span
+              aria-hidden="true"
+              className="ml-auto pt-1 text-sm tabular-nums opacity-45 md:text-base"
+            >
+              0{index + 1}
+            </span>
             <button
-              className="flex size-11 shrink-0 items-center justify-center rounded-full border border-current/20"
+              type="button"
+              data-service-toggle
+              className="group -mt-1 flex size-11 shrink-0 items-center justify-center rounded-full border border-current/20 transition-colors hover:bg-current/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
               aria-label={t(title)}
               aria-expanded={index === 0}
               aria-controls={`${id}-${index}`}
             >
-              <Plus className="size-5" aria-hidden="true" />
+              <Plus
+                className="size-5 transition-transform duration-500 ease-out-expo group-aria-expanded:rotate-45 motion-reduce:transition-none"
+                aria-hidden="true"
+              />
             </button>
           </div>
-          <div
-            data-service-body
-            id={`${id}-${index}`}
-            className="overflow-hidden"
-          >
-            <div className="grid items-start gap-8 pt-8 md:grid-cols-[.8fr_1.2fr] lg:gap-16">
-              <div className="flex flex-col justify-between gap-7">
-                <p className="max-w-150 text-lg leading-relaxed opacity-65">
+          <div data-service-body id={`${id}-${index}`}>
+            <div className="grid items-start gap-8 pt-5 md:grid-cols-2 md:gap-12 lg:gap-20">
+              <div className="flex flex-col items-start gap-7 md:pr-4">
+                <p className="max-w-110 text-base leading-relaxed text-white/75 lg:text-lg">
                   {t(body)}
                 </p>
-                <Link to={to} className="flex w-fit items-center gap-3 text-sm">
+                <Link
+                  to={to}
+                  className="group inline-flex min-h-11 items-center gap-3 text-sm text-white outline-none focus-visible:underline"
+                >
                   {t(to === '/install' ? 'install' : 'start')}
-                  <ArrowUpRight className="size-4" />
+                  <span className="flex size-9 items-center justify-center rounded-full bg-white text-foreground transition-transform duration-500 ease-out-expo group-hover:rotate-45 group-focus-visible:rotate-45 motion-reduce:transition-none">
+                    <ArrowUpRight className="size-4" aria-hidden="true" />
+                  </span>
                 </Link>
               </div>
-              <div data-service-visual>
+              <div data-service-visual className="min-w-0 md:-mt-8">
                 <WorkflowDemo kind={kind} />
               </div>
             </div>

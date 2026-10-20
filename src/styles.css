@@ -16,6 +16,7 @@
   --text-hero: clamp(2.75rem, 4.6vw, 5.25rem);
   --text-section: clamp(2.35rem, 5.2vw, 5.1rem);
   --text-feature: clamp(1.75rem, 3.2vw, 3rem);
+  --text-service: clamp(1.65rem, 2.6vw, 2.5rem);
   --radius-section: 4.5rem;
   --radius-media: 1.8rem;
   --spacing-gutter: clamp(1.5rem, 6.7vw, 7rem);
