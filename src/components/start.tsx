@@ -24,33 +24,46 @@ export function StartPage() {
       </PageIntro>
       <section className="px-gutter pb-section">
         <div className="mx-auto max-w-280">
-          <ol>
+          <ol className="relative before:pointer-events-none before:absolute before:top-10 before:bottom-10 before:left-5 before:w-px before:bg-border md:before:left-6">
             {steps.map(({ title, body, Icon }, index) => (
               <li
                 key={title}
-                className="grid gap-6 border-t border-border py-10 md:grid-cols-[6rem_1fr_1.2fr]"
+                className="relative grid gap-x-6 gap-y-4 py-8 pl-16 md:grid-cols-[1fr_1.2fr] md:gap-x-12 md:py-10 md:pl-24"
               >
-                <span className="text-sm text-muted-foreground">
+                <span className="absolute top-8 left-0 flex size-10 items-center justify-center rounded-full border border-primary/20 bg-background text-xs font-medium text-primary tabular-nums md:top-10 md:size-12">
                   0{index + 1}
                 </span>
                 <h2 className="flex items-start gap-4 text-2xl font-medium tracking-tight">
-                  <Icon
-                    className="mt-1 size-6 shrink-0 text-primary"
-                    aria-hidden="true"
-                  />
                   {t(title)}
                 </h2>
-                <p className="max-w-140 text-base leading-relaxed text-muted-foreground">
-                  {t(body)}
-                </p>
+                <div className="max-w-140 border-b border-border pb-8">
+                  <Icon
+                    className="mb-4 size-6 text-primary"
+                    aria-hidden="true"
+                  />
+                  <p className="text-base leading-relaxed text-muted-foreground">
+                    {t(body)}
+                  </p>
+                </div>
               </li>
             ))}
           </ol>
-          <div className="mt-7 rounded-3xl bg-cloud p-8 md:p-12">
-            <p className="mb-5 text-sm text-muted-foreground">{t('input')}</p>
-            <blockquote className="max-w-210 text-2xl leading-relaxed font-medium tracking-tight">
-              {t('prompt')}
-            </blockquote>
+          <div className="mt-7 overflow-hidden rounded-3xl border border-border bg-background">
+            <div className="flex items-center justify-between gap-4 border-b border-border bg-muted px-6 py-4 md:px-8">
+              <img
+                src="/linksense-logo.svg"
+                alt="LinkSense"
+                width="100"
+                height="26"
+                className="h-5 w-auto"
+              />
+              <p className="text-xs text-muted-foreground">{t('input')}</p>
+            </div>
+            <div className="p-6 md:p-10">
+              <blockquote className="max-w-210 text-2xl leading-relaxed font-medium tracking-tight">
+                {t('prompt')}
+              </blockquote>
+            </div>
           </div>
           <div className="mt-12 flex flex-wrap items-center justify-between gap-8">
             <Pill href={docsUrl}>{t('nextDocs')}</Pill>

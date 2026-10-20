@@ -1,3 +1,4 @@
+import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { useId, useState } from 'react'
 import { Link, useNavigate, useSearch } from '@tanstack/react-router'
 import { motion } from 'motion/react'
@@ -15,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { PageIntro } from './shell'
 import { Button } from './ui/button'
 import { installCommand, repository } from '@/lib/product'
+import { cn } from '@/lib/utils'
 
 function Segmented<T extends string>({
   label,
@@ -28,8 +30,9 @@ function Segmented<T extends string>({
   onChange: (value: T) => void
 }) {
   const id = useId()
+  const reduced = useReducedMotion()
   return (
-    <fieldset>
+    <fieldset className="min-w-0">
       <legend className="mb-3 text-sm text-muted-foreground">{label}</legend>
       <motion.div
         layout
@@ -52,11 +55,22 @@ function Segmented<T extends string>({
             {value === option.value && (
               <motion.span
                 layoutId={id}
-                className="absolute inset-0 rounded-full bg-white shadow-sm"
-                transition={{ type: 'spring', stiffness: 450, damping: 36 }}
+                className="absolute inset-0 rounded-full bg-foreground"
+                transition={
+                  reduced
+                    ? { duration: 0 }
+                    : { type: 'spring', stiffness: 450, damping: 36 }
+                }
               />
             )}
-            <span className="relative">{option.label}</span>
+            <span
+              className={cn(
+                'relative transition-colors duration-200',
+                value === option.value && 'text-white',
+              )}
+            >
+              {option.label}
+            </span>
           </label>
         ))}
       </motion.div>
@@ -109,9 +123,9 @@ export function InstallPage() {
         <p>{t('installBody')}</p>
       </PageIntro>
       <section className="px-gutter pb-section">
-        <div className="mx-auto grid max-w-280 gap-12 lg:grid-cols-[1.4fr_1fr]">
-          <div>
-            <div className="flex flex-wrap gap-8">
+        <div className="mx-auto grid max-w-280 grid-cols-1 gap-12 lg:grid-cols-[1.4fr_1fr]">
+          <div className="min-w-0">
+            <div className="flex flex-wrap gap-8 rounded-3xl border border-border p-6 md:p-8">
               <Segmented
                 label={t('edition')}
                 value={edition}
@@ -150,9 +164,9 @@ export function InstallPage() {
             <p className="mt-7 min-h-12 text-lg text-muted-foreground">
               {t(edition === 'full' ? 'fullBody' : 'coreBody')}
             </p>
-            <div className="mt-5 overflow-hidden rounded-3xl bg-ink text-white">
+            <div className="mt-5 overflow-hidden rounded-3xl border border-foreground bg-ink text-white shadow-xl shadow-black/5">
               <div className="flex items-center justify-between border-b border-white/10 px-6 py-5 text-xs text-white/50">
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-3">
                   <Terminal className="size-4" />
                   {platform === 'linux' ? 'Linux' : 'macOS'} /{' '}
                   {edition === 'core' ? 'Core' : 'Full'}
@@ -184,7 +198,7 @@ export function InstallPage() {
               </p>
             )}
             <section
-              className="mt-10 rounded-3xl border border-border p-6 md:p-8"
+              className="mt-10 rounded-3xl border border-border bg-cloud/40 p-6 md:p-8"
               aria-labelledby="agent-install-title"
             >
               <div className="flex flex-wrap items-center justify-between gap-4">
@@ -206,7 +220,7 @@ export function InstallPage() {
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                 {t('agentBody')}
               </p>
-              <pre className="mt-5 max-h-64 overflow-auto rounded-2xl bg-muted p-5 text-xs leading-relaxed whitespace-pre-wrap select-all">
+              <pre className="mt-5 max-h-64 overflow-auto rounded-2xl border border-border bg-background p-5 text-xs leading-relaxed whitespace-pre-wrap select-all">
                 <code>{agentPrompt}</code>
               </pre>
               <p className="mt-3 text-sm text-muted-foreground" role="status">
@@ -236,7 +250,19 @@ export function InstallPage() {
               </Link>
             </div>
           </div>
-          <aside className="h-fit rounded-3xl border border-border p-7 md:p-9">
+          <aside className="h-fit rounded-3xl border border-border bg-muted p-7 md:p-9 lg:sticky lg:top-28">
+            <div className="mb-7 flex items-center justify-between border-b border-border pb-5">
+              <img
+                src="/linksense-logo.svg"
+                alt="LinkSense"
+                width="108"
+                height="30"
+                className="h-6 w-auto"
+              />
+              <span className="rounded-full border border-primary/20 bg-cloud px-3 py-1 text-xs font-medium text-primary">
+                {edition === 'full' ? 'Full' : 'Core'}
+              </span>
+            </div>
             <h2 className="text-2xl font-medium tracking-tight">
               {t('requirements')}
             </h2>

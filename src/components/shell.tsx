@@ -1,3 +1,4 @@
+import { useReducedMotion } from '@/lib/use-reduced-motion'
 import {
   useEffect,
   useLayoutEffect,
@@ -17,7 +18,6 @@ import {
 import {
   motion,
   useAnimationControls,
-  useReducedMotion,
   useScroll,
   useMotionValueEvent,
 } from 'motion/react'
@@ -531,12 +531,12 @@ export function PageIntro({
   children: ReactNode
 }) {
   return (
-    <section className="px-gutter pt-16 pb-16 md:pt-24 md:pb-20">
-      <div className="mx-auto max-w-280">
-        <RevealText as="h1" className="text-hero">
+    <section className="px-gutter pt-12 pb-12 md:pt-16 md:pb-16">
+      <div className="mx-auto grid max-w-280 items-end gap-7 lg:grid-cols-[1.2fr_.8fr] lg:gap-16">
+        <RevealText as="h1" className="text-hero leading-[1.08]">
           {title}
         </RevealText>
-        <div className="mt-7 max-w-160 text-lg leading-relaxed text-muted-foreground">
+        <div className="max-w-160 text-lg leading-relaxed text-muted-foreground">
           {children}
         </div>
       </div>
