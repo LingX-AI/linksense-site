@@ -18,3 +18,5 @@ Reviewed 2026-10-16 against the LinkSense source checkout at `a3fcd0d`. These ar
 Core handles ordinary attachments; Full adds the full knowledge processing/retrieval stack. Model setup is required. Self-hosting does not guarantee offline operation, task-level security isolation, or absence of external data transmission. Product features are not proof of throughput, customer adoption, quality guarantees or regulatory certification.
 
 No customer logos, testimonials, usage counts or performance statistics were invented. Official product and installation links point to LinkSense's repository and demo; production availability must be checked independently.
+
+The 2026-10-20 product walkthroughs are labeled illustrations. Their sample procurement question, policy excerpt, file names and Operations team are authored examples, not customer documents, actual execution results or performance claims. They demonstrate the documented request/review/refine, knowledge-citation and application-authorization flows. Knowledge remains identified as a Full capability.
