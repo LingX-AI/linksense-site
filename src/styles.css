@@ -2,25 +2,36 @@
 @import '@fontsource-variable/noto-sans-sc';
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/bricolage-grotesque-latin.woff2') format('woff2');
+}
+
 @theme {
   --font-sans: 'Inter Variable', 'Noto Sans SC Variable', sans-serif;
-  --color-background: #ffffff;
-  --color-foreground: #151619;
+  --font-display: 'Bricolage Grotesque', 'Noto Sans SC Variable', sans-serif;
+  --color-background: #fafbf9;
+  --color-foreground: #24332f;
   --color-primary: #1765ed;
-  --color-muted: #f3f4f6;
-  --color-muted-foreground: #666971;
-  --color-border: #e2e4e9;
-  --color-cloud: #edf3fc;
-  --color-ink: #171b24;
+  --color-muted: #f0f2ee;
+  --color-muted-foreground: #606b64;
+  --color-border: #dbe0d9;
+  --color-cloud: #e4ecf7;
+  --color-sage: #e5ebe0;
+  --color-sand: #eee9dd;
+  --color-ink: #24332f;
   --color-ring: #1765ed;
-  --text-hero: clamp(2.75rem, 4.6vw, 5.25rem);
-  --text-section: clamp(2.35rem, 5.2vw, 5.1rem);
-  --text-feature: clamp(1.75rem, 3.2vw, 3rem);
-  --text-service: clamp(1.65rem, 2.6vw, 2.5rem);
-  --radius-section: 4.5rem;
-  --radius-media: 1.8rem;
-  --spacing-gutter: clamp(1.5rem, 6.7vw, 7rem);
-  --spacing-section: clamp(5rem, 9vw, 9rem);
+  --text-hero: clamp(3.25rem, 1.5rem + 5.8vw, 7.5rem);
+  --text-section: clamp(2.25rem, 1.25rem + 3vw, 4.5rem);
+  --text-feature: clamp(1.75rem, 1rem + 2vw, 3rem);
+  --text-service: clamp(1.75rem, 1rem + 1.8vw, 2.75rem);
+  --radius-section: 2rem;
+  --radius-media: 0.75rem;
+  --spacing-gutter: clamp(1.25rem, 5.5vw, 6rem);
+  --spacing-section: clamp(4.5rem, 3rem + 5vw, 8rem);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -44,6 +55,8 @@
   }
   html[lang='ja-JP'] {
     --font-sans: 'Inter Variable', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    --font-display:
+      'Bricolage Grotesque', 'Hiragino Sans', 'Yu Gothic', sans-serif;
   }
   body {
     margin: 0;
@@ -51,6 +64,15 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
   button,
   a,
@@ -77,7 +99,6 @@
   }
 }
 
-/* These masks and capped fills are the reference's visual effects, not layout styling. */
 .pill-fill::before {
   content: '';
   position: absolute;
@@ -156,13 +177,4 @@ dialog[open] {
 /* Sibling logo emphasis from the reference; labels remain available without hover. */
 .integration-logos:has(a:hover) a:not(:hover) {
   opacity: 0.25;
-}
-
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .reel-play-hint {
-    opacity: 0;
-  }
-  .reel-trigger:focus-visible .reel-play-hint {
-    opacity: 1;
-  }
 }

@@ -16,7 +16,7 @@ function ViewportNumber({ value }: { value: number }) {
   return (
     <span
       ref={ref}
-      className="block text-7xl font-medium tracking-tighter tabular-nums"
+      className="block font-display text-6xl font-medium tracking-tighter tabular-nums md:text-7xl"
     >
       <span className="sr-only">
         {new Intl.NumberFormat(i18n.language).format(value)}
@@ -40,23 +40,25 @@ export function OrganizationProof() {
   const { t } = useTranslation()
   return (
     <section className="px-gutter py-section">
-      <div className="mx-auto max-w-320">
-        <RevealText className="max-w-220 text-section">
+      <div className="mx-auto grid max-w-352 gap-12 lg:grid-cols-[.9fr_1.6fr] lg:items-center lg:gap-20">
+        <RevealText className="max-w-100 text-feature leading-tight font-medium tracking-tight">
           {t('proofTitle')}
         </RevealText>
-        <div className="mt-14 grid gap-5 md:grid-cols-3">
+        <div className="grid grid-cols-3 gap-4 sm:gap-8">
           {[
-            { number: 6, label: 'languages', background: 'bg-muted' },
-            { number: 2, label: 'deployments', background: 'bg-muted' },
-            { number: 5, label: 'channels', background: 'bg-muted' },
-          ].map(({ number, label, background }) => (
+            { number: 6, label: 'languages' },
+            { number: 2, label: 'deployments' },
+            { number: 5, label: 'channels' },
+          ].map(({ number, label }) => (
             <div
-              data-proof-tile
               key={label}
-              className={`rounded-3xl p-8 md:p-10 ${background}`}
+              data-proof-tile
+              className="min-w-0 border-l border-border pl-4 sm:pl-7"
             >
               <ViewportNumber value={number} />
-              <p className="mt-7 max-w-50 text-lg leading-tight">{t(label)}</p>
+              <p className="mt-4 max-w-40 text-xs leading-relaxed wrap-anywhere text-muted-foreground sm:text-sm">
+                {t(label)}
+              </p>
             </div>
           ))}
         </div>
@@ -69,9 +71,11 @@ export function Guides() {
   const { t } = useTranslation()
   return (
     <section className="bg-muted px-gutter py-section">
-      <div className="mx-auto max-w-320">
-        <RevealText className="text-section">{t('insightsTitle')}</RevealText>
-        <div className="mt-14 grid gap-10 md:grid-cols-3">
+      <div className="mx-auto max-w-352">
+        <RevealText className="text-feature leading-tight font-medium tracking-tight whitespace-pre-line">
+          {t('insightsTitle')}
+        </RevealText>
+        <div className="mt-12 grid gap-10 md:grid-cols-3">
           {[
             {
               title: 'install',
@@ -97,18 +101,19 @@ export function Guides() {
           ].map(({ title, body, to, href, Icon, caption }) => {
             const content = (
               <>
-                <div className="flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-3xl bg-white p-8 transition-transform duration-1000 ease-out-expo group-hover:scale-[.98]">
+                <div className="flex items-center justify-between gap-5 border-b border-border pb-5 text-muted-foreground">
+                  <span className="text-sm">{caption}</span>
                   <Icon
-                    className="size-12 text-primary transition-transform duration-1000 group-hover:scale-110"
+                    className="size-6 transition-transform duration-700 ease-out-expo group-hover:scale-110 motion-reduce:transition-none"
                     aria-hidden="true"
                   />
-                  <span className="text-2xl font-medium tracking-tight">
-                    {caption}
-                  </span>
                 </div>
-                <h3 className="mt-6 flex items-center justify-between gap-3 text-xl font-medium">
+                <h3 className="mt-6 flex items-center justify-between gap-3 text-2xl font-medium tracking-tight">
                   {t(title)}
-                  <ArrowUpRight className="size-4 shrink-0" />
+                  <ArrowUpRight
+                    className="size-5 shrink-0 text-primary"
+                    aria-hidden="true"
+                  />
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {t(body)}
@@ -120,7 +125,7 @@ export function Guides() {
                 {to ? (
                   <Link
                     to={to}
-                    className="group block"
+                    className="group block rounded-sm transition-colors hover:text-primary"
                     data-cursor={t('read')}
                     data-cursor-mode="project"
                   >
@@ -129,7 +134,7 @@ export function Guides() {
                 ) : (
                   <a
                     href={href}
-                    className="group block"
+                    className="group block rounded-sm transition-colors hover:text-primary"
                     data-cursor={t('read')}
                     data-cursor-mode="project"
                   >
@@ -148,7 +153,7 @@ export function Guides() {
 export function Integrations() {
   const { t } = useTranslation()
   return (
-    <div className="integration-logos mt-16 grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-5">
+    <div className="integration-logos mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
       {[
         { name: 'Google Docs', image: 'google-docs.png' },
         { name: 'Gmail', image: 'gmail.png' },
@@ -158,17 +163,17 @@ export function Integrations() {
       ].map(({ name, image }) => (
         <a
           key={name}
-          href={`${repository}/blob/main/docs/${name === 'OneDrive' || name === 'SharePoint' ? 'microsoft-connections' : 'workspace-connections'}.md`}
-          className="group relative flex min-h-38 flex-col items-center justify-center gap-5 rounded-2xl transition-opacity duration-500"
           data-batch
           data-cursor-stick
+          href={`${repository}/blob/main/docs/${name === 'OneDrive' || name === 'SharePoint' ? 'microsoft-connections' : 'workspace-connections'}.md`}
+          className="group relative flex min-h-36 flex-col items-center justify-center gap-4 rounded-xl border border-border bg-white transition-opacity duration-200"
         >
           <img
             src={`/connectors/${image}`}
             width="48"
             height="48"
             alt=""
-            className="size-12 object-contain"
+            className="size-9 object-contain"
             loading="lazy"
           />
           <span className="text-sm font-medium">{name}</span>

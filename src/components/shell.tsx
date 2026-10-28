@@ -47,7 +47,7 @@ export function Pill({
 }) {
   const className = cn(
     buttonVariants({ variant: light ? 'light' : 'default' }),
-    'pill-fill hover:text-white focus-visible:text-white',
+    'pill-fill overflow-hidden hover:text-white focus-visible:text-white',
     light
       ? 'hover:bg-transparent'
       : 'hover:border-foreground hover:bg-foreground',
@@ -205,12 +205,12 @@ function Header() {
   return (
     <motion.header
       ref={header}
-      className="fixed inset-x-0 top-0 z-40 bg-white/95 backdrop-blur-md"
+      className="fixed inset-x-0 top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur-md"
       animate={{ y: hidden ? '-100%' : 0 }}
       transition={{ duration: 0.35 }}
       onFocusCapture={() => setHidden(false)}
     >
-      <div className="mx-auto flex h-24 max-w-400 items-center justify-between gap-3 px-gutter">
+      <div className="mx-auto flex h-22 max-w-400 items-center justify-between gap-3 px-gutter">
         <Link
           to="/"
           aria-label="LinkSense"
@@ -308,32 +308,28 @@ function Header() {
 function Footer() {
   const { t } = useTranslation()
   return (
-    <footer className="bg-foreground px-gutter pt-section pb-10 text-white">
+    <footer className="bg-ink px-gutter pt-section pb-8 text-white">
       <ScrollScenes>
         <div className="mx-auto max-w-352">
-          <RevealText className="max-w-240 text-section">
-            {t('ctaTitle')}
-          </RevealText>
-          <div
-            data-batch
-            className="mt-8 flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-center"
-          >
-            <RevealText
-              as="p"
-              className="max-w-96 text-lg font-normal tracking-normal text-white/60"
-            >
-              {t('ctaBody')}
+          <div className="grid items-end gap-10 md:grid-cols-[1.5fr_1fr]">
+            <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
+              {t('ctaTitle')}
             </RevealText>
-            <Pill to="/install" light>
-              {t('install')}
-            </Pill>
+            <div data-batch className="md:justify-self-end">
+              <p className="mb-7 max-w-80 text-base leading-relaxed text-white/70">
+                {t('ctaBody')}
+              </p>
+              <Pill to="/install" light>
+                {t('install')}
+              </Pill>
+            </div>
           </div>
           <div className="mt-14">
             <ElasticRule dark />
           </div>
           <div
             data-batch
-            className="mt-10 flex flex-col justify-between gap-10 pt-10 md:flex-row"
+            className="mt-4 flex flex-col justify-between gap-10 pt-10 md:flex-row"
           >
             <div>
               <img
@@ -343,7 +339,7 @@ function Footer() {
                 width="348"
                 height="94"
               />
-              <p className="mt-5 text-sm text-white/50">{t('footer')}</p>
+              <p className="mt-5 text-sm text-white/70">{t('footer')}</p>
             </div>
             <nav
               className="grid grid-cols-2 gap-x-12 gap-y-4 text-sm text-white/70"
@@ -359,7 +355,7 @@ function Footer() {
               </a>
             </nav>
           </div>
-          <p className="mt-14 text-xs text-white/40">© 2026 LinkSense</p>
+          <p className="mt-12 text-xs text-white/60">© 2026 LinkSense</p>
         </div>
       </ScrollScenes>
     </footer>
@@ -487,7 +483,7 @@ export function SiteShell() {
         ref={main}
         animate={page}
         inert={busy}
-        className="pt-24"
+        className="pt-22"
       >
         <Outlet />
         <Footer />

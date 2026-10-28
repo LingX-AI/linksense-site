@@ -1,5 +1,13 @@
 # Verification
 
+## Editorial redesign — 2026-10-28
+
+The homepage now uses an editorial layout, a self-hosted Bricolage Grotesque display face, lighter workflow surfaces and shorter, localized hero copy. The following historical entries describe earlier revisions, not the current visual layout.
+
+The existing motion system is retained: the contextual mouse follower and magnetic logo targets, video play cursor, button fill/text rollovers, elastic rules, SplitText reveals, viewport video entrance, batch reveals, number/tile entrances and scroll-driven service expansion. Service expansion now interpolates the shared cloud/sage/sand design tokens instead of switching to black. Touch and reduced-motion users keep explicit service disclosures.
+
+Checks: all 26 tests, ESLint and the production build including TypeScript pass. The new disclosure regression covers opening a service, selecting a workflow step and closing it with reduced motion. Calculated contrast checks cover muted text on all five light surfaces and default/hover button text. Deployment dry-run reads 133 assets. Review findings and fixes are in `code-review-2026-10-28.md`. Production verification is recorded separately after release. Browser-control was unavailable during the review, so no fresh browser-interaction, real-device or cross-browser motion result is claimed.
+
 Reviewed on 2026-10-16. Reference: https://cuberto.com/. LinkSense keeps its own copy, fonts, footage and native scrolling. This is an adaptation, not a claim of frame-perfect parity.
 
 | Effect                               | Owner and trigger                          | Evidence and fallback                                                                                                                                                                            | Status      |

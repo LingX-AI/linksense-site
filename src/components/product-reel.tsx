@@ -58,62 +58,74 @@ export function ProductReel() {
   }
   return (
     <div ref={frame} className="relative mx-auto max-w-352">
-      <motion.button
-        type="button"
-        onClick={open}
-        aria-label={t('play')}
-        data-cursor={t('play')}
-        data-cursor-mode="play"
-        className="reel-trigger relative block aspect-video w-full overflow-hidden rounded-media bg-muted text-foreground outline-none focus-visible:ring-3 focus-visible:ring-primary focus-visible:ring-offset-8"
+      <motion.div
+        className="relative"
         initial={reduced ? false : { scale: 0.9, opacity: 0 }}
-        whileInView={{
-          scale: 1,
-          opacity: 1,
-        }}
+        whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: reduced ? 0 : 2.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="absolute inset-0">
-          <video
-            ref={video}
-            width={1920}
-            height={1080}
-            onPlay={() => setPlaying(true)}
-            onPause={() => setPlaying(false)}
-            muted
-            loop
-            playsInline
-            preload="none"
-            poster="/media/linksense-intro-v6.jpg"
-            aria-hidden="true"
-            className="size-full object-contain"
-          >
-            <source src="/media/linksense-intro-v6.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <span className="reel-play-hint pointer-events-none absolute top-1/2 left-1/2 flex size-18 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-foreground">
-          <Play className="ml-1 size-5 fill-current" aria-hidden="true" />
-        </span>
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-10 rounded-media border border-border"
-        />
-      </motion.button>
-      <Button
-        variant="light"
-        aria-label={playing ? t('pause') : t('play')}
-        onClick={() => {
-          if (playing) setPaused(true)
-          else if (reduced) open()
-          else {
-            setPaused(false)
-            void video.current?.play().catch(open)
-          }
-        }}
-        className="absolute right-5 bottom-5 z-10 size-11 min-h-11 border-white/50 bg-black/20 px-0 backdrop-blur-sm hover:bg-black/40 hover:text-white"
-      >
-        {playing ? <Pause /> : <Play />}
-      </Button>
+        <button
+          type="button"
+          onClick={open}
+          aria-label={t('play')}
+          data-cursor={t('play')}
+          data-cursor-mode="play"
+          className="group relative grid w-full items-stretch gap-6 overflow-hidden rounded-2xl bg-cloud p-5 text-left text-foreground outline-none focus-visible:ring-3 focus-visible:ring-primary focus-visible:ring-offset-8 sm:p-8 md:grid-cols-[.32fr_1fr] md:gap-10 lg:p-10"
+        >
+          <span className="flex flex-col items-start justify-between gap-6 md:py-2">
+            <span className="max-w-56 font-display text-2xl leading-tight font-medium tracking-tight lg:text-3xl">
+              {t('watch')}
+            </span>
+            <span className="flex items-center gap-3 text-sm">
+              <span className="flex size-12 items-center justify-center rounded-full bg-primary text-white transition-colors group-hover:bg-ink motion-reduce:transition-none">
+                <Play
+                  className="ml-0.5 size-4 fill-current"
+                  aria-hidden="true"
+                />
+              </span>
+              <span className="tabular-nums">00:30</span>
+            </span>
+          </span>
+          <div className="relative aspect-video min-w-0 overflow-hidden rounded-media bg-white shadow-sm">
+            <video
+              ref={video}
+              width={1920}
+              height={1080}
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
+              muted
+              loop
+              playsInline
+              preload="none"
+              poster="/media/linksense-intro-v6.jpg"
+              aria-hidden="true"
+              className="absolute inset-0 size-full object-contain"
+            >
+              <source src="/media/linksense-intro-v6.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </button>
+        <Button
+          variant="outline"
+          aria-label={playing ? t('pause') : t('play')}
+          onClick={() => {
+            if (playing) setPaused(true)
+            else if (reduced) open()
+            else {
+              setPaused(false)
+              void video.current?.play().catch(open)
+            }
+          }}
+          className="absolute right-8 bottom-8 z-10 size-11 min-h-11 rounded-full border-border bg-white/95 px-0 hover:bg-muted hover:text-foreground sm:right-11 sm:bottom-11 lg:right-13 lg:bottom-13"
+        >
+          {playing ? <Pause /> : <Play />}
+        </Button>
+      </motion.div>
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-5 text-xs text-muted-foreground">
+        <span>{t('footer')}</span>
+        <span>Word / Excel / PPT / HTML</span>
+      </div>
       <dialog
         ref={dialog}
         className="fixed inset-4 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-360 overflow-auto rounded-3xl bg-foreground p-3 text-white md:p-5"

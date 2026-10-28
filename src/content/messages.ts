@@ -69,8 +69,8 @@ const en = {
   language: 'Language',
   skip: 'Skip to content',
   category: 'An AI workspace for your organization',
-  hero1: 'From one person’s idea.',
-  hero2: 'To a whole team’s capability.',
+  hero1: 'Good ideas.',
+  hero2: 'Better together.',
   heroBody:
     'Work with AI. Keep what works. Give your team the knowledge, skills and tools to do it again.',
   watch: 'See LinkSense at work',
@@ -237,8 +237,8 @@ const zh: Messages = {
   language: '语言',
   skip: '跳到正文',
   category: '为组织而生的 AI 工作平台',
-  hero1: '从一个人的想法，',
-  hero2: '到整个团队的能力。',
+  hero1: '好想法，',
+  hero2: '一起做成。',
   heroBody:
     '与 AI 一起完成工作，留下有效的方法，让知识、技能和工具成为整个团队的能力。',
   watch: '看看 LinkSense 如何工作',

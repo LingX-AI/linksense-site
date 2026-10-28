@@ -52,8 +52,8 @@ export const es: Messages = {
   language: 'Idioma',
   skip: 'Ir al contenido',
   category: 'Un espacio de trabajo con IA para tu organización',
-  hero1: 'De una idea individual.',
-  hero2: 'A una capacidad de todo el equipo.',
+  hero1: 'Buenas ideas.',
+  hero2: 'Mejor en equipo.',
   heroBody:
     'Trabaja con IA. Conserva lo que funciona. Dale a tu equipo conocimientos, habilidades y herramientas para repetirlo.',
   watch: 'Descubre LinkSense en acción',
@@ -222,8 +222,8 @@ export const pt: Messages = {
   language: 'Idioma',
   skip: 'Ir para o conteúdo',
   category: 'Um ambiente de IA para sua organização',
-  hero1: 'Da ideia de uma pessoa.',
-  hero2: 'À capacidade de toda a equipe.',
+  hero1: 'Boas ideias.',
+  hero2: 'Melhores em equipe.',
   heroBody:
     'Trabalhe com IA. Preserve o que funciona. Dê à equipe conhecimento, habilidades e ferramentas para repetir os resultados.',
   watch: 'Veja o LinkSense em ação',
@@ -392,8 +392,8 @@ export const fr: Messages = {
   language: 'Langue',
   skip: 'Aller au contenu',
   category: 'Un espace de travail IA pour votre organisation',
-  hero1: 'De l’idée d’une personne.',
-  hero2: 'Au savoir-faire de toute une équipe.',
+  hero1: 'De bonnes idées.',
+  hero2: 'À faire ensemble.',
   heroBody:
     'Travaillez avec l’IA. Conservez ce qui fonctionne. Donnez à votre équipe les connaissances, compétences et outils pour recommencer.',
   watch: 'Voir LinkSense à l’œuvre',
@@ -560,8 +560,8 @@ export const ja: Messages = {
   language: '言語',
   skip: '本文へ移動',
   category: '組織のための AI ワークスペース',
-  hero1: '一人のアイデアを、',
-  hero2: 'チーム全体の力に。',
+  hero1: 'いいアイデアを、',
+  hero2: 'みんなの力に。',
   heroBody:
     'AI と仕事を進め、役立つ方法を残す。知識、スキル、ツールをチーム全体で再利用できます。',
   watch: 'LinkSense の動作を見る',

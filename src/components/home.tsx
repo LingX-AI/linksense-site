@@ -14,12 +14,12 @@ import {
 } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { RevealText, ElasticRule, EnterGroup } from './motion'
+import { ScrollScenes } from './scroll-scenes'
 import { Pill } from './shell'
 import { ProductReel } from './product-reel'
 import { CapabilityMap } from './capability-map'
 import { demoUrl, repository } from '@/lib/product'
 import { Services } from './services'
-import { ScrollScenes } from './scroll-scenes'
 import { ScrollTrigger } from '@/lib/animation'
 import { OrganizationProof, Guides, Integrations } from './editorial'
 
@@ -68,114 +68,153 @@ export function HomePage() {
   const { t } = useTranslation()
   return (
     <ScrollScenes>
-      <section className="px-gutter pt-8 pb-8 md:pt-10 md:pb-8">
-        <div className="mx-auto grid max-w-330 items-center gap-12 lg:grid-cols-[1.15fr_.85fr] lg:gap-16">
+      <section className="px-gutter pt-12 pb-12 md:pt-18 md:pb-16">
+        <EnterGroup className="mx-auto grid max-w-352 gap-8 lg:grid-cols-[1.8fr_1fr] lg:gap-16">
           <div>
-            <p className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
-              <span className="size-1.5 rounded-full bg-primary" />
+            <p className="mb-6 text-sm text-muted-foreground">
               {t('category')}
             </p>
-            <RevealText as="h1" className="text-hero leading-[1.08]">
+            <RevealText
+              as="h1"
+              className="text-hero leading-[1.06] font-medium tracking-[-0.055em]"
+            >
               {`${t('hero1')}\n${t('hero2')}`}
             </RevealText>
+          </div>
+          <div className="flex flex-col items-start justify-end lg:pb-2">
             <RevealText
               as="p"
-              className="mt-6 max-w-150 text-lg leading-relaxed font-normal tracking-normal text-muted-foreground"
+              className="max-w-96 text-base leading-relaxed font-normal tracking-normal text-muted-foreground md:text-lg"
               delay={0.1}
             >
               {t('heroBody')}
             </RevealText>
-            <EnterGroup className="mt-8 flex flex-wrap items-center gap-6">
+            <div className="mt-7 flex flex-wrap items-center gap-6">
               <Pill href={demoUrl}>{t('try')}</Pill>
               <Link
                 to="/install"
-                className="inline-flex items-center gap-3 text-sm font-medium"
+                className="inline-flex min-h-11 items-center gap-2 text-sm font-medium hover:text-primary"
               >
                 {t('install')}
-                <ArrowUpRight className="size-4" />
+                <ArrowUpRight className="size-4" aria-hidden="true" />
               </Link>
-            </EnterGroup>
-            <p className="mt-6 text-xs text-muted-foreground">
+            </div>
+            <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
               {t('heroNote')}
             </p>
           </div>
-          <EnterGroup className="mx-auto w-full max-w-120 min-w-0 lg:max-w-none lg:pl-3">
-            <CapabilityMap />
-          </EnterGroup>
-        </div>
+        </EnterGroup>
       </section>
       <div className="px-gutter">
         <ProductReel />
       </div>
       <section className="px-gutter py-section" id="product">
-        <div className="mx-auto max-w-320">
-          <div className="mb-16 grid gap-8 md:grid-cols-2 md:items-end">
-            <RevealText className="text-section">{t('tourTitle')}</RevealText>
-            <RevealText
-              as="p"
-              className="max-w-150 text-xl leading-relaxed font-normal tracking-normal text-muted-foreground"
-            >
-              {t('tourBody')}
+        <div className="mx-auto max-w-352">
+          <div className="mb-12 grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-end md:gap-16">
+            <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
+              {t('tourTitle')}
             </RevealText>
+            <p className="max-w-110 text-base leading-relaxed text-muted-foreground">
+              {t('tourBody')}
+            </p>
           </div>
           <Services />
         </div>
       </section>
+      <section className="border-y border-border bg-sage/45 px-gutter py-section">
+        <div className="mx-auto grid max-w-352 gap-16 lg:grid-cols-[1fr_1fr] lg:gap-24">
+          <div>
+            <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
+              {t('methodsTitle')}
+            </RevealText>
+            <p className="mt-6 max-w-120 text-base leading-relaxed text-muted-foreground">
+              {t('introBody')}
+            </p>
+            <ol className="mt-10 space-y-6">
+              {([1, 2, 3] as const).map((step) => (
+                <li key={step} data-batch className="flex gap-4">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-foreground/20 text-xs tabular-nums">
+                    {step}
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-medium">
+                      {t(`method${step}`)}
+                    </h3>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      {t(`method${step}body`)}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="mx-auto w-full max-w-132 min-w-0 self-center">
+            <CapabilityMap />
+          </div>
+        </div>
+      </section>
+      <section className="px-gutter py-section">
+        <div className="mx-auto max-w-352">
+          <div className="grid items-center gap-6 border-b border-border pb-12 md:grid-cols-[1fr_1fr] md:gap-16">
+            <div className="flex items-center gap-5">
+              <CalendarDays
+                className="size-9 shrink-0 text-primary"
+                aria-hidden="true"
+              />
+              <RevealText className="text-feature leading-tight font-medium tracking-tight">
+                {t('autoTitle')}
+              </RevealText>
+            </div>
+            <p className="text-base leading-relaxed text-muted-foreground">
+              {t('autoBody')}
+            </p>
+          </div>
+          <div className="grid gap-x-16 md:grid-cols-2">
+            {(['plan', 'goal', 'space', 'create'] as const).map((feature) => (
+              <article
+                key={feature}
+                data-batch
+                className="border-b border-border py-9"
+              >
+                <RevealText className="text-2xl font-medium tracking-tight">
+                  {t(`${feature}Title`)}
+                </RevealText>
+                <p className="mt-4 max-w-140 text-base leading-relaxed text-muted-foreground">
+                  {t(`${feature}Body`)}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
       <section className="px-gutter pb-section">
-        <div className="mx-auto grid max-w-320 gap-5 rounded-3xl border border-border bg-muted p-7 md:grid-cols-[auto_1fr_1fr] md:items-center md:gap-8 md:p-10">
-          <CalendarDays className="size-8 text-primary" aria-hidden="true" />
-          <h2 className="text-2xl font-medium tracking-tight">
-            {t('autoTitle')}
-          </h2>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {t('autoBody')}
-          </p>
-        </div>
-      </section>
-      <section className="px-gutter py-section">
-        <div className="mx-auto grid max-w-320 gap-x-14 md:grid-cols-2">
-          {(['plan', 'goal', 'space', 'create'] as const).map((feature) => (
-            <article
-              key={feature}
-              data-batch
-              className="border-t border-border py-9"
-            >
-              <h2 className="text-2xl font-medium tracking-tight">
-                {t(`${feature}Title`)}
-              </h2>
-              <p className="mt-4 max-w-140 text-base leading-relaxed text-muted-foreground">
-                {t(`${feature}Body`)}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-      <section className="px-gutter py-section">
-        <div className="mx-auto max-w-320">
-          <div className="grid gap-10 md:grid-cols-2">
-            <RevealText className="text-section">
+        <div className="mx-auto max-w-352">
+          <div className="grid gap-8 md:grid-cols-[1.4fr_1fr] md:gap-16">
+            <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
               {t('connectTitle')}
             </RevealText>
-            <div className="flex flex-col justify-end gap-6">
-              <p className="text-lg leading-relaxed text-muted-foreground">
+            <div className="flex flex-col justify-end gap-4">
+              <p className="text-base leading-relaxed text-muted-foreground">
                 {t('connectBody')}
               </p>
-              <p className="text-base leading-relaxed text-muted-foreground">
+              <p className="text-sm leading-relaxed text-muted-foreground">
                 {t('channelBody')}
               </p>
             </div>
           </div>
           <Integrations />
-          <div className="mt-10">
+          <div className="mt-8">
             <ElasticRule />
           </div>
         </div>
       </section>
-      <section className="bg-muted px-gutter py-section">
-        <div className="mx-auto grid max-w-320 gap-14 md:grid-cols-2">
+      <section className="bg-cloud px-gutter py-section">
+        <div className="mx-auto grid max-w-352 gap-14 md:grid-cols-[1.2fr_1fr] md:gap-24">
           <div>
-            <RevealText className="text-section">{t('ownTitle')}</RevealText>
-            <p className="mt-7 max-w-140 text-lg leading-relaxed text-muted-foreground">
+            <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
+              {t('ownTitle')}
+            </RevealText>
+            <p className="mt-7 max-w-120 text-base leading-relaxed text-muted-foreground">
               {t('ownBody')}
             </p>
             <div className="mt-9">
@@ -192,7 +231,7 @@ export function HomePage() {
               <div
                 key={key}
                 data-batch
-                className="flex items-center gap-5 border-b border-border py-7 text-xl"
+                className="flex items-center gap-5 border-b border-foreground/15 py-6 text-base"
               >
                 <Icon
                   className="size-6 shrink-0 text-primary"
@@ -203,10 +242,10 @@ export function HomePage() {
             ))}
             <a
               href={repository}
-              className="mt-8 flex items-center gap-3 text-sm"
+              className="mt-6 flex min-h-11 items-center gap-3 self-start text-sm hover:text-primary"
             >
               GitHub
-              <ArrowUpRight className="size-4" />
+              <ArrowUpRight className="size-4" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -214,15 +253,17 @@ export function HomePage() {
       <OrganizationProof />
       <Guides />
       <section className="px-gutter py-section">
-        <div className="mx-auto grid max-w-320 gap-12 md:grid-cols-[.8fr_1.2fr]">
+        <div className="mx-auto grid max-w-352 gap-12 md:grid-cols-[.8fr_1.2fr] md:gap-24">
           <div>
-            <RevealText className="text-feature">{t('faqTitle')}</RevealText>
+            <RevealText className="text-feature leading-tight font-medium tracking-tight">
+              {t('faqTitle')}
+            </RevealText>
             <ArrowDown
               className="mt-10 size-8 text-muted-foreground"
               aria-hidden="true"
             />
           </div>
-          <div>
+          <div className="border-t border-border">
             {[1, 2, 3, 4].map((number) => (
               <FaqItem
                 key={number}

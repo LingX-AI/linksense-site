@@ -3,7 +3,7 @@ import { defineConfig } from 'cf/config'
 export default defineConfig({
   worker: {
     name: 'linksense-site',
-    compatibilityDate: '2026-10-16',
+    compatibilityDate: '2026-10-20',
     assets: {
       notFoundHandling: 'single-page-application',
     },

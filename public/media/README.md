@@ -10,4 +10,4 @@
 - `/github.svg`: official GitHub Invertocat from https://brand.github.com/GitHub_Logos.zip, used to link to the product's GitHub repository. GitHub retains its trademark rights.
 - `/connectors/*`: existing connector marks from the LinkSense source checkout, used only to identify supported integrations. Their respective owners retain their trademark rights.
 
-No third-party agency footage, commercial fonts or compiled code are included. Workflow illustrations are authored in the site's own React components and labeled as examples.
+No third-party agency footage, commercial fonts or compiled code are included. The self-hosted Bricolage Grotesque variable font is from Fontsource package `@fontsource-variable/bricolage-grotesque` 5.3.0; its SIL Open Font License and attribution are preserved in `/fonts/OFL-bricolage-grotesque.txt`. Workflow illustrations are authored in the site's own React components and labeled as examples.

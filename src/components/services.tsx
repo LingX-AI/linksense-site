@@ -13,18 +13,21 @@ const services = [
     body: 'workBody',
     to: '/start',
     kind: 'work',
+    surface: '--color-cloud',
   },
   {
     title: 'knowledgeTitle',
     body: 'knowledgeBody',
     to: '/install',
     kind: 'knowledge',
+    surface: '--color-sage',
   },
   {
     title: 'appsTitle',
     body: 'appsBody',
     to: '/start',
     kind: 'apps',
+    surface: '--color-sand',
   },
 ] as const
 
@@ -60,6 +63,11 @@ export function Services() {
         const artworks = cards.map((card) =>
           card.querySelector<HTMLElement>('[data-service-art]')!,
         )
+        const theme = getComputedStyle(root)
+        const muted = theme.getPropertyValue('--color-muted').trim()
+        const surfaces = services.map(({ surface }) =>
+          theme.getPropertyValue(surface).trim(),
+        )
         const desktop =
           context.conditions?.desktop && !context.conditions?.reduced
         const progress = cards.map((_, index) => ({
@@ -84,11 +92,11 @@ export function Services() {
             gsap.set(cards[index], {
               y: item.top,
               backgroundColor: gsap.utils.interpolate(
-                '#f3f4f6',
-                '#171b24',
+                muted,
+                surfaces[index],
                 item.progress,
               ),
-              color: item.progress < 0.57 ? '#000000' : '#ffffff',
+              color: 'var(--color-foreground)',
             })
             gsap.set(bodies[index], {
               height: item.body,
@@ -180,8 +188,8 @@ export function Services() {
           const expanded = index === 0
           setAccessible(index, expanded)
           gsap.set(cards[index], {
-            backgroundColor: expanded ? '#171b24' : '#f3f4f6',
-            color: expanded ? '#ffffff' : '#151619',
+            backgroundColor: expanded ? surfaces[index] : muted,
+            color: 'var(--color-foreground)',
           })
           gsap.set(bodies[index], {
             height: expanded ? 'auto' : 0,
@@ -192,8 +200,8 @@ export function Services() {
             const open = button.getAttribute('aria-expanded') !== 'true'
             setAccessible(index, open)
             gsap.to(cards[index], {
-              backgroundColor: open ? '#171b24' : '#f3f4f6',
-              color: open ? '#ffffff' : '#151619',
+              backgroundColor: open ? surfaces[index] : muted,
+              color: 'var(--color-foreground)',
               duration: context.conditions?.reduced ? 0 : 0.4,
               overwrite: true,
             })
@@ -232,7 +240,7 @@ export function Services() {
         <article
           key={title}
           data-service
-          className="relative isolate overflow-hidden rounded-3xl bg-ink p-6 text-white md:p-11 lg:p-12"
+          className="relative isolate overflow-hidden rounded-2xl bg-muted p-6 text-foreground md:p-10 lg:p-12"
         >
           <div
             data-service-art
@@ -242,7 +250,7 @@ export function Services() {
             <svg
               viewBox="0 0 640 640"
               fill="none"
-              className="absolute -top-1/4 -right-1/4 h-full min-h-120 w-full text-white md:right-0 md:w-3/5"
+              className="absolute -top-1/4 -right-1/4 h-full min-h-120 w-full text-primary md:right-0 md:w-3/5"
             >
               {kind === 'work'
                 ? [0, 1, 2, 3, 4].map((plane) => (
@@ -284,7 +292,7 @@ export function Services() {
             data-service-heading
             className="relative flex items-start justify-between gap-6"
           >
-            <h3 className="max-w-3/4 text-service leading-tight font-normal tracking-tight md:max-w-1/2">
+            <h3 className="max-w-3/4 text-service leading-tight font-medium tracking-tight md:max-w-1/2">
               {t(title)}
             </h3>
             <span
@@ -310,12 +318,12 @@ export function Services() {
           <div data-service-body id={`${id}-${index}`}>
             <div className="grid items-start gap-8 pt-5 md:grid-cols-2 md:gap-12 lg:gap-20">
               <div className="flex flex-col items-start gap-7 md:pr-4">
-                <p className="max-w-110 text-base leading-relaxed text-white/75 lg:text-lg">
+                <p className="max-w-110 text-base leading-relaxed text-muted-foreground lg:text-lg">
                   {t(body)}
                 </p>
                 <Link
                   to={to}
-                  className="group inline-flex min-h-11 items-center gap-3 text-sm text-white outline-none focus-visible:underline"
+                  className="group inline-flex min-h-11 items-center gap-3 text-sm text-foreground outline-none focus-visible:underline"
                 >
                   {t(to === '/install' ? 'install' : 'start')}
                   <span className="flex size-9 items-center justify-center rounded-full bg-white text-foreground transition-transform duration-500 ease-out-expo group-hover:rotate-45 group-focus-visible:rotate-45 motion-reduce:transition-none">
