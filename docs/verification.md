@@ -8,6 +8,12 @@ The existing motion system is retained: the contextual mouse follower and magnet
 
 Checks: all 26 tests, ESLint and the production build including TypeScript pass. The new disclosure regression covers opening a service, selecting a workflow step and closing it with reduced motion. Calculated contrast checks cover muted text on all five light surfaces and default/hover button text. Deployment dry-run reads 133 assets. Review findings and fixes are in `code-review-2026-10-28.md`. Production verification is recorded separately after release. Browser-control was unavailable during the review, so no fresh browser-interaction, real-device or cross-browser motion result is claimed.
 
+### Production release
+
+Application commit `4a05aaa` was pushed to `origin/main` and deployed using `pnpm run deploy` to the existing `linksense-site` Worker. Cloudflare version `dfb38c6a-4fd6-4efb-9f93-1e3c46c2d389` completed deployment on 2026-10-28 at approximately 18:32 Asia/Shanghai. The CLI uploaded 129 changed assets from the 133-file build output. The existing custom domain, compatibility date `2026-10-20`, asset base `/`, `auto-trailing-slash` HTML handling and `single-page-application` fallback are preserved.
+
+Fourteen production checks pass: `/`, `/start` and `/install?edition=full&platform=macos` return HTTP 200 HTML referencing the new main script. All six JavaScript chunks, CSS, the self-hosted font and its license, the approved introduction video and poster return HTTP 200 and match the local build's SHA-256 hashes. The main script hash is `e76f377be1822d9c650108bba04220359ea7b3e374fedcb5a92b3f26d56b5611`; video hash remains `121641edb22fd618b3a36cd2faf82e4257e3ae930b321753ef7cfa3aebaa3058`.
+
 Reviewed on 2026-10-16. Reference: https://cuberto.com/. LinkSense keeps its own copy, fonts, footage and native scrolling. This is an adaptation, not a claim of frame-perfect parity.
 
 | Effect                               | Owner and trigger                          | Evidence and fallback                                                                                                                                                                            | Status      |
