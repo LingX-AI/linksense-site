@@ -12,6 +12,12 @@ The latest sidebar check used the Codex browser on the English user-guide overvi
 
 Validation: 19 website tests, 27 documentation tests, and 2 bilingual README/link checks pass. Website lint/build and documentation TypeScript checks pass; both public and bundled documentation build in Chinese and English. The latest bundled build also confirms that public deployment guides remain excluded. The existing large website JavaScript chunk warning remains. No installer or model task was performed. README links require publication of the matching website documentation before they work online.
 
+### Production release
+
+Website commit `e5724ec` (code at `43d49ae`) was deployed with `LINKSENSE_REPO=/Users/bryceloskie/c/linksense pnpm run deploy` to the existing `linksense-site` Worker. The documentation was built from product branch `feat-computer-use` at commit `1f15460`. Cloudflare version `0265984a-d0e3-4329-9261-16c897669c29` completed deployment on 2026-11-04 at approximately 19:24 Asia/Shanghai. The upload read 863 assets, uploaded 432 changed files, and retained the custom domain and single-page-application fallback.
+
+Production checks returned HTTP 200 for `/`, `/install`, the Full/macOS install link, both documentation roots, both deployment roots, source development, and the English user-guide overview. The deployed website JavaScript, website CSS, and English documentation CSS match the local build byte for byte. Browser checks at 1440×1000 and 390×844 confirmed the three navigation menus, the separate Explore CTA, collapsed inactive documentation categories, normal-weight active category and TOC links, the full-width left search popover, working locale switching, and a full-height mobile menu with no page errors.
+
 ## Cuberto alignment — 2026-10-28
 
 The homepage now follows the Cuberto reference structure: a centered white opening, a full-width rounded showreel, an integrations row, a dark infrastructure panel, a FAQ and a centered dark contact outro. The hero copy is restored to the product statement, and the page returns to the existing Inter/Noto Sans SC font pipeline rather than the previous editorial display face.
