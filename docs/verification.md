@@ -1,5 +1,17 @@
 # Verification
 
+## Mobile documentation controls — 2026-11-04
+
+The public documentation's mobile table of contents now opens an absolutely positioned, scrollable panel below a native `details` / `summary` control. Opening it leaves the document heading at exactly the same vertical position. Selecting a heading, tapping outside, pressing Escape, or moving keyboard focus outside closes the panel. The existing translated label is reused, and navigation to another document resets the disclosure.
+
+The mobile header keeps its logo, search field, and menu button in stable flex columns. Focusing search no longer changes its width or hides the logo, including at 320px. Search and menu controls use 44px touch targets. The menu drawer is bounded to `min(88vw, 22rem)`; explicit stacking and an isolated header prevent the underlying search icon from painting through it. Drawer controls share the header's height, and long inline code wraps on mobile. These overrides are limited to public documentation; bundled product help retains its existing TOC component.
+
+Product commit `f74deb2` was pushed to `origin/feat-computer-use` through the local proxy. The website remains on `main`, with application source `96795f5`. `pnpm run deploy` rebuilt the documentation from the product checkout and deployed Cloudflare version `94b08b4f-b712-4b52-99aa-636584e4f2b4` to the existing `linksense-site` Worker on 2026-11-04 at approximately 20:46 Asia/Shanghai, uploading 161 changed assets.
+
+All 27 documentation tests, documentation TypeScript checking, both Chinese and English public and bundled documentation builds, the website production build, and `git diff --check` pass. Chrome assertions on local and production pages at 320, 390, 592, 768, and 996px confirm stable header geometry, zero document displacement on TOC expansion, bounded TOC scrolling, Escape/outside-click/link dismissal, working anchor navigation, and correct drawer hit testing. At 1303px the desktop TOC remains visible and the mobile control is hidden. The Chinese label renders correctly, and no browser page errors were recorded.
+
+The homepage and both language versions of the interactive-application guide return HTTP 200. Their deployed stylesheet SHA-256 hashes match the local `dist/` build. Production screenshots are saved at `/tmp/linksense-mobile-toc-overlay.png` and `/tmp/linksense-mobile-drawer.png`. Safari, Firefox, and physical mobile devices remain unverified.
+
 ## Navigation and TOC refinement — 2026-11-04
 
 The shared website and documentation header now uses Documentation and Community as its only main navigation items. Developers remains available from the documentation sidebar but is no longer duplicated in the top navigation.
