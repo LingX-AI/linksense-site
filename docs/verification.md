@@ -8,6 +8,12 @@ The existing motion system is retained: the contextual mouse follower and magnet
 
 Checks: all 26 tests, ESLint and the production build including TypeScript pass. The disclosure regression covers opening a service, selecting a workflow step and closing it with reduced motion. Calculated contrast checks cover muted text on all five light surfaces and default/hover button text. Static Chrome headless screenshots at 1440×1000 and emulated 390×844 confirmed the centered desktop opening, left-aligned mobile opening, in-viewport header controls, dark expanded service card and guide cards without horizontal overflow. Review findings and fixes are in `code-review-2026-10-28.md`. Normal-motion browser interaction, real-device and cross-browser motion results remain unverified.
 
+### Production release
+
+Application commit `2dbf9ca` was pushed to `origin/main` and deployed with `pnpm run deploy` to the existing `linksense-site` Worker. Cloudflare version `fec29c10-5617-4260-a4fa-e2df11916321` completed deployment on 2026-11-04 at approximately 11:04 Asia/Shanghai. The build read 130 assets and uploaded 9 changed files; the existing custom domain, compatibility date `2026-10-20`, asset base `/`, `auto-trailing-slash` HTML handling and `single-page-application` fallback remain intact.
+
+Ten production route and asset checks pass. `/`, `/start` and `/install?edition=full&platform=macos` return HTTP 200 HTML referencing the current main script and stylesheet. The main JavaScript, CSS, route/start/install chunks, approved introduction poster and video return HTTP 200 and match the local build's SHA-256 hashes. The main script hash is `ca1d7f76fc2316e713922d4c661c0efc305f593201a822fbbf738249f16f0c8f`; the CSS hash is `c6c28b69d6e7b9cdf28cd818b96fb346ff0587076cb286f01d10e136d664c222`. A reduced-motion production screenshot confirmed the deployed centered opening.
+
 ### Previous production release (superseded)
 
 Application commit `4a05aaa` was pushed to `origin/main` and deployed using `pnpm run deploy` to the existing `linksense-site` Worker. Cloudflare version `dfb38c6a-4fd6-4efb-9f93-1e3c46c2d389` completed deployment on 2026-10-28 at approximately 18:32 Asia/Shanghai. The CLI uploaded 129 changed assets from the 133-file build output. The existing custom domain, compatibility date `2026-10-20`, asset base `/`, `auto-trailing-slash` HTML handling and `single-page-application` fallback are preserved.

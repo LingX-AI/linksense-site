@@ -46,10 +46,10 @@ version's `2026-10-20`, rather than changing its runtime baseline on release.
 
 All 26 automated tests, ESLint and the production build including TypeScript
 pass. Deployment dry-run reads 133 static files with no application bindings.
-The previous editorial release was pushed to `main` and deployed as Cloudflare
-version `dfb38c6a-4fd6-4efb-9f93-1e3c46c2d389`. The Cuberto alignment above
-supersedes its visual direction; a new production release must be verified
-separately. Details are recorded in `docs/verification.md`.
+The Cuberto alignment was pushed as commit `2dbf9ca` and deployed as Cloudflare
+version `fec29c10-5617-4260-a4fa-e2df11916321`. Ten production route and asset
+checks pass, including the main JavaScript/CSS hashes and the approved video.
+Details are recorded in `docs/verification.md`.
 
 The browser-control session was unavailable for this review; no fresh browser
 interaction, all-locale viewport, real-device or Safari validation is claimed.
