@@ -44,9 +44,9 @@ it.each(['background', 'muted', 'cloud', 'sage', 'sand'])(
 
 it('keeps button text readable before and during hover', () => {
   const classes = buttonVariants().split(' ')
-  expect(classes).toContain('hover:bg-foreground')
+  expect(classes).toContain('hover:bg-primary')
   expect(classes).not.toContain('hover:bg-primary/85')
-  for (const surface of ['primary', 'foreground']) {
+  for (const surface of ['primary', 'ink']) {
     expect(contrast('#ffffff', color(surface))).toBeGreaterThanOrEqual(4.5)
   }
 })

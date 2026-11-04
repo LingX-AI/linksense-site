@@ -20,7 +20,7 @@ The standalone LinkSense product website: a React SPA with a product homepage, i
 
 Product facts are documented in [docs/content-sources.md](docs/content-sources.md). LinkSense branding and product footage come from the LinkSense repository; asset provenance is recorded in [public/media/README.md](public/media/README.md). Workflow illustrations are labeled examples, not customer data or actual product screenshots.
 
-The visual direction is a calm, editorial workspace: oversized Bricolage Grotesque headings, paper-like workflow previews, and LinkSense blue. The font is self-hosted under the SIL Open Font License in `public/fonts/`. Product branding, media, and content remain LinkSense's own. See [docs/verification.md](docs/verification.md) for verification history and known limits.
+The visual direction is Cuberto-inspired: a centered, generous white opening; a large rounded showreel; measured service cards that move from light to dark; a two-column editorial guide section; and restrained blue accents. It uses the existing Inter and Noto Sans SC font pipeline, LinkSense's own media, and the existing Motion/GSAP interaction owners. See [docs/verification.md](docs/verification.md) for verification history and known limits.
 
 ## 简体中文
 
@@ -40,4 +40,4 @@ LinkSense 的独立产品官网。React SPA，包含产品首页、部署安装�
 
 事实依据见 [docs/content-sources.md](docs/content-sources.md)。品牌标志和产品视频来自 LinkSense 自有仓库，记录于 [public/media/README.md](public/media/README.md)。界面中的工作流插图是明确标记的示意，不冒充客户数据或实际产品截图。
 
-视觉采用安静的编辑式排版：Bricolage Grotesque 大字标题、纸张式工作流预览与 LinkSense 品牌蓝。字体自托管，SIL Open Font License 保留于 `public/fonts/`。品牌、视频和产品内容仍使用 LinkSense 自有素材。历史验证记录与已知边界见 [docs/verification.md](docs/verification.md)。
+视觉采用 Cuberto 式结构：居中的白色开场、大幅圆角 showreel、由浅色滚动展开为深色的服务卡、双列错落的指南内容，以及克制的 LinkSense 蓝色点缀。字体沿用现有 Inter 与 Noto Sans SC 管线，品牌、视频和产品内容仍使用 LinkSense 自有素材。历史验证记录与已知边界见 [docs/verification.md](docs/verification.md)。

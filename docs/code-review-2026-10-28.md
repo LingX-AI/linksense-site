@@ -1,8 +1,8 @@
-# Editorial redesign review
+# Cuberto alignment review
 
 Date: 2026-10-28. Baseline: `34db6915b74575fc6c693f72f63b735b9514e3d5`.
-Scope: the uncommitted redesign, its shared components, animation lifecycle,
-localization, installation/start routes, tests, font assets and deployment.
+Scope: the Cuberto-aligned redesign, its shared components, animation lifecycle,
+localization, installation/start routes, tests and deployment.
 Expected load: a public static SPA with independent browser sessions, no
 application backend or user-data writes.
 
@@ -19,7 +19,7 @@ application backend or user-data writes.
 
 No confirmed new injection, secret-exposure or API-contract regression was
 found. Inline brand SVG is source-controlled, installation search parameters
-remain validated and the new font retains its SIL Open Font License.
+remain validated and the existing font pipeline is preserved.
 
 ## Specification and release findings
 
@@ -31,9 +31,11 @@ remain validated and the new font retains its SIL Open Font License.
 
 The mouse follower, magnetic targets, video cursor, button rollovers, elastic
 rules, SplitText, viewport entrances, metrics and service-scroll expansion
-remain connected to their original shared implementations. Official media,
-six locale resource sets, installation commands, touch disclosures and
-reduced-motion branches remain present.
+remain connected to their original shared implementations. The layout now
+follows the Cuberto composition: centered opening, rounded showreel, dark
+expanded service surfaces, two-column editorial guides and a centered outro.
+Official media, six locale resource sets, installation commands, touch
+disclosures and reduced-motion branches remain present.
 
 Added wrapping safeguards to narrow statistics and workflow labels. A rendered
 overflow was not reproduced, so these are preventive changes, not confirmed
@@ -44,10 +46,10 @@ version's `2026-10-20`, rather than changing its runtime baseline on release.
 
 All 26 automated tests, ESLint and the production build including TypeScript
 pass. Deployment dry-run reads 133 static files with no application bindings.
-Application commit `4a05aaa` is pushed to `main` and deployed as Cloudflare
-version `dfb38c6a-4fd6-4efb-9f93-1e3c46c2d389`. Fourteen production route/asset
-checks pass; downloaded JavaScript, CSS, font, license and media hashes match
-the local build. Details are recorded in `docs/verification.md`.
+The previous editorial release was pushed to `main` and deployed as Cloudflare
+version `dfb38c6a-4fd6-4efb-9f93-1e3c46c2d389`. The Cuberto alignment above
+supersedes its visual direction; a new production release must be verified
+separately. Details are recorded in `docs/verification.md`.
 
 The browser-control session was unavailable for this review; no fresh browser
 interaction, all-locale viewport, real-device or Safari validation is claimed.

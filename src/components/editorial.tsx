@@ -44,7 +44,7 @@ export function OrganizationProof() {
         <RevealText className="max-w-100 text-feature leading-tight font-medium tracking-tight">
           {t('proofTitle')}
         </RevealText>
-        <div className="grid grid-cols-3 gap-4 sm:gap-8">
+        <div className="grid gap-4 sm:grid-cols-3 sm:gap-8">
           {[
             { number: 6, label: 'languages' },
             { number: 2, label: 'deployments' },
@@ -53,7 +53,7 @@ export function OrganizationProof() {
             <div
               key={label}
               data-proof-tile
-              className="min-w-0 border-l border-border pl-4 sm:pl-7"
+              className="min-w-0 rounded-3xl bg-muted p-5 sm:p-7"
             >
               <ViewportNumber value={number} />
               <p className="mt-4 max-w-40 text-xs leading-relaxed wrap-anywhere text-muted-foreground sm:text-sm">
@@ -69,81 +69,124 @@ export function OrganizationProof() {
 
 export function Guides() {
   const { t } = useTranslation()
+  const guides = [
+    {
+      title: 'install',
+      body: 'installGuide',
+      to: '/install',
+      href: undefined,
+      caption: 'Core / Full',
+      image: '/media/product-poster.jpg',
+      Icon: Terminal,
+    },
+    {
+      title: 'start',
+      body: 'startGuide',
+      to: '/start',
+      href: undefined,
+      caption: 'LinkSense',
+      image: '/media/linksense-intro-v6.jpg',
+      Icon: FileText,
+    },
+    {
+      title: 'extend',
+      body: 'extendGuide',
+      to: undefined,
+      href: `${repository}/tree/main/examples`,
+      caption: 'Skills / MCP',
+      image: null,
+      Icon: Box,
+    },
+  ] as const
   return (
-    <section className="bg-muted px-gutter py-section">
+    <section className="bg-ink px-gutter py-section text-white">
       <div className="mx-auto max-w-352">
-        <RevealText className="text-feature leading-tight font-medium tracking-tight whitespace-pre-line">
+        <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
           {t('insightsTitle')}
         </RevealText>
-        <div className="mt-12 grid gap-10 md:grid-cols-3">
-          {[
-            {
-              title: 'install',
-              body: 'installGuide',
-              to: '/install',
-              Icon: Terminal,
-              caption: 'Core / Full',
-            },
-            {
-              title: 'start',
-              body: 'startGuide',
-              to: '/start',
-              Icon: FileText,
-              caption: 'LinkSense',
-            },
-            {
-              title: 'extend',
-              body: 'extendGuide',
-              href: `${repository}/tree/main/examples`,
-              Icon: Box,
-              caption: 'Skills / MCP',
-            },
-          ].map(({ title, body, to, href, Icon, caption }) => {
-            const content = (
-              <>
-                <div className="flex items-center justify-between gap-5 border-b border-border pb-5 text-muted-foreground">
-                  <span className="text-sm">{caption}</span>
-                  <Icon
-                    className="size-6 transition-transform duration-700 ease-out-expo group-hover:scale-110 motion-reduce:transition-none"
-                    aria-hidden="true"
-                  />
-                </div>
-                <h3 className="mt-6 flex items-center justify-between gap-3 text-2xl font-medium tracking-tight">
-                  {t(title)}
-                  <ArrowUpRight
-                    className="size-5 shrink-0 text-primary"
-                    aria-hidden="true"
-                  />
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  {t(body)}
-                </p>
-              </>
-            )
-            return (
-              <article data-batch key={title}>
-                {to ? (
-                  <Link
-                    to={to}
-                    className="group block rounded-sm transition-colors hover:text-primary"
-                    data-cursor={t('read')}
-                    data-cursor-mode="project"
+        <div className="mt-14 grid gap-x-16 gap-y-20 md:grid-cols-2">
+          {guides.map(
+            ({ title, body, to, href, Icon, caption, image }, index) => {
+              const content = (
+                <>
+                  <div
+                    className={`relative overflow-hidden rounded-3xl bg-muted ${
+                      index === 0
+                        ? 'aspect-[4/3]'
+                        : index === 1
+                          ? 'aspect-square'
+                          : 'aspect-[4/3]'
+                    }`}
                   >
-                    {content}
-                  </Link>
-                ) : (
-                  <a
-                    href={href}
-                    className="group block rounded-sm transition-colors hover:text-primary"
-                    data-cursor={t('read')}
-                    data-cursor-mode="project"
-                  >
-                    {content}
-                  </a>
-                )}
-              </article>
-            )
-          })}
+                    {image ? (
+                      <img
+                        src={image}
+                        alt=""
+                        width="1200"
+                        height="900"
+                        loading="lazy"
+                        className={`absolute inset-0 size-full transition-transform duration-[1.2s] ease-out-expo group-hover:scale-105 motion-reduce:transition-none ${
+                          index === 0
+                            ? 'object-contain object-center'
+                            : 'object-cover object-center'
+                        }`}
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center bg-sage text-primary">
+                        <Icon className="size-24" aria-hidden="true" />
+                      </div>
+                    )}
+                    <span className="absolute top-5 left-5 rounded-full bg-black/35 px-3 py-1.5 text-xs text-white backdrop-blur-sm">
+                      {caption}
+                    </span>
+                  </div>
+                  <h3 className="mt-6 flex items-center justify-between gap-3 text-2xl font-medium tracking-tight">
+                    {t(title)}
+                    <ArrowUpRight
+                      className="size-5 shrink-0 text-primary"
+                      aria-hidden="true"
+                    />
+                  </h3>
+                  <p className="mt-3 max-w-110 text-sm leading-relaxed text-white/60">
+                    {t(body)}
+                  </p>
+                </>
+              )
+              return (
+                <article
+                  data-batch
+                  key={title}
+                  className={
+                    index === 1
+                      ? 'md:mt-28'
+                      : index === 2
+                        ? 'md:col-start-1'
+                        : ''
+                  }
+                >
+                  {to ? (
+                    <Link
+                      to={to}
+                      className="group block rounded-sm transition-colors hover:text-white"
+                      data-cursor={t('read')}
+                      data-cursor-mode="project"
+                    >
+                      {content}
+                    </Link>
+                  ) : (
+                    <a
+                      href={href}
+                      className="group block rounded-sm transition-colors hover:text-white"
+                      data-cursor={t('read')}
+                      data-cursor-mode="project"
+                    >
+                      {content}
+                    </a>
+                  )}
+                </article>
+              )
+            },
+          )}
         </div>
       </div>
     </section>
@@ -153,7 +196,7 @@ export function Guides() {
 export function Integrations() {
   const { t } = useTranslation()
   return (
-    <div className="integration-logos mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+    <div className="integration-logos mt-14 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 md:grid-cols-5">
       {[
         { name: 'Google Docs', image: 'google-docs.png' },
         { name: 'Gmail', image: 'gmail.png' },
@@ -166,14 +209,14 @@ export function Integrations() {
           data-batch
           data-cursor-stick
           href={`${repository}/blob/main/docs/${name === 'OneDrive' || name === 'SharePoint' ? 'microsoft-connections' : 'workspace-connections'}.md`}
-          className="group relative flex min-h-36 flex-col items-center justify-center gap-4 rounded-xl border border-border bg-white transition-opacity duration-200"
+          className="group relative flex min-h-28 flex-col items-center justify-center gap-4 transition-opacity duration-500"
         >
           <img
             src={`/connectors/${image}`}
             width="48"
             height="48"
             alt=""
-            className="size-9 object-contain"
+            className="size-12 object-contain"
             loading="lazy"
           />
           <span className="text-sm font-medium">{name}</span>

@@ -1,18 +1,18 @@
 # Verification
 
-## Editorial redesign — 2026-10-28
+## Cuberto alignment — 2026-10-28
 
-The homepage now uses an editorial layout, a self-hosted Bricolage Grotesque display face, lighter workflow surfaces and shorter, localized hero copy. The following historical entries describe earlier revisions, not the current visual layout.
+The homepage now follows the Cuberto reference structure: a centered white opening, a full-width rounded showreel, a product/services section with light collapsed rows that become dark expanded surfaces, a restrained pale capability section, a dark infrastructure panel, a two-column editorial guide section, and a centered dark contact outro. The hero copy is restored to the product statement, and the page returns to the existing Inter/Noto Sans SC font pipeline rather than the previous editorial display face.
 
-The existing motion system is retained: the contextual mouse follower and magnetic logo targets, video play cursor, button fill/text rollovers, elastic rules, SplitText reveals, viewport video entrance, batch reveals, number/tile entrances and scroll-driven service expansion. Service expansion now interpolates the shared cloud/sage/sand design tokens instead of switching to black. Touch and reduced-motion users keep explicit service disclosures.
+The existing motion system is retained: the contextual mouse follower and magnetic logo targets, video play cursor, button fill/text rollovers, elastic rules, SplitText reveals, viewport video entrance, batch reveals, number/tile entrances and scroll-driven service expansion. The showreel has a separate inner-media parallax owner; service expansion interpolates the shared muted/ink tokens. Touch and reduced-motion users keep explicit service disclosures and static fallbacks.
 
-Checks: all 26 tests, ESLint and the production build including TypeScript pass. The new disclosure regression covers opening a service, selecting a workflow step and closing it with reduced motion. Calculated contrast checks cover muted text on all five light surfaces and default/hover button text. Deployment dry-run reads 133 assets. Review findings and fixes are in `code-review-2026-10-28.md`. Production verification is recorded separately after release. Browser-control was unavailable during the review, so no fresh browser-interaction, real-device or cross-browser motion result is claimed.
+Checks: all 26 tests, ESLint and the production build including TypeScript pass. The disclosure regression covers opening a service, selecting a workflow step and closing it with reduced motion. Calculated contrast checks cover muted text on all five light surfaces and default/hover button text. Static Chrome headless screenshots at 1440×1000 and emulated 390×844 confirmed the centered desktop opening, left-aligned mobile opening, in-viewport header controls, dark expanded service card and guide cards without horizontal overflow. Review findings and fixes are in `code-review-2026-10-28.md`. Normal-motion browser interaction, real-device and cross-browser motion results remain unverified.
 
-### Production release
+### Previous production release (superseded)
 
 Application commit `4a05aaa` was pushed to `origin/main` and deployed using `pnpm run deploy` to the existing `linksense-site` Worker. Cloudflare version `dfb38c6a-4fd6-4efb-9f93-1e3c46c2d389` completed deployment on 2026-10-28 at approximately 18:32 Asia/Shanghai. The CLI uploaded 129 changed assets from the 133-file build output. The existing custom domain, compatibility date `2026-10-20`, asset base `/`, `auto-trailing-slash` HTML handling and `single-page-application` fallback are preserved.
 
-Fourteen production checks pass: `/`, `/start` and `/install?edition=full&platform=macos` return HTTP 200 HTML referencing the new main script. All six JavaScript chunks, CSS, the self-hosted font and its license, the approved introduction video and poster return HTTP 200 and match the local build's SHA-256 hashes. The main script hash is `e76f377be1822d9c650108bba04220359ea7b3e374fedcb5a92b3f26d56b5611`; video hash remains `121641edb22fd618b3a36cd2faf82e4257e3ae930b321753ef7cfa3aebaa3058`.
+Fourteen production checks passed for that earlier editorial build: `/`, `/start` and `/install?edition=full&platform=macos` returned HTTP 200 HTML referencing its main script, and all checked JavaScript, CSS, font, license, video and poster assets matched the local build. The main script hash was `e76f377be1822d9c650108bba04220359ea7b3e374fedcb5a92b3f26d56b5611`; video hash remains `121641edb22fd618b3a36cd2faf82e4257e3ae930b321753ef7cfa3aebaa3058`. The current Cuberto alignment is not yet deployed.
 
 Reviewed on 2026-10-16. Reference: https://cuberto.com/. LinkSense keeps its own copy, fonts, footage and native scrolling. This is an adaptation, not a claim of frame-perfect parity.
 

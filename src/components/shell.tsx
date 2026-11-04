@@ -205,12 +205,12 @@ function Header() {
   return (
     <motion.header
       ref={header}
-      className="fixed inset-x-0 top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur-md"
+      className="fixed inset-x-3 top-3 z-40 rounded-2xl border border-border/70 bg-background/90 shadow-sm shadow-black/5 backdrop-blur-md md:inset-x-0 md:top-0 md:rounded-none md:border-x-0 md:border-t-0 md:shadow-none"
       animate={{ y: hidden ? '-100%' : 0 }}
       transition={{ duration: 0.35 }}
       onFocusCapture={() => setHidden(false)}
     >
-      <div className="mx-auto flex h-22 max-w-400 items-center justify-between gap-3 px-gutter">
+      <div className="mx-auto flex h-16 max-w-400 items-center justify-between gap-3 px-4 md:h-20 md:px-gutter">
         <Link
           to="/"
           aria-label="LinkSense"
@@ -308,28 +308,29 @@ function Header() {
 function Footer() {
   const { t } = useTranslation()
   return (
-    <footer className="bg-ink px-gutter pt-section pb-8 text-white">
+    <footer className="bg-ink px-gutter pt-section pb-10 text-white">
       <ScrollScenes>
-        <div className="mx-auto max-w-352">
-          <div className="grid items-end gap-10 md:grid-cols-[1.5fr_1fr]">
-            <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
-              {t('ctaTitle')}
-            </RevealText>
-            <div data-batch className="md:justify-self-end">
-              <p className="mb-7 max-w-80 text-base leading-relaxed text-white/70">
-                {t('ctaBody')}
-              </p>
-              <Pill to="/install" light>
-                {t('install')}
-              </Pill>
-            </div>
+        <div className="mx-auto max-w-352 text-center">
+          <RevealText className="mx-auto max-w-240 text-section leading-tight font-medium tracking-tight whitespace-pre-line">
+            {t('ctaTitle')}
+          </RevealText>
+          <RevealText
+            as="p"
+            className="mx-auto mt-7 max-w-96 text-base leading-relaxed font-normal tracking-normal text-white/70"
+          >
+            {t('ctaBody')}
+          </RevealText>
+          <div data-batch className="mt-9 flex justify-center">
+            <Pill to="/install" light>
+              {t('install')}
+            </Pill>
           </div>
           <div className="mt-14">
             <ElasticRule dark />
           </div>
           <div
             data-batch
-            className="mt-4 flex flex-col justify-between gap-10 pt-10 md:flex-row"
+            className="mt-4 flex flex-col items-center justify-between gap-10 border-t border-white/20 pt-10 text-left md:flex-row"
           >
             <div>
               <img
@@ -339,7 +340,7 @@ function Footer() {
                 width="348"
                 height="94"
               />
-              <p className="mt-5 text-sm text-white/70">{t('footer')}</p>
+              <p className="mt-5 text-sm text-white/60">{t('footer')}</p>
             </div>
             <nav
               className="grid grid-cols-2 gap-x-12 gap-y-4 text-sm text-white/70"
@@ -355,7 +356,7 @@ function Footer() {
               </a>
             </nav>
           </div>
-          <p className="mt-12 text-xs text-white/60">© 2026 LinkSense</p>
+          <p className="mt-12 text-xs text-white/50">© 2026 LinkSense</p>
         </div>
       </ScrollScenes>
     </footer>
@@ -483,7 +484,7 @@ export function SiteShell() {
         ref={main}
         animate={page}
         inert={busy}
-        className="pt-22"
+        className="pt-22 md:pt-20"
       >
         <Outlet />
         <Footer />

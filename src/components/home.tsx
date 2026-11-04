@@ -68,60 +68,59 @@ export function HomePage() {
   const { t } = useTranslation()
   return (
     <ScrollScenes>
-      <section className="px-gutter pt-12 pb-12 md:pt-18 md:pb-16">
-        <EnterGroup className="mx-auto grid max-w-352 gap-8 lg:grid-cols-[1.8fr_1fr] lg:gap-16">
-          <div>
-            <p className="mb-6 text-sm text-muted-foreground">
-              {t('category')}
-            </p>
-            <RevealText
-              as="h1"
-              className="text-hero leading-[1.06] font-medium tracking-[-0.055em]"
+      <section className="px-gutter pt-16 pb-12 md:pt-28 md:pb-20">
+        <div className="mx-auto max-w-330 text-left md:text-center">
+          <p className="mb-5 text-sm text-muted-foreground md:mb-6">
+            {t('category')}
+          </p>
+          <RevealText
+            as="h1"
+            className="mx-auto max-w-300 text-hero leading-[1.02] font-medium tracking-[-0.03em]"
+          >
+            {`${t('hero1')}\n${t('hero2')}`}
+          </RevealText>
+          <RevealText
+            as="p"
+            className="mx-auto mt-7 max-w-3xl text-lg leading-relaxed font-normal tracking-normal text-muted-foreground md:text-xl"
+            delay={0.1}
+          >
+            {t('heroBody')}
+          </RevealText>
+          <EnterGroup className="mt-8 flex flex-wrap items-center gap-6 md:justify-center">
+            <Pill href={demoUrl}>{t('try')}</Pill>
+            <Link
+              to="/install"
+              className="inline-flex min-h-11 items-center gap-2 text-sm font-medium hover:text-primary"
             >
-              {`${t('hero1')}\n${t('hero2')}`}
-            </RevealText>
-          </div>
-          <div className="flex flex-col items-start justify-end lg:pb-2">
-            <RevealText
-              as="p"
-              className="max-w-96 text-base leading-relaxed font-normal tracking-normal text-muted-foreground md:text-lg"
-              delay={0.1}
-            >
-              {t('heroBody')}
-            </RevealText>
-            <div className="mt-7 flex flex-wrap items-center gap-6">
-              <Pill href={demoUrl}>{t('try')}</Pill>
-              <Link
-                to="/install"
-                className="inline-flex min-h-11 items-center gap-2 text-sm font-medium hover:text-primary"
-              >
-                {t('install')}
-                <ArrowUpRight className="size-4" aria-hidden="true" />
-              </Link>
-            </div>
-            <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
-              {t('heroNote')}
-            </p>
-          </div>
-        </EnterGroup>
+              {t('install')}
+              <ArrowUpRight className="size-4" aria-hidden="true" />
+            </Link>
+          </EnterGroup>
+          <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
+            {t('heroNote')}
+          </p>
+        </div>
       </section>
       <div className="px-gutter">
         <ProductReel />
       </div>
       <section className="px-gutter py-section" id="product">
         <div className="mx-auto max-w-352">
-          <div className="mb-12 grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-end md:gap-16">
-            <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
-              {t('tourTitle')}
-            </RevealText>
-            <p className="max-w-110 text-base leading-relaxed text-muted-foreground">
-              {t('tourBody')}
-            </p>
+          <div className="mb-14 grid gap-8 md:grid-cols-[.28fr_.72fr] md:items-end md:gap-16">
+            <p className="text-sm text-muted-foreground">{t('product')}</p>
+            <div>
+              <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
+                {t('tourTitle')}
+              </RevealText>
+              <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground">
+                {t('tourBody')}
+              </p>
+            </div>
           </div>
           <Services />
         </div>
       </section>
-      <section className="border-y border-border bg-sage/45 px-gutter py-section">
+      <section className="bg-cloud/45 px-gutter py-section">
         <div className="mx-auto grid max-w-352 gap-16 lg:grid-cols-[1fr_1fr] lg:gap-24">
           <div>
             <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
@@ -208,45 +207,49 @@ export function HomePage() {
           </div>
         </div>
       </section>
-      <section className="bg-cloud px-gutter py-section">
-        <div className="mx-auto grid max-w-352 gap-14 md:grid-cols-[1.2fr_1fr] md:gap-24">
-          <div>
-            <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
-              {t('ownTitle')}
-            </RevealText>
-            <p className="mt-7 max-w-120 text-base leading-relaxed text-muted-foreground">
-              {t('ownBody')}
-            </p>
-            <div className="mt-9">
-              <Pill to="/install">{t('install')}</Pill>
-            </div>
-          </div>
-          <div className="flex flex-col justify-center">
-            {[
-              { Icon: Box, key: 'models' },
-              { Icon: LockKeyhole, key: 'governance' },
-              { Icon: ShieldCheck, key: 'usage' },
-              { Icon: Layers3, key: 'open' },
-            ].map(({ Icon, key }) => (
-              <div
-                key={key}
-                data-batch
-                className="flex items-center gap-5 border-b border-foreground/15 py-6 text-base"
-              >
-                <Icon
-                  className="size-6 shrink-0 text-primary"
-                  aria-hidden="true"
-                />
-                {t(key)}
+      <section className="bg-ink px-gutter py-section text-white">
+        <div className="mx-auto max-w-352">
+          <div className="grid gap-14 md:grid-cols-[1.2fr_1fr] md:gap-24">
+            <div>
+              <RevealText className="text-section leading-tight font-medium tracking-tight whitespace-pre-line">
+                {t('ownTitle')}
+              </RevealText>
+              <p className="mt-7 max-w-120 text-base leading-relaxed text-white/70">
+                {t('ownBody')}
+              </p>
+              <div className="mt-9">
+                <Pill to="/install" light>
+                  {t('install')}
+                </Pill>
               </div>
-            ))}
-            <a
-              href={repository}
-              className="mt-6 flex min-h-11 items-center gap-3 self-start text-sm hover:text-primary"
-            >
-              GitHub
-              <ArrowUpRight className="size-4" aria-hidden="true" />
-            </a>
+            </div>
+            <div className="flex flex-col justify-center">
+              {[
+                { Icon: Box, key: 'models' },
+                { Icon: LockKeyhole, key: 'governance' },
+                { Icon: ShieldCheck, key: 'usage' },
+                { Icon: Layers3, key: 'open' },
+              ].map(({ Icon, key }) => (
+                <div
+                  key={key}
+                  data-batch
+                  className="flex items-center gap-5 border-b border-white/20 py-6 text-base"
+                >
+                  <Icon
+                    className="size-6 shrink-0 text-primary"
+                    aria-hidden="true"
+                  />
+                  {t(key)}
+                </div>
+              ))}
+              <a
+                href={repository}
+                className="mt-6 flex min-h-11 items-center gap-3 self-start text-sm text-white/70 hover:text-white"
+              >
+                GitHub
+                <ArrowUpRight className="size-4" aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </section>

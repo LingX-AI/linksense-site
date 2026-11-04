@@ -2,36 +2,27 @@
 @import '@fontsource-variable/noto-sans-sc';
 @import 'tailwindcss';
 
-@font-face {
-  font-family: 'Bricolage Grotesque';
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('/fonts/bricolage-grotesque-latin.woff2') format('woff2');
-}
-
 @theme {
   --font-sans: 'Inter Variable', 'Noto Sans SC Variable', sans-serif;
-  --font-display: 'Bricolage Grotesque', 'Noto Sans SC Variable', sans-serif;
-  --color-background: #fafbf9;
-  --color-foreground: #24332f;
+  --font-display: 'Inter Variable', 'Noto Sans SC Variable', sans-serif;
+  --color-background: #ffffff;
+  --color-foreground: #151619;
   --color-primary: #1765ed;
-  --color-muted: #f0f2ee;
-  --color-muted-foreground: #606b64;
-  --color-border: #dbe0d9;
-  --color-cloud: #e4ecf7;
-  --color-sage: #e5ebe0;
-  --color-sand: #eee9dd;
-  --color-ink: #24332f;
+  --color-muted: #f1f2f4;
+  --color-muted-foreground: #5f646b;
+  --color-border: #e3e4e8;
+  --color-cloud: #edf2fb;
+  --color-sage: #e3f5f3;
+  --color-sand: #f3efe8;
+  --color-ink: #111318;
   --color-ring: #1765ed;
-  --text-hero: clamp(3.25rem, 1.5rem + 5.8vw, 7.5rem);
-  --text-section: clamp(2.25rem, 1.25rem + 3vw, 4.5rem);
-  --text-feature: clamp(1.75rem, 1rem + 2vw, 3rem);
-  --text-service: clamp(1.75rem, 1rem + 1.8vw, 2.75rem);
-  --radius-section: 2rem;
-  --radius-media: 0.75rem;
-  --spacing-gutter: clamp(1.25rem, 5.5vw, 6rem);
-  --spacing-section: clamp(4.5rem, 3rem + 5vw, 8rem);
+  --text-hero: clamp(2.75rem, 5.6vw, 5.25rem);
+  --text-section: clamp(2.5rem, 5vw, 5rem);
+  --text-feature: clamp(2rem, 3.2vw, 3.5rem);
+  --text-service: clamp(1.9rem, 2.8vw, 3rem);
+  --radius-media: clamp(1.25rem, 2vw, 2rem);
+  --spacing-gutter: clamp(1.25rem, 7.5vw, 7.5rem);
+  --spacing-section: clamp(5rem, 9vw, 9rem);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -48,15 +39,14 @@
   html {
     scrollbar-gutter: stable;
     scroll-behavior: smooth;
-    scroll-padding-top: 7rem;
+    scroll-padding-top: 6rem;
   }
   html:has(dialog[open]) {
     overflow: hidden;
   }
   html[lang='ja-JP'] {
     --font-sans: 'Inter Variable', 'Hiragino Sans', 'Yu Gothic', sans-serif;
-    --font-display:
-      'Bricolage Grotesque', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    --font-display: 'Inter Variable', 'Hiragino Sans', 'Yu Gothic', sans-serif;
   }
   body {
     margin: 0;
@@ -177,4 +167,13 @@ dialog[open] {
 /* Sibling logo emphasis from the reference; labels remain available without hover. */
 .integration-logos:has(a:hover) a:not(:hover) {
   opacity: 0.25;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .reel-play-hint {
+    opacity: 0;
+  }
+  .reel-trigger:focus-visible .reel-play-hint {
+    opacity: 1;
+  }
 }
