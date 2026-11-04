@@ -16,15 +16,21 @@ Checks: all 26 tests, ESLint and the production build including TypeScript pass.
 
 ### Production release
 
+Application commit `9d52192` was pushed to `origin/main` and deployed with `pnpm run deploy` to the existing `linksense-site` Worker. Cloudflare version `dfa869ad-f545-45c2-8b35-fba3782e5f49` completed deployment on 2026-11-04 at approximately 11:54 Asia/Shanghai. The build read 132 assets and uploaded 11 changed files. The custom domain, compatibility date `2026-10-20`, asset base `/`, `auto-trailing-slash` HTML handling and `single-page-application` fallback remain intact.
+
+Ten production route and asset checks pass. `/`, `/start` and `/install?edition=full&platform=macos` return HTTP 200 HTML referencing the current main script and stylesheet. The main JavaScript, CSS, the three generated guide images, introduction poster and video return HTTP 200 and match the local build's SHA-256 hashes. The main script hash is `26c2d1e22b2dd14a246e949eacc3bc65f2bdeba94091a2aa965cc742d9b4ed01`; the CSS hash is `9a07a51b0c071938922394e45deba7c7a7b22c75ca0ffd856b5fcca98e460bf0`.
+
+### Previous production release (Cuberto alignment)
+
 Application commit `2dbf9ca` was pushed to `origin/main` and deployed with `pnpm run deploy` to the existing `linksense-site` Worker. Cloudflare version `fec29c10-5617-4260-a4fa-e2df11916321` completed deployment on 2026-11-04 at approximately 11:04 Asia/Shanghai. The build read 130 assets and uploaded 9 changed files; the existing custom domain, compatibility date `2026-10-20`, asset base `/`, `auto-trailing-slash` HTML handling and `single-page-application` fallback remain intact.
 
 Ten production route and asset checks pass. `/`, `/start` and `/install?edition=full&platform=macos` return HTTP 200 HTML referencing the current main script and stylesheet. The main JavaScript, CSS, route/start/install chunks, approved introduction poster and video return HTTP 200 and match the local build's SHA-256 hashes. The main script hash is `ca1d7f76fc2316e713922d4c661c0efc305f593201a822fbbf738249f16f0c8f`; the CSS hash is `c6c28b69d6e7b9cdf28cd818b96fb346ff0587076cb286f01d10e136d664c222`. A reduced-motion production screenshot confirmed the deployed centered opening.
 
-### Previous production release (superseded)
+### Earlier production release
 
 Application commit `4a05aaa` was pushed to `origin/main` and deployed using `pnpm run deploy` to the existing `linksense-site` Worker. Cloudflare version `dfb38c6a-4fd6-4efb-9f93-1e3c46c2d389` completed deployment on 2026-10-28 at approximately 18:32 Asia/Shanghai. The CLI uploaded 129 changed assets from the 133-file build output. The existing custom domain, compatibility date `2026-10-20`, asset base `/`, `auto-trailing-slash` HTML handling and `single-page-application` fallback are preserved.
 
-Fourteen production checks passed for that earlier editorial build: `/`, `/start` and `/install?edition=full&platform=macos` returned HTTP 200 HTML referencing its main script, and all checked JavaScript, CSS, font, license, video and poster assets matched the local build. The main script hash was `e76f377be1822d9c650108bba04220359ea7b3e374fedcb5a92b3f26d56b5611`; video hash remains `121641edb22fd618b3a36cd2faf82e4257e3ae930b321753ef7cfa3aebaa3058`. The current Cuberto alignment is not yet deployed.
+Fourteen production checks passed for that earlier editorial build: `/`, `/start` and `/install?edition=full&platform=macos` returned HTTP 200 HTML referencing its main script, and all checked JavaScript, CSS, font, license, video and poster assets matched the local build. The main script hash was `e76f377be1822d9c650108bba04220359ea7b3e374fedcb5a92b3f26d56b5611`; video hash remains `121641edb22fd618b3a36cd2faf82e4257e3ae930b321753ef7cfa3aebaa3058`.
 
 Reviewed on 2026-10-16. Reference: https://cuberto.com/. LinkSense keeps its own copy, fonts, footage and native scrolling. This is an adaptation, not a claim of frame-perfect parity.
 
