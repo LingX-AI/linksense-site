@@ -2,19 +2,11 @@ import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { useId, useState } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { motion } from 'motion/react'
-import {
-  Check,
-  Copy,
-  Terminal,
-  Cpu,
-  MemoryStick,
-  HardDrive,
-  ArrowUpRight,
-} from 'lucide-react'
+import { ArrowUpRight, Check, Copy } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { PageIntro } from './shell'
+import { PageIntro, Pill } from './shell'
 import { Button } from './ui/button'
-import { installCommand, repository } from '@/lib/product'
+import { agentInstallUrl, docsUrl, installGuideUrl } from '@/lib/product'
 import { cn } from '@/lib/utils'
 
 function Segmented<T extends string>({
@@ -78,36 +70,20 @@ function Segmented<T extends string>({
 }
 
 export function InstallPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { edition = 'core', platform = 'linux' } = useSearch({
     from: '/install',
   })
   const navigate = useNavigate({ from: '/install' })
-  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>(
-    'idle',
-  )
   const [agentCopyState, setAgentCopyState] = useState<
     'idle' | 'copied' | 'failed'
   >('idle')
-  const command = installCommand(edition, platform)
+  const language = i18n.resolvedLanguage
   const agentPrompt = t('agentPrompt', {
     edition: edition === 'core' ? 'Core' : 'Full',
     platform: platform === 'linux' ? 'Linux' : 'macOS',
-    docs: `${repository}#readme`,
-    command,
+    docs: agentInstallUrl,
   })
-  const address =
-    platform === 'macos'
-      ? 'http://localhost:18081'
-      : 'http://<server-address>:18081'
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(command)
-      setCopyState('copied')
-    } catch {
-      setCopyState('failed')
-    }
-  }
   async function copyAgentPrompt() {
     try {
       await navigator.clipboard.writeText(agentPrompt)
@@ -122,7 +98,7 @@ export function InstallPage() {
         <p>{t('installBody')}</p>
       </PageIntro>
       <section className="px-gutter pb-section">
-        <div className="mx-auto grid max-w-280 grid-cols-1 gap-12 lg:grid-cols-[1.4fr_1fr]">
+        <div className="mx-auto grid max-w-280 gap-8 lg:grid-cols-2">
           <div className="min-w-0">
             <div className="flex flex-wrap gap-8 rounded-3xl border border-border p-6 md:p-8">
               <Segmented
@@ -133,7 +109,6 @@ export function InstallPage() {
                   { value: 'full', label: 'Full' },
                 ]}
                 onChange={(value) => {
-                  setCopyState('idle')
                   setAgentCopyState('idle')
                   void navigate({
                     search: (previous) => ({ ...previous, edition: value }),
@@ -150,7 +125,6 @@ export function InstallPage() {
                   { value: 'macos', label: 'macOS' },
                 ]}
                 onChange={(value) => {
-                  setCopyState('idle')
                   setAgentCopyState('idle')
                   void navigate({
                     search: (previous) => ({ ...previous, platform: value }),
@@ -163,155 +137,53 @@ export function InstallPage() {
             <p className="mt-7 min-h-12 text-lg text-muted-foreground">
               {t(edition === 'full' ? 'fullBody' : 'coreBody')}
             </p>
-            <div className="mt-5 overflow-hidden rounded-3xl border border-foreground bg-ink text-white shadow-xl shadow-black/5">
-              <div className="flex items-center justify-between border-b border-white/10 px-6 py-5 text-xs text-white/50">
-                <span className="flex items-center gap-3">
-                  <Terminal className="size-4" />
-                  {platform === 'linux' ? 'Linux' : 'macOS'} /{' '}
-                  {edition === 'core' ? 'Core' : 'Full'}
-                </span>
-                <Button
-                  variant="light"
-                  onClick={() => void copy()}
-                  className="min-h-9 gap-2 px-3 text-xs"
-                  aria-label={t('copy')}
-                >
-                  {copyState === 'copied' ? <Check /> : <Copy />}
-                  {t(copyState === 'copied' ? 'copied' : 'copy')}
-                </Button>
-              </div>
-              <pre className="overflow-x-auto p-7 text-sm leading-loose break-all whitespace-pre-wrap select-all">
-                <code>{command}</code>
-              </pre>
-            </div>
-            <p className="mt-3 min-h-5 text-sm text-primary" role="status">
-              {copyState === 'failed'
-                ? t('copyFailed')
-                : copyState === 'copied'
-                  ? t('copied')
-                  : ''}
-            </p>
-            {platform === 'macos' && (
-              <p className="mt-4 rounded-2xl bg-cloud p-5 text-sm leading-relaxed text-muted-foreground">
-                {t('macNote')}
-              </p>
-            )}
-            <section
-              className="mt-10 rounded-3xl border border-border bg-cloud/40 p-6 md:p-8"
-              aria-labelledby="agent-install-title"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <h2
-                  id="agent-install-title"
-                  className="text-2xl font-medium tracking-tight"
-                >
-                  {t('agentTitle')}
-                </h2>
-                <Button
-                  variant="outline"
-                  onClick={() => void copyAgentPrompt()}
-                  className="min-h-10 gap-2 px-4 text-xs"
-                >
-                  {agentCopyState === 'copied' ? <Check /> : <Copy />}
-                  {t(agentCopyState === 'copied' ? 'copied' : 'agentCopy')}
-                </Button>
-              </div>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                {t('agentBody')}
-              </p>
-              <pre className="mt-5 max-h-64 overflow-auto rounded-2xl border border-border bg-background p-5 text-xs leading-relaxed whitespace-pre-wrap select-all">
-                <code>{agentPrompt}</code>
-              </pre>
-              <p className="mt-3 text-sm text-muted-foreground" role="status">
-                {agentCopyState === 'failed'
-                  ? t('copyFailed')
-                  : agentCopyState === 'copied'
-                    ? t('copied')
-                    : ''}
-              </p>
-            </section>
-            <div className="mt-10">
-              <h2 className="text-2xl font-medium tracking-tight">
-                {t('afterInstall')}
-              </h2>
-              <p className="mt-4 leading-relaxed text-muted-foreground">
-                {t('afterInstallBody', { address })}
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {t('publicNote')}
-              </p>
-            </div>
-          </div>
-          <aside className="h-fit rounded-3xl border border-border bg-muted p-7 md:p-9 lg:sticky lg:top-28">
-            <div className="mb-7 flex items-center justify-between border-b border-border pb-5">
-              <img
-                src="/linksense-logo.svg"
-                alt="LinkSense"
-                width="108"
-                height="30"
-                className="h-6 w-auto"
-              />
-              <span className="rounded-full border border-primary/20 bg-cloud px-3 py-1 text-xs font-medium text-primary">
-                {edition === 'full' ? 'Full' : 'Core'}
-              </span>
-            </div>
-            <h2 className="text-2xl font-medium tracking-tight">
-              {t('requirements')}
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              {t('resourceNote')}
-            </p>
-            <div className="mt-8 space-y-6">
-              {[
-                { Icon: Cpu, core: '4+ vCPU', full: '8+ vCPU' },
-                { Icon: MemoryStick, core: '8+ GiB RAM', full: '10+ GiB RAM' },
-                { Icon: HardDrive, core: '60+ GiB SSD', full: '120+ GiB SSD' },
-              ].map(({ Icon, core, full }) => (
-                <div key={core} className="flex items-center gap-4">
-                  <Icon className="size-5 text-primary" aria-hidden="true" />
-                  <span className="text-lg">
-                    {edition === 'core' ? core : full}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <p className="mt-8 border-t border-border pt-6 text-sm leading-relaxed text-muted-foreground">
-              {t('dockerNote')}
-            </p>
-            {edition === 'full' && (
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                {t('fullNote')}
-              </p>
-            )}
-          </aside>
-        </div>
-      </section>
-      <section className="bg-muted px-gutter py-section">
-        <div className="mx-auto max-w-280">
-          <h2 className="text-feature font-medium tracking-tight">
-            {t('manage')}
-          </h2>
-          <div className="mt-9 grid gap-8 md:grid-cols-2">
-            <pre className="overflow-x-auto rounded-3xl bg-white p-7 text-sm leading-loose">
-              <code>
-                {
-                  'linksense status\nlinksense logs api\nlinksense doctor\nlinksense repair\nlinksense upgrade'
-                }
-              </code>
-            </pre>
-            <div className="flex flex-col justify-center">
-              <p className="text-base leading-relaxed text-muted-foreground">
-                {t('upgradeNote')}
-              </p>
+            <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <Pill href={installGuideUrl(language, edition, platform)}>
+                {t('installGuide')}
+              </Pill>
               <a
-                className="mt-7 inline-flex items-center gap-3 text-sm font-medium"
-                href="https://github.com/LingX-AI/linksense#readme"
+                className="inline-flex items-center gap-2 text-sm font-medium hover:underline"
+                href={docsUrl(language, 'deploy/operations/')}
               >
-                {t('docs')}
-                <ArrowUpRight className="size-4" />
+                {t('manage')}
+                <ArrowUpRight className="size-4" aria-hidden="true" />
               </a>
             </div>
           </div>
+          <section
+            className="min-w-0 rounded-3xl border border-border bg-cloud/40 p-6 md:p-8"
+            aria-labelledby="agent-install-title"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <h2
+                id="agent-install-title"
+                className="text-2xl font-medium tracking-tight"
+              >
+                {t('agentTitle')}
+              </h2>
+              <Button
+                variant="outline"
+                onClick={() => void copyAgentPrompt()}
+                className="min-h-10 gap-2 px-4 text-xs"
+              >
+                {agentCopyState === 'copied' ? <Check /> : <Copy />}
+                {t(agentCopyState === 'copied' ? 'copied' : 'agentCopy')}
+              </Button>
+            </div>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              {t('agentBody')}
+            </p>
+            <pre className="mt-5 max-h-64 overflow-auto rounded-2xl border border-border bg-background p-5 text-xs leading-relaxed whitespace-pre-wrap select-all">
+              <code>{agentPrompt}</code>
+            </pre>
+            <p className="mt-3 text-sm text-muted-foreground" role="status">
+              {agentCopyState === 'failed'
+                ? t('copyFailed')
+                : agentCopyState === 'copied'
+                  ? t('copied')
+                  : ''}
+            </p>
+          </section>
         </div>
       </section>
     </>

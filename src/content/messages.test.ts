@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createInstance } from 'i18next'
 import { locales, messages, defaultLocale } from './messages'
+import { agentInstallUrl } from '@/lib/product'
 
 describe('website translations', () => {
   it('uses English as the default and first language', () => {
@@ -33,19 +34,14 @@ describe('website translations', () => {
         fallbackLng: defaultLocale,
         interpolation: { escapeValue: false },
       })
-      expect(
-        i18n.t('afterInstallBody', { address: 'http://localhost:18081' }),
-      ).toContain('http://localhost:18081')
       const agentPrompt = i18n.t('agentPrompt', {
         edition: 'Full',
         platform: 'macOS',
-        docs: 'https://github.com/LingX-AI/linksense#readme',
-        command:
-          'curl -fsSL https://raw.githubusercontent.com/LingX-AI/linksense/main/install-full.sh | sh',
+        docs: agentInstallUrl,
       })
       expect(agentPrompt).toContain('Full')
       expect(agentPrompt).toContain('macOS')
-      expect(agentPrompt).toContain('install-full.sh | sh')
+      expect(agentPrompt).toContain(agentInstallUrl)
       expect(agentPrompt).not.toContain('{{')
       await i18n.changeLanguage('unsupported')
       expect(i18n.t('install')).toBe(messages['en-US'].install)

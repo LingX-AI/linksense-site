@@ -186,6 +186,7 @@ function Header() {
     return () => desktop.removeEventListener('change', reset)
   }, [])
   const holdHeaderForHeroCta = pathname === '/' && !heroCtaVisible
+  const headerCtaVisible = !heroCtaVisible || pathname !== '/'
   useMotionValueEvent(scrollY, 'change', (value) => {
     const difference = value - (scrollY.getPrevious() ?? 0)
     if (Math.abs(difference) > 2)
@@ -193,11 +194,26 @@ function Header() {
   })
   const navigation = (
     <>
-      <Link to="/install" className={navLinkClass} onClick={closeMenu}>
-        {t('install')}
-      </Link>
-      <a href={docsUrl} className={navLinkClass} onClick={closeMenu}>
+      <a
+        href={docsUrl(i18n.resolvedLanguage)}
+        className={navLinkClass}
+        onClick={closeMenu}
+      >
         {t('docs')}
+      </a>
+      <a
+        href={docsUrl(i18n.resolvedLanguage, 'deploy/development/')}
+        className={navLinkClass}
+        onClick={closeMenu}
+      >
+        {t('developers')}
+      </a>
+      <a
+        href={`${repository}/discussions`}
+        className={navLinkClass}
+        onClick={closeMenu}
+      >
+        {t('community')}
       </a>
     </>
   )
@@ -209,7 +225,7 @@ function Header() {
       transition={{ duration: 0.35 }}
       onFocusCapture={() => setHidden(false)}
     >
-      <div className="mx-auto flex h-16 max-w-400 items-center justify-between gap-3 px-4 md:h-20 md:px-gutter">
+      <div className="mx-auto flex h-(--site-header-height-mobile) max-w-400 items-center justify-between gap-3 px-4 md:h-(--site-header-height) md:px-gutter">
         <Link
           to="/"
           aria-label="LinkSense"
@@ -226,7 +242,7 @@ function Header() {
         <nav
           data-header-navigation
           aria-label={t('menu')}
-          className="hidden items-center gap-7 text-sm lg:flex"
+          className="hidden items-center gap-4 text-sm lg:flex xl:gap-7"
         >
           {navigation}
         </nav>
@@ -234,7 +250,7 @@ function Header() {
           <LanguageSelect />
           <a
             href={repository}
-            className="hidden p-2 sm:block"
+            className="hidden p-2 xl:block"
             aria-label="GitHub"
           >
             <img
@@ -245,16 +261,15 @@ function Header() {
               className="size-5"
             />
           </a>
-          <div className="hidden w-48 lg:flex lg:justify-end">
-            {(!heroCtaVisible || pathname !== '/') && (
-              <motion.div
-                layoutId="demo-cta"
-                transition={{ type: 'spring', stiffness: 280, damping: 30 }}
-              >
-                <Pill href={demoUrl}>{t('try')}</Pill>
-              </motion.div>
-            )}
-          </div>
+          {headerCtaVisible && (
+            <motion.div
+              className="hidden shrink-0 lg:block"
+              layoutId="demo-cta"
+              transition={{ type: 'spring', stiffness: 280, damping: 30 }}
+            >
+              <Pill href={demoUrl}>{t('try')}</Pill>
+            </motion.div>
+          )}
           <Button
             variant="ghost"
             aria-label={t('menu')}
@@ -357,7 +372,7 @@ function Footer() {
               <a href={`${repository}/blob/main/LICENSE-EXCEPTIONS.md`}>
                 {t('license')}
               </a>
-              <a href={`${repository}/blob/main/SECURITY.md`}>
+              <a href={`${repository}/blob/main/.github/SECURITY.md`}>
                 {t('security')}
               </a>
             </nav>

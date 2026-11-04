@@ -10,12 +10,13 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 18731",
     "build": "vite build && tsc --noEmit",
+    "docs:build": "LINKSENSE_PUBLIC_DOCS=1 LINKSENSE_WEBSITE_THEME=\"$PWD/src/site-theme.css\" LINKSENSE_DOCS_SITE_URL=https://linksense.guygubaby.top pnpm --dir \"${LINKSENSE_REPO:-../linksense}\" --filter @linksense/docs build --out-dir \"$PWD/public/help\" && test -f public/help/en-US/deploy/core/index.html",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
     "preview": "vite preview --host 127.0.0.1 --port 18731",
-    "deploy": "pnpm build && cf deploy"
+    "deploy": "pnpm docs:build && pnpm build && cf deploy"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

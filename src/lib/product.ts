@@ -1,6 +1,14 @@
+import { z } from 'zod'
+
 export const repository = 'https://github.com/LingX-AI/linksense'
 export const demoUrl = 'https://explore.linksense.org/'
-export const docsUrl = `${repository}/tree/main/apps/docs/docs`
+export const agentInstallUrl =
+  'https://raw.githubusercontent.com/LingX-AI/linksense/main/Install.md'
+
+export function docsUrl(language: string | undefined, path = '') {
+  return `/help/${language === 'zh-CN' ? '' : 'en-US/'}${path}`
+}
+
 export type Edition = 'core' | 'full'
 export type Platform = 'linux' | 'macos'
 export const installSearchSchema = z.object({
@@ -8,7 +16,10 @@ export const installSearchSchema = z.object({
   platform: z.enum(['linux', 'macos']).catch('linux').optional(),
 })
 
-export function installCommand(edition: Edition, platform: Platform): string {
-  return `curl -fsSL https://raw.githubusercontent.com/LingX-AI/linksense/main/install-${edition}.sh | ${platform === 'linux' ? 'sudo ' : ''}sh`
+export function installGuideUrl(
+  language: string | undefined,
+  edition: Edition,
+  platform: Platform,
+) {
+  return docsUrl(language, `deploy/${edition}/#${platform}`)
 }
-import { z } from 'zod'

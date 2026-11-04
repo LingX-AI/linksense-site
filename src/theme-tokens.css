@@ -1,0 +1,23 @@
+:root {
+  --site-font-sans: 'Inter Variable', 'Noto Sans SC Variable', sans-serif;
+  --site-color-background: #ffffff;
+  --site-color-foreground: #151619;
+  --site-color-primary: #1765ed;
+  --site-color-muted: #f1f2f4;
+  --site-color-muted-foreground: #5f646b;
+  --site-color-border: #e3e4e8;
+  --site-color-cloud: #edf2fb;
+  --site-color-sage: #e3f5f3;
+  --site-color-sand: #f3efe8;
+  --site-color-ink: #111318;
+  --site-text-hero: clamp(2.75rem, 5.6vw, 5.25rem);
+  --site-text-section: clamp(2.5rem, 4.4vw, 4.5rem);
+  --site-text-feature: clamp(1.9rem, 2.8vw, 3.15rem);
+  --site-text-service: clamp(1.9rem, 2.6vw, 2.8rem);
+  --site-radius-media: clamp(1.25rem, 2vw, 2rem);
+  --site-spacing-gutter: clamp(1.25rem, 7.5vw, 7.5rem);
+  --site-spacing-section: clamp(5rem, 9vw, 9rem);
+  --site-header-height: 5rem;
+  --site-header-height-mobile: 4rem;
+  --site-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}

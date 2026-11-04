@@ -3,13 +3,13 @@ import { expect, it } from 'vitest'
 import { buttonVariants } from './button-variants'
 
 const stylesheet = readFileSync(
-  new URL('../styles.css', import.meta.url),
+  new URL('../theme-tokens.css', import.meta.url),
   'utf8',
 )
 
 function color(name: string) {
   const hex = stylesheet.match(
-    new RegExp(`--color-${name}: (#[\\da-f]{6});`),
+    new RegExp(`--site-color-${name}: (#[\\da-f]{6});`),
   )?.[1]
   expect(hex, `Missing theme color: ${name}`).toBeDefined()
   return hex!

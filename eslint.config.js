@@ -5,7 +5,15 @@ import hooks from 'eslint-plugin-react-hooks'
 import refresh from 'eslint-plugin-react-refresh'
 
 export default tseslint.config(
-  { ignores: ['dist', '.cloudflare', '.wrangler', 'src/routeTree.gen.ts'] },
+  {
+    ignores: [
+      'dist',
+      'public/help',
+      '.cloudflare',
+      '.wrangler',
+      'src/routeTree.gen.ts',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
