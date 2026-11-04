@@ -50,23 +50,6 @@ export function ScrollScenes({ children }: { children: ReactNode }) {
               clearProps: 'opacity,transform',
             }),
         })
-        const tiles = [
-          ...node.querySelectorAll<HTMLElement>('[data-proof-tile]'),
-        ]
-        tiles.forEach((element, index) =>
-          gsap.fromTo(
-            element,
-            { scale: 0.8, opacity: 0 },
-            {
-              scale: 1,
-              opacity: 1,
-              duration: 1.5,
-              delay: index * 0.12,
-              ease: 'expo.out',
-              scrollTrigger: { trigger: element, start: 'top 90%', once: true },
-            },
-          ),
-        )
         const scenes = [...node.querySelectorAll<HTMLElement>('[data-scene]')]
         const listeners = scenes.map((scene) => {
           const items = [
@@ -105,7 +88,7 @@ export function ScrollScenes({ children }: { children: ReactNode }) {
         })
         return () => {
           listeners.forEach((remove) => remove())
-          gsap.killTweensOf([...parallax, ...blocks, ...tiles])
+          gsap.killTweensOf([...parallax, ...blocks])
         }
       },
       node,

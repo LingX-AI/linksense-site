@@ -1,9 +1,8 @@
 import { useReducedMotion } from '@/lib/use-reduced-motion'
 import { useId, useState } from 'react'
-import { Link, useNavigate, useSearch } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import {
-  ArrowRight,
   Check,
   Copy,
   Terminal,
@@ -241,13 +240,6 @@ export function InstallPage() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 {t('publicNote')}
               </p>
-              <Link
-                to="/start"
-                className="mt-7 inline-flex items-center gap-3 font-medium"
-              >
-                {t('start')}
-                <ArrowRight className="size-4" />
-              </Link>
             </div>
           </div>
           <aside className="h-fit rounded-3xl border border-border bg-muted p-7 md:p-9 lg:sticky lg:top-28">

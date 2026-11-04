@@ -1,50 +1,14 @@
 import type { Messages } from './messages'
-import { experienceCopy } from './experience-copy'
 
 export const es: Messages = {
-  ...experienceCopy['es-ES'],
   agentTitle: 'Instalar con un agente',
   agentBody:
     'Copia este mensaje en tu agente de programación. Incluye el despliegue y la plataforma elegidos, las comprobaciones y la guía oficial.',
   agentCopy: 'Copiar instrucciones',
   agentPrompt:
     'Instala LinkSense {{edition}} en esta máquina {{platform}}.\n\nLee primero la guía oficial: {{docs}}\n\nComprueba el sistema y la arquitectura reales, Docker Engine API 1.45+, Docker Compose 2.24.4+, la memoria disponible para Docker, el espacio SSD y el puerto TCP 18081. Revisa el instalador antes de ejecutarlo. Usa este comando solo si corresponde al equipo:\n\n{{command}}\n\nSi LinkSense ya está instalado, revisa su estado y conserva todas las claves y volúmenes. Detente antes de sobrescribir o restablecer datos. No muestres secretos en la respuesta final.\n\nAl terminar, indica la URL y guíame para inicializar el administrador y configurar el modelo. Las contraseñas y claves API se introducen en la aplicación local, no en este chat.',
-  proofTitle: 'Para el trabajo diario de una organización.',
-  languages: 'Idiomas de la interfaz',
-  deployments: 'Configuraciones de alojamiento propio',
-  channels: 'Canales de mensajería',
-  methodsTitle: 'Un buen método,\nmás allá de una tarea.',
-  method1: 'Define el resultado.',
-  method2: 'Señala los detalles.',
-  method3: 'Hazlo reutilizable.',
-  method1body:
-    'Explica el objetivo, los materiales y la entrega que necesitas.',
-  method2body:
-    'Selecciona una parte del resultado y solicita un cambio concreto.',
-  method3body: 'Convierte el método probado en una aplicación para el equipo.',
-  insightsTitle: 'Un buen lugar\npara empezar.',
-  extend: 'Desarrolla con LinkSense',
-  installGuide: 'Elige el despliegue, revisa los requisitos e instala.',
-  startGuide: 'Conecta un modelo y completa tu primera tarea real.',
-  extendGuide:
-    'Empaqueta habilidades, conecta MCP y crea aplicaciones interactivas.',
-  read: 'Leer la guía',
-  planTitle: 'Planifica antes de actuar.',
-  planBody:
-    'Acordad el enfoque en modo Plan antes de ejecutar. Sigue los pasos, las herramientas y la actividad de los subagentes.',
-  goalTitle: 'Haz avanzar un objetivo complejo.',
-  goalBody:
-    'El modo Objetivo permite abordar trabajos de varios pasos, consultar el progreso, pausar y respetar los límites de ejecución.',
-  spaceTitle: 'Continúa donde lo dejaste.',
-  spaceBody:
-    'Organiza tareas en proyectos y reutiliza los archivos de trabajo. Las tareas personales comparten un entorno de usuario, no espacios aislados por tarea.',
-  createTitle: 'Más formas de crear.',
-  createBody:
-    'Dicta un borrador editable, genera imágenes con un modelo configurado o publica un resultado HTML como sitio estático público.',
   home: 'Inicio',
-  product: 'Producto',
   install: 'Instalación',
-  start: 'Primeros pasos',
   docs: 'Documentación',
   try: 'Explorar LinkSense',
   menu: 'Menú',
@@ -56,24 +20,10 @@ export const es: Messages = {
   hero2: 'A una capacidad de todo el equipo.',
   heroBody:
     'Trabaja con IA. Conserva lo que funciona. Dale a tu equipo conocimientos, habilidades y herramientas para repetirlo.',
+  heroNote: 'Código abierto. En tu infraestructura.',
   watch: 'Descubre LinkSense en acción',
   play: 'Reproducir demostración',
   pause: 'Pausar demostración',
-  introTitle: 'Las buenas formas de trabajar\nmerecen llegar más lejos.',
-  introBody:
-    'Un espacio para que cada persona trabaje con IA. Una forma de conservar los conocimientos, métodos y herramientas útiles para la organización.',
-  workTitle: 'De una petición a un resultado.',
-  workBody:
-    'Investiga, analiza una hoja de cálculo o crea una presentación. Previsualiza Word, Excel, PPT y HTML, selecciona un detalle y pide cambios.',
-  knowledgeTitle: 'Respuestas con fundamento.',
-  knowledgeBody:
-    'Consulta documentos de tu organización, abre las citas y comprueba la versión utilizada. Disponible con Full.',
-  appsTitle: 'Tu mejor método, al alcance del equipo.',
-  appsBody:
-    'Combina instrucciones, modelos, conocimientos, habilidades y herramientas MCP en una aplicación. Comparte un paquete independiente o un servicio administrado.',
-  autoTitle: 'El trabajo encuentra su ritmo.',
-  autoBody:
-    'Programa informes, revisiones y comprobaciones periódicas. Conserva las ejecuciones, el historial y los archivos en la misma tarea.',
   scenesTitle: 'Hazlo parte de\ntu día de trabajo.',
   sample: 'Ejemplo de flujo de trabajo',
   input: 'Tu petición',
@@ -149,72 +99,20 @@ export const es: Messages = {
     'La actualización crea una copia de PostgreSQL antes de migrar. Una vez iniciada la migración, los fallos no revierten automáticamente la base de datos. Guarda copias independientes de archivos y configuración.',
   fullNote:
     'La búsqueda de conocimiento requiere un modelo Embedding; Ranker es opcional.',
-  startTitle: 'Una tarea real.\nUn primer resultado útil.',
-  startBody:
-    'De una instalación nueva a un resultado que puedes revisar, descargar y mejorar.',
-  step1: 'Crea el administrador',
-  step1body:
-    'Abre el servicio y completa la inicialización con la credencial de un solo uso. Los miembros existentes acceden por el método habilitado por su administrador.',
-  step2: 'Conecta un modelo',
-  step2body:
-    'En Configuración → Modelos, añade un canal proveedor y un modelo de conversación. Prueba la conexión, guarda y mantén el modelo disponible para conversaciones.',
-  step3: 'Plantea una tarea clara',
-  step3body:
-    'Indica el objetivo, adjunta los materiales y describe el resultado esperado. Elige habilidades, complementos o bases de conocimiento disponibles cuando sea necesario.',
-  step4: 'Revisa, mejora y reutiliza',
-  step4body:
-    'Abre los archivos, selecciona contenido para pedir cambios y descarga el resultado. Convierte un método probado en una aplicación para el equipo.',
-  prompt:
-    'Lee los datos de ventas adjuntos, identifica tres cambios importantes y genera un resumen con un desglose en Excel.',
-  nextDocs: 'Continuar con las guías',
   notFound: 'Esta página no está aquí.',
   error: 'No se ha podido cargar esta página.',
   retry: 'Reintentar',
 }
 
 export const pt: Messages = {
-  ...experienceCopy['pt-BR'],
   agentTitle: 'Instalar com um agente',
   agentBody:
     'Envie este pedido ao seu agente de programação. Ele inclui a implantação e a plataforma escolhidas, verificações e o guia oficial.',
   agentCopy: 'Copiar instruções',
   agentPrompt:
     'Instale o LinkSense {{edition}} nesta máquina {{platform}}.\n\nLeia primeiro o guia oficial: {{docs}}\n\nVerifique o sistema e a arquitetura reais, Docker Engine API 1.45+, Docker Compose 2.24.4+, memória disponível ao Docker, espaço SSD e porta TCP 18081. Inspecione o instalador antes de executar. Use este comando somente se corresponder ao ambiente:\n\n{{command}}\n\nSe o LinkSense já estiver instalado, inspecione seu estado e preserve todas as chaves e volumes. Pare antes de sobrescrever ou redefinir dados existentes. Não divulgue segredos na resposta final.\n\nAo terminar, forneça a URL e oriente a inicialização do administrador e a configuração do modelo. Senhas e chaves API devem ser inseridas no aplicativo local, não neste chat.',
-  proofTitle: 'Para o dia de trabalho de uma organização.',
-  languages: 'Idiomas da interface',
-  deployments: 'Configurações de implantação própria',
-  channels: 'Canais de mensagens',
-  methodsTitle: 'Um bom método,\nalém de uma tarefa.',
-  method1: 'Defina o resultado.',
-  method2: 'Aponte os detalhes.',
-  method3: 'Torne o método reutilizável.',
-  method1body: 'Explique o objetivo, os materiais e a entrega desejada.',
-  method2body:
-    'Selecione uma parte da entrega e peça uma alteração específica.',
-  method3body: 'Transforme o método comprovado em um aplicativo para a equipe.',
-  insightsTitle: 'Um bom lugar\npara começar.',
-  extend: 'Crie com o LinkSense',
-  installGuide: 'Escolha a implantação, confira os requisitos e instale.',
-  startGuide: 'Conecte um modelo e conclua sua primeira tarefa real.',
-  extendGuide:
-    'Empacote habilidades, conecte MCP e crie aplicativos interativos.',
-  read: 'Ler o guia',
-  planTitle: 'Planeje antes de agir.',
-  planBody:
-    'Combine a abordagem no modo Plano antes de executar. Acompanhe etapas, ferramentas e atividades dos subagentes.',
-  goalTitle: 'Faça um objetivo complexo avançar.',
-  goalBody:
-    'Use o modo Objetivo para trabalhos de várias etapas, com progresso visível, pausa e limites de execução.',
-  spaceTitle: 'Continue de onde parou.',
-  spaceBody:
-    'Organize tarefas em projetos e reaproveite os arquivos. Tarefas pessoais compartilham um ambiente de usuário, não ambientes isolados por tarefa.',
-  createTitle: 'Mais formas de criar.',
-  createBody:
-    'Dite um rascunho editável, gere imagens com um modelo configurado ou publique uma entrega HTML como site estático público.',
   home: 'Início',
-  product: 'Produto',
   install: 'Instalação',
-  start: 'Primeiros passos',
   docs: 'Documentação',
   try: 'Explorar o LinkSense',
   menu: 'Menu',
@@ -226,24 +124,10 @@ export const pt: Messages = {
   hero2: 'À capacidade de toda a equipe.',
   heroBody:
     'Trabalhe com IA. Preserve o que funciona. Dê à equipe conhecimento, habilidades e ferramentas para repetir os resultados.',
+  heroNote: 'Código aberto. Na sua infraestrutura.',
   watch: 'Veja o LinkSense em ação',
   play: 'Reproduzir demonstração',
   pause: 'Pausar demonstração',
-  introTitle: 'Boas formas de trabalhar\nmerecem ir além.',
-  introBody:
-    'Um espaço para cada pessoa trabalhar com IA. Uma maneira de preservar os conhecimentos, métodos e ferramentas que ajudam a organização.',
-  workTitle: 'De um pedido a uma entrega.',
-  workBody:
-    'Pesquise, analise planilhas ou crie apresentações. Visualize Word, Excel, PPT e HTML, selecione um detalhe e peça alterações.',
-  knowledgeTitle: 'Respostas com fundamento.',
-  knowledgeBody:
-    'Consulte documentos da organização, abra citações e confira a versão usada. Disponível com Full.',
-  appsTitle: 'Seu melhor método, para toda a equipe.',
-  appsBody:
-    'Combine instruções, modelos, conhecimentos, habilidades e ferramentas MCP em um aplicativo. Compartilhe um pacote independente ou um serviço gerenciado.',
-  autoTitle: 'Trabalho que segue um ritmo.',
-  autoBody:
-    'Agende resumos, revisões e verificações periódicas. Mantenha execuções, histórico e arquivos na mesma tarefa.',
   scenesTitle: 'Faça parte do\nseu dia de trabalho.',
   sample: 'Fluxo de trabalho ilustrativo',
   input: 'Seu pedido',
@@ -318,73 +202,20 @@ export const pt: Messages = {
     'A atualização cria um backup do PostgreSQL antes da migração. Após o início da migração, falhas não revertem o banco automaticamente. Mantenha backups independentes de arquivos e configuração.',
   fullNote:
     'A busca de conhecimento requer um modelo Embedding; Ranker é opcional.',
-  startTitle: 'Uma tarefa real.\nUm primeiro resultado útil.',
-  startBody:
-    'Da instalação a um resultado que você pode revisar, baixar e melhorar.',
-  step1: 'Crie o administrador',
-  step1body:
-    'Abra o serviço e conclua a inicialização com a credencial de uso único. Membros existentes usam o método habilitado pelo administrador.',
-  step2: 'Conecte um modelo',
-  step2body:
-    'Em Configurações → Modelos, adicione um canal e um modelo de conversa. Teste a conexão, salve e mantenha o modelo disponível para conversas.',
-  step3: 'Defina uma tarefa clara',
-  step3body:
-    'Informe o objetivo, anexe os materiais e descreva a entrega. Selecione habilidades, plugins ou bases de conhecimento disponíveis quando necessário.',
-  step4: 'Revise, melhore e reutilize',
-  step4body:
-    'Abra os arquivos, selecione conteúdo para pedir alterações e baixe o resultado. Transforme um fluxo comprovado em um aplicativo para a equipe.',
-  prompt:
-    'Leia os dados de vendas anexados, identifique três mudanças importantes e crie um resumo com um detalhamento em Excel.',
-  nextDocs: 'Continuar nos guias de uso',
   notFound: 'Esta página não está aqui.',
   error: 'Não foi possível carregar esta página.',
   retry: 'Tentar novamente',
 }
 
 export const fr: Messages = {
-  ...experienceCopy['fr-FR'],
   agentTitle: 'Installer avec un agent',
   agentBody:
     'Transmettez ce message à votre agent de programmation. Il comprend le déploiement choisi, la plateforme, les vérifications et le guide officiel.',
   agentCopy: 'Copier les instructions',
   agentPrompt:
     'Installe LinkSense {{edition}} sur cette machine {{platform}}.\n\nLis d’abord le guide officiel : {{docs}}\n\nVérifie le système et l’architecture réels, Docker Engine API 1.45+, Docker Compose 2.24.4+, la mémoire utilisable par Docker, l’espace SSD et le port TCP 18081. Examine le script avant exécution. Utilise cette commande uniquement si elle correspond à la machine :\n\n{{command}}\n\nSi LinkSense est déjà installé, vérifie son état et préserve les clés et volumes. Arrête-toi avant d’écraser ou de réinitialiser des données. N’affiche aucun secret dans la réponse finale.\n\nÀ la fin, fournis l’URL et guide-moi pour l’initialisation de l’administrateur et la configuration du modèle. Les mots de passe et clés API doivent être saisis dans l’application locale, pas dans ce chat.',
-  proofTitle: 'Pour le quotidien de votre organisation.',
-  languages: 'Langues de l’interface',
-  deployments: 'Configurations auto-hébergées',
-  channels: 'Canaux de messagerie',
-  methodsTitle: 'Une bonne méthode,\nbien au-delà d’une tâche.',
-  method1: 'Définissez le résultat.',
-  method2: 'Précisez les détails.',
-  method3: 'Rendez la méthode réutilisable.',
-  method1body: 'Décrivez l’objectif, les documents et le livrable attendu.',
-  method2body:
-    'Sélectionnez un élément du résultat et demandez une modification précise.',
-  method3body: 'Transformez la méthode éprouvée en application pour l’équipe.',
-  insightsTitle: 'Un bon point\nde départ.',
-  extend: 'Développer avec LinkSense',
-  installGuide:
-    'Choisissez le déploiement, vérifiez les exigences et installez.',
-  startGuide: 'Connectez un modèle et réalisez votre première vraie tâche.',
-  extendGuide:
-    'Créez des compétences, connectez MCP et développez des applications interactives.',
-  read: 'Lire le guide',
-  planTitle: 'Planifiez avant d’agir.',
-  planBody:
-    'Validez l’approche en mode Plan avant l’exécution. Suivez les étapes, les outils et l’activité des sous-agents.',
-  goalTitle: 'Faites avancer un objectif complexe.',
-  goalBody:
-    'Utilisez le mode Objectif pour les travaux en plusieurs étapes, avec progression visible, pause et limites d’exécution.',
-  spaceTitle: 'Reprenez là où vous en étiez.',
-  spaceBody:
-    'Organisez les tâches en projets et réutilisez les fichiers. Les tâches personnelles partagent un environnement utilisateur, sans isolation de sécurité par tâche.',
-  createTitle: 'Plus de façons de créer.',
-  createBody:
-    'Dictez un brouillon modifiable, générez des images avec un modèle configuré ou publiez un livrable HTML comme site statique public.',
   home: 'Accueil',
-  product: 'Produit',
   install: 'Installation',
-  start: 'Premiers pas',
   docs: 'Documentation',
   try: 'Découvrir LinkSense',
   menu: 'Menu',
@@ -396,24 +227,10 @@ export const fr: Messages = {
   hero2: 'Au savoir-faire de toute une équipe.',
   heroBody:
     'Travaillez avec l’IA. Conservez ce qui fonctionne. Donnez à votre équipe les connaissances, compétences et outils pour recommencer.',
+  heroNote: 'Open source. Sur votre infrastructure.',
   watch: 'Voir LinkSense à l’œuvre',
   play: 'Lire la démonstration',
   pause: 'Mettre la démonstration en pause',
-  introTitle: 'Les bonnes méthodes\nméritent d’aller plus loin.',
-  introBody:
-    'Un espace pour travailler avec l’IA. Un moyen de conserver les connaissances, méthodes et outils utiles à votre organisation.',
-  workTitle: 'D’une demande à un livrable.',
-  workBody:
-    'Recherchez, analysez un tableau ou créez une présentation. Prévisualisez Word, Excel, PPT et HTML, sélectionnez un détail et demandez des modifications.',
-  knowledgeTitle: 'Des réponses étayées.',
-  knowledgeBody:
-    'Interrogez les documents de votre organisation, ouvrez les citations et retrouvez la version utilisée. Disponible avec Full.',
-  appsTitle: 'Votre meilleure méthode, pour toute l’équipe.',
-  appsBody:
-    'Réunissez instructions, modèles, connaissances, compétences et outils MCP dans une application. Partagez un paquet indépendant ou un service géré.',
-  autoTitle: 'Le travail prend son rythme.',
-  autoBody:
-    'Planifiez synthèses, bilans et contrôles récurrents. Conservez chaque exécution, son historique et ses fichiers dans la même tâche.',
   scenesTitle: 'Une place dans\nvotre quotidien.',
   sample: 'Exemple de flux de travail',
   input: 'Votre demande',
@@ -489,70 +306,20 @@ export const fr: Messages = {
     'La mise à niveau sauvegarde PostgreSQL avant la migration. Après le début de la migration, une erreur ne rétablit pas automatiquement la base. Sauvegardez séparément fichiers et configuration.',
   fullNote:
     'La recherche nécessite un modèle Embedding ; Ranker est facultatif.',
-  startTitle: 'Une vraie tâche.\nUn premier résultat utile.',
-  startBody:
-    'De l’installation à un résultat à relire, télécharger et améliorer.',
-  step1: 'Créez votre administrateur',
-  step1body:
-    'Ouvrez le service et terminez l’initialisation avec l’identifiant à usage unique. Les membres existants utilisent la méthode activée par leur administrateur.',
-  step2: 'Connectez un modèle',
-  step2body:
-    'Dans Paramètres → Modèles, ajoutez un fournisseur et un modèle de conversation. Testez, enregistrez et laissez le modèle disponible pour les conversations.',
-  step3: 'Définissez une tâche claire',
-  step3body:
-    'Précisez l’objectif, joignez les documents et décrivez le livrable. Sélectionnez les compétences, extensions ou bases de connaissances disponibles si nécessaire.',
-  step4: 'Relisez, améliorez, réutilisez',
-  step4body:
-    'Ouvrez les fichiers, sélectionnez du contenu pour demander des modifications et téléchargez le résultat. Transformez une méthode éprouvée en application pour l’équipe.',
-  prompt:
-    'Lisez les données de vente jointes, identifiez trois évolutions importantes et créez une synthèse avec un détail Excel.',
-  nextDocs: 'Continuer avec les guides',
   notFound: 'Cette page n’est pas ici.',
   error: 'Impossible de charger cette page.',
   retry: 'Réessayer',
 }
 
 export const ja: Messages = {
-  ...experienceCopy['ja-JP'],
   agentTitle: 'AI エージェントでインストール',
   agentBody:
     'この手順をコーディングエージェントに渡してください。選択した構成と OS、環境の確認項目、公式ガイドを含みます。',
   agentCopy: 'インストール手順をコピー',
   agentPrompt:
     'この {{platform}} マシンに LinkSense {{edition}} をインストールしてください。\n\n最初に公式ガイドを読んでください：{{docs}}\n\n実際の OS とアーキテクチャ、Docker Engine API 1.45+、Docker Compose 2.24.4+、Docker の利用可能メモリ、SSD 容量、TCP 18081 ポートを確認してください。実行前にスクリプトを確認し、次のコマンドがこの環境に適している場合のみ使用してください：\n\n{{command}}\n\n既に LinkSense がある場合は状態を確認し、すべてのキーとデータボリュームを保全してください。既存データを上書き・初期化する前に停止してください。最後の回答に秘密情報を表示しないでください。\n\n完了後にアクセス URL を示し、初回管理者の初期化とモデル設定を案内してください。パスワードと API キーはローカルのアプリで入力し、このチャットには送らないようにしてください。',
-  proofTitle: '組織の日々の仕事のために。',
-  languages: '対応する画面言語',
-  deployments: 'セルフホスト構成',
-  channels: 'メッセージチャネル',
-  methodsTitle: 'よい手順を、\n一度きりで終わらせない。',
-  method1: '求める成果を伝える。',
-  method2: '修正する箇所を示す。',
-  method3: '再利用できる形に。',
-  method1body: '目的、資料、必要な成果物を説明します。',
-  method2body: '成果物の箇所を選び、具体的な修正を依頼します。',
-  method3body: '有効な手順をチーム用アプリにまとめます。',
-  insightsTitle: 'ここから、\n始めましょう。',
-  extend: 'LinkSense で拡張する',
-  installGuide: '構成と動作要件を確認してインストールします。',
-  startGuide: 'モデルを接続し、最初の仕事を完了します。',
-  extendGuide: 'スキルの作成、MCP 接続、対話型アプリの開発へ。',
-  read: 'ガイドを読む',
-  planTitle: '実行の前に、計画を確認。',
-  planBody:
-    '計画モードで方針を確認してから実装へ。手順、ツール、サブエージェントの活動を追跡できます。',
-  goalTitle: '複雑な目標を、一歩ずつ。',
-  goalBody:
-    '目標モードで複数の手順が必要な仕事を進めます。進捗を確認し、必要に応じて一時停止できます。実行には上限があります。',
-  spaceTitle: '前の仕事から、続きを始める。',
-  spaceBody:
-    'タスクをプロジェクトに整理し、作業ファイルを再利用します。個人タスクはユーザー環境を共有し、タスクごとの安全な隔離は行いません。',
-  createTitle: '表現と成果物に、選択肢を。',
-  createBody:
-    '音声を編集可能な下書きに変換し、設定済みモデルで画像を生成。HTML の成果物を公開静的サイトとして発信できます。',
   home: 'ホーム',
-  product: '製品機能',
   install: 'インストール',
-  start: 'はじめに',
   docs: 'ドキュメント',
   try: 'LinkSense を試す',
   menu: 'メニュー',
@@ -564,24 +331,10 @@ export const ja: Messages = {
   hero2: 'チーム全体の力に。',
   heroBody:
     'AI と仕事を進め、役立つ方法を残す。知識、スキル、ツールをチーム全体で再利用できます。',
+  heroNote: 'オープンソース。自分たちのインフラで。',
   watch: 'LinkSense の動作を見る',
   play: '製品デモを再生',
   pause: '製品デモを一時停止',
-  introTitle: '優れた仕事の進め方を、\nもっと広く。',
-  introBody:
-    '一人ひとりに AI と働く場所を。組織には、役立つ知識、手順、ツールを蓄積する仕組みを。',
-  workTitle: '一つの依頼から、成果物へ。',
-  workBody:
-    'テーマの調査、表計算の分析、プレゼンテーションの作成。Word、Excel、PPT、HTML をプレビューし、箇所を選んで修正を依頼できます。',
-  knowledgeTitle: '根拠をたどれる回答。',
-  knowledgeBody:
-    '組織の文書を検索し、引用から回答に使われた文書のバージョンを確認できます。Full で利用可能です。',
-  appsTitle: 'あなたの得意な手順を、チームの力に。',
-  appsBody:
-    '指示、モデル、知識、スキル、MCP ツールをアプリに組み合わせます。独立したパッケージや、作成者が管理するサービスとして共有できます。',
-  autoTitle: '繰り返す仕事に、リズムを。',
-  autoBody:
-    '定期的な要約、振り返り、確認作業をスケジュール。実行履歴と成果物を同じタスクに保存します。',
   scenesTitle: '日々の仕事に、\nAI の力を。',
   sample: 'ワークフローの例',
   input: '仕事の依頼',
@@ -655,23 +408,6 @@ export const ja: Messages = {
   upgradeNote:
     '更新時は移行前に PostgreSQL をバックアップします。移行開始後の失敗でデータベースが自動復元されることはありません。ファイルと設定は別途バックアップしてください。',
   fullNote: 'ナレッジ検索には Embedding モデルが必要です。Ranker は任意です。',
-  startTitle: '一つの仕事から、\n役立つ最初の成果へ。',
-  startBody: '新規導入から、確認・ダウンロード・修正できる成果物を得るまで。',
-  step1: '管理者を作成する',
-  step1body:
-    '導入先を開き、一度限りの認証情報で初期化を完了します。既存メンバーは管理者が有効にした方法でログインします。',
-  step2: 'モデルを接続する',
-  step2body:
-    '「設定 → モデル設定」で提供元と対話モデルを追加します。接続をテストして保存し、対話用の選択肢として有効にします。',
-  step3: '明確な仕事を依頼する',
-  step3body:
-    '目的、資料、求める成果物を伝えます。必要に応じて、利用できるスキル、プラグイン、ナレッジベースを選びます。',
-  step4: '確認し、改善して再利用する',
-  step4body:
-    '成果物を開き、箇所を選んで修正を依頼し、結果をダウンロードします。有効な手順はチーム用アプリにまとめられます。',
-  prompt:
-    '添付した売上データから重要な変化を三つ見つけ、要約と Excel の明細を作成してください。',
-  nextDocs: 'ユーザーガイドを読む',
   notFound: 'このページは見つかりません。',
   error: 'ページを読み込めませんでした。',
   retry: '再試行',

@@ -43,7 +43,7 @@ export function Pill({
   light = false,
 }: {
   children: string
-  to?: '/' | '/install' | '/start'
+  to?: '/' | '/install'
   href?: string
   light?: boolean
 }) {
@@ -193,14 +193,8 @@ function Header() {
   })
   const navigation = (
     <>
-      <Link to="/" hash="product" className={navLinkClass} onClick={closeMenu}>
-        {t('product')}
-      </Link>
       <Link to="/install" className={navLinkClass} onClick={closeMenu}>
         {t('install')}
-      </Link>
-      <Link to="/start" className={navLinkClass} onClick={closeMenu}>
-        {t('start')}
       </Link>
       <a href={docsUrl} className={navLinkClass} onClick={closeMenu}>
         {t('docs')}
@@ -468,7 +462,6 @@ export function SiteShell() {
   useEffect(() => {
     let title = t('category')
     if (pathname === '/install') title = t('install')
-    if (pathname === '/start') title = t('start')
     document.title = `LinkSense — ${title}`
     document
       .querySelector('meta[name="description"]')

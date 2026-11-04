@@ -1,5 +1,4 @@
 import { es, pt, fr, ja } from './other-locales'
-import { experienceCopy } from './experience-copy'
 
 export const locales = [
   'en-US',
@@ -21,47 +20,14 @@ export const languageNames: Record<Locale, string> = {
 }
 
 const en = {
-  ...experienceCopy['en-US'],
   agentTitle: 'Agent install',
   agentBody:
     'Give this prompt to your coding agent. It includes your selected deployment and platform, environment checks and the official installation instructions.',
   agentCopy: 'Copy agent prompt',
   agentPrompt:
     'Install LinkSense {{edition}} on this {{platform}} machine.\n\nRead the official installation guide first: {{docs}}\n\nCheck the actual OS and architecture, Docker Engine API 1.45+, Docker Compose 2.24.4+, available Docker memory, SSD capacity and TCP port 18081. Inspect the installer before running it. Use this selected command only if it matches this host:\n\n{{command}}\n\nIf LinkSense is already installed, inspect its state and preserve all keys and data volumes. Stop before overwriting or resetting existing data. Do not print secrets in your final response.\n\nAfter installation, provide the access URL and guide me through the one-time administrator initialization and model configuration. Ask me to enter passwords and API keys in the local application, not in this chat.',
-  proofTitle: 'Built for an organization’s working day.',
-  languages: 'Interface languages',
-  deployments: 'Self-hosted configurations',
-  channels: 'Messaging channels',
-  methodsTitle: 'Give a good method\na life beyond one task.',
-  method1: 'Ask for an outcome.',
-  method2: 'Point out the details.',
-  method3: 'Make it reusable.',
-  method1body: 'Describe the goal, the materials and the result you need.',
-  method2body: 'Select a part of the deliverable and ask for a precise change.',
-  method3body: 'Combine what works into an application your team can use.',
-  insightsTitle: 'A useful place\nto begin.',
-  extend: 'Build with LinkSense',
-  installGuide: 'Choose a deployment, understand the requirements and install.',
-  startGuide: 'Connect a model and complete your first real task.',
-  extendGuide:
-    'Package skills, connect MCP and create interactive applications.',
-  read: 'Read the guide',
-  planTitle: 'Plan before you act.',
-  planBody:
-    'Use Plan mode to agree on the approach before implementation. Follow steps, tools and subagent activity as work progresses.',
-  goalTitle: 'Keep a complex goal moving.',
-  goalBody:
-    'Use Goal mode for multi-step work, with visible progress, pause controls and execution limits.',
-  spaceTitle: 'Pick up where you left off.',
-  spaceBody:
-    'Organize tasks into projects and continue with existing working files. Personal tasks share a user environment, not isolated task sandboxes.',
-  createTitle: 'More ways to create.',
-  createBody:
-    'Dictate an editable draft, generate images with a configured model, or publish an HTML deliverable as a public static site.',
   home: 'Home',
-  product: 'Product',
   install: 'Self-host',
-  start: 'Get started',
   docs: 'Documentation',
   try: 'Explore LinkSense',
   menu: 'Menu',
@@ -73,24 +39,10 @@ const en = {
   hero2: 'To a whole team’s capability.',
   heroBody:
     'Work with AI. Keep what works. Give your team the knowledge, skills and tools to do it again.',
+  heroNote: 'Open source. On your infrastructure.',
   watch: 'See LinkSense at work',
   play: 'Play product demo',
   pause: 'Pause product demo',
-  introTitle: 'Good work deserves\nto go further.',
-  introBody:
-    'Give everyone a place to work with AI. Give your organization a way to keep the knowledge, methods and tools that make it work.',
-  workTitle: 'From a request to a deliverable.',
-  workBody:
-    'Research a topic, analyze a spreadsheet, create a presentation. Preview Word, Excel, PPT and HTML, select a detail and ask for changes.',
-  knowledgeTitle: 'Answers with something behind them.',
-  knowledgeBody:
-    'Bring in your organization’s documents. Ask questions, open citations and trace answers to the document version used. Available with Full.',
-  appsTitle: 'Your best workflow. Everyone’s next step.',
-  appsBody:
-    'Combine instructions, models, knowledge, skills and MCP tools into an application. Share an independent package or a managed service with your team.',
-  autoTitle: 'Work that keeps a rhythm.',
-  autoBody:
-    'Schedule briefings, reviews and recurring checks. Keep each run in the same task, with its history and deliverables.',
   scenesTitle: 'Make it part of\nyour working day.',
   sample: 'Illustrative workflow',
   input: 'Your request',
@@ -165,24 +117,6 @@ const en = {
     'Upgrade creates a PostgreSQL backup before migration. Once migration starts, failures do not automatically roll back the database. Keep independent backups of files and configuration.',
   fullNote:
     'Knowledge retrieval also needs an Embedding model; a Ranker is optional.',
-  startTitle: 'One real task.\nA useful first result.',
-  startBody:
-    'From a fresh deployment to something you can review, download and improve.',
-  step1: 'Create your administrator',
-  step1body:
-    'Open the installed service and complete initialization with the one-time credential. Existing members sign in with the method enabled by their administrator.',
-  step2: 'Connect a model',
-  step2body:
-    'In Settings → Model settings, add a provider channel and a conversation model. Test the connection, save it and keep the model selectable for conversations.',
-  step3: 'Give it a clear task',
-  step3body:
-    'Specify the goal, attach your materials and describe the deliverable. Select available skills, plugins or a knowledge base when needed.',
-  step4: 'Review, refine, reuse',
-  step4body:
-    'Open the generated files, select content to request changes and download the result. Turn a proven workflow into an application for your team.',
-  prompt:
-    'Read the attached sales data, identify three important changes, and create a summary with an Excel breakdown.',
-  nextDocs: 'Continue with the user guides',
   notFound: 'This page is not here.',
   error: 'This page could not be loaded.',
   retry: 'Try again',
@@ -190,46 +124,14 @@ const en = {
 export type MessageKey = keyof typeof en
 export type Messages = Record<MessageKey, string>
 const zh: Messages = {
-  ...experienceCopy['zh-CN'],
   agentTitle: '用 AI 助手安装',
   agentBody:
     '将这段提示交给你的 AI 编程助手。提示包含当前选择的部署方案、操作系统、环境检查和官方安装说明。',
   agentCopy: '复制安装提示',
   agentPrompt:
     '请在这台 {{platform}} 机器上安装 LinkSense {{edition}}。\n\n先阅读官方安装指南：{{docs}}\n\n检查实际操作系统和架构、Docker Engine API 1.45+、Docker Compose 2.24.4+、Docker 实际可用内存、SSD 空间和 TCP 18081 端口。执行前检查安装脚本，只在以下命令符合当前主机时使用：\n\n{{command}}\n\n如果已经安装 LinkSense，先检查现状并保留全部密钥和数据卷。不要覆盖或重置已有数据。最终回复不要输出任何秘密。\n\n安装后提供访问地址，引导我使用一次性凭据创建管理员并配置模型。密码与 API Key 由我在本地应用中填写，不要要求我发送到聊天中。',
-  proofTitle: '为组织每天的工作而设计。',
-  languages: '界面语言',
-  deployments: '自主部署配置',
-  channels: '消息渠道',
-  methodsTitle: '让一个好方法，\n不止服务于一次任务。',
-  method1: '交代想要的结果。',
-  method2: '指出需要修改的细节。',
-  method3: '沉淀为可复用的能力。',
-  method1body: '说明目标、材料与需要交付的成果。',
-  method2body: '在成果中选中具体位置，提出明确修改要求。',
-  method3body: '把有效方法组合为同事可以使用的应用。',
-  insightsTitle: '从这里，\n开始新的工作。',
-  extend: '基于 LinkSense 扩展',
-  installGuide: '选择部署方案，了解环境要求，完成安装。',
-  startGuide: '接入一个模型，完成第一个真实任务。',
-  extendGuide: '打包技能、连接 MCP，创建交互式应用。',
-  read: '阅读指南',
-  planTitle: '先确认方案，再开始实施。',
-  planBody:
-    '用计划模式统一范围与步骤，再交给 AI 实施。执行计划、工具与子智能体动态都能查看。',
-  goalTitle: '复杂的目标，持续往前推进。',
-  goalBody:
-    '用目标模式推进多步骤工作，查看进度，按需暂停，并在执行限制内继续完成。',
-  spaceTitle: '接着已有的工作，继续做。',
-  spaceBody:
-    '按项目整理任务，沿用工作文件。个人任务共享用户运行环境，不把任务目录当作安全隔离边界。',
-  createTitle: '表达与交付，不止一种方式。',
-  createBody:
-    '语音转为可编辑草稿，用已配置的模型生成图片，或把 HTML 成果发布为公开静态站点。',
   home: '首页',
-  product: '产品能力',
   install: '部署安装',
-  start: '快速上手',
   docs: '使用文档',
   try: '在线体验',
   menu: '菜单',
@@ -241,24 +143,10 @@ const zh: Messages = {
   hero2: '到整个团队的能力。',
   heroBody:
     '与 AI 一起完成工作，留下有效的方法，让知识、技能和工具成为整个团队的能力。',
+  heroNote: '开源，在你的基础设施上运行。',
   watch: '看看 LinkSense 如何工作',
   play: '播放产品演示',
   pause: '暂停产品演示',
-  introTitle: '让好的工作方式，\n走得更远。',
-  introBody:
-    '给每个人一个与 AI 共事的工作空间，也给组织一种方式，留住有用的知识、方法和工具。',
-  workTitle: '从一句要求，到一份成果。',
-  workBody:
-    '研究一个主题、分析一张表格、制作一套演示。直接预览 Word、Excel、PPT 和 HTML，选中细节，继续提出修改要求。',
-  knowledgeTitle: '每个答案，都有据可循。',
-  knowledgeBody:
-    '接入组织文档，用知识库回答问题。打开引用，查看内容依据与当时使用的文档版本。完整知识能力由 Full 提供。',
-  appsTitle: '你的好方法，团队的新能力。',
-  appsBody:
-    '把指令、模型、知识、技能和 MCP 工具组合成应用。分享独立安装包，或由你持续维护应用服务，让同事直接开始工作。',
-  autoTitle: '让重复工作，有自己的节奏。',
-  autoBody:
-    '为简报、回顾和定期检查设置自动化。每次执行都保留在同一任务中，过程和成果随时可查。',
   scenesTitle: '让 AI，\n进入真实的工作。',
   sample: '示例工作流',
   input: '你的工作要求',
@@ -329,23 +217,6 @@ const zh: Messages = {
   upgradeNote:
     '升级会在迁移前创建 PostgreSQL 备份。迁移开始后发生失败，不会自动回滚数据库。工作文件与配置仍应独立备份。',
   fullNote: '使用知识检索还需配置 Embedding 模型，可选配置 Ranker。',
-  startTitle: '一个真实任务，\n一份有用的成果。',
-  startBody: '从首次安装，到拿到可以审阅、下载和继续修改的结果。',
-  step1: '创建管理员',
-  step1body:
-    '打开部署地址，用一次性初始化凭据完成向导。已有组织成员使用管理员启用的方式登录。',
-  step2: '连接一个模型',
-  step2body:
-    '进入「设置 → 模型设置」，添加服务商渠道和对话模型。测试连接并保存，保持模型「对话可选」。',
-  step3: '交代一项明确的工作',
-  step3body:
-    '写清目标，添加工作材料，说明希望交付什么。按需选择已配置的技能、插件或知识库。',
-  step4: '审阅、完善，再复用',
-  step4body:
-    '预览成果，选中内容提出修改要求，下载最终文件。把验证有效的流程组合为团队应用。',
-  prompt:
-    '阅读附件中的销售数据，找出三个最重要的变化，生成一份中文摘要和 Excel 明细。',
-  nextDocs: '继续阅读用户指南',
   notFound: '这个页面还不在这里。',
   error: '页面暂时无法加载。',
   retry: '重试',
