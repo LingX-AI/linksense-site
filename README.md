@@ -33,7 +33,7 @@ pnpm dev
 
 The default source checkout is `../linksense`. Override it with `LINKSENSE_REPO=/path/to/linksense` when using another worktree. That checkout needs its pnpm dependencies installed. The generated `public/help/` directory is ignored by Git and served by Vite in development. `pnpm deploy` rebuilds both documentation and the website.
 
-`src/site-theme.css` is the shared theme entry for the website and public documentation. It imports `theme-tokens.css` for fonts, colors, spacing, and header sizes, plus `pill.css` for the shared button animations. The documentation build passes it through `LINKSENSE_WEBSITE_THEME`. Both headers use Documentation, Developers, and Community as their main menus; Explore remains a separate CTA. Documentation uses one complete sidebar across sections, with inactive categories collapsed by default.
+`src/site-theme.css` is the shared theme entry for the website and public documentation. It imports `theme-tokens.css` for fonts, colors, spacing, and header sizes, plus `pill.css` for the shared button animations. The documentation build passes it through `LINKSENSE_WEBSITE_THEME`. Both headers use Documentation and Community as their main menus; Explore remains a separate CTA. Documentation uses one complete sidebar across sections, with inactive categories collapsed by default.
 
 ## 简体中文
 
@@ -61,4 +61,4 @@ LinkSense 的独立产品官网。React SPA 包含首页和部署选择页，`/h
 
 新增部署指南只进入官网公开构建，不进入产品内置帮助与 Skill。中文地址为 `/help/`，英文为 `/help/en-US/`。README 中的用户、管理员、部署和开发链接使用这套固定地址。
 
-官网和公开文档共用 `src/site-theme.css` 主题入口，其中包含 `theme-tokens.css` 的字体、颜色、留白和页头尺寸，以及 `pill.css` 的按钮动画；构建命令会通过 `LINKSENSE_WEBSITE_THEME` 自动传入文档工程。顶部主菜单统一为文档、开发者、社区，体验入口保留为独立按钮。文档跨章节使用同一份完整左侧目录，非当前分类默认折叠。
+官网和公开文档共用 `src/site-theme.css` 主题入口，其中包含 `theme-tokens.css` 的字体、颜色、留白和页头尺寸，以及 `pill.css` 的按钮动画；构建命令会通过 `LINKSENSE_WEBSITE_THEME` 自动传入文档工程。顶部主菜单统一为文档、社区，体验入口保留为独立按钮。文档跨章节使用同一份完整左侧目录，非当前分类默认折叠。

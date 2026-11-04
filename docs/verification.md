@@ -1,5 +1,15 @@
 # Verification
 
+## Navigation and TOC refinement — 2026-11-04
+
+The shared website and documentation header now uses Documentation and Community as its only main navigation items. Developers remains available from the documentation sidebar but is no longer duplicated in the top navigation.
+
+The desktop documentation TOC keeps the existing scroll tracking and normal-weight active link. Its active marker is now an L-shaped path: it follows the left rail, angles toward the active heading's indentation, then continues beside that heading. The offset and arm width are recalculated when scroll tracking changes or the TOC resizes, so both top-level and nested headings use the correct bend.
+
+Below 997px, the navbar search now stays in normal flex layout instead of Docusaurus's absolute mobile position, which had placed it over the menu button. At 577px and wider, Logo, search, and menu remain side by side. Below 577px, focusing the collapsed search temporarily hides the Logo so the expanded field and menu keep separate hit targets without horizontal overflow.
+
+Chrome checks at 390×948, 576×948, 592×948, 768×948, 1094×986, and 1303×986 covered the two-link header, idle and focused mobile search layouts, top-level and nested TOC states, and normal active text weight. `pnpm test` (19 tests), `pnpm lint`, the website production build, 27 documentation tests, documentation TypeScript checking, and both public and bundled documentation builds pass.
+
 ## Public documentation and README migration — 2026-11-04
 
 The homepage body is retained. The header links to the local bilingual documentation and renders the Explore LinkSense wrapper only while its CTA belongs in the header, so an invisible CTA no longer reserves a fixed-width slot. `/install` now selects the edition and platform, links to the corresponding documentation anchor, and offers a short coding-agent prompt backed by the repository's canonical `Install.md`. Installer commands and resource guidance are maintained in the documentation rather than repeated in the website UI.

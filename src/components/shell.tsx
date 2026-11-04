@@ -202,13 +202,6 @@ function Header() {
         {t('docs')}
       </a>
       <a
-        href={docsUrl(i18n.resolvedLanguage, 'deploy/development/')}
-        className={navLinkClass}
-        onClick={closeMenu}
-      >
-        {t('developers')}
-      </a>
-      <a
         href={`${repository}/discussions`}
         className={navLinkClass}
         onClick={closeMenu}
