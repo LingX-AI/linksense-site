@@ -17,6 +17,7 @@ import {
 } from '@tanstack/react-router'
 import {
   motion,
+  LayoutGroup,
   useAnimationControls,
   useScroll,
   useMotionValueEvent,
@@ -33,6 +34,7 @@ import { Cursor, RevealText, ElasticRule } from './motion'
 import { gsap } from '@/lib/animation'
 import brandMarkup from '@/assets/linksense-logo.svg?raw'
 import { ScrollScenes } from './scroll-scenes'
+import { HeroCtaContext } from '@/lib/hero-cta-context'
 
 export function Pill({
   children,
@@ -47,7 +49,7 @@ export function Pill({
 }) {
   const className = cn(
     buttonVariants({ variant: light ? 'light' : 'default' }),
-    'pill-fill overflow-hidden hover:text-white focus-visible:text-white',
+    'pill-fill overflow-hidden whitespace-nowrap hover:text-white focus-visible:text-white',
     light
       ? 'hover:bg-transparent'
       : 'hover:border-foreground hover:bg-foreground',
@@ -80,6 +82,7 @@ const navLinkClass =
 
 function Header() {
   const { t, i18n } = useTranslation()
+  const { visible: heroCtaVisible } = useContext(HeroCtaContext)
   const dialog = useRef<HTMLDialogElement>(null)
   const menuId = useId()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -182,9 +185,11 @@ function Header() {
     desktop.addEventListener('change', reset)
     return () => desktop.removeEventListener('change', reset)
   }, [])
+  const holdHeaderForHeroCta = pathname === '/' && !heroCtaVisible
   useMotionValueEvent(scrollY, 'change', (value) => {
     const difference = value - (scrollY.getPrevious() ?? 0)
-    if (Math.abs(difference) > 2) setHidden(value > 120 && difference > 0)
+    if (Math.abs(difference) > 2)
+      setHidden(value > 120 && difference > 0 && !holdHeaderForHeroCta)
   })
   const navigation = (
     <>
@@ -206,7 +211,7 @@ function Header() {
     <motion.header
       ref={header}
       className="fixed inset-x-3 top-3 z-40 rounded-2xl border border-border/70 bg-background/90 shadow-sm shadow-black/5 backdrop-blur-md md:inset-x-0 md:top-0 md:rounded-none md:border-x-0 md:border-t-0 md:shadow-none"
-      animate={{ y: hidden ? '-100%' : 0 }}
+      animate={{ y: hidden && !holdHeaderForHeroCta ? '-100%' : 0 }}
       transition={{ duration: 0.35 }}
       onFocusCapture={() => setHidden(false)}
     >
@@ -246,8 +251,15 @@ function Header() {
               className="size-5"
             />
           </a>
-          <div className="hidden lg:block">
-            <Pill href={demoUrl}>{t('try')}</Pill>
+          <div className="hidden w-48 lg:flex lg:justify-end">
+            {(!heroCtaVisible || pathname !== '/') && (
+              <motion.div
+                layoutId="demo-cta"
+                transition={{ type: 'spring', stiffness: 280, damping: 30 }}
+              >
+                <Pill href={demoUrl}>{t('try')}</Pill>
+              </motion.div>
+            )}
           </div>
           <Button
             variant="ghost"
@@ -330,7 +342,7 @@ function Footer() {
           </div>
           <div
             data-batch
-            className="mt-4 flex flex-col items-center justify-between gap-10 border-t border-white/20 pt-10 text-left md:flex-row"
+            className="mt-4 flex flex-col items-center justify-between gap-10 pt-10 text-left md:flex-row"
           >
             <div>
               <img
@@ -374,6 +386,7 @@ export function SiteShell() {
     page = useAnimationControls()
   const [busy, setBusy] = useState(false),
     [ready, setReady] = useState(true)
+  const [heroCtaVisible, setHeroCtaVisible] = useState(pathname === '/')
   const active = useRef(false)
   const focusAfterEntry = useRef(false)
   const watchdog = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
@@ -469,38 +482,44 @@ export function SiteShell() {
   }, [pathname, i18n.language, t])
 
   return (
-    <EntryContext value={ready}>
-      <a
-        href="#main"
-        className="fixed top-3 left-3 z-60 -translate-y-24 rounded-full bg-primary px-5 py-3 text-white focus:translate-y-0"
-      >
-        {t('skip')}
-      </a>
-      <div inert={busy}>
-        <Header />
-      </div>
-      <motion.main
-        id="main"
-        ref={main}
-        animate={page}
-        inert={busy}
-        className="pt-22 md:pt-20"
-      >
-        <Outlet />
-        <Footer />
-      </motion.main>
-      <motion.div
-        data-testid="route-cover"
-        aria-hidden="true"
-        className={cn(
-          'fixed inset-0 z-60 origin-bottom bg-white',
-          busy ? 'pointer-events-auto' : 'pointer-events-none',
-        )}
-        initial={{ scaleY: 0, opacity: 1 }}
-        animate={cover}
-      />
-      <Cursor blocked={busy} />
-    </EntryContext>
+    <HeroCtaContext
+      value={{ visible: heroCtaVisible, setVisible: setHeroCtaVisible }}
+    >
+      <LayoutGroup id="demo-cta-layout">
+        <EntryContext value={ready}>
+          <a
+            href="#main"
+            className="fixed top-3 left-3 z-60 -translate-y-24 rounded-full bg-primary px-5 py-3 text-white focus:translate-y-0"
+          >
+            {t('skip')}
+          </a>
+          <div inert={busy}>
+            <Header />
+          </div>
+          <motion.main
+            id="main"
+            ref={main}
+            animate={page}
+            inert={busy}
+            className="pt-22 md:pt-20"
+          >
+            <Outlet />
+            <Footer />
+          </motion.main>
+          <motion.div
+            data-testid="route-cover"
+            aria-hidden="true"
+            className={cn(
+              'fixed inset-0 z-60 origin-bottom bg-white',
+              busy ? 'pointer-events-auto' : 'pointer-events-none',
+            )}
+            initial={{ scaleY: 0, opacity: 1 }}
+            animate={cover}
+          />
+          <Cursor blocked={busy} />
+        </EntryContext>
+      </LayoutGroup>
+    </HeroCtaContext>
   )
 }
 

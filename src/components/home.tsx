@@ -1,5 +1,5 @@
 import { useReducedMotion } from '@/lib/use-reduced-motion'
-import { useId, useState } from 'react'
+import { useContext, useId, useLayoutEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -22,6 +22,7 @@ import { demoUrl, repository } from '@/lib/product'
 import { Services } from './services'
 import { ScrollTrigger } from '@/lib/animation'
 import { OrganizationProof, Guides, Integrations } from './editorial'
+import { HeroCtaContext } from '@/lib/hero-cta-context'
 
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false)
@@ -66,6 +67,23 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
 
 export function HomePage() {
   const { t } = useTranslation()
+  const { visible: heroCtaVisible, setVisible: setHeroCtaVisible } =
+    useContext(HeroCtaContext)
+  const heroCta = useRef<HTMLDivElement>(null)
+  useLayoutEffect(() => {
+    const node = heroCta.current
+    if (!node) return
+    const update = () =>
+      setHeroCtaVisible(node.getBoundingClientRect().bottom > 88)
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update)
+    return () => {
+      window.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
+      setHeroCtaVisible(false)
+    }
+  }, [setHeroCtaVisible])
   return (
     <ScrollScenes>
       <section className="px-gutter pt-16 pb-12 md:pt-28 md:pb-20">
@@ -87,7 +105,16 @@ export function HomePage() {
             {t('heroBody')}
           </RevealText>
           <EnterGroup className="mt-8 flex flex-wrap items-center gap-6 md:justify-center">
-            <Pill href={demoUrl}>{t('try')}</Pill>
+            <div ref={heroCta} className="min-h-12 min-w-48">
+              {heroCtaVisible && (
+                <motion.div
+                  layoutId="demo-cta"
+                  transition={{ type: 'spring', stiffness: 280, damping: 30 }}
+                >
+                  <Pill href={demoUrl}>{t('try')}</Pill>
+                </motion.div>
+              )}
+            </div>
             <Link
               to="/install"
               className="inline-flex min-h-11 items-center gap-2 text-sm font-medium hover:text-primary"

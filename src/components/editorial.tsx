@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { useInView } from 'motion/react'
 import NumberFlow from '@number-flow/react'
 import { Link } from '@tanstack/react-router'
-import { ArrowUpRight, Box, FileText, Terminal } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { RevealText } from './motion'
 import { repository } from '@/lib/product'
 
@@ -76,8 +76,7 @@ export function Guides() {
       to: '/install',
       href: undefined,
       caption: 'Core / Full',
-      image: '/media/product-poster.jpg',
-      Icon: Terminal,
+      image: '/media/guide-install.png',
     },
     {
       title: 'start',
@@ -85,8 +84,7 @@ export function Guides() {
       to: '/start',
       href: undefined,
       caption: 'LinkSense',
-      image: '/media/linksense-intro-v6.jpg',
-      Icon: FileText,
+      image: '/media/guide-start.png',
     },
     {
       title: 'extend',
@@ -94,8 +92,7 @@ export function Guides() {
       to: undefined,
       href: `${repository}/tree/main/examples`,
       caption: 'Skills / MCP',
-      image: null,
-      Icon: Box,
+      image: '/media/guide-extend.png',
     },
   ] as const
   return (
@@ -105,88 +102,72 @@ export function Guides() {
           {t('insightsTitle')}
         </RevealText>
         <div className="mt-14 grid gap-x-16 gap-y-20 md:grid-cols-2">
-          {guides.map(
-            ({ title, body, to, href, Icon, caption, image }, index) => {
-              const content = (
-                <>
-                  <div
-                    className={`relative overflow-hidden rounded-3xl bg-muted ${
-                      index === 0
-                        ? 'aspect-[4/3]'
-                        : index === 1
-                          ? 'aspect-square'
-                          : 'aspect-[4/3]'
-                    }`}
-                  >
-                    {image ? (
-                      <img
-                        src={image}
-                        alt=""
-                        width="1200"
-                        height="900"
-                        loading="lazy"
-                        className={`absolute inset-0 size-full transition-transform duration-[1.2s] ease-out-expo group-hover:scale-105 motion-reduce:transition-none ${
-                          index === 0
-                            ? 'object-contain object-center'
-                            : 'object-cover object-center'
-                        }`}
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-sage text-primary">
-                        <Icon className="size-24" aria-hidden="true" />
-                      </div>
-                    )}
-                    <span className="absolute top-5 left-5 rounded-full bg-black/35 px-3 py-1.5 text-xs text-white backdrop-blur-sm">
-                      {caption}
-                    </span>
-                  </div>
-                  <h3 className="mt-6 flex items-center justify-between gap-3 text-2xl font-medium tracking-tight">
-                    {t(title)}
-                    <ArrowUpRight
-                      className="size-5 shrink-0 text-primary"
-                      aria-hidden="true"
-                    />
-                  </h3>
-                  <p className="mt-3 max-w-110 text-sm leading-relaxed text-white/60">
-                    {t(body)}
-                  </p>
-                </>
-              )
-              return (
-                <article
-                  data-batch
-                  key={title}
-                  className={
-                    index === 1
-                      ? 'md:mt-28'
-                      : index === 2
-                        ? 'md:col-start-1'
-                        : ''
-                  }
+          {guides.map(({ title, body, to, href, caption, image }, index) => {
+            const content = (
+              <>
+                <div
+                  className={`relative overflow-hidden rounded-3xl bg-muted ${
+                    index === 0
+                      ? 'aspect-[4/3]'
+                      : index === 1
+                        ? 'aspect-square'
+                        : 'aspect-[4/3]'
+                  }`}
                 >
-                  {to ? (
-                    <Link
-                      to={to}
-                      className="group block rounded-sm transition-colors hover:text-white"
-                      data-cursor={t('read')}
-                      data-cursor-mode="project"
-                    >
-                      {content}
-                    </Link>
-                  ) : (
-                    <a
-                      href={href}
-                      className="group block rounded-sm transition-colors hover:text-white"
-                      data-cursor={t('read')}
-                      data-cursor-mode="project"
-                    >
-                      {content}
-                    </a>
-                  )}
-                </article>
-              )
-            },
-          )}
+                  <img
+                    src={image}
+                    alt=""
+                    width={index === 1 ? 1056 : 1408}
+                    height="1056"
+                    loading="lazy"
+                    className="absolute inset-0 size-full object-contain transition-transform duration-[1.2s] ease-out-expo group-hover:scale-105 motion-reduce:transition-none"
+                  />
+                  <span className="absolute top-5 left-5 rounded-full bg-black/35 px-3 py-1.5 text-xs text-white backdrop-blur-sm">
+                    {caption}
+                  </span>
+                </div>
+                <h3 className="mt-6 flex items-center justify-between gap-3 text-2xl font-medium tracking-tight">
+                  {t(title)}
+                  <ArrowUpRight
+                    className="size-5 shrink-0 text-primary"
+                    aria-hidden="true"
+                  />
+                </h3>
+                <p className="mt-3 max-w-110 text-sm leading-relaxed text-white/60">
+                  {t(body)}
+                </p>
+              </>
+            )
+            return (
+              <article
+                data-batch
+                key={title}
+                className={
+                  index === 1 ? 'md:mt-28' : index === 2 ? 'md:col-start-1' : ''
+                }
+              >
+                {to ? (
+                  <Link
+                    to={to}
+                    className="group block rounded-sm transition-colors hover:text-white"
+                    data-cursor={t('read')}
+                    data-cursor-mode="project"
+                  >
+                    {content}
+                  </Link>
+                ) : (
+                  <a
+                    href={href}
+                    className="group block rounded-sm transition-colors hover:text-white"
+                    data-cursor={t('read')}
+                    data-cursor-mode="project"
+                  >
+                    {content}
+                  </a>
+                )}
+              </article>
+            )
+          })}
         </div>
       </div>
     </section>

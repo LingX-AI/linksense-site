@@ -6,6 +6,7 @@
 - `product-demo.mp4`: derived from https://github.com/LingX-AI/linksense/blob/main/docs/demo/Hero.gif at source commit `a3fcd0d`. Cropped the recording's black letterbox, scaled to 1440px wide, encoded H.264 at 24fps, muted. About 13.4 seconds. The source shows an English product interface; this recording is not localized with the surrounding website.
 - `product-poster.jpg`: a frame from the same recording.
 - `/linksense-logo.svg`, `/linksense-logo-light.svg`, `/favicon.svg`: original LinkSense brand assets from that repository. Brand ownership and applicable terms remain with LinkSense's rights holder. See https://github.com/LingX-AI/linksense/blob/main/TRADEMARK.md.
+- `/guide-install.png`, `/guide-start.png`, `/guide-extend.png`: editorial covers for the homepage guides, generated with `gpt-image-2.5` through the provided Image API. They are generated at fixed 4:3, 1:1 and 4:3 proportions and contain no third-party imagery or text.
 
 - `/github.svg`: official GitHub Invertocat from https://brand.github.com/GitHub_Logos.zip, used to link to the product's GitHub repository. GitHub retains its trademark rights.
 - `/connectors/*`: existing connector marks from the LinkSense source checkout, used only to identify supported integrations. Their respective owners retain their trademark rights.

@@ -70,7 +70,7 @@ export function ProductReel() {
         viewport={{ once: true }}
         transition={{ duration: reduced ? 0 : 2.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="absolute inset-0 overflow-hidden" data-parallax>
+        <div className="absolute inset-0 overflow-hidden">
           <video
             ref={video}
             width={1920}
@@ -83,7 +83,7 @@ export function ProductReel() {
             preload="none"
             poster="/media/linksense-intro-v6.jpg"
             aria-hidden="true"
-            className="absolute inset-0 size-full object-cover"
+            className="absolute inset-0 size-full object-contain"
           >
             <source src="/media/linksense-intro-v6.mp4" type="video/mp4" />
           </video>

@@ -17,9 +17,9 @@
   --color-ink: #111318;
   --color-ring: #1765ed;
   --text-hero: clamp(2.75rem, 5.6vw, 5.25rem);
-  --text-section: clamp(2.5rem, 5vw, 5rem);
-  --text-feature: clamp(2rem, 3.2vw, 3.5rem);
-  --text-service: clamp(1.9rem, 2.8vw, 3rem);
+  --text-section: clamp(2.5rem, 4.4vw, 4.5rem);
+  --text-feature: clamp(1.9rem, 2.8vw, 3.15rem);
+  --text-service: clamp(1.9rem, 2.6vw, 2.8rem);
   --radius-media: clamp(1.25rem, 2vw, 2rem);
   --spacing-gutter: clamp(1.25rem, 7.5vw, 7.5rem);
   --spacing-section: clamp(5rem, 9vw, 9rem);
