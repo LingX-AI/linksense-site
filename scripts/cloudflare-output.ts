@@ -37,6 +37,24 @@ const documentation = new Map(
   ),
 )
 for (const [page, html] of documentation) {
+  const tocStart = html.indexOf('id="nd-toc"')
+  if (tocStart !== -1) {
+    const article = html.slice(html.indexOf('<article'), tocStart)
+    const toc = html.slice(tocStart, html.indexOf('<footer', tocStart))
+    const links = new Set(
+      [...toc.matchAll(/href="#([^"]+)"/g)].map(([, id]) =>
+        decodeURIComponent(id),
+      ),
+    )
+    for (const [, , id] of article.matchAll(
+      /<h([2-6])\b[^>]*\bid="([^"]+)"/g,
+    )) {
+      assert(
+        links.has(id),
+        `Heading missing from page contents in ${page}: ${id}`,
+      )
+    }
+  }
   assert(
     !/href="\.{1,2}\/[^"]*\.mdx?(?:[?#][^"]*)?"/.test(html),
     `Unresolved Markdown link in ${page}`,

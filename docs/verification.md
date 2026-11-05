@@ -1,5 +1,23 @@
 # Verification
 
+## November 5, 2026 — Persistent sidebar and full section hierarchy
+
+The sidebar keeps the same four primary entries on every article: deployment
+and first steps, User guide, Administrator guide, and Developer guide. The three
+guides expand to topic pages without a third menu level. The deployment entry
+has a Wrench icon, and the redundant "Other guides" separator and guide switcher
+are removed. Hidden deployment reference pages also retain this shared sidebar.
+
+The earlier H2-only contents limit is removed from all 22 consolidated pages.
+The right-side and mobile page contents receive the complete heading tree,
+including H3, H4, and any deeper headings. The build now rejects an exported
+article if any H2–H6 heading is missing from its page contents. This check failed
+on the previous export at `create-and-run-写出可执行的要求` before the fix.
+
+All 22 unit tests and the production build pass. The sidebar regression builds
+the actual bilingual Fumadocs page trees and checks the four entries, two-level
+limit, and absence of nested roots that could replace the shared navigation.
+
 ## November 5, 2026 — Continuous topic guides
 
 The public documentation consolidates 116 bilingual small articles into 22 topic

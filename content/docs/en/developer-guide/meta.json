@@ -1,7 +1,6 @@
 {
   "title": "Developer guide",
   "icon": "Code",
-  "root": true,
   "pages": [
     "interactive-application",
     "embed-application"

@@ -55,9 +55,7 @@ export default async function Page({
   const path = withoutDocLocale(page.path).replace(/\.mdx$/, '.txt')
   return (
     <DocsPage
-      toc={page.data.toc.filter(
-        (item) => item.depth <= (page.data.tocDepth ?? 6),
-      )}
+      toc={page.data.toc}
       full={page.data.full}
       tableOfContent={{ style: 'clerk', enabled: !page.data.full }}
     >

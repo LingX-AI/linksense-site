@@ -18,24 +18,11 @@ export default async function Layout({
     <SiteRoot lang={lang} docs>
       <DocsLayout
         {...baseOptions(lang, true)}
-        tabMode="auto"
         tree={source.pageTree[lang]}
         links={linkItems}
         sidebar={{
           defaultOpenLevel: 0,
-          tabs: {
-            transform(option, node) {
-              if (!node.icon) return option
-              return {
-                ...option,
-                icon: (
-                  <div className="size-full rounded-lg max-md:border max-md:border-fd-primary/20 max-md:bg-fd-primary/10 max-md:p-1.5 [&_svg]:size-full">
-                    {node.icon}
-                  </div>
-                ),
-              }
-            },
-          },
+          tabs: false,
         }}
       >
         {children}

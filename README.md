@@ -43,8 +43,8 @@ pnpm preview
 
 - 官网文案：`src/content/messages.ts`、`src/content/other-locales.ts`。
 - 中文文档：`content/docs/zh/`；英文：`content/docs/en/`。
-- 文档目录：对应目录内的 `meta.json`，使用 Fumadocs 原生侧栏和指南切换。
-- 相关小篇合并为连续主题文档：左侧只列主题，右侧目录定位章节；历史小篇 URL 在 `public/_redirects` 中跳转到对应章节。`tocDepth` 用于控制长文页内目录的显示层级。
+- 文档目录：对应目录内的 `meta.json`，使用 Fumadocs 原生折叠侧栏，固定四个主入口，最多两级，不随当前指南切换。
+- 相关小篇合并为连续主题文档：左侧只列主题，右侧目录按正文标题显示完整的多级章节；历史小篇 URL 在 `public/_redirects` 中跳转到对应章节。
 - 公共主题：`src/app/global.css`，直接基于上游主题，未加载旧站 CSS。
 - 文档搜索：Fumadocs + Orama，中文使用 Mandarin tokenizer；数据库在构建时导出，浏览器本地搜索，无搜索服务或模型 API。
 - 产品内置帮助仍在产品仓库中维护；本站公开文档在本仓库中更新。

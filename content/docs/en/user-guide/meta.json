@@ -13,6 +13,5 @@
     "feedback",
     "troubleshooting/common-problems"
   ],
-  "root": true,
   "icon": "BookOpen"
 }

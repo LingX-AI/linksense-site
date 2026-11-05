@@ -8,6 +8,8 @@ The bilingual repository READMEs are the canonical source for the public deploym
 
 The public guides now group related articles into continuous topic pages. Six user-guide topics cover getting started, tasks, messaging, Plugins/Skills/Applications, Knowledge, and personal settings. Five administrator topics cover accounts/access, resource governance, models/quotas/usage, system/sign-in configuration, and operations/audit. Original article text is preserved as sections with stable anchors. Public legacy URLs redirect to those sections; internal links and search use the consolidated pages. Product-embedded help remains unchanged.
 
+Every public article shares four primary sidebar entries. The guides expand only to topic pages, while the page contents lists the complete H2–H6 section hierarchy. Deployment remains a single primary entry with its detailed workflow in the page contents.
+
 The framework, homepage Hero, navigation, Fumadocs layout, and theme are now adapted directly from New API's public `new-api-docs-v1` source at `d254f1842dc3d08d60f2269e2c9d4c9876a3dfbc`. Its MIT notice is retained in `licenses/new-api-docs-v1.LICENSE` and `THIRD_PARTY_NOTICES.md`. New API product prose, trademarks, partner logos, adoption figures, and videos were not imported. LinkSense brand, supported connector marks, and product recordings retain their existing ownership and provenance.
 
 The source boundary between the public docs/home portal and the black-hole marketing website is recorded in [newapi-reference.md](newapi-reference.md).

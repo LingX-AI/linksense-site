@@ -4,14 +4,11 @@ import {
   frontmatterSchema,
   metaSchema,
 } from 'fumadocs-mdx/config'
-import { z } from 'zod'
 
 export const docs = defineDocs({
   dir: 'content/docs',
   docs: {
-    schema: frontmatterSchema.extend({
-      tocDepth: z.number().int().min(2).max(6).optional(),
-    }),
+    schema: frontmatterSchema,
     postprocess: { includeProcessedMarkdown: true },
   },
   meta: { schema: metaSchema },
