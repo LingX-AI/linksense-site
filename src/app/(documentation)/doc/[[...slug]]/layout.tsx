@@ -26,7 +26,9 @@ export default async function Layout({
         }}
       >
         {children}
-        <Footer lang={lang} />
+        <div className="mx-auto w-full max-w-(--fd-page-width) pe-(--fd-toc-width)">
+          <Footer lang={lang} />
+        </div>
       </DocsLayout>
     </SiteRoot>
   )
