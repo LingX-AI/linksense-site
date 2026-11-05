@@ -5,7 +5,8 @@ export default defineConfig({
     name: 'linksense-site',
     compatibilityDate: '2026-10-20',
     assets: {
-      notFoundHandling: 'single-page-application',
+      htmlHandling: 'auto-trailing-slash',
+      notFoundHandling: '404-page',
     },
     domains: ['linksense.guygubaby.top'],
     observability: {

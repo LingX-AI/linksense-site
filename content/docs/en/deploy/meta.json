@@ -1,0 +1,14 @@
+{
+  "title": "Self-hosting",
+  "pages": [
+    "index",
+    "core",
+    "full",
+    "first-setup",
+    "operations",
+    "development",
+    "architecture"
+  ],
+  "root": true,
+  "icon": "Wrench"
+}

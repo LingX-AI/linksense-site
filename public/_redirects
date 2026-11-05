@@ -1,0 +1,4 @@
+/help /doc/ 301
+/help/* /doc/:splat 301
+/doc/en-US /doc/ 301
+/doc/en-US/* /doc/:splat 301

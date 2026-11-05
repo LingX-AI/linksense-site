@@ -1,5 +1,15 @@
 # Content sources
 
+## Content preserved during the Next.js/Fumadocs migration — 2026-11-05
+
+The website text and six locale dictionaries remain LinkSense content. The 74 Chinese articles and their 74 English translations were imported from the user's LinkSense checkout at `f74deb2a46f87ec035b069cf182c96c3d173a4d8`, under `apps/docs`, and now live in `content/docs/zh/` and `content/docs/en/`. Docusaurus admonitions and heading IDs were converted to MDX/Callout syntax while preserving their meaning. Product-embedded help remains separate.
+
+The framework, homepage Hero, navigation, Fumadocs layout, and theme are now adapted directly from New API's public `new-api-docs-v1` source at `d254f1842dc3d08d60f2269e2c9d4c9876a3dfbc`. Its MIT notice is retained in `licenses/new-api-docs-v1.LICENSE` and `THIRD_PARTY_NOTICES.md`. New API product prose, trademarks, partner logos, adoption figures, and videos were not imported. LinkSense brand, supported connector marks, and product recordings retain their existing ownership and provenance.
+
+The source boundary between the public docs/home portal and the black-hole marketing website is recorded in [newapi-reference.md](newapi-reference.md).
+
+## Website product facts
+
 Reviewed 2026-10-16 against the LinkSense source checkout at `a3fcd0d`. These are content sources, not a claim of installation or runtime certification.
 
 | Content                                                     | First-party source                                                                                             |

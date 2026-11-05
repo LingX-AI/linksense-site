@@ -1,0 +1,10 @@
+{
+  "title": "文档",
+  "pages": [
+    "index",
+    "deploy",
+    "user-guide",
+    "admin-guide",
+    "developer-guide"
+  ]
+}

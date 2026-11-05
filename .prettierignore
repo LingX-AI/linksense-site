@@ -1,7 +1,8 @@
 node_modules
-dist
-public/help
+.next
+.source
+out
 pnpm-lock.yaml
-src/routeTree.gen.ts
+next-env.d.ts
 .cloudflare
 .wrangler

@@ -1,0 +1,147 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+@plugin 'tailwindcss-animate';
+
+@theme {
+  --spacing-fd-container: 1436px;
+
+  /* LinkSense brand blue */
+  --color-brand: #1765ed;
+  --color-brand-foreground: #ffffff;
+  --color-brand-secondary: #4385f5;
+  --color-brand-secondary-foreground: #0b2c66;
+  --color-brand-200: #0d50c7;
+
+  /* Fumadocs UI theme color (for navigation, TOC, etc.) */
+  --color-fd-primary: var(--color-brand);
+  --color-fd-primary-foreground: var(--color-brand-foreground);
+
+  --color-landing-foreground: #17345c;
+  --color-landing-foreground-200: #486b96;
+
+  /* System fonts */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-mono:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono',
+    monospace;
+}
+
+.dark {
+  --color-landing-foreground: #e6f0ff;
+  --color-landing-foreground-200: #9fbce7;
+
+  /* LinkSense brand blue (dark mode) */
+  --color-brand: #75a8ff;
+  --color-brand-secondary: #93baff;
+  --color-brand-secondary-foreground: #071a34;
+  --color-brand-foreground: #071a34;
+  --color-brand-200: #9dc0ff;
+
+  /* Fumadocs UI theme color (for navigation, TOC, etc. - dark mode) */
+  --color-fd-primary: var(--color-brand);
+  --color-fd-primary-foreground: var(--color-brand-foreground);
+}
+
+@theme inline {
+  --default-mono-font-family: var(--font-mono);
+}
+
+body {
+  overscroll-behavior-y: none;
+  background-color: var(--color-fd-background);
+  font-feature-settings:
+    'rlig' 1,
+    'calt' 1;
+}
+
+@layer base {
+  a[href],
+  button:not(:disabled, [aria-disabled='true']),
+  [role='button']:not([aria-disabled='true']),
+  [role='switch']:not([aria-disabled='true']),
+  [role='tab']:not([aria-disabled='true']),
+  select:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  input:disabled,
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+}
+
+/* Native range semantics with a consistent player track and thumb. */
+.reel-progress {
+  appearance: none;
+  height: 24px;
+  border-radius: 999px;
+  background-size: 100% 3px;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.reel-progress::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+}
+
+.reel-progress::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 50%;
+  background: white;
+}
+
+.reel-progress:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 6px;
+}
+
+@media (pointer: coarse) {
+  .reel-progress {
+    height: 44px;
+  }
+}
+
+/* Homepage card enhanced styles */
+[data-card] {
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-card]:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-brand);
+}
+
+/* Card icon container enhancement */
+[data-card] > div:first-child {
+  transition: all 0.3s ease;
+}
+
+[data-card]:hover > div:first-child {
+  transform: scale(1.1);
+  background-color: var(--color-brand);
+  color: var(--color-brand-foreground);
+}
+
+/* Cards grid layout optimization */
+.prose
+  :where([data-card]):not(
+    :where([class~='not-prose'], [class~='not-prose'] *)
+  ) {
+  margin-top: 0;
+  margin-bottom: 0;
+}

@@ -1,64 +1,67 @@
 # linksense-site
 
-[English](#english) · [简体中文](#简体中文)
+LinkSense 官网与文档站，直接采用 [QuantumNous/new-api-docs-v1](https://github.com/QuantumNous/new-api-docs-v1) 的 Next.js / Fumadocs 工程、首页 Hero、导航和主题，替换原来的 Vite 与 Docusaurus 实现。首页文案、六种语言、品牌、产品视频、连接器标志和 148 篇中英文文档保留为 LinkSense 内容。
 
-## English
+## 技术与来源
 
-The standalone LinkSense product website: a React SPA homepage and deployment selector, with bilingual static documentation at `/help/`.
+- Next.js 16.4.1、React 19.2.9、Fumadocs UI/Core 16.0.10、Fumadocs MDX 13.0.7、Tailwind CSS v4。
+- 上游首页的 GrainGradient 动效、明暗模式、导航菜单与文档布局；主题和首页渐变统一替换为 LinkSense 品牌蓝 `#1765ED`。
+- 一个根项目、一个 pnpm lockfile、一个 Next 构建，统一静态输出到 `out/`。
+- 上游源码提交：`d254f1842dc3d08d60f2269e2c9d4c9876a3dfbc`。MIT 声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 和 [原始许可证](licenses/new-api-docs-v1.LICENSE)。LinkSense 自有正文与品牌不因此改用 MIT/CC0。
 
-**Website:** [linksense.guygubaby.top](https://linksense.guygubaby.top/)
+公开源码中的首页属于 New API 文档门户，使用渐变 Hero。`www.newapi.ai` 当前的黑洞品牌首页尚未找到可确认的公开仓库，本项目不声称取得其原始源码。核实依据见 [源码调研](docs/newapi-reference.md)。
 
-### Stack and content
+## 本地开发
 
-- React 19, TypeScript, Vite 8, and Tailwind CSS v4.
-- TanStack Router file-based routing and route code splitting, Motion and GSAP animations, and source-owned Base UI / shadcn components.
-- i18next / react-i18next with English, Simplified Chinese, Spanish, Brazilian Portuguese, French, and Japanese. English is the default and fallback; language selection persists in the browser.
-- The website needs no backend, database, or authentication. The product workspace remains in the original LinkSense project.
-- Installation options for the operating system and Core / Full configuration are stored in URL parameters and validated with Zod before generating the command.
-
-### Content and asset sources
-
-Product facts are documented in [docs/content-sources.md](docs/content-sources.md). LinkSense branding and product footage come from the LinkSense repository; asset provenance is recorded in [public/media/README.md](public/media/README.md). Workflow illustrations are labeled examples, not customer data or actual product screenshots.
-
-The homepage keeps a centered white opening, a large rounded showreel, integrations, self-hosting, FAQs, and restrained blue accents. It uses Inter and Noto Sans SC, LinkSense's own media, and the existing Motion/GSAP interactions. See [docs/verification.md](docs/verification.md) for verification history and known limits.
-
-### Documentation
-
-Documentation is maintained once in the LinkSense repository's `apps/docs` package and rendered with its existing Docusaurus theme and search. Public builds add installation, operations, and source-development guides; the product's bundled help content stays separate.
+使用 `.node-version` 指定的 Node 24，最低满足上游要求 `^24.22.1`，保留 pnpm 10.34.6：
 
 ```sh
-pnpm docs:build
+pnpm install
 pnpm dev
 ```
 
-The default source checkout is `../linksense`. Override it with `LINKSENSE_REPO=/path/to/linksense` when using another worktree. That checkout needs its pnpm dependencies installed. The generated `public/help/` directory is ignored by Git and served by Vite in development. `pnpm deploy` rebuilds both documentation and the website.
+统一开发地址为 `http://127.0.0.1:18731`。Markdown/MDX、导航和网页都由同一个 Next 开发进程处理，无需其他产品仓库或文档服务。
 
-`src/site-theme.css` is the shared theme entry for the website and public documentation. It imports `theme-tokens.css` for fonts, colors, spacing, and header sizes, plus `pill.css` for the shared button animations. The documentation build passes it through `LINKSENSE_WEBSITE_THEME`. Both headers use Documentation and Community as their main menus; Explore remains a separate CTA. Documentation uses one complete sidebar across sections, with inactive categories collapsed by default.
+```sh
+pnpm build
+pnpm preview
+```
 
-## 简体中文
+`pnpm build` 编译全部网页、双语 MDX 和静态搜索索引，生成 `out/`，随后用 Cloudflare 官方工具生成并校验当前发布包；`pnpm preview` 预览完整静态产物。`pnpm typecheck`、`pnpm test` 和 `pnpm lint` 用于对应检查。
 
-LinkSense 的独立产品官网。React SPA 包含首页和部署选择页，`/help/` 提供中英文静态文档。
+## 路由与内容
 
-**官网：**[linksense.guygubaby.top](https://linksense.guygubaby.top/)
+| 地址                                   | 内容                                                        |
+| -------------------------------------- | ----------------------------------------------------------- |
+| `/`                                    | 英文官网                                                    |
+| `/zh/`、`/es/`、`/pt/`、`/fr/`、`/ja/` | 其他五种语言官网                                            |
+| `/install/` 或 `/:lang/install/`       | 部署选择与 AI 安装提示，保留 `edition`、`platform` 查询参数 |
+| `/doc/`                                | 英文文档（默认）                                            |
+| `/doc/zh-CN/`                          | 中文文档                                                    |
 
-### 技术与内容
+官网与文档共用一个域名。文档和语言切换生成的地址都保留 `/doc/` 前缀。非中英文官网语言使用英文文档。
 
-- React 19、TypeScript、Vite 8、Tailwind CSS v4。
-- TanStack Router 文件路由及按路由拆包，Motion 和 GSAP 动效，Base UI / shadcn 源码组件。
-- i18next / react-i18next：英语、简中、西语、巴葡、法语、日语；英语默认并作为回退，选择保存在当前浏览器。
-- 官网不需要后端、数据库或登录系统；产品工作台保留在原项目中。
-- 安装页使用 URL 参数保存操作系统和 Core / Full 选择，生成命令前通过 Zod 校验。
+- 官网文案：`src/content/messages.ts`、`src/content/other-locales.ts`。
+- 中文文档：`content/docs/zh/`；英文：`content/docs/en/`。
+- 文档目录：对应目录内的 `meta.json`，使用 Fumadocs 原生目录和顶部分类。
+- 公共主题：`src/app/global.css`，直接基于上游主题，未加载旧站 CSS。
+- 文档搜索：Fumadocs + Orama，中文使用 Mandarin tokenizer；数据库在构建时导出，浏览器本地搜索，无搜索服务或模型 API。
+- 产品内置帮助仍在产品仓库中维护；本站公开文档在本仓库中更新。
 
-### 内容与素材来源
+“复制 Markdown”使用的纯文本也从同一份 MDX 在构建时自动导出，无需另存或同步正文。
 
-事实依据见 [docs/content-sources.md](docs/content-sources.md)。品牌标志和产品视频来自 LinkSense 自有仓库，记录于 [public/media/README.md](public/media/README.md)。界面中的工作流插图是明确标记的示意，不冒充客户数据或实际产品截图。
+## 发布
 
-首页保留居中的白色开场、大幅圆角 showreel、系统连接、自主部署与 FAQ，以克制的 LinkSense 蓝色点缀。字体沿用 Inter 与 Noto Sans SC，品牌与视频使用自有素材，动画沿用现有 Motion / GSAP。历史验证记录与已知边界见 [docs/verification.md](docs/verification.md)。
+保留现有 Cloudflare Worker、域名与观测配置，静态目录改为 `out/`。`pnpm deploy` 先完成 Next 构建和发布包校验，再执行 `cf deploy --prebuilt`，避免框架检测或旧构建目录导致发布错误内容。`SITE_URL` 用于更换 canonical 域名；默认 `https://linksense.guygubaby.top`。
 
-### 文档维护
+Cloudflare 的 `public/_redirects` 将旧 `/help/…` 永久跳转到对应的 `/doc/…`。`public/_headers` 声明静态搜索数据库的 JSON 类型。不存在的页面由导出的 `404.html` 处理。
 
-文档唯一内容源是产品仓库的 `apps/docs`。执行 `pnpm docs:build` 后启动 `pnpm dev`；默认读取相邻的 `../linksense`，可用 `LINKSENSE_REPO` 指定其他工作目录。产品仓库需先安装 pnpm 依赖。生成的 `public/help/` 不入 Git；官网发布命令会重新构建文档。
+本工程不包含登录、数据库、AI 搜索后端或 New API 的插件市场、用户反馈 API 与统计账号。
 
-新增部署指南只进入官网公开构建，不进入产品内置帮助与 Skill。中文地址为 `/help/`，英文为 `/help/en-US/`。README 中的用户、管理员、部署和开发链接使用这套固定地址。
+## English
 
-官网和公开文档共用 `src/site-theme.css` 主题入口，其中包含 `theme-tokens.css` 的字体、颜色、留白和页头尺寸，以及 `pill.css` 的按钮动画；构建命令会通过 `LINKSENSE_WEBSITE_THEME` 自动传入文档工程。顶部主菜单统一为文档、社区，体验入口保留为独立按钮。文档跨章节使用同一份完整左侧目录，非当前分类默认折叠。
+The LinkSense website and documentation use the open-source New API documentation project's Next.js, Fumadocs, home hero, navigation, and theme. The previous Vite/Docusaurus implementation has been removed. LinkSense content, six website languages, brand assets, videos, and 74 bilingual article pairs are retained.
+
+Run `pnpm install` and `pnpm dev`. `pnpm build` generates one static `out/` directory for both the website and `/doc/`; `pnpm preview` serves it locally. There is no sibling-checkout dependency or separate documentation deployment. English is the default at `/doc/`; Chinese is `/doc/zh-CN/`. Existing `/doc/en-US/` links remain supported.
+
+The imported public home source uses GrainGradient. It is distinct from the unconfirmed source of the black-hole marketing page at `www.newapi.ai`. Upstream licensing and the exact source revision are recorded in `THIRD_PARTY_NOTICES.md`.

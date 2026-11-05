@@ -1,0 +1,18 @@
+{
+  "title": "User guide",
+  "pages": [
+    "overview",
+    "getting-started",
+    "tasks",
+    "automations/create-and-manage",
+    "message-channels",
+    "plugin-center",
+    "mcp/connect-and-manage",
+    "knowledge-bases",
+    "settings",
+    "feedback",
+    "troubleshooting/common-problems"
+  ],
+  "root": true,
+  "icon": "BookOpen"
+}

@@ -1,5 +1,42 @@
 # Verification
 
+## New API source migration and LinkSense blue — 2026-11-05
+
+The previous Vite, TanStack Router, Docusaurus, GSAP/Motion components, and website CSS have been replaced with the public `QuantumNous/new-api-docs-v1` source baseline `d254f1842dc3d08d60f2269e2c9d4c9876a3dfbc`: Next.js 16.4.1, React 19.2.9, Fumadocs UI/Core 16.0.10, Fumadocs MDX 13.0.7, its home Hero/navigation, and its documentation layout. LinkSense content, six website languages, brand assets, media, and 74 Chinese/English document pairs remain. The upstream pink theme and shader palette are replaced by LinkSense blue `#1765ED`; dark mode uses lighter blue foregrounds.
+
+`pnpm test`: 16 Node/tsx tests pass, covering language routing, installation choices, interpolation, canonical origins, and Fumadocs relative-link resolution inside locale directories. `pnpm lint` passes. The production build checks TypeScript and exports 315 routes, including 148 article pages and 148 plain-Markdown exports. A static audit of 160 unique internal link paths finds no missing destination.
+
+`pnpm build` now generates a fresh Cloudflare Build Output using the pinned official config/build-output packages, validates the resulting configuration and website entry, and rejects unresolved MDX links or legacy `/help/` assets. This replaces the stale output left by the previous Vite toolchain. `cf deploy --prebuilt --dry-run --provision=false` reads the new 1405-file assets directory successfully, with no bindings and no upload. The existing Worker, domain, compatibility date, and observability settings remain configured.
+
+REA browser checks against the built static site:
+
+- Chinese → English homepage navigation retains dark mode; returning to System is supported by the upstream three-state theme switch. Dark English homepage Evidence: `ev_8e1d2f841274d2f1a611dbee01883d549819494796932cc5a3d1c376d78b54d3`.
+- Chinese search for `知识库` returns knowledge-related results. Switching to English, searching `Core`, and selecting `Install Core` opens `/doc/en-US/deploy/core/` and renders its Linux section. Evidence: `ev_d6807d843d12c69f3a1c17913f24b9fa08aea204743509ca918f98546b050d77`.
+- At 390×844, the French homepage fits the narrow layout, and the Chinese documentation renders its mobile page and opens the sidebar. Mobile sidebar Evidence: `ev_74b1045cccb4a92c6b975ef7c5a885d91511c616f7d829b497a149544a98e479`.
+- Switching the installation page from English to Chinese preserves `edition=full&platform=macos`, both selected controls, the matching guide anchor, and the localized agent prompt. Evidence: `ev_c300a23557c1cd5a3cef7ef3d49d0db3dc87220af409b6f51407df25ff24de46`.
+- Returning from Dark to System in a light OS context restores the blue light homepage. Evidence: `ev_34ba0686d82d6cee5caf2b81001523bc06f258f1d424276d4d980f48a20e64a6`.
+
+These successful browser checks have no captured console or page errors, and REA terminated its owned browser processes. Direct requests to website, localized installation, both documentation languages, deployment deep links, plain Markdown, and the bilingual static search database return 200. No installer was executed, and no production release or real-device Safari check is claimed.
+
+Earlier sections below record superseded implementations and historical releases.
+
+## Website and documentation in one project — 2026-11-05
+
+Public documentation is now maintained in this repository's `documentation/` directory. The initial 74 Chinese articles and their 74 English translations came from LinkSense's existing documentation package, including deployment guides. All dependencies and commands are managed from the website root; no sibling checkout is used by the build. The website and documentation share `src/site-theme.css` and one `dist/` deployment.
+
+`pnpm build` builds both languages, the website, static installation/404 entries, and checks both TypeScript projects. Targeted installation/documentation URL tests pass (6 tests), and `pnpm lint` passes.
+
+The built output was served through the Miniflare bundled with the installed Cloudflare CLI, using `auto-trailing-slash` and `404-page` asset handling. HTTP assertions passed for `/`, `/install?edition=full&platform=macos`, `/doc/`, `/doc/en-US/`, and deployment deep links in both languages. `/help` and `/help/en-US/deploy/core/?from=old` return 301 to the corresponding `/doc/` routes, including the query string. Missing articles and missing document JavaScript return 404. The local bundled runtime supports compatibility dates through 2026-10-19, so that date was used only in the temporary verification harness; the project's existing 2026-10-20 deployment date was retained.
+
+REA 6.8.0 exercised the built site in isolated Chrome sessions:
+
+- At 1280×720, searching `Core` returned `Install Core` and related deployment results under `/doc/en-US/`. Evidence: `ev_2a8731e517c3c09b2eec3daf2dc709f84b4913a3794b9bed640c60b7f0df6244`.
+- At 390×844, the Chinese mobile navigation opened and displayed the complete documentation categories under `/doc/`. Evidence: `ev_4a0ed29d794a66c5546a141cfa9da1d5ed96422d1657e8d37f4f385f68e894d2`.
+
+Both browser scenarios completed without captured console or page errors, and REA terminated its owned browser processes. No installer was executed. No production deployment, real-device Safari verification, or screen-reader certification is included in this revision.
+
+New API source and shipped-frontend research, including its remaining source-availability boundary, is recorded in [newapi-reference.md](newapi-reference.md).
+
 ## Mobile documentation controls — 2026-11-04
 
 The public documentation's mobile table of contents now opens an absolutely positioned, scrollable panel below a native `details` / `summary` control. Opening it leaves the document heading at exactly the same vertical position. Selecting a heading, tapping outside, pressing Escape, or moving keyboard focus outside closes the panel. The existing translated label is reused, and navigation to another document resets the disclosure.
@@ -78,16 +115,16 @@ Fourteen production checks passed for that earlier editorial build: `/`, `/start
 
 Reviewed on 2026-10-16. Reference: https://cuberto.com/. LinkSense keeps its own copy, fonts, footage and native scrolling. This is an adaptation, not a claim of frame-perfect parity.
 
-| Effect                               | Owner and trigger                          | Evidence and fallback                                                                                                                                                                            | Status      |
-| ------------------------------------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| Masked headings and supporting copy  | GSAP SplitText, initial/route entry        | Entry coordinated with route cover; CJK uses line masks. Reduced motion retains readable text.                                                                                                   | adapted     |
-| Video hover                          | Persistent cursor, fine pointer over reel  | Captured circle growth from 10 to 49 to 65px, final 72px at 1440px viewport; exclusion blending, outline play icon and native pointer. Exit captured 72 to 29 to 12px.                           | implemented |
-| Reel playback                        | ProductReel, viewport and explicit click   | Click opens native dialog, Close releases it. Preview pauses on hidden/offscreen/reduced motion; poster and explicit controls remain.                                                            | adapted     |
-| Contextual pointer and elastic rules | Cursor and ElasticRule, fine pointer       | Link/project/media/stick modes, lag/skew, press/release and elastic recovery. Disabled for reduced motion/coarse pointers.                                                                       | adapted     |
-| Header navigation                    | Header, hover/focus                        | Black underline scales horizontally; reduced motion removes transition. Normal link and keyboard semantics retained.                                                                             | implemented |
-| Language menu                        | Base UI Select                             | Six options visible; Spanish selection survives reload, then restored to English. Base UI owns focus, keyboard and popup behavior.                                                               | implemented |
-| Agent install                        | InstallPage, edition/platform selection    | Full/macOS selection updates prompt and official command; copy control reports success. Six locales are covered by translation/interpolation checks. Browser clipboard readback was unavailable. | implemented |
-| SPA routes                           | SiteShell and TanStack Router              | Home to install navigation completes with cover reset; installation options remain in query parameters.                                                                                          | adapted     |
+| Effect                               | Owner and trigger                         | Evidence and fallback                                                                                                                                                                            | Status      |
+| ------------------------------------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| Masked headings and supporting copy  | GSAP SplitText, initial/route entry       | Entry coordinated with route cover; CJK uses line masks. Reduced motion retains readable text.                                                                                                   | adapted     |
+| Video hover                          | Persistent cursor, fine pointer over reel | Captured circle growth from 10 to 49 to 65px, final 72px at 1440px viewport; exclusion blending, outline play icon and native pointer. Exit captured 72 to 29 to 12px.                           | implemented |
+| Reel playback                        | ProductReel, viewport and explicit click  | Click opens native dialog, Close releases it. Preview pauses on hidden/offscreen/reduced motion; poster and explicit controls remain.                                                            | adapted     |
+| Contextual pointer and elastic rules | Cursor and ElasticRule, fine pointer      | Link/project/media/stick modes, lag/skew, press/release and elastic recovery. Disabled for reduced motion/coarse pointers.                                                                       | adapted     |
+| Header navigation                    | Header, hover/focus                       | Black underline scales horizontally; reduced motion removes transition. Normal link and keyboard semantics retained.                                                                             | implemented |
+| Language menu                        | Base UI Select                            | Six options visible; Spanish selection survives reload, then restored to English. Base UI owns focus, keyboard and popup behavior.                                                               | implemented |
+| Agent install                        | InstallPage, edition/platform selection   | Full/macOS selection updates prompt and official command; copy control reports success. Six locales are covered by translation/interpolation checks. Browser clipboard readback was unavailable. | implemented |
+| SPA routes                           | SiteShell and TanStack Router             | Home to install navigation completes with cover reset; installation options remain in query parameters.                                                                                          | adapted     |
 
 ## Automated checks
 
@@ -159,3 +196,13 @@ Scoped to the three product workflow panels. Cuberto's current homepage was insp
 At 390×844 all six locale selections kept the document width at 390px and produced no overflowing workflow-step buttons. English, default viewport sizing and normal motion were restored. Targeted `pnpm test src/components/product-experience.test.tsx src/lib/motion-geometry.test.ts`: 3 tests pass. `pnpm lint` and final `pnpm build` (including TypeScript) pass. The existing main-chunk size warning remains. No new dependency, real-device/Safari check or performance score is included in this revision.
 
 Released application source `753f1b9` to the existing `linksense-site` Worker through Dashboard upload. Production version `63c0a21f` is Ready at 100%. The 127-file upload preserves asset root `/`, `auto-trailing-slash` HTML handling and `single-page-application` fallback. `/`, `/start` and `/install?edition=full&platform=macos` return 200 HTML referencing the current build. Production main JavaScript, route JavaScript and CSS match the local build's SHA-256 hashes. The production browser renders all three authored service backgrounds; selecting Review displays `Analysis.xlsx`, and Request restores the first step. No production browser console errors were recorded. Existing domain `https://linksense.guygubaby.top` is retained.
+
+## November 5, 2026 — English default, motion and control polish
+
+The Next.js/Fumadocs replacement now defaults to English on `/` and `/doc/`. Chinese documentation is `/doc/zh-CN/`; old `/doc/en-US/` URLs remain compatible. LinkSense blue and the bilingual content are retained. The desktop documentation menu uses a large first card and four cards in a two-by-two grid. Text navigation links show an external-link icon; the GitHub icon does not. Enabled buttons, navigation and disclosure controls use a pointer cursor.
+
+The installer uses native radio inputs in pill-shaped segmented controls with one persistent indicator per group. Browser checks covered pointer selection, arrow-key navigation, URL state and the corresponding installation prompt and guide.
+
+The homepage adds Cuberto-inspired masked word/character entrances, staggered content and a rounded media reveal using GSAP. Captured heading transforms included intermediate offsets of approximately 58–116 percent before settling at zero. The existing LinkSense film has a custom player, muted autoplay when visible, pause/resume, mute, keyboard seeking and fullscreen. Reduced-motion checks show a still preview until the user explicitly plays it. Playback pauses offscreen and in hidden documents.
+
+Validation: 16 unit tests, ESLint, TypeScript and the production build passed; 389 static routes were generated and 234 internal link destinations resolved. Chrome browser scenarios passed at 1440×1000 and 390×844, including the wide navigation menu, player controls and reduced-motion behavior, with no captured page or console errors. These viewport checks do not establish iOS/Safari or screen-reader behavior.

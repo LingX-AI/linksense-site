@@ -1,0 +1,12 @@
+{
+  "title": "Personal settings",
+  "pages": [
+    "general",
+    "profile",
+    "quota",
+    "personalization",
+    "appearance",
+    "security",
+    "archived-tasks"
+  ]
+}

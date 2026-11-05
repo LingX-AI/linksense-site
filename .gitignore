@@ -1,7 +1,8 @@
 node_modules/
-dist/
-/public/help/
-.tanstack/
+.next/
+.source/
+out/
+*.tsbuildinfo
 .env*
 !.env.example
 *.local
@@ -9,10 +10,7 @@ dist/
 coverage/
 playwright-report/
 test-results/
-src/routeTree.gen.ts
 .cloudflare/
-
-# wrangler files
-.wrangler
+.wrangler/
 .dev.vars*
 !.dev.vars.example

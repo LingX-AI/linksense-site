@@ -1,0 +1,9 @@
+{
+  "title": "Getting started",
+  "pages": [
+    "sign-in",
+    "registration",
+    "password-and-sso",
+    "first-task"
+  ]
+}

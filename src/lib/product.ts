@@ -6,7 +6,7 @@ export const agentInstallUrl =
   'https://raw.githubusercontent.com/LingX-AI/linksense/main/Install.md'
 
 export function docsUrl(language: string | undefined, path = '') {
-  return `/help/${language === 'zh-CN' ? '' : 'en-US/'}${path}`
+  return `/doc/${language === 'zh-CN' ? 'zh-CN/' : ''}${path}`
 }
 
 export type Edition = 'core' | 'full'

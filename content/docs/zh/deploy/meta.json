@@ -1,0 +1,14 @@
+{
+  "title": "自主部署",
+  "pages": [
+    "index",
+    "core",
+    "full",
+    "first-setup",
+    "operations",
+    "development",
+    "architecture"
+  ],
+  "root": true,
+  "icon": "Wrench"
+}

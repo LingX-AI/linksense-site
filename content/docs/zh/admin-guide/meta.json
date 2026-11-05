@@ -1,0 +1,25 @@
+{
+  "title": "管理员指南",
+  "pages": [
+    "overview",
+    "---用户与权限---",
+    "users",
+    "groups",
+    "roles",
+    "plugin-governance",
+    "---知识库治理---",
+    "knowledge-governance",
+    "knowledge-sources",
+    "model-settings",
+    "quota-settings",
+    "system-settings",
+    "authentication-settings",
+    "health",
+    "feedback",
+    "audit",
+    "usage",
+    "system-update"
+  ],
+  "root": true,
+  "icon": "Shield"
+}

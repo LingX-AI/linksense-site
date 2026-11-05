@@ -1,0 +1,9 @@
+{
+  "title": "开发者指南",
+  "icon": "Code",
+  "root": true,
+  "pages": [
+    "interactive-application",
+    "embed-application"
+  ]
+}
