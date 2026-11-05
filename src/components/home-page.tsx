@@ -63,7 +63,7 @@ export function HomePage({ lang }: { lang: string }) {
     <HomeMotion lang={lang}>
       <section
         aria-labelledby="home-title"
-        className="relative mx-auto flex min-h-[clamp(600px,70vh,900px)] w-full max-w-[1400px] overflow-hidden rounded-2xl border bg-origin-border text-landing-foreground"
+        className="relative mx-auto flex min-h-[clamp(460px,56vh,620px)] w-full max-w-[1400px] overflow-hidden rounded-2xl border bg-origin-border text-landing-foreground"
       >
         <Hero>
           <p

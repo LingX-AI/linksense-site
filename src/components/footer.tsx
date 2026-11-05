@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Github } from 'lucide-react'
-import { docsPath, getMessages, homePath } from '@/lib/i18n'
+import { docsPath, getMessages } from '@/lib/i18n'
 import { repository } from '@/lib/product'
 
 export function Footer({ lang }: { lang: string }) {
@@ -51,12 +51,6 @@ export function Footer({ lang }: { lang: string }) {
   return (
     <footer className="mt-auto border-t border-fd-border bg-fd-card/30 backdrop-blur-sm">
       <div className="mx-auto max-w-[1400px] px-6 py-12">
-        <div className="mb-8 border-b border-fd-border pb-8">
-          <Link href={homePath(lang)} className="text-lg font-semibold">
-            LinkSense
-          </Link>
-          <p className="mt-2 text-sm text-fd-muted-foreground">{t.footer}</p>
-        </div>
         <div className="grid grid-cols-2 gap-x-8 gap-y-10 pb-10 md:grid-cols-3 lg:gap-x-12">
           {sections.map((section) => (
             <div key={section.title}>

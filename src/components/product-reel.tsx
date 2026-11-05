@@ -106,7 +106,7 @@ export function ProductReel({ lang }: { lang: string }) {
   return (
     <div
       ref={frame}
-      className="group/reel relative isolate aspect-video overflow-hidden rounded-3xl bg-black sm:rounded-4xl [&:fullscreen]:h-screen [&:fullscreen]:w-screen [&:fullscreen]:rounded-none"
+      className="group/reel relative isolate aspect-video overflow-hidden rounded-3xl bg-white sm:rounded-4xl [&:fullscreen]:h-screen [&:fullscreen]:w-screen [&:fullscreen]:rounded-none"
       role="group"
       aria-label={t.watch}
     >

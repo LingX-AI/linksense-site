@@ -90,7 +90,6 @@ function detectShaderProfile(): ShaderProfile {
 export function Hero({ children }: { children: ReactNode }) {
   const { resolvedTheme } = useTheme()
   const [showShaders, setShowShaders] = useState(false)
-  const [imageReady, setImageReady] = useState(false)
   const [logoReady, setLogoReady] = useState(false)
   const [mounted, setMounted] = useState(false)
   // Avoid hydration mismatch: the first client render must match SSR output.
@@ -209,24 +208,6 @@ export function Hero({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <div className="relative mt-12 min-h-[240px] flex-1">
-          {mounted && (
-            <Image
-              src={'/media/product-poster.jpg'}
-              alt="LinkSense workspace"
-              width={1200}
-              height={800}
-              className={cn(
-                'absolute top-0 left-[20%] max-w-[1200px] rounded-xl border-2',
-                imageReady ? 'duration-400 animate-in fade-in' : 'invisible',
-              )}
-              onLoad={() => setImageReady(true)}
-              loading="lazy"
-              fetchPriority="low"
-              sizes="(min-width: 1024px) 1200px, 100vw"
-            />
-          )}
-        </div>
       </div>
     </>
   )
