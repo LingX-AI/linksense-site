@@ -29,7 +29,7 @@ const en = {
     'Install LinkSense {{edition}} on this {{platform}} machine following {{docs}}. Verify the host before running the installer. Preserve existing data and credentials. Report the access URL and guide me through first-time setup without printing secrets.',
   installGuide: 'Open installation guide',
   home: 'Home',
-  install: 'Self-host',
+  install: 'Self Host',
   docs: 'Documentation',
   try: 'Explore LinkSense',
   menu: 'Menu',
