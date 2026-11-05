@@ -18,7 +18,7 @@ export function Segmented({
   return (
     <fieldset className="min-w-0">
       <legend className="mb-3 text-sm text-fd-muted-foreground">{label}</legend>
-      <div className="relative inline-grid grid-cols-2 rounded-full bg-white p-1.5 text-black">
+      <div className="relative inline-grid grid-cols-2 rounded-full bg-fd-secondary p-1.5 text-fd-foreground">
         <span
           aria-hidden="true"
           className="pointer-events-none absolute inset-y-1.5 start-1.5 w-[calc((100%-0.75rem)/2)] rounded-full bg-brand transition-transform duration-300 ease-out motion-reduce:transition-none"
