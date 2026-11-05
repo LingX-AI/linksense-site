@@ -18,7 +18,7 @@ export default async function Layout({
     <SiteRoot lang={lang} docs>
       <DocsLayout
         {...baseOptions(lang, true)}
-        tabMode="top"
+        tabMode="auto"
         tree={source.pageTree[lang]}
         links={linkItems}
         sidebar={{
