@@ -18,10 +18,10 @@ export function Segmented({
   return (
     <fieldset className="min-w-0">
       <legend className="mb-3 text-sm text-fd-muted-foreground">{label}</legend>
-      <div className="relative inline-grid grid-cols-2 rounded-full bg-fd-secondary p-1.5">
+      <div className="relative inline-grid grid-cols-2 rounded-full bg-white p-1.5 text-black">
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-1.5 start-1.5 w-[calc((100%-0.75rem)/2)] rounded-full bg-fd-foreground transition-transform duration-300 ease-out motion-reduce:transition-none"
+          className="pointer-events-none absolute inset-y-1.5 start-1.5 w-[calc((100%-0.75rem)/2)] rounded-full bg-brand transition-transform duration-300 ease-out motion-reduce:transition-none"
           style={{
             transform: `translateX(${value === options[1].value ? 100 : 0}%)`,
           }}
@@ -39,7 +39,7 @@ export function Segmented({
               checked={value === option.value}
               onChange={() => onChange(option.value)}
             />
-            <span className="relative transition-colors duration-200 peer-checked:text-fd-background motion-reduce:transition-none">
+            <span className="relative transition-colors duration-200 peer-checked:text-brand-foreground motion-reduce:transition-none">
               {option.label}
             </span>
           </label>
