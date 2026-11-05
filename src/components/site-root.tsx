@@ -43,6 +43,9 @@ export function SiteRoot({
       lang={homeLocales[lang as keyof typeof homeLocales] ?? 'en-US'}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="describedby" type="text/plain" href="/llms.txt" />
+      </head>
       <body>
         <Provider i18n={(docs ? docsUI : homeUI).provider(lang)}>
           {children}

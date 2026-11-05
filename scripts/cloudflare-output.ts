@@ -25,8 +25,44 @@ for (const page of [
   'doc/zh-CN/index.html',
   'doc/en-US/index.html',
   'api/search',
+  'llms.txt',
 ]) {
   assert(existsSync(join(root, 'out', page)), `Missing static export: ${page}`)
+}
+const llmsIndex = readFileSync(join(root, 'out/llms.txt'), 'utf8')
+assert(
+  llmsIndex.startsWith('# LinkSense\n'),
+  'Missing llms.txt project heading',
+)
+assert(llmsIndex.includes('## English\n'), 'Missing English llms.txt index')
+assert(llmsIndex.includes('## 简体中文\n'), 'Missing Chinese llms.txt index')
+for (const locale of ['en', 'zh']) {
+  assert(
+    llmsIndex.includes(`/markdown/${locale}/index.txt`),
+    `Missing deployment entry in the ${locale} LLM index`,
+  )
+}
+for (const [, href] of llmsIndex.matchAll(/^- \[[^\]]+]\(([^)]+)\)/gm)) {
+  const url = new URL(href)
+  assert(
+    url.pathname.startsWith('/markdown/'),
+    `The LLM index must link to plain Markdown: ${href}`,
+  )
+  assert(
+    existsSync(join(root, 'out', url.pathname)),
+    `Missing LLM-readable document: ${href}`,
+  )
+}
+for (const page of ['index.html', 'doc/index.html', 'doc/zh-CN/index.html']) {
+  const html = readFileSync(join(root, 'out', page), 'utf8')
+  assert(
+    /<link[^>]*rel="describedby"[^>]*href="\/llms\.txt"/.test(html),
+    `Missing LLM index discovery link: ${page}`,
+  )
+  assert(
+    /<a[^>]*href="\/llms\.txt"[^>]*>llms\.txt<\/a>/.test(html),
+    `Missing visible llms.txt footer link: ${page}`,
+  )
 }
 const documentation = new Map(
   [...globSync('doc/**/index.html', { cwd: resolve(root, 'out') })].map(

@@ -74,13 +74,21 @@ export function Footer({ lang }: { lang: string }) {
         </div>
         <div className="flex flex-col items-start justify-between gap-4 border-t border-fd-border pt-8 sm:flex-row sm:items-center">
           <p className="text-xs text-fd-muted-foreground">© 2026 LinkSense</p>
-          <a
-            href={repository}
-            aria-label="GitHub"
-            className="text-fd-muted-foreground hover:text-fd-foreground"
-          >
-            <Github className="size-4" />
-          </a>
+          <div className="flex items-center gap-4">
+            <a
+              href="/llms.txt"
+              className="text-xs text-fd-muted-foreground hover:text-fd-foreground"
+            >
+              llms.txt
+            </a>
+            <a
+              href={repository}
+              aria-label="GitHub"
+              className="text-fd-muted-foreground hover:text-fd-foreground"
+            >
+              <Github className="size-4" />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
