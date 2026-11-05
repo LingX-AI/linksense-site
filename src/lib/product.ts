@@ -23,3 +23,15 @@ export function installGuideUrl(
 ) {
   return docsUrl(language, `deploy/${edition}/#${platform}`)
 }
+
+export function manualInstallCommand(edition: Edition, platform: Platform) {
+  const script = `install-${edition}.sh`
+  const execute =
+    platform === 'linux'
+      ? `sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy sh ${script}`
+      : `sh ${script}`
+
+  return `curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \\
+  -o ${script} https://raw.githubusercontent.com/LingX-AI/linksense/main/${script} &&
+${execute}`
+}

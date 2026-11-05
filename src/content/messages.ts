@@ -24,6 +24,7 @@ const en = {
   agentBody:
     'Give this prompt to your coding agent. It includes your selected deployment and platform, environment checks and the official installation instructions.',
   agentCopy: 'Copy agent prompt',
+  manualTitle: 'Manual install',
   agentPrompt:
     'Install LinkSense {{edition}} on this {{platform}} machine following {{docs}}. Verify the host before running the installer. Preserve existing data and credentials. Report the access URL and guide me through first-time setup without printing secrets.',
   installGuide: 'Open installation guide',
@@ -134,6 +135,7 @@ const zh: Messages = {
   agentBody:
     '将这段提示交给你的 AI 编程助手。提示包含当前选择的部署方案、操作系统、环境检查和官方安装说明。',
   agentCopy: '复制安装提示',
+  manualTitle: '手动安装',
   agentPrompt:
     '请按 {{docs}} 在这台 {{platform}} 机器上安装 LinkSense {{edition}}。执行前检查主机环境，保留已有数据和凭据。安装后提供访问地址，引导我完成首次配置，不要在回复中输出秘密。',
   installGuide: '查看安装指南',

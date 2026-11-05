@@ -8,6 +8,7 @@ import {
   agentInstallUrl,
   installGuideUrl,
   installSearchSchema,
+  manualInstallCommand,
 } from '@/lib/product'
 import { docsPath, formatMessage, getMessages } from '@/lib/i18n'
 import { buttonVariants } from './ui/button'
@@ -21,14 +22,16 @@ export function InstallPage({ lang }: { lang: string }) {
   const { edition = 'core', platform = 'linux' } = installSearchSchema.parse(
     Object.fromEntries(search),
   )
-  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>(
-    'idle',
-  )
+  const [copyState, setCopyState] = useState<{
+    target: 'agent' | 'manual'
+    status: 'copied' | 'failed'
+  } | null>(null)
   const prompt = formatMessage(lang, 'agentPrompt', {
     edition: edition === 'core' ? 'Core' : 'Full',
     platform: platform === 'linux' ? 'Linux' : 'macOS',
     docs: agentInstallUrl,
   })
+  const manualCommand = manualInstallCommand(edition, platform)
 
   function change(key: 'edition' | 'platform', value: string) {
     const next = installSearchSchema.parse({ edition, platform, [key]: value })
@@ -36,15 +39,15 @@ export function InstallPage({ lang }: { lang: string }) {
       `${pathname}?${new URLSearchParams({ edition: next.edition ?? 'core', platform: next.platform ?? 'linux' })}`,
       { scroll: false },
     )
-    setCopyState('idle')
+    setCopyState(null)
   }
 
-  async function copy() {
+  async function copy(text: string, target: 'agent' | 'manual') {
     try {
-      await navigator.clipboard.writeText(prompt)
-      setCopyState('copied')
+      await navigator.clipboard.writeText(text)
+      setCopyState({ target, status: 'copied' })
     } catch {
-      setCopyState('failed')
+      setCopyState({ target, status: 'failed' })
     }
   }
 
@@ -112,14 +115,17 @@ export function InstallPage({ lang }: { lang: string }) {
             <button
               type="button"
               className={buttonVariants({ color: 'secondary', size: 'sm' })}
-              onClick={() => void copy()}
+              onClick={() => void copy(prompt, 'agent')}
             >
-              {copyState === 'copied' ? (
+              {copyState?.target === 'agent' &&
+              copyState.status === 'copied' ? (
                 <Check className="size-4" />
               ) : (
                 <Copy className="size-4" />
               )}
-              {copyState === 'copied' ? t.copied : t.agentCopy}
+              {copyState?.target === 'agent' && copyState.status === 'copied'
+                ? t.copied
+                : t.agentCopy}
             </button>
           </div>
           <p className="mt-4 text-sm leading-6 text-fd-muted-foreground">
@@ -129,14 +135,51 @@ export function InstallPage({ lang }: { lang: string }) {
             <code>{prompt}</code>
           </pre>
           <p className="mt-3 text-sm text-fd-muted-foreground" role="status">
-            {copyState === 'failed'
+            {copyState?.target === 'agent' && copyState.status === 'failed'
               ? t.copyFailed
-              : copyState === 'copied'
+              : copyState?.target === 'agent' && copyState.status === 'copied'
                 ? t.copied
                 : ''}
           </p>
         </section>
       </div>
+      <section
+        className="mt-6 rounded-2xl border bg-fd-card p-6"
+        aria-labelledby="manual-install-title"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h2 id="manual-install-title" className="text-xl font-semibold">
+            {t.manualTitle}
+          </h2>
+          <button
+            type="button"
+            className={buttonVariants({ color: 'secondary', size: 'sm' })}
+            onClick={() => void copy(manualCommand, 'manual')}
+          >
+            {copyState?.target === 'manual' && copyState.status === 'copied' ? (
+              <Check className="size-4" />
+            ) : (
+              <Copy className="size-4" />
+            )}
+            {copyState?.target === 'manual' && copyState.status === 'copied'
+              ? t.copied
+              : t.copy}
+          </button>
+        </div>
+        <p className="mt-4 text-sm leading-6 text-fd-muted-foreground">
+          {t.dockerNote}
+        </p>
+        <pre className="mt-5 overflow-auto rounded-xl border bg-fd-background p-5 text-xs leading-6 whitespace-pre-wrap select-all">
+          <code>{manualCommand}</code>
+        </pre>
+        <p className="mt-3 text-sm text-fd-muted-foreground" role="status">
+          {copyState?.target === 'manual' && copyState.status === 'failed'
+            ? t.copyFailed
+            : copyState?.target === 'manual' && copyState.status === 'copied'
+              ? t.copied
+              : ''}
+        </p>
+      </section>
     </div>
   )
 }

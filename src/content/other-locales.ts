@@ -5,6 +5,7 @@ export const es: Messages = {
   agentBody:
     'Copia este mensaje en tu agente de programación. Incluye el despliegue y la plataforma elegidos, las comprobaciones y la guía oficial.',
   agentCopy: 'Copiar instrucciones',
+  manualTitle: 'Instalación manual',
   agentPrompt:
     'Instala LinkSense {{edition}} en esta máquina {{platform}} siguiendo {{docs}}. Comprueba el entorno antes de ejecutar el instalador. Conserva los datos y las credenciales existentes. Indica la URL y guíame en la configuración inicial sin mostrar secretos.',
   installGuide: 'Abrir guía de instalación',
@@ -115,6 +116,7 @@ export const pt: Messages = {
   agentBody:
     'Envie este pedido ao seu agente de programação. Ele inclui a implantação e a plataforma escolhidas, verificações e o guia oficial.',
   agentCopy: 'Copiar instruções',
+  manualTitle: 'Instalação manual',
   agentPrompt:
     'Instale o LinkSense {{edition}} nesta máquina {{platform}} seguindo {{docs}}. Verifique o ambiente antes de executar o instalador. Preserve os dados e as credenciais existentes. Informe a URL e oriente a configuração inicial sem expor segredos.',
   installGuide: 'Abrir guia de instalação',
@@ -224,6 +226,7 @@ export const fr: Messages = {
   agentBody:
     'Transmettez ce message à votre agent de programmation. Il comprend le déploiement choisi, la plateforme, les vérifications et le guide officiel.',
   agentCopy: 'Copier les instructions',
+  manualTitle: 'Installation manuelle',
   agentPrompt:
     'Installe LinkSense {{edition}} sur cette machine {{platform}} en suivant {{docs}}. Vérifie l’environnement avant de lancer le programme d’installation. Préserve les données et les identifiants existants. Indique l’URL et guide-moi dans la configuration initiale sans révéler de secrets.',
   installGuide: 'Ouvrir le guide d’installation',
@@ -334,6 +337,7 @@ export const ja: Messages = {
   agentBody:
     'この手順をコーディングエージェントに渡してください。選択した構成と OS、環境の確認項目、公式ガイドを含みます。',
   agentCopy: 'インストール手順をコピー',
+  manualTitle: '手動インストール',
   agentPrompt:
     '{{docs}} に従って、この {{platform}} マシンに LinkSense {{edition}} をインストールしてください。実行前に環境を確認し、既存のデータと認証情報を保全してください。完了後はアクセス URL と初期設定の手順を案内し、秘密情報は表示しないでください。',
   installGuide: 'インストールガイドを開く',

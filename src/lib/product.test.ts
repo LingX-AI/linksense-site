@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
-import { docsUrl, installGuideUrl, installSearchSchema } from './product'
+import {
+  docsUrl,
+  installGuideUrl,
+  installSearchSchema,
+  manualInstallCommand,
+} from './product'
 
 describe('documentation links', () => {
   it('keeps every language on the same domain under /doc/', () => {
@@ -36,6 +41,23 @@ describe('installation guide links', () => {
     assert.deepEqual(
       installSearchSchema.parse({ edition: 'full', platform: 'macos' }),
       { edition: 'full', platform: 'macos' },
+    )
+  })
+})
+
+describe('manual installation commands', () => {
+  it('runs the selected edition with the platform-specific privilege model', () => {
+    assert.equal(
+      manualInstallCommand('core', 'linux'),
+      `curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \\
+  -o install-core.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-core.sh &&
+sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy sh install-core.sh`,
+    )
+    assert.equal(
+      manualInstallCommand('full', 'macos'),
+      `curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \\
+  -o install-full.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-full.sh &&
+sh install-full.sh`,
     )
   })
 })
