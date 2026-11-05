@@ -113,25 +113,25 @@ body {
   }
 }
 
-/* Homepage card enhanced styles */
-[data-card] {
+/* Cards use data-card="true"; heading anchors use an empty attribute. */
+[data-card='true'] {
   transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
   overflow: hidden;
 }
 
-[data-card]:hover {
+[data-card='true']:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   border-color: var(--color-brand);
 }
 
 /* Card icon container enhancement */
-[data-card] > div:first-child {
+[data-card='true'] > div:first-child {
   transition: all 0.3s ease;
 }
 
-[data-card]:hover > div:first-child {
+[data-card='true']:hover > div:first-child {
   transform: scale(1.1);
   background-color: var(--color-brand);
   color: var(--color-brand-foreground);
@@ -139,7 +139,7 @@ body {
 
 /* Cards grid layout optimization */
 .prose
-  :where([data-card]):not(
+  :where([data-card='true']):not(
     :where([class~='not-prose'], [class~='not-prose'] *)
   ) {
   margin-top: 0;
