@@ -1,5 +1,27 @@
 # Verification
 
+## November 5, 2026 — Continuous topic guides
+
+The public documentation consolidates 116 bilingual small articles into 22 topic
+pages: six user topics and five administrator topics in each language. Existing
+body text is preserved under H2 topic sections and H3 subheadings. Sidebar menus
+link directly to topics, and the long-page table of contents shows their H2
+sections. Internal cross-references use the new page and anchor addresses.
+
+Validation: all 21 unit tests pass, including menu targets, bilingual section
+parity, relative document links, and legacy redirects. The production build
+generates 154 static routes and verifies every rendered documentation link,
+heading destination, and exact legacy redirect against the exported HTML.
+Targeted ESLint passes for the changed TypeScript and TSX files.
+
+The Codex browser verified the Chinese getting-started page: the sidebar contains
+one link per topic, the right-side contents contains the four former article
+titles, and selecting registration changes only the hash within the same page.
+The local Cloudflare asset server returned direct 301 redirects from the retired
+sign-in page, an English-locale task URL, and model settings to their corresponding
+consolidated sections. No product installation, model call, real-device, or
+screen-reader testing was performed.
+
 ## New API source migration and LinkSense blue — 2026-11-05
 
 The previous Vite, TanStack Router, Docusaurus, GSAP/Motion components, and website CSS have been replaced with the public `QuantumNous/new-api-docs-v1` source baseline `d254f1842dc3d08d60f2269e2c9d4c9876a3dfbc`: Next.js 16.4.1, React 19.2.9, Fumadocs UI/Core 16.0.10, Fumadocs MDX 13.0.7, its home Hero/navigation, and its documentation layout. LinkSense content, six website languages, brand assets, media, and 74 Chinese/English document pairs remain. The upstream pink theme and shader palette are replaced by LinkSense blue `#1765ED`; dark mode uses lighter blue foregrounds.

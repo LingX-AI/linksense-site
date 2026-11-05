@@ -1,0 +1,136 @@
+---
+title: Getting started
+description: Sign in, register, manage account security, and complete your first task.
+tocDepth: 2
+---
+
+Follow the steps below to prepare your account and start your first task. Sign in with an existing account, or use registration only when you need to request a new account.
+
+## Sign in to LinkSense [#sign-in]
+
+Depending on deployment configuration, LinkSense can offer email and password, enterprise single sign-on, and Microsoft Teams sign-in. The login page only displays methods that are currently enabled.
+
+If the login page shows **Create account**, you can also use the administrator-enabled [open registration flow](#registration) to request and activate an account.
+
+### Email and password [#sign-in-email-and-password]
+
+1. Open the LinkSense login page.
+2. Enter the email and password associated with your account.
+3. Select **Sign in**.
+
+Email matching is case-insensitive. Repeated failures may trigger temporary login protection. Check your credentials, wait before retrying, or ask an administrator to confirm the account status.
+
+### Single sign-on [#sign-in-single-sign-on]
+
+Choose the enterprise SSO option and complete authentication with the identity provider. A first-time SSO account may be created in a disabled state and require administrator activation before you sign in again.
+
+### Microsoft Teams [#sign-in-microsoft-teams]
+
+When Teams integration is configured, LinkSense uses your Teams identity. If the organization has not configured Teams sign-in, the tab falls back to the standard LinkSense login page.
+
+### If sign-in fails [#sign-in-if-sign-in-fails]
+
+- Confirm the account is not disabled.
+- Local users can choose **Forgot password or set it for the first time**.
+- Restart SSO from the login page if an old callback has expired.
+- For a service error, share only the visible error and time with an administrator—never a password or login token.
+
+## Register and activate an account [#registration]
+
+The sign-in page shows **Create account** only when an administrator has enabled open registration and the authentication email service is available. Accounts created directly by an administrator do not use this flow.
+
+### Request an activation email [#registration-request-an-activation-email]
+
+1. Select **Create account** on the sign-in page.
+2. Enter an email address that you can access.
+3. Select **Send activation email**.
+4. Open the one-time activation link from your inbox.
+
+To avoid disclosing whether an address is registered, the request page normally shows the same result for every submission. Check spam and retry later if no email arrives. If it still does not arrive, ask an administrator to verify open registration and the email service.
+
+### Set a password and activate [#registration-set-a-password-and-activate]
+
+Open the link before it expires, then enter and confirm a new password. The password must contain 8–16 characters and include uppercase and lowercase letters, a number, and punctuation or a symbol. LinkSense signs you in after activation succeeds.
+
+An activation link works only once. Request a new one if it expired, was already used, or open registration was disabled. Disabling open registration also invalidates activation links that have not yet been used.
+
+### Usage available to registered accounts [#registration-usage-available-to-registered-accounts]
+
+Self-registered accounts use the same weekly credit quota standard as other organization members. An unset weekly quota is unlimited. When the quota is exhausted, you cannot start tasks, submit follow-ups, or transcribe voice input; a task that is already running is not interrupted. The quota resets every Monday at midnight in the system time zone. The sidebar displays remaining credits as integers with the fractional part omitted, while the actual balance retains fractional precision. Contact an administrator if your quota needs to change.
+
+### The email is already registered [#registration-the-email-is-already-registered]
+
+If LinkSense explicitly says that the address already has an account, return to the sign-in page or use **Forgot password or set it for the first time**. Do not keep requesting activation emails.
+
+## Passwords, reset links, and SSO [#password-and-sso]
+
+LinkSense never displays your existing password in pages, logs, or email.
+
+### Set or reset a password [#password-and-sso-set-or-reset-a-password]
+
+1. On the login page, choose **Forgot password or set it for the first time**.
+2. Enter your account email.
+3. If local password login is available, LinkSense sends a one-time secure link.
+4. Open the link and choose a password that satisfies the page rules.
+5. Return to the login page and sign in.
+
+The submission response does not reveal whether an account exists. A reset link is single-use and expires; request another when necessary.
+
+### Change an existing password [#password-and-sso-change-an-existing-password]
+
+Open **Settings → Security**, enter the current and new passwords, and submit. All existing sessions are revoked after a successful change, so you must sign in again.
+
+### SSO accounts [#password-and-sso-sso-accounts]
+
+Administrators determine which local, SSO, and Teams methods are available. Successful identity-provider authentication does not override LinkSense account activation. A new or disabled account may still require administrator action.
+
+<Callout type="warn" title="Protect the account">
+
+Never share a password, reset URL, browser token, or SSO callback URL.
+
+</Callout>
+
+## Create your first task [#first-task]
+
+A task is a workspace that keeps related messages, files, context, and deliverables together.
+
+### First-time setup [#first-task-first-time-setup]
+
+Choose an interface language in the top-right corner of the login or initialization page. After signing in, change it in **Settings → General**. LinkSense supports Simplified Chinese, English, Spanish, Brazilian Portuguese, French, and Japanese.
+
+When an administrator first uses LinkSense before configuring a model, the **New task** page shows the **Get started** guide and the sidebar account menu offers a guide shortcut. Both disappear once the account and model are ready. Other members do not see these guides.
+
+- Administrators can choose **Configure model** to open [Model settings](../../admin-guide/models-and-usage.mdx#model-settings), add a model, test its connection, and save.
+- If the model status fails to load, choose **Retry**. You cannot send a new task until model configuration is ready and its status has loaded successfully.
+
+If no model is available, other members should ask an administrator to configure one, then refresh the **New task** page.
+
+You can dismiss the guide. This browser remembers that choice separately for each account. Administrators can reopen it through **Getting started guide** in the sidebar account menu while model setup is still incomplete.
+
+### Submit work [#first-task-submit-work]
+
+1. Select **New task** in the sidebar.
+2. Describe the objective, available material, and expected output.
+3. Add files, plugins, Skills, or knowledge bases when needed.
+4. Check the model and reasoning effort.
+5. Send the request.
+
+Example:
+
+> Review the attached sales data, identify the three most important changes, and create an English summary plus an Excel detail sheet.
+
+### Follow execution [#first-task-follow-execution]
+
+The task displays responses, capability activity, and generated files. LinkSense generates a title from the first request; you can rename it from the recent-task list.
+
+While work is running, you may stop it, steer it with a text-only clarification, or queue another request. Requests with attachments or explicit capability selections are queued automatically.
+
+### Refine the result [#first-task-refine-the-result]
+
+Continue in the same task instead of starting over:
+
+- Rewrite the summary for an executive audience.
+- Add a year-over-year column to the workbook.
+- Export the final conclusion as PDF.
+
+Each turn remains in the task history, and generated files appear as downloadable deliverables.

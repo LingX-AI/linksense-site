@@ -1,0 +1,201 @@
+---
+title: Models, quotas, and usage
+description: Configure models and generation capabilities, set member quotas, and review usage, costs, and bills.
+tocDepth: 2
+---
+
+Configure available models, set quota policies, and review actual usage and billing records.
+
+## Model and generation settings [#model-settings]
+
+<Callout type="info" title="Administrator operation">
+
+Open **Settings → Model settings**. Changes affect later turns or document processing, not running or historical work.
+
+</Callout>
+
+### Provider channels [#model-settings-provider-channels]
+
+When adding a channel, choose the service provider first, then enter a name, Base URL, and API key. Selecting a provider fills in its recommended address and protocol. If no address is provided, enter the compatible service address available to your account. These defaults are starting points; verify your account, region, and the service's actual capabilities. The protocol is always visible in **Advanced settings** and can be adjusted as needed.
+
+Use **Current channel** to switch model catalogs and choose **Edit channel** from the channel's three-dot menu to open a centered dialog. Opening an existing channel preserves its saved address and protocol. A saved key is never returned. Leave the key empty to retain it only when the provider, address, project, and region are unchanged. After changing any of those connection details, enter the key for the new connection before saving or testing.
+
+Save the channel’s connection settings first, then use **Add model** to configure models separately. Channels without models do not add entries to the composer’s model list. The compact list shows names, types, prices, and conversation availability. Open the edit dialog to configure a model. Saving submits only that dialog’s changes; canceling lets you discard unsaved edits.
+
+### Find models and test the connection [#model-settings-find-models-and-test-the-connection]
+
+After saving a channel, select **Add model**, then click **Get available models** to the right of the model selector. Search by model name or ID and select a model. The selector remains disabled until models have been retrieved. If the service does not offer a model list, returns an empty list, or omits your model, choose **Enter a model manually** and enter the ID supplied by the provider.
+
+LinkSense fills in only the name, context length, and image-input information actually returned by the service. Confirm capabilities that were not supplied. Check and enter the provider's actual prices yourself; default zero prices are for local usage estimates only. Pricing, reasoning efforts, context length, and image capabilities are always visible in the model's **Advanced settings**.
+
+**Get available models** and **Test model connection** are separate operations: retrieving a list does not confirm that a model responds. Enter a model ID to test while editing a channel, or test the current chat model when adding or editing it. The test sends a short message. A normal, non-empty text reply confirms the connection works; no tool call is required. The test may incur a small charge and never saves settings. A successful result applies only to that connection and model at the time of the test; test again after making changes. It does not replace validation with real tasks, image understanding, or knowledge retrieval. Connection testing here is not available for embedding or ranker models; validate those in the knowledge retrieval settings described below.
+
+During initial setup, save the first chat model with **Available in conversations** enabled. LinkSense sets it as both the conversation default and the task auto-naming model. Return to **New task**, check the model and reasoning effort, and submit a simple request to verify usage.
+
+### Protocol modes [#model-settings-protocol-modes]
+
+Protocol modes are native Responses, Responses function-tool compatibility, and Chat Completions conversion. Compatibility changes protocol shape only—it never executes tools or replays a full turn.
+
+### Models and prices [#model-settings-models-and-prices]
+
+Model IDs are unique across channels. Configure type, display name, provider, image support, reasoning efforts, and prices:
+
+- chat models: input, cached-input, and output prices;
+- embedding and ranker models: input price.
+
+Prices use USD per million tokens and are snapshotted with future usage. A price change never recalculates history.
+
+Set **Model context length** to a positive token count, or leave it empty for automatic detection. LinkSense uses this value for the context-window indicator and to let the runtime compact context before approaching the model limit. Enter the provider model's real capability; a larger number does not expand the upstream model.
+
+Only chat models show the Available in conversations switch; embedding and ranker models do not. Conversation availability only controls the composer model list. It does not affect task auto naming, knowledge retrieval, reranking, or image understanding. Once chat models are configured, at least one must remain available in conversations. Hiding or deleting the default selects another conversation-available model.
+
+Supported reasoning efforts are editable for chat models. Select one or more of Light, Medium, High, Extra high, Maximum, and Ultra. The default reasoning effort must remain in the selected set; removing the current default automatically selects the first remaining effort.
+
+### Model order [#model-settings-model-order]
+
+Drag a model’s leading handle, or choose **Move up** or **Move down** from its action menu, to reorder models within the current channel. Keyboard users can press Space to pick up a handle, use the arrow keys to move, press Space to confirm, or Escape to cancel.
+
+Use **Move channel up** or **Move channel down** under **Channel actions** to reorder channels. Changes save automatically. A failed save preserves the previous order and displays an error. The composer lists conversation-available chat models in channel order, then model order within each channel. Reordering does not change the user’s selected model.
+
+### Conversation and task auto-naming models [#model-settings-conversation-and-task-auto-naming-models]
+
+At the end of the provider list, select the conversation default and the task auto-naming model separately. The conversation default must be available in conversations. Task auto naming can use any configured chat model and never reads a deployment-provided built-in naming model. Its input, cached-input, and output tokens are recorded under the Task auto naming workload; usage is marked as estimated when the provider does not return token counts.
+
+### Memory extraction model [#model-settings-memory-extraction-model]
+
+Select **Memory extraction model** from the existing chat models. It reuses the model's channel, credentials, and prices; no separate connection settings are needed. Conversation availability does not affect extraction. Clear the extraction selection before deleting the selected model or its channel.
+
+**Use the current task model** uses each task's model for extraction. Extraction always uses the selected model's lowest configured supported reasoning effort, without changing the task's own effort. This selection applies only to extraction; consolidation continues to use the current task model.
+
+Memory generation requires the user's opt-in. Changes apply to subsequently started task runtimes and preserve existing memories. Tasks belonging to one user share native memory state. The native engine uses successful-processing markers, job locks, and input changes to avoid duplicate work. Switching models or restarting does not reset that state. Failure recovery and updated history can still cause new model calls; deduplication is not a retry or spending limit.
+
+### User quotas [#model-settings-user-quotas]
+
+Configure user quotas in the separate [Quota management](#quota-settings) page, in credits.
+
+### Knowledge retrieval models [#model-settings-knowledge-retrieval-models]
+
+Select one configured embedding model and an optional ranker. Conversation availability does not affect these system models. Saving performs real service and vector-dimension validation.
+
+<Callout type="warn" title="Changing the embedding model">
+
+The change invalidates every existing knowledge index immediately. Retrieval remains unavailable until a full rebuild completes in System Health. Plan a maintenance window first.
+
+</Callout>
+
+Without a ranker, or when ranker calls fail, LinkSense uses equal-weight RRF results.
+
+### Image understanding [#model-settings-image-understanding]
+
+Select a configured chat model marked as supporting image understanding. Conversation availability does not affect image understanding. Saving probes image input, structured output, and disabled-reasoning behavior. It affects only new processing or rebuilds.
+
+### Voice transcription model [#model-settings-voice-transcription-model]
+
+When enabled, microphone input in ordinary tasks and embedded applications uses this service. Select a provider, verify the Base URL, and enter an API key plus a model or deployment name. Azure OpenAI also requires an API version. Saved API keys are never returned; leave the field empty while editing to retain the existing key.
+
+Available providers are Alibaba Cloud Model Studio, OpenAI, OpenAI-compatible services, Azure OpenAI, Groq, Deepgram, AssemblyAI, ElevenLabs, Rev.ai, Gladia, and fal.ai. Provider defaults are connection starting points only; model availability, region, authorization, and billing come from your provider account.
+
+After saving, use [Voice input](../user-guide/tasks/index.mdx#voice-input) to test a short recording without sensitive data. Disabling this setting blocks new transcription requests but does not affect typed tasks.
+
+### Image-generation model [#model-settings-image-generation-model]
+
+When enabled, users can call the built-in image-generation capability from a task. Select a provider, enter the model and API key, and configure a per-image price. LinkSense records that price against the number of images actually produced for usage and credits. Selecting a provider fills in its default Base URL, which you can change to your own service address for any provider.
+
+Supported providers are Alibaba Cloud Model Studio, OpenAI, OpenAI-compatible services, Google Gemini, Stability AI, fal.ai, Replicate, and Together AI. For OpenAI-compatible image generation, enter the Base URL, API key, and model name supplied by the service. Alibaba Cloud Model Studio also requires a Workspace ID and region. Provider and model limits vary; one request can ask for no more than 10 images, and runtime output is capped by the current model limit.
+
+Transparent output can be generated natively or handled automatically for suitable clean-edged subjects. Choose a model with native transparency for complex hair, fur, glass, smoke, glow, and translucent edges.
+
+Image editing uses the service and model configured here; existing settings do not need to be saved again. Supported contracts include OpenAI GPT Image, Gemini image models, Bailian Qwen Image 2.x and later or Qwen Image Edit, fal.ai FLUX.2 Edit / Kontext, Replicate FLUX Kontext, and Together AI FLUX.2 / Kontext. An OpenAI-compatible service must implement file uploads at `/images/edits`; support for `/images/generations` alone is insufficient. The current Stability adapter only provides text-to-image generation. Reference-image counts and mask support depend on the selected model; unsupported requests are rejected before calling the provider.
+
+Saved API keys are never returned; leave the field empty while editing to retain the existing key. Enter a new key and verify pricing after switching providers. Use [Generate images](../user-guide/tasks/index.mdx#generate-images) for a one-image validation after configuration.
+
+## Quota management [#quota-settings]
+
+Administrators open **Settings → Quota management** to configure the credit conversion price and one weekly quota standard for all members.
+
+### Credit conversion [#quota-settings-credit-conversion]
+
+Set the USD amount represented by one credit. The default is USD 0.01 per credit: a USD 0.25 call consumes 25 credits. The price must be positive, with up to six decimal places.
+
+Model prices remain in Model settings, in USD per million tokens. Costs use measured usage and the model price snapshot; credit consumption uses the conversion price when that usage is recorded. Later conversion changes do not reprice recorded credits. Consumption is rounded up to six decimal places. Remaining credits are displayed as integers by discarding the fraction; actual balances and quota checks retain decimal precision.
+
+### Member weekly quota [#quota-settings-member-weekly-quota]
+
+The member weekly quota is the shared default for members subsequently created by an administrator, imported from Excel, or created through open registration. Enter a positive amount with up to six decimal places. Blank means unlimited. The quota resets every Monday at midnight in the system time zone.
+
+Saving the setting updates only the default and does not overwrite existing members' individual weekly quotas. Existing members can still be adjusted individually or in bulk under **Users & groups → Users**. The open-registration switch remains under **System settings → Open registration**, but self-registered users no longer have a separate quota standard.
+
+### Reset and apply to all [#quota-settings-reset-and-apply-to-all]
+
+Quota management provides two immediate bulk actions. Each action opens a confirmation dialog; canceling makes no changes.
+
+- **Reset quotas for all** restores every existing member's weekly quota to 100% of their own current limit. It does not change limits, and unlimited members remain unlimited.
+- **Apply limit to all** saves the weekly quota from the form and immediately overwrites every existing member's individual weekly quota, including previous individual adjustments. Blank makes every member unlimited. This action does not reset used credits or save other unsaved edits to the conversion-price form.
+
+Both actions include active and disabled members and do not change account status. Historical usage remains available. Consumption after a manual reset is deducted normally, and the calendar-week reset schedule remains unchanged.
+
+To give all members a new limit with 100% remaining, first apply the limit to all, then reset quotas for all.
+
+Reaching the weekly quota prevents new tasks and follow-up requests. Running tasks finish and may bring final consumption above the limit. Adjusting the quota does not delete or reprice recorded credits.
+
+Token and USD cost statistics remain available. Quota management does not provide payments or top-ups.
+
+## Usage, cost, and billing [#usage]
+
+<Callout type="info" title="Administrator operation">
+
+Open **Settings → Usage analytics**. The **Usage analytics** tab reports resource facts, while **Billing** contains closed natural-month model statements. Credit quotas remain under **Quota management**.
+
+</Callout>
+
+Configure credits in [Quota management](#quota-settings), and adjust existing users under **Users & groups → Users**.
+
+### Time range [#usage-time-range]
+
+Choose all time, the last 7 days, the last 30 days, or custom dates. Trends aggregate by day, month, or year based on the range.
+
+### Views [#usage-views]
+
+- Global: tasks, actual turns, model calls, tokens, and total cost.
+- Workload: AI responses, task auto-naming, memory generation, document embeddings, retrieval-query embeddings, reranking, and image generation.
+- Model: collection method, calls, turns, token details, and cost for generation, embedding, reranking, and image models.
+- Application: tasks, turns, calls, tokens, costs, and per-model detail attributed when each task was created; tasks created outside an application appear as unassociated.
+- Group: current members' activity projected into each group.
+- User: active and disabled users, current groups, and per-model detail.
+
+Tokens abbreviate as K, M, or B; task, turn, call, and member counts remain integers.
+
+### Counting [#usage-counting]
+
+A task and actual turn create one immutable activity fact each. Drafts, pending requests, reconnects, and duplicate events do not add turns. Native cumulative token snapshots are deduplicated by increment. External workloads use trusted usage when available or label protected-input estimates.
+
+### Cost [#usage-cost]
+
+Usage stores the prices active at call time in USD per million tokens. Cached input is part of input, and reasoning output is part of output, so neither is double charged.
+
+Future price changes do not recalculate history. Zero is a valid price; older tokens without a reliable price remain **Unpriced tokens**.
+
+### Group overlap [#usage-group-overlap]
+
+A user in multiple groups contributes to every group. Group rows overlap and must not be summed for a global total. Users with no effective group appear as ungrouped.
+
+### Sorting and export [#usage-sorting-and-export]
+
+Detail tables can be sorted by the columns exposed on the page. **Export Excel** uses the current range and filter definitions to create a multi-sheet workbook with the summary, trends, and the current model, workload, application, group, and user dimensions and details. Recheck the scope before exporting and store or transfer the file under organizational policy. Exports do not contain prompts, response text, file contents, or credentials.
+
+### Monthly statements [#usage-monthly-statements]
+
+Open the **Billing** tab to review the current open period and generated monthly statements. Statements close on natural calendar months in the system time zone and are generated automatically after month end. The current-period card shows the expected generation time. If the service restarts or is upgraded, it also catches up missing closed months.
+
+Each monthly statement is an immutable per-model cost snapshot with input, cached-input, output, and total tokens, pricing mode, and amount:
+
+- A model with one price throughout the month shows its per-million-token rate. A price change during the month is labeled **Mixed pricing**.
+- Tokens without a reliable price snapshot remain unpriced and are not repriced with today's catalog.
+- Statements aggregate by model only. They do not include prompts, responses, file contents, user details, or quota settings.
+- Later price changes, task deletion, or membership changes do not recalculate a generated statement.
+
+Open a statement to preview its model lines, or export a PDF in the current interface language. Exports are recorded in the audit log. Store the downloaded file according to your organization's billing and financial-record policy.
+
+### Retention [#usage-retention]
+
+Task, turn, call, token, cost, application-attribution, and generated-statement facts survive task hard deletion. They do not contain prompts, responses, file contents, credentials, Base URLs, or API keys.

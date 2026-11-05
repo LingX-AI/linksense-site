@@ -1,0 +1,144 @@
+---
+title: Knowledge
+description: Create Knowledge libraries, process documents, share access, and use source citations in tasks.
+tocDepth: 2
+---
+
+Follow the creation, upload, sharing, and task workflow, then verify the sources cited in answers.
+
+## Create and manage knowledge bases [#create-and-manage]
+
+A knowledge base turns long-lived documents into retrievable, cited context.
+
+### Create a local knowledge base [#create-and-manage-create-a-local-knowledge-base]
+
+1. Open **Resource library** from the sidebar, then choose the **Knowledge bases** tab.
+2. Choose **Create knowledge base**.
+3. Enter a name and description.
+4. Select local upload and save.
+
+The creator is the sole owner and can manage metadata, directories, documents, sharing, and lifecycle.
+
+### External source [#create-and-manage-external-source]
+
+When an administrator has configured SharePoint, the create form offers an external source. Enter an allowed SharePoint folder URL. LinkSense verifies access before scheduling synchronization.
+
+Only administrators create and manage external-source knowledge bases. Other users can use one that is shared with them.
+
+### Edit, archive, restore, and delete [#create-and-manage-edit-archive-restore-and-delete]
+
+- Metadata edits do not reprocess documents.
+- Archiving makes the knowledge base read-only.
+- Restoring re-enables management.
+- Permanent deletion is available only after archiving and cannot be undone.
+
+### Disable and transfer [#create-and-manage-disable-and-transfer]
+
+An administrator can disable a knowledge base globally or transfer ownership to another active user. Governance does not automatically grant document content, preview, or download access.
+
+### Capacity [#create-and-manage-capacity]
+
+The detail page shows quota usage. Current versions, versions retained for historical citations, failed originals, and pending cleanup can consume capacity. A deleted status does not guarantee immediate capacity release.
+
+## Upload and manage knowledge-base documents [#documents]
+
+### Upload files or folders [#documents-upload-files-or-folders]
+
+Choose files or a folder from the knowledge-base detail page. Folder upload preserves paths below the selected root; empty directories are not stored.
+
+The local pipeline accepts PDF, DOCX, XLSX, PPTX, ODT, ODS, ODP, TXT, Markdown, HTML, CSV, and PNG, JPEG, TIFF, BMP, or WebP images. Unsupported files are skipped with an explanation.
+
+Default deployment limits are 200 MiB per file, 100 files per batch, and 10 GiB per knowledge base. Always use the current limits returned by the page.
+
+### Processing stages [#documents-processing-stages]
+
+Documents move through validation, queueing, parsing, chunking, optional image understanding, parent construction, embedding, indexing, and activation. Only a **Ready** version is retrievable.
+
+Review the failed stage and retry after resolving the cause. Reprocessing runs the full pipeline from the stored original.
+
+### Versions, names, and directories [#documents-versions-names-and-directories]
+
+- Replacing a file creates a version and activates it only after success.
+- Historical citations remain fixed to the exact version used.
+- Renaming changes display metadata, not content.
+- Directories and flat or hierarchical views help organize entries.
+
+### Preview and download [#documents-preview-and-download]
+
+The document page offers parsed and original read-only views. Originals are fetched through authorized LinkSense endpoints, never arbitrary URLs; HTML originals are handled as safe content. Download remains a separate action.
+
+<Callout type="warn" title="Deletion">
+
+Deletion uses a controlled cleanup process. After permanent cleanup, a historical citation retains only safe historical names and location summaries; content, preview, and download are unavailable.
+
+</Callout>
+
+## Share and unshare knowledge bases [#sharing]
+
+Only the owner manages sharing. A grant allows viewing and retrieval, not document management, sharing changes, or ownership.
+
+### Share [#sharing-share]
+
+1. Open the knowledge base and its Sharing section.
+2. Search for a user or group.
+3. Confirm the use grant.
+
+Access can come from ownership, a direct share, or one or more group memberships. The page lists effective sources.
+
+### What recipients can do [#sharing-what-recipients-can-do]
+
+Recipients can browse allowed content, preview and download accessible documents, and select the knowledge base in a task. They cannot upload, replace, delete, edit metadata, or grant access to others.
+
+### Revoke access [#sharing-revoke-access]
+
+Removing one source may not remove all access. A user who also belongs to an authorized group remains eligible after a direct share is removed. LinkSense identifies remaining sources.
+
+A user may remove their own direct share; if no other source remains, access ends.
+
+### State changes [#sharing-state-changes]
+
+- Disabled users cannot use knowledge bases.
+- Membership changes affect group-derived access.
+- Administrator disablement or archival overrides direct and group shares.
+- Every new turn validates its fixed knowledge-base selection again.
+
+## Use knowledge bases and citations [#use-and-citations]
+
+### Select a knowledge base [#use-and-citations-select-a-knowledge-base]
+
+Before sending, choose **Add knowledge base** and select one or more accessible entries. The selection is fixed for that turn and can change later.
+
+Preflight reports a knowledge base that is disabled, archived, deleted, or no longer shared. LinkSense never expands retrieval to every accessible knowledge base silently.
+
+### Ask a grounded question [#use-and-citations-ask-a-grounded-question]
+
+For example:
+
+> Answer only from the knowledge bases selected for this turn, cite the evidence, and state clearly when the material is insufficient.
+
+### Inspect citations [#use-and-citations-inspect-citations]
+
+Open a numbered citation to see:
+
+- knowledge-base and document names;
+- the exact document version used;
+- heading path and matched content;
+- verified page numbers, or a document-level reference when no reliable page exists.
+
+You can switch between parsed content and the original for the same version, then download the original separately.
+
+### Historical behavior [#use-and-citations-historical-behavior]
+
+Replacing a document does not redirect old answers to new content. After permanent source deletion, a citation retains a historical name and location summary but cannot show or download content.
+
+### Images in conversations [#use-and-citations-images-in-conversations]
+
+New images legitimately returned to a task by knowledge retrieval are saved independently as conversation attachments. Later turns can display them without selecting the knowledge base again. Rebuilding or deleting a knowledge base, or revoking its sharing permission, does not remove copies already saved in a conversation. Opening the original citation still requires access to the source.
+
+Images remain restricted to authorized task access and follow the task-artifact retention policy. This applies only to new retrievals after image snapshot storage is enabled; existing replies are not backfilled and previously broken images are not repaired automatically.
+
+<Callout type="info" title="Retrieval unavailable">
+
+You can continue using regular attachments, plugins, and Skills while knowledge retrieval is unavailable. Retry later or ask an administrator to inspect the health page.
+
+</Callout>

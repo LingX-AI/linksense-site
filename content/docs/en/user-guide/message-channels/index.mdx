@@ -1,0 +1,218 @@
+---
+title: Messaging channels
+description: Compare, connect, and use WeChat, Feishu, WeCom, DingTalk, and Teams in one guide.
+tocDepth: 2
+---
+
+Compare the supported capabilities first, then follow the connection and troubleshooting steps for your platform.
+
+## Message channel overview [#overview]
+
+Open **Settings → Message channels** to connect LinkSense to a chat platform. Channel messages are still processed inside your private task space and remain subject to model, capability, concurrency, and credit limits.
+
+### Choose a channel [#overview-choose-a-channel]
+
+| Channel | Connection method | Supported messages | Network requirement |
+| --- | --- | --- | --- |
+| [Weixin](#weixin) | Scan a QR code with a personal Weixin account | Text and transcribable voice from the linked account | No public callback |
+| [Feishu](#feishu) | Scan a QR code to create or update an official bot | One-to-one text from the bot creator | Outbound HTTPS and WebSocket; no public callback |
+| [WeCom](#wecom) | Administrator setup followed by each member linking their account | Private text and group @ mentions from linked members | Outbound HTTPS and long connection; no public callback |
+| [DingTalk](#dingtalk) | Personal QR creation and authorization, then account linking | Your private text and group @ mentions | Stream connection; no public callback |
+| [Microsoft Teams](#teams) | Administrator-managed Entra/Azure Bot followed by member account linking | Private, group, or channel @ mentions from linked members | A publicly reachable HTTPS messaging endpoint is required |
+
+Channels continue the corresponding task for each member and chat. Different members of an organization bot have separate task contexts. Group replies may be visible to other people in that group, so do not send content that should remain private.
+
+### Where to view complete results [#overview-where-to-view-complete-results]
+
+Message channels mainly return the final text. Return to the corresponding LinkSense task for tool activity, execution details, attachments, generated files, and long results. Add unsupported files or message types from the web interface instead.
+
+### Before connecting [#overview-before-connecting]
+
+- Use your own platform account or an organization-approved bot application.
+- Link WeCom, DingTalk, and Teams identities to your own existing, active LinkSense account. You do not need to enter a member ID.
+- Make sure enterprise proxies, firewalls, and DNS do not block the required outbound connections.
+- Only Teams needs a public HTTPS callback. Never share secrets, QR codes, pairing codes, or callback credentials while troubleshooting.
+
+## Connect and use Weixin [#weixin]
+
+### Connect by QR code [#weixin-connect-by-qr-code]
+
+1. Go to **Settings → Message channels**.
+2. Select **Connect Weixin** on the Weixin card.
+3. Scan the QR code with Weixin on your phone and confirm there.
+4. If your phone shows a pairing code, enter it in LinkSense and submit it.
+5. Close the dialog after the status becomes **Online**.
+
+Select **Generate again** if the QR code expires or connection fails. Use **Reconnect** to restore an existing connection; a successful new connection replaces the old runtime connection.
+
+### Supported scope [#weixin-supported-scope]
+
+The Weixin connection processes only text and transcribable voice messages sent by the account that scanned the code. Other accounts, group chats, and unsupported message types do not start LinkSense requests. Every accepted message runs in that user's task space and remains subject to model, capability, knowledge-base, concurrency, and credit quotas.
+
+### Disconnect [#weixin-disconnect]
+
+Select **Disconnect** and confirm to stop receiving and replying to Weixin messages. Existing tasks, messages, and artifacts remain available in the web app.
+
+### Connection or reply problems [#weixin-connection-or-reply-problems]
+
+- Make sure the QR code is valid and that you completed confirmation or the pairing-code step on the phone.
+- Check that the status is **Online**. Reconnect when it is **Connecting**, **Connection error**, or **Reconnect required**.
+- Send a supported text or voice message from the account that scanned the code.
+- Check credit quotas, scheduled maintenance, and task concurrency limits.
+- If retries continue to fail, give an administrator the visible status and time. Do not share the QR code, pairing code, or sign-in credentials.
+
+## Connect and use Feishu [#feishu]
+
+After connecting Feishu, you can send text to the bot in a private chat. LinkSense processes the message and returns the final response in the same chat.
+
+### Connect by QR code [#feishu-connect-by-qr-code]
+
+1. Open **Settings → Message channels**.
+2. On the Feishu card, select **Scan to create bot**.
+3. Scan the QR code with Feishu and approve the request.
+4. Wait until the page shows a successful connection, then open the new bot in Feishu and send a text message.
+
+LinkSense creates an official Feishu bot and securely stores the information needed for the connection. You do not need to enter application credentials or configure a callback URL manually.
+
+When you scan again, LinkSense updates the associated Feishu application instead of creating a duplicate for the same account. If Feishu created the application during an earlier attempt but LinkSense did not finish associating it, follow the dialog to select the existing application and continue.
+
+### Wait for administrator approval [#feishu-wait-for-administrator-approval]
+
+Some organizations require an administrator to approve new applications or permissions. The channel then shows **Waiting for administrator approval** or a similar status:
+
+- You do not need to scan again.
+- After approval, LinkSense automatically detects the change and restores the connection, usually within a few seconds.
+- The bot may be unable to send or receive messages while approval is pending.
+
+If approval is complete but the status does not update for an extended period, refresh the Message channels page and confirm that the Feishu application still exists and its required permissions have not been revoked.
+
+### Supported messages [#feishu-supported-messages]
+
+- Only one-to-one private text messages from the person who created the bot are accepted.
+- Each accepted message creates or continues a private LinkSense task and starts one processing turn.
+- Feishu receives only the final text result. Open the LinkSense task to see the full progress, tool activity, and file results.
+- Group chats, messages from other people, images, files, voice messages, cards, and proactive pushes are not currently supported.
+
+### Use with a local deployment [#feishu-use-with-a-local-deployment]
+
+Local deployment is supported. The computer or server running LinkSense connects outward to Feishu, so you do not need to expose `localhost` publicly or configure a public callback URL.
+
+The LinkSense environment must be able to reach Feishu over HTTPS and WebSocket. A corporate proxy, firewall, DNS issue, or TLS interception can leave the channel looking connected while messages or replies do not arrive.
+
+### Feishu says the application does not exist [#feishu-feishu-says-the-application-does-not-exist]
+
+If the original Feishu application was deleted, do not keep scanning a QR code that points to it:
+
+1. Close the current QR dialog and start the Feishu connection again.
+2. Select **Application deleted? Create a new application** or the equivalent option shown on the page.
+3. Scan the new QR code and approve it.
+
+After the new application connects, it replaces the invalid association. Later scans will update this application.
+
+### Disconnect [#feishu-disconnect]
+
+After disconnection, LinkSense stops receiving new messages from the bot. The official Feishu application and existing LinkSense tasks remain available. When you reconnect, LinkSense first tries to reuse and update the original application.
+
+To remove the application from Feishu as well, delete it separately in Feishu administration. Use the **Create a new application** path the next time you connect.
+
+### The bot does not respond [#feishu-the-bot-does-not-respond]
+
+Check these items in order:
+
+1. The channel is connected, not waiting for administrator approval or requesting reconnection.
+2. The bot creator is sending plain text in a one-to-one private chat.
+3. The Feishu application still exists and its approved permissions have not been revoked.
+4. The LinkSense environment can reach Feishu over HTTPS and WebSocket.
+5. Refresh the Message channels page, wait a few seconds, and send one short text message. Do not submit repeated copies.
+
+### An untitled task appears but does not start [#feishu-an-untitled-task-appears-but-does-not-start]
+
+A newly created task may briefly appear as **Untitled task**. If it stays empty and never starts:
+
+1. Open the task and refresh the page to check whether the original message arrived.
+2. Return to Message channels and confirm that Feishu is still connected.
+3. Send a new, short text message in the same bot chat instead of repeating the original one.
+4. If the problem continues, record the time, Feishu sender, and stable error message shown on the page before contacting an administrator. Do not share QR codes, application credentials, or sensitive message content.
+
+See [Troubleshoot common problems](../troubleshooting/common-problems.mdx) for additional checks.
+
+## Connect and use WeCom [#wecom]
+
+### Administrator setup [#wecom-administrator-setup]
+
+1. Create an internal WeCom intelligent bot in API mode with a long connection. Make it available to the members who need access.
+2. In LinkSense, open **Administration → System settings → Organization message channels** and choose **Connect WeCom**.
+3. Enter the bot ID and secret, choose whether members may mention the bot in groups, and save. Wait for the connection to come online. There is no single allowed-member setting.
+
+Administrators maintain the connection and can pause, enable, or disconnect it. Members do not need bot credentials. Pausing keeps account associations and existing tasks.
+
+### Member access [#wecom-member-access]
+
+1. Sign in to your own existing, active LinkSense account and open **Settings → Message channels**.
+2. Choose **Link my account** on the WeCom card and get a confirmation message.
+3. Send the complete message to the WeCom bot in a private chat. It is valid for 10 minutes and one use. Do not forward it to anyone else.
+4. Once the page shows **Account linked**, send private text or mention the bot in an allowed group.
+
+Tasks use the sender's own LinkSense permissions, resources, and quota. Unregistered, disabled, or unlinked accounts cannot start tasks. Different members in the same group have separate task contexts; replies in the group remain visible to its members.
+
+### Scope and troubleshooting [#wecom-scope-and-troubleshooting]
+
+Internal member text messages and group mentions are supported. Customer messages, images, files, voice, and cards are not supported yet.
+
+Ask an administrator to configure or enable an unavailable channel. Administrators should check bot credentials, visibility, and network access when a connection fails. Members can choose **Unlink account** on their Message channels page.
+
+To replace the bot or its secret, an administrator disconnects and configures it again; members then link their accounts again. Disconnecting removes associations and queued channel messages while keeping existing LinkSense tasks.
+
+## Connect and use DingTalk [#dingtalk]
+
+### Connect by QR code [#dingtalk-connect-by-qr-code]
+
+1. Sign in to an existing, active LinkSense account and open **Settings → Message channels**.
+2. Choose **Connect by QR code** on the DingTalk card and wait for the QR code.
+3. Scan with DingTalk on your phone. Follow DingTalk's steps to create and authorize a bot. You do not need to enter application credentials or a member ID.
+4. After authorization, choose **Link my account**, get a confirmation message, and send the complete message to the bot in a private chat. It is valid for 10 minutes and one use. Do not forward it to anyone else.
+5. Once the page shows **Account linked**, send a text task to the bot.
+
+The bot belongs to the current LinkSense user. Other people cannot use your account through it. Scanning or authorizing a bot does not register LinkSense accounts for other people.
+
+### Supported behavior [#dingtalk-supported-behavior]
+
+The channel supports your private text messages and group text that mentions the bot. Each chat continues its corresponding task using your permissions, models, capabilities, and quota. Group replies are visible to group members. Images, files, voice, and cards are not supported yet.
+
+### Connection or access problems [#dingtalk-connection-or-access-problems]
+
+Generate a new QR code if it expires or authorization is not completed. Complete DingTalk's authorization and organization approval requirements, and make sure the network can reach DingTalk.
+
+If your account is not linked, get a confirmation message in LinkSense and send it privately to the bot. Unregistered or disabled accounts cannot start tasks. Configure an available model and sufficient quota, or contact your administrator if needed.
+
+### Unlink or disconnect [#dingtalk-unlink-or-disconnect]
+
+**Unlink account** stops this DingTalk identity from using LinkSense and lets you link it again later. Disconnecting DingTalk removes the connection, identity association, and queued channel messages. Existing LinkSense tasks and the bot on DingTalk are kept.
+
+## Connect and use Microsoft Teams [#teams]
+
+### Administrator setup [#teams-administrator-setup]
+
+1. Register a public-cloud single-tenant application in Microsoft Entra and create a client secret. Create an Azure Bot with the same application ID and tenant, and enable the Microsoft Teams channel.
+2. In LinkSense, open **Administration → System settings → Organization message channels** and choose **Connect Microsoft Teams**. Enter the application Client ID, secret, and tenant ID. Choose whether members may mention the bot in groups, and save. No member ID is required.
+3. Copy the displayed **Messaging endpoint** into Azure Bot. The address must be publicly reachable over HTTPS.
+4. Create a Teams app package containing the bot with the required personal, group chat, or team scopes. Have an organization administrator approve, install, or distribute it to members.
+
+Administrators maintain the connection and can pause, enable, or disconnect it. Members do not need application credentials or directory-read permissions to link their accounts. Teams sign-in settings and bot messaging settings are managed separately.
+
+### Member access [#teams-member-access]
+
+1. Sign in to your own existing, active LinkSense account and open **Settings → Message channels**.
+2. Choose **Link my account** on the Microsoft Teams card and get a confirmation message.
+3. Send the complete message to the Teams bot in a private chat. It is valid for 10 minutes and one use. Do not forward it to anyone else.
+4. Once the page shows **Account linked**, send private text or mention the bot in an allowed group chat or channel.
+
+Tasks use the sender's own LinkSense permissions, resources, and quota. Unregistered, disabled, or unlinked accounts cannot start tasks. Members have separate task contexts in the same group; channel posts also keep separate threads. Group replies remain visible to group members.
+
+### Scope and troubleshooting [#teams-scope-and-troubleshooting]
+
+Text is supported. Images, files, voice, and cards are not supported yet. An address reachable only on localhost cannot receive Teams messages.
+
+Administrators should check the application ID, tenant, secret, Teams app scopes, organization approval, public HTTPS endpoint, and network when messages fail. Members can unlink their own identities from Message channels.
+
+To replace the application or secret, an administrator disconnects and configures it again; members then link their accounts again. Disconnecting removes associations and queued channel messages while keeping existing LinkSense tasks.

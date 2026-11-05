@@ -1,0 +1,184 @@
+---
+title: Health, upgrades, and audit
+description: Inspect system health, perform safe upgrades, review audit records, and handle user feedback.
+tocDepth: 2
+---
+
+Check system health, follow the maintenance workflow for upgrades, and use audit records and user feedback to investigate problems.
+
+## System health and index rebuilds [#health]
+
+<Callout type="info" title="Administrator operation">
+
+**Settings → System health** is read-only except for explicitly provided maintenance actions.
+
+</Callout>
+
+### Health areas [#health-health-areas]
+
+The page reports API, database, Redis, local-login protection, authentication email, document parsing, retrieval and indexing, optional reranking, runner, workspace access, authoritative running slots, actual running turns, recovery, child process count, and concurrency limits. In Docker deployments it also reports CPU, memory, PID, and state for API, Runner, workers, Web, gateway, PostgreSQL, Redis, and other observed containers.
+
+It shows redacted summaries and recommendations, not credentials, connection strings, Redis keys, internal logs, or secrets.
+
+### Interpret status [#health-interpret-status]
+
+- Liveness means the API process is running.
+- Readiness means critical dependencies can serve full traffic.
+- A required storage failure makes readiness unavailable while liveness continues probing.
+- Document parsing or retrieval can be unavailable without making all LinkSense features unavailable.
+- An unconfigured ranker is valid; RRF remains available.
+
+### Disk usage [#health-disk-usage]
+
+Disk usage is a compact total in the top health summary. It includes all users' project spaces, task artifacts and attachments, environments and caches, plus databases, knowledge indexes, backups, logs, and service programs for the current deployment. Retained files from completed or archived tasks are also included.
+
+Measurements use allocated filesystem space. Sparse files use their allocated size; shared directories, hard links, and image layers are counted once. Separate stored copies are counted separately. This is not the host's total disk usage. Other deployments, global build caches, and historical images without confirmed ownership are excluded. Storage shared with another deployment is marked unmeasured when it cannot be attributed. Databases, object storage, and indexes on external servers are excluded from local disk usage and must be checked separately in those services.
+
+Sampling starts once at service startup and then runs hourly in the background. A new scan is never started while the previous scan is still running. Large directories have independent time and resource limits. Other health information appears immediately. Disk usage is added to the summary automatically after the first complete measurement. Pending or incomplete measurements remain hidden; a subtotal is never shown as the total. Hover over the indicator to view the sample time. Scanning does not block readiness checks or task execution, and a sampling failure does not itself change service readiness.
+
+Docker deployments use the existing Worker image for a temporary, read-only container without networking. It measures filesystem metadata without reading file contents and is removed afterward. This requires the existing Docker socket permission and container capabilities for read-only scanning. Storage drivers that do not expose image or writable layer locations leave those categories unmeasured. Local-process deployments cannot currently report complete deployment disk usage.
+
+There is no database migration or user file modification, relocation, or cleanup. Update Runner, API, and Web to measure existing storage; tasks, projects, and applications do not need to be recreated.
+
+### Service resource usage [#health-service-resource-usage]
+
+**Service resource usage** shows the latest available Docker container snapshot. An unobservable result normally means that the Runner controller lacks a usable Docker socket or permission; it does not mean every container stopped. The cards are diagnostic and cannot restart or stop containers.
+
+### Failed resource cleanup [#health-failed-resource-cleanup]
+
+When asynchronous cleanup after task or capability deletion repeatedly fails, System health lists the resource type, stage, stable reason, and attempt count. You can retry one or all failed items. LinkSense rechecks state, defers cleanup for an active goal task, and does not interrupt other running tasks.
+
+Do not manually delete managed directories when path boundaries, permissions, or runtime state are uncertain. Fix deployment permissions or Runner first, then retry from System health.
+
+### Rebuild all knowledge indexes [#health-rebuild-all-knowledge-indexes]
+
+After changing the embedding model or detecting a deployment-wide mismatch:
+
+1. Confirm model and dimension configuration is stable.
+2. Read the full-rebuild impact.
+3. Start it in a maintenance window.
+4. Monitor progress and failures.
+5. Verify retrieval after completion.
+
+The rebuild uses a deployment-wide concurrency limit and keeps failed entries retryable. Do not start duplicate rebuilds by repeatedly selecting the action.
+
+### Escalation [#health-escalation]
+
+Deployment-authorized operators must resolve environment, network, or external-service problems. The health page does not automatically create or reconfigure external Docling, Elasticsearch, or model-service containers.
+
+## Check for and install LinkSense updates [#system-update]
+
+<Callout type="info" title="Administrator action">
+
+Go to **Settings → System update**. The web page checks and displays versions; it never downloads or installs an update silently.
+
+</Callout>
+
+### Check version status [#system-update-check-version-status]
+
+The page checks official LinkSense GitHub releases and shows the current and latest versions, check time, publication time, and release notes. Select **Check now** to refresh or open the GitHub release page for complete information.
+
+A failed check does not affect other product features. LinkSense distinguishes an unavailable GitHub connection, rate limiting, and an unrecognized response. Repair server egress or wait for the limit to clear before retrying.
+
+Administrators see a product notice when an update is available. Dismissing it applies only to that administrator and release; a later release displays a new notice.
+
+### Prepare for the upgrade [#system-update-prepare-for-the-upgrade]
+
+1. Read release notes from the current version through the target version.
+2. Schedule a low-traffic window and notify users under **System settings → System maintenance**.
+3. Verify disk capacity, Docker services, and the PostgreSQL backup location on the host.
+4. Wait for or stop tasks that should not span the upgrade and make sure an administrator can still open System health.
+
+### Run on the deployment host [#system-update-run-on-the-deployment-host]
+
+Linux:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/LingX-AI/linksense/main/upgrade.sh | sudo sh
+```
+
+macOS (do not use `sudo`):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/LingX-AI/linksense/main/upgrade.sh | sh
+```
+
+The script detects Core or Full, waits for running tasks, and creates and verifies a PostgreSQL backup before database migration. Save the backup location printed by the script. A failure after migration begins does not automatically roll back the database.
+
+### Instances deployed from main [#system-update-instances-deployed-from-main]
+
+Instances using `deploy/production/deploy-production.sh` switch versions without waiting for tasks to finish. Images build first; maintenance and task shutdown begin afterwards. Existing conversations and files are retained. Unfinished and queued requests are not replayed automatically: users should review actual progress before continuing manually. Messages already sent or other external changes are not undone.
+
+Task shutdown uses a short shared grace period rather than a separate wait for every task. Backups, migration approval and health checks remain required. If shutdown or task-state persistence fails, deployment reports an error and keeps maintenance enabled. Resolve the error and rerun deployment instead of restarting the previous services directly.
+
+### Verify after upgrading [#system-update-verify-after-upgrading]
+
+Open **System health** and verify API, database, Redis, storage, Runner, knowledge parsing, and search. Run one minimal task to check the execution path. Then end maintenance early or let the window expire.
+
+If upgrading fails, retain the terminal output and backup location for a deployment operator. Do not repeatedly rerun the script before confirming database state.
+
+## Audit logs [#audit]
+
+<Callout type="info" title="Administrator operation">
+
+Open **Settings → Audit logs**. Audit is for security facts, not browsing user content.
+
+</Callout>
+
+### Events [#audit-events]
+
+The audit area has three data surfaces:
+
+- **Permanent audit logs** cover account and role changes, groups, capability import and publication, credential lifecycle, knowledge governance, model and system configuration, and management results.
+- **Task execution metadata** is a cross-user redacted summary of execution status, capability names, and file counts, without titles, messages, or download actions.
+- **Deleted-task artifacts** reports retained artifact count, size, checksum state, and deletion time without content viewing, recovery, or download.
+
+Filter permanent events by time, actor, target type, action, or result. Task execution metadata can also be filtered by plugin, Skill, error code, Runner status, archive status, and creation or run dates. Open a record to inspect stable actions, required IDs, timestamps, and structured redacted metadata. The UI does not expose raw protocol fields as user content.
+
+### Content boundary [#audit-content-boundary]
+
+Audit does not show another user's task body, files, deliverable content, complete tool arguments, raw third-party responses, passwords, tokens, API keys, credential plaintext, complete Base URLs, or internal paths.
+
+Some records retain source IP and User-Agent as restricted metadata and display them only according to policy.
+
+### Rejected operations [#audit-rejected-operations]
+
+Self-disablement, self-demotion, attempts against the final administrator, unauthorized reads, and invalid governance requests are recorded with their stable error codes.
+
+### Recommendations [#audit-recommendations]
+
+- Start with a narrow time range.
+- Preserve data-minimization rules when exporting or relaying audit facts.
+- Correlate events with System Health time points.
+- Expect permanent minimal audit after a business entity is deleted.
+
+## Manage user feedback [#feedback]
+
+<Callout type="info" title="Administrator action">
+
+Go to **Settings → User feedback**. Regular users can view their own submissions and replies under **My feedback**, but cannot read submissions from other users.
+
+</Callout>
+
+### Review feedback [#feedback-review-feedback]
+
+The paginated list shows the submitter, a text excerpt, image count, reply status, and submission time. Select **View** to read the complete text and open image previews. If an image fails to load, refresh before asking the user to resend sensitive material through an uncontrolled channel.
+
+Feedback may contain business information that the user chose to submit. Use it only for issue diagnosis and avoid copying it into logs, public tasks, or unrelated external services. Feedback is not an audit log and is not automatically joined to a particular task execution.
+
+### Reply to a user [#feedback-reply-to-a-user]
+
+Open the feedback details, write a reply or add images, and select **Send reply**. Text-only, image-only, and combined replies are supported. Each reply allows up to 2,000 characters and nine images, with a maximum of 5 MB per image. PNG, JPEG, WebP, and GIF are supported, including pasted images.
+
+You can reply more than once; replies appear chronologically. Failed submissions preserve the draft and selected images. After a successful reply, the user can read it under **My feedback**, and the list shows **Replied**. This status does not mean the issue is resolved.
+
+### Delete feedback [#feedback-delete-feedback]
+
+Deletion permanently removes the feedback, every reply, and all their images and cannot be undone. Confirm that necessary handling is complete and organizational retention rules allow deletion. It does not delete the submitter, tasks, audit records, or usage facts.
+
+### Handling guidance [#feedback-handling-guidance]
+
+- Start with the reported time, page, and stable error code.
+- Ask for additional information only through an approved organizational channel.
+- Never request passwords, tokens, API keys, QR codes, or one-time links.
+- For system incidents, correlate the report with [System health](#health) and [Audit logs](#audit).

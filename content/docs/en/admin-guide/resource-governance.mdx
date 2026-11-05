@@ -1,0 +1,117 @@
+---
+title: Plugin and Knowledge governance
+description: Review Plugins and Applications, govern Knowledge libraries, and configure external data sources.
+tocDepth: 2
+---
+
+Review shared capabilities, govern Knowledge status, and maintain data-source connections. Administrative privileges do not automatically grant access to user content.
+
+## Plugin Center and Application Center review [#plugin-governance]
+
+<Callout type="info" title="Administrator operation">
+
+Open **Settings → Plugin Center**. Review applies to an immutable submitted snapshot, not a mutable personal source directory.
+
+</Callout>
+
+### Review a release [#plugin-governance-review-a-release]
+
+Inspect the publisher, type, release number, release notes, files, executable bits, content SHA-256, manifest, Skill content, logo, and declarations for MCP, scripts, external connections, environment variables, credentials, or dependency downloads.
+
+Every release requires a separate review and LinkSense verifies snapshot integrity again before approval.
+
+### Review Application Center releases [#plugin-governance-review-application-center-releases]
+
+An application review shows its creator, standard or interactive kind, version, release notes, and offered usage options. Open the detail to inspect its instructions, plugin and Skill names, knowledge-base and MCP counts, and—for an interactive application—package file paths.
+
+An **Application package** becomes an independently maintained user copy whose source code users can view and whose required credentials they configure. An **Online application service** runs online with creator-managed resources and configured credentials, without users installing their own local copy. Interactive applications cannot be distributed as copy-installable packages and support the service option only. Before approval, confirm that release notes match the submitted behavior and assess the instructions, external connections, data scope, and usage options. Rejection requires a reason.
+
+### Approve or reject [#plugin-governance-approve-or-reject]
+
+- Approval makes that snapshot current and publishes a draft listing for the first time.
+- Rejection requires a clear reason and does not affect an older approved release or installed copies.
+
+An administrator who is also the publisher may review their own release, subject to any stricter organization policy.
+
+### Suspend and restore [#plugin-governance-suspend-and-restore]
+
+Suspension hides the listing and blocks installation, updates, and every installed copy from starting new tasks. Running turns retain their startup snapshot and are not assigned a fabricated final state.
+
+Restoration makes the listing and installed copies eligible for later work.
+
+Application Center has a separate listing status. Administrator suspension requires a reason and blocks new installation and service starts while preserving task history. It does not remotely delete independent application packages that users already installed; those remain subject to their personal resource state and platform capability governance. Restoring the listing allows eligible users to install or use the service again.
+
+### Unlisted versus suspended [#plugin-governance-unlisted-versus-suspended]
+
+A publisher-unlisted entry accepts no new installs, while existing copies can run and update. Administrator suspension is risk enforcement and blocks new execution from existing copies.
+
+### Audit and privacy [#plugin-governance-audit-and-privacy]
+
+Review and governance actions are audited. Application review exposes only the submitted version's required instructions and resource summary. The role does not grant access to unsubmitted personal plugin, Skill, or application-draft content.
+
+## Knowledge-base governance [#knowledge-governance]
+
+<Callout type="info" title="Administrator operation">
+
+Open **Settings → Knowledge bases**. The page exposes governance metadata without automatically granting document content, preview, or download access.
+
+</Callout>
+
+### Find entries [#knowledge-governance-find-entries]
+
+Search by name or owner and review lifecycle, availability, source, document counts, and capacity summaries.
+
+### Governance actions [#knowledge-governance-governance-actions]
+
+- Disable or enable use in future tasks.
+- Archive into read-only state.
+- Permanently delete an already archived knowledge base.
+- Retry failed resource cleanup.
+- Revoke a selected access source.
+- Transfer ownership to another active user.
+
+Actions that require a reason store it in safe audit metadata. Permanent deletion remains a separate confirmation after archival.
+
+### Disabled owner [#knowledge-governance-disabled-owner]
+
+An owned knowledge base remains and recipients keep existing access. The disabled owner cannot maintain it. Transfer ownership or disable the knowledge base when necessary.
+
+### Retrieval and indexing [#knowledge-governance-retrieval-and-indexing]
+
+Owners retry individual document failures. A deployment-wide embedding or index mismatch requires full rebuild from System Health, not ad hoc edits to every user's knowledge base.
+
+### Authorization boundary [#knowledge-governance-authorization-boundary]
+
+If an administrator must read a document, the owner should grant access through the normal sharing path. Governance APIs must not bypass content authorization.
+
+## Knowledge-base sources [#knowledge-sources]
+
+<Callout type="info" title="Administrator operation">
+
+Open **Settings → Knowledge bases → Knowledge sources** for external source configuration.
+
+</Callout>
+
+### Configure SharePoint [#knowledge-sources-configure-sharepoint]
+
+Enter the Microsoft Entra tenant and application information requested by the page. LinkSense verifies application identity on save and never returns the stored secret.
+
+Use `Sites.Selected` where possible, with Microsoft 365 administrators granting read access only to approved Sites.
+
+### Create an external knowledge base [#knowledge-sources-create-an-external-knowledge-base]
+
+After enabling the source, an administrator can enter a SharePoint folder URL when creating a knowledge base. LinkSense verifies access to that folder before scheduling synchronization.
+
+### Synchronization [#knowledge-sources-synchronization]
+
+- New files use the same secure processing pipeline as local uploads.
+- Changed content creates a replacement version.
+- A name-only change performs a rename.
+- Remote deletion enters controlled citation, index, object, and quota cleanup.
+- Unsupported formats are marked skipped without blocking other files.
+
+### Troubleshoot [#knowledge-sources-troubleshoot]
+
+For authentication failure, check tenant, app ID, secret validity, and target-Site authorization in Microsoft 365. Never paste a client secret into audit notes, tickets, or chat.
+
+LinkSense does not automatically start or reconfigure an unreachable external service. Restore connectivity and retry from the supported UI.

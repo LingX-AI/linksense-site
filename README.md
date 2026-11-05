@@ -1,6 +1,6 @@
 # linksense-site
 
-LinkSense 官网与文档站，直接采用 [QuantumNous/new-api-docs-v1](https://github.com/QuantumNous/new-api-docs-v1) 的 Next.js / Fumadocs 工程、首页 Hero、导航和主题，替换原来的 Vite 与 Docusaurus 实现。首页文案、六种语言、品牌、产品视频、连接器标志和 148 篇中英文文档保留为 LinkSense 内容。
+LinkSense 官网与文档站，直接采用 [QuantumNous/new-api-docs-v1](https://github.com/QuantumNous/new-api-docs-v1) 的 Next.js / Fumadocs 工程、首页 Hero、导航和主题，替换原来的 Vite 与 Docusaurus 实现。首页文案、六种语言、品牌、产品视频、连接器标志和 54 篇中英文主题文档保留为 LinkSense 内容。
 
 ## 技术与来源
 
@@ -43,7 +43,8 @@ pnpm preview
 
 - 官网文案：`src/content/messages.ts`、`src/content/other-locales.ts`。
 - 中文文档：`content/docs/zh/`；英文：`content/docs/en/`。
-- 文档目录：对应目录内的 `meta.json`，使用 Fumadocs 原生目录和顶部分类。
+- 文档目录：对应目录内的 `meta.json`，使用 Fumadocs 原生侧栏和指南切换。
+- 相关小篇合并为连续主题文档：左侧只列主题，右侧目录定位章节；历史小篇 URL 在 `public/_redirects` 中跳转到对应章节。`tocDepth` 用于控制长文页内目录的显示层级。
 - 公共主题：`src/app/global.css`，直接基于上游主题，未加载旧站 CSS。
 - 文档搜索：Fumadocs + Orama，中文使用 Mandarin tokenizer；数据库在构建时导出，浏览器本地搜索，无搜索服务或模型 API。
 - 产品内置帮助仍在产品仓库中维护；本站公开文档在本仓库中更新。
@@ -60,7 +61,7 @@ Cloudflare 的 `public/_redirects` 将旧 `/help/…` 永久跳转到对应的 `
 
 ## English
 
-The LinkSense website and documentation use the open-source New API documentation project's Next.js, Fumadocs, home hero, navigation, and theme. The previous Vite/Docusaurus implementation has been removed. LinkSense content, six website languages, brand assets, videos, and 74 bilingual article pairs are retained.
+The LinkSense website and documentation use the open-source New API documentation project's Next.js, Fumadocs, home hero, navigation, and theme. The previous Vite/Docusaurus implementation has been removed. LinkSense content, six website languages, brand assets, videos, and 27 bilingual topic pairs are retained. Related articles are combined into continuous topic pages, with page navigation on the left and section navigation on the right. Retired article URLs redirect to their corresponding sections.
 
 Run `pnpm install` and `pnpm dev`. `pnpm build` generates one static `out/` directory for both the website and `/doc/`; `pnpm preview` serves it locally. There is no sibling-checkout dependency or separate documentation deployment. English is the default at `/doc/`; Chinese is `/doc/zh-CN/`. Existing `/doc/en-US/` links remain supported.
 

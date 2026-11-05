@@ -1,0 +1,388 @@
+---
+title: Plugins, Skills, and Applications
+description: Discover and install capabilities, then manage personal Skills, Applications, sharing, and credentials.
+tocDepth: 2
+---
+
+Start by discovering and installing capabilities, then create, manage, and share your own Skills and Applications as needed.
+
+## Discover, install, and update capabilities [#discover-and-install]
+
+Plugin Center provides one catalog for published plugins, Skills, MCP extensions, and applications.
+
+The **ClawHub Skill repository** is a separate external Skill source. See [Install Skills from ClawHub](#clawhub) for its pre-install checks and trust boundary.
+
+### Browse and search [#discover-and-install-browse-and-search]
+
+1. Open **Plugin Center**.
+2. Select Plugins, Skills, MCP, or Applications.
+3. Search by name, description, or publisher.
+4. Open details and review the publisher, release notes, risk summary, manifest, and content hash.
+
+### Install [#discover-and-install-install]
+
+Installation creates a personal copy from the current approved release. Before confirming, check whether it contains executable scripts or an MCP server, reaches external services, requires environment variables or credentials, and comes from a trusted publisher.
+
+Manage the installed copy's enabled state from the Installed or Personal area.
+
+Applications use a separate distribution flow. Direct shares appear under **Applications → Shared with me**, while public releases appear in **Application Center**. Depending on the usage option offered by the creator, install an independent application copy or install the online application service before using it. See [Use organization applications](#organization-apps) for the difference. Creators can [create and manage applications](#create-applications).
+
+### Update [#discover-and-install-update]
+
+When **Update available** appears, compare the release notes and explicitly update. Approval of a new catalog release never silently replaces your installed copy.
+
+### Uninstall [#discover-and-install-uninstall]
+
+Uninstalling removes your copy and related personal configuration without changing the catalog release or other users' installations. Historical task and audit facts remain.
+
+<Callout type="warn" title="Risk suspension">
+
+An administrator can suspend a risky listing. A suspended listing is hidden and all installed copies are blocked from starting new tasks until it is restored.
+
+</Callout>
+
+## Install Skills from ClawHub [#clawhub]
+
+ClawHub is an external source of Skills. LinkSense displays metadata synchronized locally, but neither LinkSense nor ClawHub review or endorse every third-party Skill shown there.
+
+### Find and inspect a Skill [#clawhub-find-and-inspect-a-skill]
+
+Go to **Plugin Center → ClawHub Skill repository**, search by name, and optionally sort by downloads or stars. Open the details to inspect the author, version, update time, topics, platform requirements, changelog, and canonical ClawHub page.
+
+Download and star counts can provide context about usage, but they are not a security review.
+
+### Install or update [#clawhub-install-or-update]
+
+1. Choose the version to install.
+2. Wait for LinkSense to fetch and validate the package.
+3. Review source, integrity, and risk notices.
+4. Confirm installation into your personal Skills.
+
+When you already have the same source installed, LinkSense offers an update; it does not reinstall the same version. The installed Skill remains visible and manageable under **My capabilities**.
+
+### Security and availability [#clawhub-security-and-availability]
+
+LinkSense may block installation when a Skill is flagged, has no installable version, does not meet platform requirements, or fails integrity validation. Do not bypass the warning or treat credentials requested by an unknown Skill as ordinary settings.
+
+Refresh later when the repository is temporarily unavailable or has not synchronized any data. Uninstalling removes your personal copy and its configuration; it does not change repository metadata or delete completed task history.
+
+## Manage personal plugins and Skills [#personal-content]
+
+Personal capabilities belong to you and are not automatically visible to other users.
+
+### Import a ZIP package [#personal-content-import-a-zip-package]
+
+1. Open **Plugin Center → Personal** and choose **Add capability**.
+2. Select a local ZIP package.
+3. Wait while LinkSense parses its source, files, manifest, and risk declarations.
+4. Review the preview and confirm the risks before installation.
+
+The preview expires. Repeat the check if it does, and never install an untrusted package.
+
+### Create a Skill [#personal-content-create-a-skill]
+
+Choose the manual Skill option and enter a complete `SKILL.md`. LinkSense previews the content and declarations before installation.
+
+Enter the Skill identifier first, followed by an optional display name. LinkSense generates a readable title from the identifier, such as “Meeting Notes” for `meeting-notes`. You can replace it with a name containing Chinese characters and spaces, or clear it. Once you edit or clear the display name, changing the identifier will not overwrite your choice. Display names support up to 64 characters and do not change the identifier used to invoke the Skill.
+
+Imported Skills retain their display names when provided. Otherwise, LinkSense shows a readable title based on the identifier. Existing Skills do not need to be imported again.
+
+A Skill generated in a task must first be validated and registered as a complete downloadable ZIP. It is installed only after your explicit confirmation.
+
+### View and uninstall Skills in a conversation [#personal-content-view-and-uninstall-skills-in-a-conversation]
+
+Ask the assistant to “list all my enabled skills.” The list includes available built-in Skills and personal Skills you created, imported, or installed from Plugin Center or ClawHub, whether or not they are selected for the current task. Disabled or failed Skills, complete plugin packages, and Skills bundled inside those plugins are excluded.
+
+To remove a personal Skill, say “uninstall my meeting notes skill.” If the name is unclear or matches multiple Skills, the assistant will ask you to identify the intended one. Built-in Skills are provided by the system and cannot be uninstalled. Plan mode can list Skills but cannot uninstall them.
+
+Uninstallation permanently removes your installation copy, Skill files, associated personal settings and credential bindings. Task history, audit records, other users’ installations and published Plugin Center releases are preserved. A running task may continue using its loaded Skills; subsequent turns load the updated installation state.
+
+### Manage lifecycle [#personal-content-manage-lifecycle]
+
+- Disabling excludes the capability from new tasks.
+- Updating performs the source and risk checks again.
+- Deleting permanently removes the capability, configuration, and credential bindings.
+- Historical records retain only the version and source facts needed for traceability.
+
+When updating a personal Skill, the dialog loads its current display name, description, complete instructions and file list. The identifier stays the same. Whether you originally created the Skill manually or imported a ZIP, choose one of the **Update method** radio options:
+
+- **Edit skill content**: Update the display name, description and instructions. Existing scripts, templates, images, other files and settings you did not edit are preserved.
+- **Replace complete skill package**: Upload a ZIP containing every required file. The new package replaces the current Skill, deleting existing files missing from the new package. To change scripts or resources, use **Download complete skill package**, edit the files locally and upload the updated package.
+
+Choose **Review changes and risks** to check added, modified and deleted files and the risks in the resulting Skill. File deletions require a separate acknowledgement before you confirm the update. Checking changes, switching methods or returning to the editor does not change the installed Skill.
+
+Editing cannot be submitted without changes. If the instructions are too long for online editing, you can still download and replace the complete package. If the Skill changes while you are editing, reopen the dialog and review its latest content before submitting. Pending update previews created before a version upgrade must also be checked again.
+
+### Publish [#personal-content-publish]
+
+Choose an owned capability in **My publications**, add release notes, and submit it. LinkSense creates an immutable snapshot for administrator review; later changes to your personal copy do not alter the snapshot.
+
+Each release requires a separate decision. You may withdraw a pending release. After approval, the release becomes the current Plugin Center version.
+
+## Create and manage applications [#create-applications]
+
+Applications provide controlled entry points for repeatable workflows. A creator can combine a model, instructions, plugins, Skills, knowledge bases, and MCP servers and then share the result. An application does not expand permissions that its creator or users do not already have.
+
+In **My applications**, use the filter beside search to choose **All applications**, **In development**, **Standard applications**, or **Interactive applications**. Filters work together with search. Interactive applications include unpublished development drafts, while Standard applications excludes them. The URL preserves the selected filter when you reload the page.
+
+### View application details [#create-applications-view-application-details]
+
+**My applications** shows the published version whenever one exists. Applications with only a draft show **Draft** and a code corner icon. Published applications never show that corner icon; when they have unpublished changes, **New development version** appears after the MCP count. Details show the development version separately, including its name, description, icon, plugin / Skill, knowledge base and MCP counts, and last saved time. **In development** includes both draft-only applications and published applications with new development versions, with one card per application.
+
+Development actions are in the card's three-dot menu: **Continue developing** opens an existing project, while **Develop new version** starts one. The card's **Use** action always opens the published version.
+
+Click the body of an application card in **My applications**, **Shared with me**, or **Application center** to view its name, full description, creator, type, model, version (when available), dates, and resources grouped into plugins, skills, MCP servers, and knowledge bases. **Use** and the actions menu remain separate controls.
+
+- Cards and details in **My applications** show the same installed release, including its name, description, icon, and resources. Unpublished apps show their current configuration, and development drafts are shown separately. Resource lists for shared applications and the application center use their corresponding published version, without the creator's unpublished resource selections.
+- Resource lists show the configured resource name first. When it differs from the application's declaration, **Declared by application** appears underneath. A green check indicates **Configured**; hover over it to see the label. Unmatched declarations appear as **Not configured**, and disabled or deleted resources appear as **Unavailable**. **Configured** only means a resource is linked; actual use still depends on credentials, authorization, and service availability.
+- Details do not display resource IDs, credentials, connection settings, or application instructions. Seeing resource names does not grant permission to browse or manage those resources.
+
+### Create a standard application [#create-applications-create-a-standard-application]
+
+1. Go to **Plugin Center → Applications → My applications**.
+2. Select **Create application → Create standard application**.
+3. Enter a name and description and choose a preset icon or upload an image. Standard and interactive applications default to the colorful cube icon. Existing icon settings are preserved.
+4. Fix a model and reasoning effort, or let users choose them in chat.
+5. Enter application instructions and select plugins, Skills, knowledge bases, and MCP servers that you manage.
+6. Save, then select **Use** to verify the complete workflow.
+
+Shared users cannot see the application instructions. Plugins use the creator's bound plugin credentials. MCP tools may have external side effects, so verify their purpose and permissions before adding them.
+
+### Build an interactive application in conversation [#create-applications-build-an-interactive-application-in-conversation]
+
+1. In My applications, choose Create application → Create an interactive app through chat, enter a name, and start building. You can also ask a regular task to build a LinkSense interactive application.
+2. Describe your requirements in the development conversation. The adjacent preview updates as files change, without exporting and importing packages. Click the name or description above the preview to edit it. Changes save automatically after you stop typing or leave the field.
+3. Try the application with real tasks, files, and results. Its test conversation is separate from the development conversation.
+4. Use Configure capabilities to search, select, or remove plugins, skills, knowledge bases, and MCP servers the application can use. Saving writes your choices to the application's configuration, updates the preview, and includes them when you install or update the application. If the conversation changes the application at the same time, reload the configuration before saving. Preview errors appear in Debug logs and can be inspected by the assistant.
+5. Choose Publish when ready and confirm in the dialog. This enables the application for your own use in My applications. Later, choose Develop from the application's menu, then Publish update and confirm. This does not automatically share or list the application.
+
+Incomplete changes retain the last working preview. An active test finishes on its original version before switching to the latest changes. Publication checks for any changes that have not reached the preview. If content changes after the confirmation dialog opens, review it and confirm again.
+
+A subtle **Draft** or **Published** status sits beside the application name. Further changes return the current content to **Draft**. The three-dot menu at the top right contains **Publish / Publish update**, **Configure capabilities**, **New debug conversation**, **Debug conversation history**, and **Debug logs**. The application preview updates automatically, without manual refresh. Select history or logs to view their content below, then use the close button at the top right of that view to return to the application without losing your form inputs. Only submitted tests appear under **Debug conversation history** in the development panel, outside the sidebar, regular task search, and archive list. Review inputs, outputs, files, and activity there. Editing code or refreshing a preview creates no empty records, and internal preview version numbers are not displayed. **New debug conversation** resets the preview and preserves submitted tests. Older records can be deleted individually. Stop any active test and resolve pending requests before restarting or deleting the application.
+
+Draft edits leave installed, shared, and listed versions unchanged. **Publish update** activates the update only for the creator. Save organization sharing again or submit a new Application Center listing, then recipients manually install the update. See [Share applications and configure external access](#application-access).
+
+Archiving or deleting a development task preserves the application, draft and debug conversation history in **My applications**. Select **Continue developing** from the three-dot menu to continue; if the original task was deleted, a new task opens with the same source files and debug conversation history. Choose **Delete development draft** in the three-dot menu to remove the draft and its debug conversations while keeping the published application. **Delete** removes the entire application, including its draft and debug history. Both actions preserve development tasks, regular tasks and workspace files, and clean up associated runtime resources in the background.
+
+### Annotate the preview and ask LinkSense to change it [#create-applications-annotate-the-preview-and-ask-linksense-to-change-it]
+
+Select **Annotate** immediately to the left of the three-dot menu at the top right of the development view. Click an element or drag to select an area, then choose **Ask LinkSense** beside the selection. Describe the change in the popover and choose **Add annotation**. Continue adding requests for other selections. Each annotation has a numbered marker. The annotation list lets you locate, remove, clear, or send all annotations together.
+
+Requests go to the development conversation on the left. LinkSense edits the current application, and the preview resumes updating after you send. If the development conversation is busy, annotations join its pending requests without creating another test task. App buttons do not activate while annotating. You can exit annotation mode to try the app and return later with your added annotations preserved.
+
+Automatic preview updates pause during annotation so selected locations stay stable. If another action updates the application, you will be asked to select again. Failed submissions retain annotations. Clear them and exit annotation mode, wait for the preview to update, and select again.
+
+### Edit the app icon and details [#create-applications-edit-the-app-icon-and-details]
+
+Click the icon beside the app name in the development header to select a preset or upload an image, and edit the name and description. In My applications, choose Edit for an installed app or Edit app details for a draft. Images must be PNG, JPEG or WebP, at most 512 KiB and 1024 pixels per side.
+
+You can also upload an image in the development conversation and say “Use this as the app icon”, or ask to change the name or description. Changes save to the draft and update its preview. Publish when ready to use them in My applications.
+
+### Import an interactive application [#create-applications-import-an-interactive-application]
+
+Select **Import interactive application** and upload a ZIP whose root contains `manifest.json` and `index.html`. The page runs in an isolated iframe and uses the LinkSense SDK to start tasks or control the native chat pane. See [Build an interactive application](../../developer-guide/interactive-application.mdx) for the package and API contract.
+
+When preparing a package, open **Resource declaration list** from the import dialog to choose the resources it needs. Closing the list returns to the import dialog and preserves the selected package.
+
+When updating an interactive package, the manifest version may stay unchanged or increase, but cannot be lower than the highest existing version. **Update** immediately activates the package and resource configuration for you. Save organization sharing or update the Application Center listing separately; recipients install updates manually. If you have regular tasks running for this application, the update is blocked until you stop them or they finish.
+
+### Update, disable, and delete [#create-applications-update-disable-and-delete]
+
+An existing task's next execution uses the currently installed version, rather than remaining tied to its original version. Running tasks do not switch versions mid-execution, and historical results remain unchanged. Simply opening or refreshing a historical task does not install updates automatically.
+
+For both standard and interactive apps, choose **Edit**, then **Save**. Editing keeps the current version; applications without a version start at 0.0.1. You may enter a higher x.x.x version, but cannot lower it. Saving updates your card, details, and subsequent tasks together. Unchanged version labels still produce separate records. Failed saves leave no partial changes. Saving is blocked while you have regular tasks running for this application. Organization sharing and Application Center updates remain separate and require recipients to install manually. The create, import, and package update buttons read **Create**, **Import**, and **Update**; each activates the saved application for you immediately.
+
+- Configuration edits are saved to the current application. Use **Save sharing** to update organization sharing, and update the Application Center listing separately. Neither action rewrites running turns or historical results.
+- Disabling prevents new tasks but keeps existing task history.
+- The application becomes unavailable when a required dependency is disabled, deleted, or no longer accessible. Repair the dependency before enabling or testing again.
+- Deleting removes the application from the Plugin Center and prevents new tasks; it does not delete users' existing tasks.
+
+Before organizational release, also review [sharing and external access](#application-access) and [application usage](#application-usage).
+
+## Use shared and Application Center apps [#organization-apps]
+
+An organization application can combine models, plugins, Skills, knowledge bases, and fixed instructions as either an installable application package or a creator-managed online application service.
+
+Applications can be standard or interactive. An interactive application opens a creator-provided workflow UI with the trusted LinkSense chat in a separate pane on the right. Drag the divider to resize the chat, or hide and reopen it without stopping the task or losing application data.
+
+### Find an application [#organization-apps-find-an-application]
+
+Open **Plugin Center → Applications**:
+
+- **Shared with me** contains versions granted directly to you or one of your groups.
+- **Application Center** contains administrator-approved public releases.
+- **My applications** contains applications you created and packages installed as personal copies.
+
+Cards identify the available usage options. Details show the creator, purpose, version, usage guide, and a resource summary.
+
+### Choose a usage option [#organization-apps-choose-a-usage-option]
+
+A standard application may offer one or both options. Interactive applications support **Online application service** only:
+
+| Option | What installation creates | Who maintains resources and configuration |
+| --- | --- | --- |
+| Application package | An independent copy under **My applications** whose source code you can view and edit | The app and bundled plugins or Skills are saved to your account; you configure any credentials, knowledge bases, and external connections it may need |
+| Online application service | Online access to the creator's service without installing your own local copy | You use the creator's configured credentials; the creator maintains the app version and resources, and you do not gain permission to browse their content or configuration |
+
+Review the version, usage guide, and required setup before installing. An application package can use a custom installed name. If it shows **Setup required** afterward, complete its resources and credentials under **My applications**. For a service, choose **Use** after installation to start a task.
+
+### Start an application task [#organization-apps-start-an-application-task]
+
+Select an installed application or service and follow its task UI. Depending on its configuration:
+
+- the model is fixed by the creator or selected by you;
+- plugins, Skills, knowledge bases, and instructions in a service are maintained by the creator; you maintain them in your independent package copy;
+- a service's knowledge bases are searchable only inside the app and do not grant browse, preview, download, or management access.
+
+Installation pins an explicit version. After the creator reshares or Application Center approves a newer release, **Update available** appears but does not silently replace your installation. Finish every running regular task for that application, then install the update manually. New tasks and the next execution in an existing task use the new version after a successful update; running turns and historical results are not rewritten. Package updates identify which personal settings can be preserved, and a failed update leaves the old installation available.
+
+Interactive application tasks remain available in the task sidebar. After switching tasks, refreshing, or returning later, LinkSense opens the application version currently recorded for that task, restores its previously emitted structured data, and continues receiving new results. This does not rerun the task or install a newer version merely by opening the page. After you manually update the installation, an existing task adopts that version on its next execution; reopening it afterward uses the version it adopted.
+
+### Unavailable applications [#organization-apps-unavailable-applications]
+
+A disabled application, revoked service grant, unlisted Application Center service, or unavailable model, capability, credential, or knowledge base can block new service work. Existing task history remains. Revoking a grant does not delete an independently installed package, though its personal resources and administrator risk controls still apply. Contact the creator or an administrator to resolve a service dependency.
+
+To build or maintain an entry point, see [Create and manage applications](#create-applications). [Share applications and configure external access](#application-access) explains organization grants and iframe access.
+
+### Usage analytics for creators [#organization-apps-usage-analytics-for-creators]
+
+Application creators can open **More actions → Usage analytics** on an application card and review active users, tasks, turns, model calls, tokens, and costs for all time, the last 7 or 30 days, or a custom date range. The page also provides trends, token and cost composition, and breakdowns by model and workload without exposing user names or email addresses.
+
+Token and cost totals cover only calls recorded after collection began. Task and turn counts may include earlier history, but LinkSense does not estimate older tokens or costs using current model prices. Tokens without a reliable price snapshot are identified as unpriced.
+
+See [View application usage](#application-usage) for range and metric definitions.
+
+### Difference from regular tasks [#organization-apps-difference-from-regular-tasks]
+
+You select resources for regular tasks. A service uses a creator-managed combination, while a package creates an independent copy that you maintain. Neither option grants extra permissions—LinkSense still validates every resource on the server.
+
+## Share applications and configure external access [#application-access]
+
+### Share inside the organization [#application-access-share-inside-the-organization]
+
+Under **My applications**, open the application's three-dot menu, choose **Share within organization**, add users or groups, and select usage options:
+
+- **Application package:** available to standard applications only. Users install their own copy of the application, configure any credentials it may need, and can view its source code. They also configure their own knowledge bases and external connections.
+- **Online application service:** publish the application as an online service. Users access it online with your configured credentials, without installing their own local copy. Interactive applications support this option only.
+
+A standard application may offer both options. Recipients must explicitly install before use. A service user does not gain permission to browse hidden instructions, creator credentials, or documents in the application's knowledge bases.
+
+Revoking a grant prevents new service installation and use but does not delete an independently installed application package. Existing tasks and results remain with each user. If a user has access both directly and through a group, removing one grant may not remove access.
+
+#### Update a shared interactive application [#application-access-update-a-shared-interactive-application]
+
+Successful **Publish update** or **Update application package** updates only the creator's installation. Organization sharing and Application Center must be updated separately, and other users must manually install the new version. Draft edits do not publish early.
+
+1. Choose **Publish update** in the development view and confirm, or choose **Update application package** from the application's menu and import the new ZIP.
+2. Configure all required resources and enter a higher `x.x.x` release version.
+3. Open **Share within organization** again and choose **Save sharing** to make this published version available. The dialog preselects existing users and user groups; adjust them as needed.
+
+Recipients must manually install an available update. If any of their tasks for this application are running, they must stop those tasks or wait for completion before installing. After installation:
+
+| Scenario | Version used |
+| --- | --- |
+| New task | The currently installed version; an available update is not yet installed. |
+| Next execution in an existing task | The currently installed version, keeping conversations and work files. |
+| Already running | Keeps its version; it does not switch mid-execution and prevents concurrent installation. |
+| Only open or refresh a historical task without submitting a request | Neither executes a task nor automatically installs an update. |
+
+Historical results are not rewritten. Task files and conversation context remain available. Failed installation leaves the previously installed version unchanged.
+
+Application Center offers its current approved and listed version, which users must still install manually. Publishing or **Save sharing** does not update Application Center; submit a separate listing update for review.
+
+### External iframe access [#application-access-external-iframe-access]
+
+Only the application creator can open **More actions → External access**. Configure it as follows:
+
+1. Add allowed website origins, one per line with no duplicates. Use HTTPS in production; local development can use HTTP on localhost or 127.0.0.1.
+2. Choose **Authentication required** or **No authentication**.
+3. Optionally add up to four starter questions per origin, each no longer than 500 characters.
+4. Save the security configuration and copy the iframe URL or snippet for that origin.
+5. Test the complete host integration, then turn on **Enable external access**.
+
+An allowed origin must exactly match the protocol, host, and port of the host page. Disabling external access invalidates new requests and already-open external sessions.
+
+#### How external access receives updates [#application-access-how-external-access-receives-updates]
+
+External access uses the creator's current release. It does not wait for organization sharing or an Application Center listing, and external users do not install updates manually.
+
+- A new external session starts with the creator's current release.
+- Before starting a new task or continuing a conversation, an existing external user's installation updates automatically if all of that user's tasks for this application have finished.
+- If any task is starting, running, or still stopping, the previous version remains in use without interrupting active tasks. During an update, other new start requests are asked to try again shortly.
+- If an update fails, that start request reports an error. The previous version, conversations, and work files are retained; the next start checks for an update again.
+- Merely opening, refreshing, or restoring a session does not trigger an update. Unpublished drafts do not affect external users.
+
+These rules apply to authenticated and public access. Organization sharing and Application Center continue to require manual installation.
+
+### Authentication required [#application-access-authentication-required]
+
+A trusted business backend exchanges the App ID and App Secret for a short-lived ticket. The frontend passes only the ticket to the iframe. Keep the App Secret on the server; never put it in browser code, URLs, logs, or screenshots. Rotating the secret immediately invalidates the old secret and related unused tickets.
+
+See [Embed a LinkSense application](../../developer-guide/embed-application.mdx) for request flow, user identity, and the `postMessage` protocol.
+
+### No authentication [#application-access-no-authentication]
+
+Public mode does not require the business backend to issue a ticket, but requests are still limited to allowed origins. Anyone who can reach the host page may be able to create an application session. Use it only for low-risk content that does not require external-user identity; it is not access control.
+
+## View application usage [#application-usage]
+
+An application creator can select **More actions → Usage** on an application under **Created by me**. Being a shared user or having access to the administrator-wide usage page does not automatically grant this creator view.
+
+### Choose a range [#application-usage-choose-a-range]
+
+Choose all time, the last 7 days, the last 30 days, or custom dates. The page shows active users, tasks, actual turns, model calls, tokens, and cost, with trends, token and cost composition, and model and workload breakdowns.
+
+An active user is a distinct user who created an application task or actually started a turn during the selected period. The creator view does not disclose user names or email addresses.
+
+### Interpret the data [#application-usage-interpret-the-data]
+
+- A task is attributed to the application recorded when it was created. Renaming or updating the application does not change historical attribution.
+- Turns count actual executions, not drafts, reconnects, or duplicate events.
+- Token and cost data cover model calls after collection began. Earlier tasks may still be counted, but LinkSense does not estimate their costs using current prices.
+- Tokens without a reliable price snapshot appear as **Unpriced tokens**.
+- Cost uses the price saved at call time; later price changes do not recalculate history.
+
+Administrators can compare organization-wide applications in [Usage and cost analytics](../../admin-guide/models-and-usage.mdx#usage), subject to the administrator data boundary.
+
+## Manage plugin credentials [#credentials]
+
+Plugin credentials contain API keys, tokens, and other authorization details plugins use to access external services. Add a credential and link it to a plugin to use these details automatically when the plugin runs. Saved authorization values are not shown again.
+
+### Add a credential [#credentials-add-a-credential]
+
+1. Open **Settings → Plugin credentials** and select **Add credential**.
+2. Enter a recognizable name and service identifier. Do not include secrets in the name.
+3. Follow the plugin instructions to enter configuration names and authorization values. You can add multiple items.
+4. Save, then select **Link plugin**.
+
+When editing, leave a value blank to keep it, or enter a new value to replace it.
+
+### Check linked plugins and configuration [#credentials-check-linked-plugins-and-configuration]
+
+Each credential shows how many plugins use it. Multiple items for the same plugin are grouped together, such as “Used by 1 plugin” and “2 items linked”.
+
+- **Credentials configured**: the plugin’s declared configuration items have corresponding information. This does not verify external service access.
+- **More information needed**: view configuration details to see what is missing, then select **Complete setup** from the plugin’s three-dot menu.
+- **This credential is disabled**: select **Enable credential** to use it again.
+- **Conflicting links / Configuration needs updating**: check the saved information and select **Resolve links** from the plugin’s three-dot menu.
+- **Plugin unavailable**: the plugin is unavailable or you do not have access. Unlink it or contact an administrator.
+
+Configuration names and links appear under **View configuration details**. Select **Credential details** from the credential’s more menu to view its service identifier. Unlinked credentials are not used automatically.
+
+### Link a plugin [#credentials-link-a-plugin]
+
+1. Select **Link plugin**, or choose **Manage links** from the three-dot menu beside an existing plugin.
+2. Choose the plugin and review the number of selected items. Matching names are selected automatically.
+3. For unmatched items, select **Select or adjust information** and choose the corresponding information from this credential. If a value has not been saved yet, edit the credential to add it first.
+4. Select **Save links**. The plugin will use this information in subsequent runs.
+
+Each configuration item must have one explicit credential source. Saving updates the information you have selected for the plugin.
+
+### Disable, unlink, or delete [#credentials-disable-unlink-or-delete]
+
+- **Disable a credential**: keep the credential and links, but stop using it in subsequent runs. Enable it to use it again.
+- **Unlink plugin**: select **Unlink plugin** from the plugin’s more menu. After confirmation, remove all links between this credential and the selected plugin. Keep the credential itself.
+- **Remove one information link**: remove an individual relationship in configuration details. Keep the saved value.
+- **Delete a credential**: permanently delete the credential and its links. This cannot be undone.
+
+Credentials are used only for your own plugins. Other users’ credentials are never selected automatically.

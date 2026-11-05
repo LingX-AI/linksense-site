@@ -2,23 +2,11 @@
   "title": "Administrator guide",
   "pages": [
     "overview",
-    "---Users and permissions---",
-    "users",
-    "groups",
-    "roles",
-    "plugin-governance",
-    "---Knowledge governance---",
-    "knowledge-governance",
-    "knowledge-sources",
-    "model-settings",
-    "quota-settings",
-    "system-settings",
-    "authentication-settings",
-    "health",
-    "feedback",
-    "audit",
-    "usage",
-    "system-update"
+    "accounts",
+    "resource-governance",
+    "models-and-usage",
+    "configuration",
+    "operations"
   ],
   "root": true,
   "icon": "Shield"

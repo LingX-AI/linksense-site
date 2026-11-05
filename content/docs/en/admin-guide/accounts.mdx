@@ -1,0 +1,111 @@
+---
+title: Accounts, groups, and permissions
+description: Create and maintain accounts and groups, and understand administrative and content-access boundaries.
+tocDepth: 2
+---
+
+Maintain member accounts, organize groups for collaboration, and verify the boundaries between roles and content access.
+
+## User management [#users]
+
+<Callout type="info" title="Administrator operation">
+
+Open **Settings → Users & groups → Users**. Administrators can enable open registration in System settings.
+
+</Callout>
+
+### Create users [#users-create-users]
+
+Provide a name, unique email, role, and optional groups. A new user has no local password and LinkSense does not automatically send an invitation.
+
+The user may sign in through configured SSO or Teams, or request email to set a local password. Administrators cannot set, view, import, or reset user passwords.
+
+### Excel import [#users-excel-import]
+
+Download the template, fill in name, email, role, and groups, then upload it. Import validates required fields, global email uniqueness, valid roles, and existing group names. The template has no password column and reports invalid rows for correction.
+
+### Edit [#users-edit]
+
+You can update name, email, role, and group membership. An email change immediately revokes all sessions and unused password links, requiring sign-in with the new email.
+
+### Credit quotas [#users-credit-quotas]
+
+Set weekly quotas individually or in bulk, in credits. Positive amounts accept up to six decimal places. Blank means unlimited, and bulk changes affect only the selected users.
+
+Reaching the limit prevents new tasks while running tasks finish. Weekly quotas reset every Monday at midnight in the system time zone.
+
+Members created, imported, or self-registered share the default weekly quota in [Quota management](./models-and-usage.mdx#quota-settings). Saving the default does not affect existing members; use **Apply limit to all** when an overwrite is intended.
+
+### Disable and restore [#users-disable-and-restore]
+
+Disabling rejects new login, expires active sessions on the next request, blocks new activity and downloads, and cancels requests that have not started. A running turn continues to its native final state. History, knowledge bases, published releases, and audit data remain.
+
+Restoring permits access again but does not restart canceled queued requests.
+
+### Administrator protection [#users-administrator-protection]
+
+An administrator cannot disable or demote themself, and at least one active administrator must remain. The server checks this transactionally even during concurrent changes. Rejected attempts are audited.
+
+## User group management [#groups]
+
+<Callout type="info" title="Administrator operation">
+
+Open **Settings → Users & groups → Groups**. A group is an authorization convenience, not an organizational hierarchy.
+
+</Callout>
+
+### Rules [#groups-rules]
+
+- Groups are flat and cannot contain child groups.
+- A user may belong to several groups.
+- Names are globally unique.
+- Membership never changes the user or administrator role.
+
+### Create and edit [#groups-create-and-edit]
+
+Add a name and optional description, then select existing users. Membership additions and removals record actor and time.
+
+Normal removal revokes the relationship while retaining necessary history. A user may retain knowledge-base access through another group or direct share.
+
+### View memberships [#groups-view-memberships]
+
+The user table may show only a compact subset of names. Use complete group details or the accessible overflow preview before making decisions.
+
+### Delete a group [#groups-delete-a-group]
+
+Deletion is irreversible. The same transaction removes active and revoked memberships and knowledge-base grants to avoid orphaned rows. Permanent audit keeps only minimal group ID and affected-count metadata.
+
+Before deletion, identify access derived from the group, create a replacement when needed, and account for current-membership semantics in usage reporting.
+
+### Usage reporting [#groups-usage-reporting]
+
+Group usage applies each user's activity to every group they currently belong to. Rows overlap and must not be summed to calculate global totals.
+
+## Roles and authorization boundaries [#roles]
+
+<Callout type="info" title="Administrator operation">
+
+**Settings → Roles & permissions** is a read-only overview. Custom roles are not available.
+
+</Callout>
+
+### Fixed roles [#roles-fixed-roles]
+
+- **User** manages personal tasks, capabilities, and owned knowledge bases and uses resources granted to them.
+- **Administrator** also manages users, groups, catalog governance, knowledge governance, models, settings, health, audit, and usage.
+
+There is no super administrator, department administrator, read-only administrator, or custom permission bundle. The first administrator has no hidden privileges.
+
+### Role is not content access [#roles-role-is-not-content-access]
+
+Administrative governance does not automatically expose another user's tasks, personal capability content, or knowledge-base documents. Ownership and sharing continue to control content access.
+
+### Change a role [#roles-change-a-role]
+
+Change another account from User Management. Before demoting an administrator, ensure another active administrator remains.
+
+An administrator cannot demote or disable themself, nor demote or disable the final active administrator. The server enforces this inside the update transaction.
+
+### Groups and roles [#roles-groups-and-roles]
+
+Groups provide flat membership and resource grants. Adding a user to any group cannot make them an administrator.

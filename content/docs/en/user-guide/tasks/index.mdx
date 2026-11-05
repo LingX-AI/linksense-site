@@ -1,0 +1,588 @@
+---
+title: Tasks
+description: Create and plan tasks, follow execution, work with files, and organize history.
+tocDepth: 2
+---
+
+Start with a clear request, then follow execution, review deliverables, and organize your work. Continue refining the same task instead of starting over.
+
+## Create and run tasks [#create-and-run]
+
+### Write an actionable request [#create-and-run-write-an-actionable-request]
+
+A useful request normally states:
+
+- Objective: what must be accomplished.
+- Inputs: files, data, or knowledge bases to use.
+- Constraints: language, format, length, date range, or mandatory rules.
+- Deliverable: an answer or a Word, Excel, PowerPoint, PDF, image, or archive file.
+
+### Select a model and reasoning effort [#create-and-run-select-a-model-and-reasoning-effort]
+
+Click the model and reasoning effort button at the bottom of the composer to open the selection card. Drag the slider to preview effort levels and release to save. You can also click a position on the track or use the arrow keys. The slider shows only the levels supported by the current model.
+
+Click the model name at the top of the card to switch models. The reset button in the upper-right corner restores the current model's default effort. Switching models keeps your effort level when supported; otherwise, the new model's default is used.
+
+The selector shows only chat models marked as available in conversations. Model and reasoning effort are fixed when a new turn starts. Later administrator changes do not rewrite running or historical turns.
+
+If a previous model is no longer available in conversations, select another or use the conversation default.
+
+The ring in the model card shows context-window usage for the current task. When it approaches the limit, finish the current turn and follow [Draft and context management](#context-and-drafts) to compact the context.
+
+### Add capabilities [#create-and-run-add-capabilities]
+
+Before sending, you can select enabled plugins or Skills, choose accessible knowledge bases, and review personal MCP status. These resources are fixed for the turn.
+
+Preflight blocks execution if a capability is disabled, a credential is missing, or knowledge-base access is no longer valid.
+
+When speaking is more convenient, use [voice input](#voice-input) to convert microphone speech into an editable draft. You still decide when to send it.
+
+When an administrator has enabled an image-generation model, you can also [generate images](#generate-images) directly. Successful output is registered as task artifacts.
+
+### Use Goal mode for longer work [#create-and-run-use-goal-mode-for-longer-work]
+
+When a request cannot be completed in a single reply, use a [Goal task](#goal-tasks). Choose **+**, then **Goal**, describe a measurable outcome, and add files, plugins, Skills, or knowledge bases just as you would for a normal task.
+
+Goal tasks show a Goal label on the user message and a Goal card while work is running. After completion, the final reply shows how long it took to reach the Goal.
+
+### Plan before implementation [#create-and-run-plan-before-implementation]
+
+When you need to confirm scope, risk, and implementation steps first, select **Add → Plan mode**. LinkSense analyzes the request, asks clarification questions when needed, and waits for you to implement, revise, skip, or exit after the plan is ready. See [Use Plan mode](#plan-mode).
+
+Type `/` to open shortcuts for a new task, context compaction, plugins, Skills, applications, knowledge bases, and MCP. Availability still depends on the current task state and your resource permissions.
+
+### Run controls [#create-and-run-run-controls]
+
+- **Stop** requests interruption of the current turn.
+- A temporary connection loss recovers the same turn rather than creating a duplicate.
+- Refreshing the page does not erase task state.
+- Activity shows plans, tool actions, and status changes. The task overview brings together subagents, artifact files, and external sources. See [View task progress, artifacts, and sources](#progress-and-sources).
+- After failure, resolve the visible model, capability, or input problem before retrying.
+
+<Callout type="info" title="Tasks and turns">
+
+A task contains multiple turns. A continuation creates a new turn; page refreshes, reconnects, and duplicate event delivery do not.
+
+</Callout>
+
+## Draft and context management [#context-and-drafts]
+
+### Unsent drafts [#context-and-drafts-unsent-drafts]
+
+LinkSense makes a best-effort attempt to keep composer text and the selected plugins, Skills, and knowledge bases in the current browser. When you return to the same task or the new-task composer, you can continue editing.
+
+Drafts do not sync across devices or browsers and are not a substitute for permanent storage. Clearing site data, using private browsing, or running out of browser storage can remove a draft. The related draft is cleared after a request is submitted successfully. Attachments that have not finished uploading are not part of this local draft.
+
+When you paste a large amount of text, LinkSense may convert it to an attachment to keep the composer manageable. Review or remove it in the attachment list before sending.
+
+### View the context window [#context-and-drafts-view-the-context-window]
+
+The ring in the model selector shows how much of the current task's context window is in use. Expand it to see used and total values. If the model has not reported usage or the administrator has not configured a context length, the interface shows that context usage is unavailable.
+
+As the context window approaches its limit, LinkSense uses a known model context length to let the runtime compact its working context automatically. The activity shows compaction state. If the length is unknown or you still need to condense the context deliberately, finish the current turn before running a manual compaction.
+
+### Compact context [#context-and-drafts-compact-context]
+
+In an existing, stopped, unarchived task, enter `/` and choose **Compact context**, or send the standalone `/compact` command. A running task, a task with no history, or an archived task cannot be compacted.
+
+Manual compaction summarizes the working context into a shorter basis for continuing. It does not delete the messages, attachments, or artifacts visible in the page. The activity shows whether compaction is running, completed, or incomplete. Submit the next request after compaction completes.
+
+### When the context limit is exceeded [#context-and-drafts-when-the-context-limit-is-exceeded]
+
+If an ordinary task stops only because the model context window was exceeded, LinkSense attempts to continue once within the same user request. The model is instructed to use the persisted task and workspace state without repeating completed commands, file edits, or tool actions. This is not a second user request.
+
+If recovery still fails, read the visible error, compact the context, and state exactly where work should continue. Do not repeatedly send the same request, because that may repeat an external action or incur additional cost.
+
+See [Create and run tasks](#create-and-run) and [Running and queued requests](#running-requests) for related controls.
+
+## Use Plan mode [#plan-mode]
+
+Plan mode is useful when a request is complex, costly to implement, or needs an agreed scope before files are changed. It differs from a [goal task](#goal-tasks): Plan mode produces a plan and waits for approval, while a goal task continues working until the goal is complete or needs your attention.
+
+### Enable Plan mode [#plan-mode-enable-plan-mode]
+
+In the composer, select **Add → Plan mode**, describe the objective, current state, constraints, and acceptance criteria, and send the request. A **Plan** chip appears in the composer; remove it to leave the mode before sending.
+
+You cannot switch mode while a task is running or starting, has a queued request, has an unfinished goal, or is bound to an automation. Controlled surfaces such as interactive applications may also omit Plan mode.
+
+### Answer clarification questions [#plan-mode-answer-clarification-questions]
+
+LinkSense may ask for more information before it can finish the plan. Complete required fields and submit the form to continue the same run. Values marked as secret are not echoed in the task interface. A question may expire, in which case you need to start it again.
+
+### Review the plan [#plan-mode-review-the-plan]
+
+After the plan is ready, choose one of these actions:
+
+- **Yes, implement this plan** leaves Plan mode and starts a new implementation turn.
+- **No, revise the plan first** submits your feedback, stays in Plan mode, and creates a complete revised plan.
+- **Skip** leaves the decision unresolved and keeps Plan mode active.
+- **Exit Plan mode** returns to Default mode without implementing the plan.
+
+Before approval, review scope, file changes, dependencies, risks, and verification. If the plan is stale or the task state changed, LinkSense rejects the old action; refresh and use the current state.
+
+### Follow implementation progress [#plan-mode-follow-implementation-progress]
+
+During implementation, the task overview can show plan steps, the current step, file changes, artifacts, and sub-agent activity. Step status reflects execution progress and does not by itself mean that every intermediate result has passed your business acceptance checks.
+
+## Use Goal tasks [#goal-tasks]
+
+Goal tasks are for work that needs sustained progress, such as creating a presentation, summarizing long documents, researching a topic and producing a deliverable, or completing a complex request in multiple steps.
+
+After a Goal starts, LinkSense keeps working toward the same objective until the Goal is complete, a limit is reached, or your input is needed. A normal message does not start in Goal mode by default. You can choose **Goal** before sending, and LinkSense may also create a Goal while working when a normal task needs sustained progress.
+
+### Start a Goal [#goal-tasks-start-a-goal]
+
+1. Select **+** in the lower-left corner of the input box.
+2. Choose **Goal** from the capability menu.
+3. Confirm that the **Goal** chip appears in the lower-left corner of the input box.
+4. Describe what you want LinkSense to accomplish.
+5. Add files, plugins, Skills, knowledge bases, a model, or reasoning effort as needed.
+6. Send the task.
+
+Hover over the **Goal** chip in the input box to exit Goal mode. After you exit, the next message is sent as a normal task request.
+
+### Create a Goal during execution [#goal-tasks-create-a-goal-during-execution]
+
+When a normal task needs multiple steps of sustained work, LinkSense can create a Goal while it is running. The current task moves directly into Goal mode and shows the Goal card without resubmitting your request or creating a second user message.
+
+Later steps continue in the same task. The interface shows the usual Goal status when the Goal completes, reaches a limit, or needs your attention. Automatic continuation does not resubmit your original request or replay tool actions that already completed.
+
+### Write a measurable Goal [#goal-tasks-write-a-measurable-goal]
+
+The more concrete the Goal, the easier it is for LinkSense to know when it is done. Include:
+
+- Result: the expected deliverable, such as an article, workbook, presentation, analysis report, or archive.
+- Scope: files, dates, topics, source material, or boundaries.
+- Criteria: language, format, length, page count, quality requirements, or required sections.
+- Stop condition: what counts as complete and when LinkSense should ask you first.
+
+Example:
+
+> Use the attached product material to create a 10-page Chinese pitch deck with positioning, core features, customer value, competitor comparison, and next steps, then generate a downloadable file.
+
+### Use capabilities and files [#goal-tasks-use-capabilities-and-files]
+
+Goal tasks can use files, plugins, Skills, knowledge bases, and personal MCP just like normal tasks. Capabilities selected before sending are used as context for that Goal task.
+
+If you need to add new material or change capabilities while the Goal is running, send another request in the same task. Requests with new attachments or capability selections follow the running-request queue rules so the active context is not interrupted unexpectedly.
+
+### Follow Goal status [#goal-tasks-follow-goal-status]
+
+The user message that started a Goal shows a Goal icon and **Goal** label in its lower-right corner, so you can distinguish it from normal requests later.
+
+While the Goal is active, a Goal card appears above the input box. It shows the current status, objective, and elapsed time. Select the time to view Goal details, including time used, tokens used, and the token budget.
+
+The token budget in Goal details belongs to that Goal. The per-user credit quotas set by an administrator are an account-level setting that controls whether you can start new tasks. The two settings apply independently.
+
+After the Goal is complete, the Goal card disappears and the final assistant reply shows a completion marker such as “Reached the Goal within a duration.”
+
+### Pause, resume, and clear [#goal-tasks-pause-resume-and-clear]
+
+- Edit Goal: change the objective while preserving time and tokens already used.
+- Pause Goal: stop future automatic continuation; an already running turn may still finish naturally.
+- Resume Goal: continue a Goal that is paused, needs attention, or has stopped at a limit.
+- Clear Goal: remove Goal status and usage records from the task; this does not force-stop the current native run.
+
+Use the task **Stop** action if you want to interrupt the currently running turn immediately. Pausing a Goal and stopping the current turn are different actions.
+
+### Common statuses [#goal-tasks-common-statuses]
+
+| Status | Meaning |
+| --- | --- |
+| Goal in progress | LinkSense is automatically working toward the Goal. |
+| Goal paused | The Goal will not automatically continue unless you resume it. |
+| Goal needs attention | LinkSense needs your input, an external change, or confirmation. |
+| Goal usage limited | The current usage limit prevents the Goal from continuing. |
+| Goal budget limited | The Goal reached its configured token budget. |
+| Goal complete | LinkSense marked the Goal as complete. |
+
+## Organize tasks with projects [#projects]
+
+Projects keep related tasks and files together. Tasks in the same project share its files. Personal tasks without a project share a common workspace. Your personal tasks also share installed plugins, Skills, tools, and sign-in state.
+
+### Create a project [#projects-create-a-project]
+
+1. Click **+** beside Projects in the sidebar and enter a name.
+2. Select the project above the composer when creating a task.
+3. Send a message. Other tasks in the project can continue using these files.
+
+Each task can belong to one project. Expand or collapse projects, drag them to reorder them, and pin individual tasks. Names and assignments are saved to your account; expansion preferences stay in the current browser.
+
+New application development tasks belong to **制作应用**. This project is created when you first create a development task, or reused if you already have a project with that name. Its icon and color can be changed; its name is fixed. Existing development tasks keep their original projects and files. Preview, test, and everyday application tasks are unaffected.
+
+### Edit the name, icon, and color [#projects-edit-the-name-icon-and-color]
+
+Choose **Edit** from a project's **…** menu. Click the icon beside the name, choose a color, then choose an icon from the grid. Click **Done** to return to the dialog, then **Save**. The name, icon, and color are saved together and shown in the sidebar and project picker. **Cancel** discards your changes. You can also choose an icon and color when creating a project.
+
+Existing projects use the folder icon by default. Tasks without a project appear under **Recent**, while pinned tasks remain under **Pinned**.
+
+### Move a task [#projects-move-a-task]
+
+Drag a task onto a project or choose Move to project from its menu. Finish running work, queued messages, pending plans, and active goals before moving it.
+
+Application development tasks cannot move to another project or leave their current project. You can still pin, archive, and reorder them within their group. Before removing a project that contains application sources, delete the related applications in My applications.
+
+New messages use the destination project's files. Files in the original project remain there, and historical attachments remain accessible. Uploaded attachments that have not been sent are also retained.
+
+A task branched from a reply inherits the project and shares its files. Each task keeps its own message history.
+
+### Delete tasks or remove projects [#projects-delete-tasks-or-remove-projects]
+
+Deleting a task removes its message history and keeps project files. **Remove project** moves its tasks to the common workspace and keeps the original files and historical attachments. Delete files separately when you want to remove them.
+
+Online application services have their own work environment. Grouping an application task into a project organizes the task without moving service files or sign-in state into your personal workspace.
+
+### Runtime and historical files [#projects-runtime-and-historical-files]
+
+Your personal tasks use one personal environment. An idle environment stops to save resources while retaining files and settings, then starts automatically when needed. The environment remains running while tasks, websites, or services are active.
+
+Files from tasks created before the upgrade are retained in the project's `imports/task-id` directory. Historical attachments remain accessible from the message history.
+
+## View task progress, artifacts, and sources [#progress-and-sources]
+
+### Activity [#progress-and-sources-activity]
+
+A running task shows visible activity in time order, such as reasoning progress, plans, tool actions, context compaction, and status changes. Expand an item to view details that LinkSense is allowed to display. Secrets, internal addresses, and protected data are hidden.
+
+Network reconnection, a page refresh, or redelivery of events for the same turn continues that turn; it does not mean the task ran a second time. For long histories, LinkSense loads earlier exchanges in pages. Scroll or select a history group to continue viewing them.
+
+### Task overview [#progress-and-sources-task-overview]
+
+The overview at the top of a task brings together:
+
+- subagents, their current states, and completion count;
+- registered artifact files, with preview or download for supported types;
+- external web sources identified in assistant responses.
+
+If a task did not use subagents, generate files, or include external sources, the related area is empty. Use the activity below the messages for plans and tool details.
+
+### External sources and knowledge citations [#progress-and-sources-external-sources-and-knowledge-citations]
+
+The **Sources** list collects and deduplicates external web links from assistant responses. Selecting a source opens the original page in a new window. If no page title is available, the URL is shown. This list helps you return to the source; it is not an additional endorsement of external content by LinkSense.
+
+Knowledge-base citations use numbered markers in the response and can open a cited excerpt or source location. They are separate from external web sources. See [Use knowledge bases and review citations](../knowledge-bases/index.mdx#use-and-citations).
+
+### Verify important results [#progress-and-sources-verify-important-results]
+
+- Check that conclusions match the cited sources and attached files.
+- For decisions affecting finance, legal matters, health, safety, or production systems, open and review the primary source.
+- Download important artifacts to an organization-approved location. Temporary download URLs are not permanent sharing links.
+
+See [Files, previews, and artifacts](#files-and-results) for preview and download behavior.
+
+## Files, previews, and deliverables [#files-and-results]
+
+### Add attachments [#files-and-results-add-attachments]
+
+Choose files in the composer, wait for upload to finish, and then send the request. Common office, PDF, text, image, spreadsheet, presentation, and archive files are accepted subject to the limits shown by the deployment.
+
+Name the files in your prompt when several are attached.
+
+When you paste a large amount of text, LinkSense may convert it to a text attachment. Review its name and content before sending. It remains subject to the same size, permission, and security limits as a manually uploaded file.
+
+### Preview files [#files-and-results-preview-files]
+
+Supported attachments and deliverables open inside the task. Images, PDFs, Word files, spreadsheets, presentations, HTML, archives, text, and supported audio or video use appropriate page, zoom, worksheet, slide, file-list, or playback controls. A file that cannot be safely previewed may still be downloaded when you have access.
+
+Previews are read-only. HTML deliverables run in an isolated surface and cannot inherit the LinkSense page's privileges.
+
+Presentation, Word, spreadsheet, and HTML previews can attach a request to selected content. You can collect several requests before sending them; see [Annotate a file preview](#file-annotations).
+
+### View diagrams in responses [#files-and-results-view-diagrams-in-responses]
+
+After a Mermaid block is complete, LinkSense renders it as a diagram preview adapted to the current light or dark theme. Open the diagram actions to copy the Mermaid source, export a PNG, or expand the preview and zoom or pan through details. While a response is still streaming, a loading state prevents incomplete source from being treated as the final diagram.
+
+If rendering fails, you can still copy the source and send it with the observed error back to the task for correction. An exported PNG reflects the current rendering and is not registered as a new task artifact.
+
+### Download deliverables [#files-and-results-download-deliverables]
+
+Generated documents and media appear as deliverable cards. A download action creates a short-lived authorized URL. If it expires, download again from the task; do not treat the temporary URL as a permanent share.
+
+An HTML deliverable can also be published as a public site that does not require sign-in. See [Publish and manage sites](#publish-websites) for publishing, updates, unpublishing, and security boundaries.
+
+### Browse task artifacts in one place [#files-and-results-browse-task-artifacts-in-one-place]
+
+Open **Resource library** from the sidebar and choose **Task artifacts** to browse registered deliverables from your tasks by task name and creation time. Supported files use the same preview experience as the task page, and every listed file can be downloaded directly. Artifacts from archived tasks remain listed with an archived label.
+
+Search matches both task names and filenames. Use the file type filter beside it to show images, Word, Excel, PPT, HTML, PDF, archives, text, audio, video, or other files. Combine the filter with a search term to narrow the results further, or select **All types** to remove the type restriction.
+
+Select a task name to return to the original task for context. Artifacts from a permanently deleted task are no longer available through this list.
+
+### Better file results [#files-and-results-better-file-results]
+
+- Specify the required format and filename.
+- Describe the directory or archive structure for multiple files.
+- Review the preview before requesting revisions.
+- Move important downloads to an organization-approved storage location.
+
+<Callout type="warn" title="Sensitive data">
+
+Upload only information needed for the work. A selected plugin or external tool may process inputs according to its declared capabilities, so review its risk summary first.
+
+</Callout>
+
+## Publish and manage sites [#publish-websites]
+
+LinkSense can publish a registered HTML deliverable from a task as a public site. Visitors do not need to sign in, so anyone with the link can open it. Review the page for sensitive information before publishing.
+
+### Publish a new site [#publish-websites-publish-a-new-site]
+
+1. Open the preview for an HTML deliverable in a task.
+2. Choose **Publish as site** from the preview toolbar.
+3. Select **New site**, then enter a site name and optional description.
+4. Optionally enter a link name, or leave it blank to generate one.
+5. Choose **Publish site** and wait for the site link.
+6. Copy the link and test the content and interactions in a signed-out window.
+
+Selecting **Publish as site** again for the same HTML shows its linked site's current address and publication status. You can also choose **Update another site**.
+
+A custom link name must contain 3–80 letters, numbers, or hyphens without a leading or trailing hyphen. Choose another name if it is already in use.
+
+A site may include CSS, JavaScript, images, fonts, and other static resources saved when the deliverable was registered. Publishing fails if a standalone HTML file refers to local files that were not saved. Ask LinkSense to regenerate and register the complete web deliverable in that case.
+
+### Update an existing site [#publish-websites-update-an-existing-site]
+
+When publishing from a newer HTML deliverable, choose **Update existing site**, search for a site you own, and select it. After a successful update:
+
+- the site keeps its link, name, and description;
+- the public content switches to the new web deliverable;
+- the source task becomes the task that supplied the new page;
+- an unpublished site remains unpublished until you republish it from **My sites**.
+
+You can also open **Resource library → My sites**, choose **Publish update** from a site's menu, and select an HTML deliverable from its current source task. If that task was deleted, start from a deliverable in another task and choose **Update existing site**.
+
+### Manage My sites [#publish-websites-manage-my-sites]
+
+Open **Resource library → My sites** to search by site name or link and filter by **Published** or **Unpublished**.
+
+Each site provides these actions:
+
+- **Visit or copy link:** open the current public version or share its link.
+- **Edit:** change its name, description, or link name. Changing the link name immediately invalidates the old link.
+- **Publish update:** select a newer HTML deliverable from the source task.
+- **Unpublish or republish:** control visitor access. Unpublishing keeps the site, reserved link, and saved version.
+- **Download website:** download the complete current version as a ZIP archive.
+- **Delete site:** permanently delete the site, every published version, and its link reservation. The original task and deliverable remain, and the deleted link name can be used again.
+
+Permanently deleting the source task automatically unpublishes its sites, but their saved versions remain downloadable from **My sites**. You can later generate a page in another task, choose **Update existing site**, reconnect it, and republish.
+
+### Public access and security boundaries [#publish-websites-public-access-and-security-boundaries]
+
+Public sites run in an isolated surface. They cannot read LinkSense sign-in cookies, local storage, or the parent page, and cannot register a service worker. This feature hosts static websites and browser-side interactions; it does not run server programs or inherit your LinkSense permissions.
+
+Visitors' browsers load external HTTPS resources directly, subject to availability and cross-origin rules. A site cannot rely on LinkSense authentication, server-side route fallback, or persistent same-origin browser storage. Before publishing, confirm that:
+
+- the page and its static resources load completely;
+- it contains no passwords, tokens, personal data, internal addresses, or task content that should remain private;
+- forms and external requests do not send data to an untrusted service;
+- old links behave as expected after you unpublish, rename, or delete the site.
+
+See [Files, previews, and deliverables](#files-and-results) for previewing, downloading, and browsing task artifacts.
+
+## Annotate a file preview [#file-annotations]
+
+Annotations keep the location and requested change together when reviewing presentations, Word documents, spreadsheets, and HTML artifacts. An annotation creates a new task request; it does not edit the original file directly in the browser.
+
+### Add annotations [#file-annotations-add-annotations]
+
+1. Open a supported file preview from a task.
+2. Select **Annotate** or enter annotation mode.
+3. Select slide elements, Word content, a spreadsheet range, chart, or image, or HTML elements.
+4. Enter a question or change request and select **Add annotation**.
+5. Select more locations or open **Pending annotations** to review them.
+
+A batch can contain up to 20 annotations. The list identifies the page, slide, sheet, or elements for each item. You can locate or remove one item, or clear the batch.
+
+### Process the batch [#file-annotations-process-the-batch]
+
+Select **Process all** when ready. LinkSense combines the remaining annotations for the same file into one request while preserving the relationship between each selection and instruction. If sending fails, the drafts remain available so you can fix the network or task state and retry.
+
+Switching to a different file discards unsent annotations for the current file. Verify the file and selections first, especially when the preview reports that updated content is available.
+
+### Reopen historical annotations [#file-annotations-reopen-historical-annotations]
+
+Sent annotations remain as user-message cards in the task. Select a card to reopen the corresponding file and location. If the task or file has been permanently deleted, the card cannot restore its contents.
+
+## Generate images [#generate-images]
+
+After an administrator configures and enables an image-generation model, describe the image you want in an ordinary task. LinkSense uses its built-in image-generation capability and registers successful output as task artifacts.
+
+### Write a clear request [#generate-images-write-a-clear-request]
+
+Include:
+
+- subject: the person, product, scene, or graphic elements;
+- style: photography, illustration, 3D, poster, icon, and so on;
+- composition: viewpoint, layout, spacing, colors, and lighting;
+- text: any short copy that must appear and where it belongs;
+- output: image count, dimensions or orientation, and whether the background must be transparent.
+
+For example: “Generate one 1024×1024 minimal product icon, keep the full subject inside the canvas with padding on every side, and use a transparent background.” LinkSense normally requests one image when no count is given. The configured provider and model may impose lower count or size limits.
+
+### Edit an existing image [#generate-images-edit-an-existing-image]
+
+Upload a picture and describe the change, for example: “Replace this photo’s background with a beach while preserving the person, clothes and pose.” You can also ask for another edit to a previously generated image. LinkSense sends the original image with your instructions and creates a new registered image without overwriting the source.
+
+Use PNG, JPEG or WebP images up to 8 MiB each and 10 MiB in total, including an optional mask. Up to four reference images are accepted, subject to the selected model’s limits. Explain each reference’s role. A local editing mask must be a transparent PNG matching the first image’s dimensions; transparent regions indicate where to edit.
+
+An administrator must configure a model that supports editing. Reference-image support does not imply mask support. Unsupported requests are reported explicitly rather than silently generating from text alone. Generative editing can change other details, so inspect the result before use.
+
+### Transparent backgrounds [#generate-images-transparent-backgrounds]
+
+Explicitly request a transparent background for stickers, icons, product cutouts, or compositing assets. Simple subjects with clean edges can be handled automatically. Hair, fur, glass, smoke, glow, and translucent materials require native model support for high-quality transparent edges. If the current model cannot provide that quality, LinkSense reports the limitation instead of silently substituting a lower-quality result.
+
+### View results and cost [#generate-images-view-results-and-cost]
+
+Generated images replace the loading area directly. When a turn generates multiple images, the selected image appears on the left with thumbnails on the right. Click a thumbnail to switch images. Click the main image to open a larger preview and hover over it to reveal the download button; on touch devices, the download button stays visible. Images receive descriptive scene names, with sequence numbers for images generated together. You can also find them under **Library → Task artifacts**. The administrator configures a per-image price for the generation service; the number of images actually generated contributes to usage and credits.
+
+### If generation fails [#generate-images-if-generation-fails]
+
+Images created with code or SVG rendering also appear in the image gallery once registered as task artifacts, with preview, switching, and download controls. Reference images viewed during processing do not replace the final deliverables.
+
+- **Not configured or disabled:** ask an administrator to configure image generation.
+- **Provider rejected the request:** review the prompt, model, or administrator configuration before submitting a revised request.
+- **Service unavailable:** try again later.
+- **Transparent background unsupported:** use a model with native transparency, or request a regular background if the edge-quality requirement allows it.
+- If the page reports an artifact-registration or usage-recording failure, do not immediately generate again. The provider may already have processed and charged for the request; ask an administrator to verify it first.
+
+See [Files, previews, and artifacts](#files-and-results) for preview, download, and temporary-link behavior.
+
+## Use voice input [#voice-input]
+
+Voice input only converts speech into text in the input field. It never submits a task automatically or attaches the recording to the task.
+
+### Record and transcribe [#voice-input-record-and-transcribe]
+
+1. Select the microphone button in the task composer or an Office selection action field.
+2. The first time you use it, allow the current LinkSense page to access your microphone.
+3. Start speaking when the recording duration and waveform appear.
+4. Select the stop button. Recording also stops automatically at five minutes.
+5. Wait for **Transcribing speech** to finish.
+6. Review and edit the text inserted into the field, then choose whether to send or run the action.
+
+You cannot begin another recording or submit the current input while transcription is in progress. Existing draft text is preserved, and the transcript is added to the current draft.
+
+### Recording limits [#voice-input-recording-limits]
+
+- A recording must be at least one second long.
+- A single recording can last up to five minutes.
+- If the audio exceeds the safe transfer size, shorten it and record again.
+- The browser must support `MediaRecorder`, and the device must have an available microphone.
+
+Web and Teams follow the same rules. Audio exists only during the current recording and transcription request. The original recording is not stored as a task attachment or written to file storage, the workspace, audit records, or logs.
+
+### If voice input is unavailable [#voice-input-if-voice-input-is-unavailable]
+
+- Permission denied: allow microphone access in the browser or Teams site permissions, then retry.
+- No device: check the microphone connection and the system input device.
+- Device busy: close applications that have exclusive microphone access.
+- No speech recognized: move closer to the microphone, reduce background noise, and record again.
+- Transcription timed out or failed: retry later or continue with keyboard input.
+
+<Callout type="warn" title="Privacy">
+
+The recording is sent to the speech recognition service configured by the deployment operator. Do not speak passwords, keys, or sensitive information that is not required for the task.
+
+</Callout>
+
+## Send requests while a task is running [#running-requests]
+
+When a turn is still running, LinkSense uses your message content and the preference in **Settings → General** to choose a safe action.
+
+### Steer the current turn [#running-requests-steer-the-current-turn]
+
+Steering is useful for immediate text-only clarification:
+
+- Analyze only the last three months.
+- Put the conclusion first.
+- Stop making a presentation and create a workbook instead.
+
+The clarification is delivered to the current execution rather than starting a parallel turn.
+
+### Queue the next request [#running-requests-queue-the-next-request]
+
+Queueing preserves the current turn and starts the new request after it finishes. LinkSense always queues a request that:
+
+- contains a new attachment;
+- changes plugins, Skills, or knowledge bases; or
+- requires a fresh, stable execution context.
+
+Pending requests appear in the task and can be changed or removed when the UI offers those actions.
+
+### Stop [#running-requests-stop]
+
+Stopping requests interruption. Already visible messages or deliverables may remain, while an unfinished tool action might not produce a usable result.
+
+### Choose the default [#running-requests-choose-the-default]
+
+In **Settings → General → Messages sent during execution**, choose **Steer current execution** or **Queue as the next request**. The preference applies in Web and Teams; resource-bearing requests are still queued.
+
+## Manage task history [#manage-history]
+
+### Recent tasks [#manage-history-recent-tasks]
+
+The sidebar lists unarchived tasks by recent activity and loads more as you scroll. A task completed in the background shows an unread marker until you open it.
+
+### Search [#manage-history-search]
+
+Use **Search** in the sidebar to match task titles, messages, attachments, artifacts, plugins, or Skills. Results never include another user's task.
+
+When you open a long task history, LinkSense shows recent content first and loads earlier exchanges in pages. Load the relevant history before quoting or sharing older content.
+
+### Rename and pin [#manage-history-rename-and-pin]
+
+Rename a task from its actions. Pin ongoing work into the Pinned group; unpin it into Recent. If the pin limit is reached, unpin an older task first.
+
+Pinned and recent tasks can each be reordered by drag and drop or keyboard. Concurrent changes from two windows use the latest server version. See [Branch and reorder tasks](#branch-and-organize) for complete instructions.
+
+### Continue a different direction from history [#manage-history-continue-a-different-direction-from-history]
+
+Select **Branch into new chat** on the final assistant response of a finished turn to copy history and runtime context through that point into a new independent task. A task cannot be branched while running, when it has a queued request, or after it is archived.
+
+### Archive [#manage-history-archive]
+
+Archiving removes a task from the recent list without immediately deleting it. Open **Settings → Archived tasks** to restore or delete it.
+
+### Permanent deletion [#manage-history-permanent-deletion]
+
+Deleting one task or clearing all archived tasks cannot be undone. Recoverable messages, attachments, and task history are removed according to system policy. Minimal audit, usage, or resource facts may remain, but cannot restore task content.
+
+<Callout type="info" title="Organization">
+
+Pin active work, archive completed work, and permanently delete only after downloading anything you still need.
+
+</Callout>
+
+### Share the current conversation [#manage-history-share-the-current-conversation]
+
+Select **Share** in the task header, review the preview, then select **Copy link**. The link includes only the messages and attachment information in that preview, without your name. Attachments are not available for public download.
+
+The preview is fixed when the dialog opens. Later messages, further streamed output, and edits to existing content are not added to this share. To share updated content, close and reopen the dialog and copy a new link. Each new link has its own snapshot; earlier links remain unchanged.
+
+The share preview does not load additional history. To include older messages, load them in the original task before opening the share dialog. Permanently deleting the source task also invalidates its share links.
+
+## Branch and reorder tasks [#branch-and-organize]
+
+### Branch from a response [#branch-and-organize-branch-from-a-response]
+
+In a stopped task, find the final assistant response you want to use as the branch point and select **Branch into new chat** from its message actions. LinkSense creates and opens a new task containing the conversation, attachments, artifacts, knowledge citations, and resumable runtime context through that response.
+
+The branch does not include anything after the selected response and does not modify the source task. Its title receives a sequence suffix and it starts unpinned. Messages, files, and subsequent runs are independent in the two tasks.
+
+You cannot branch when:
+
+- The source task is running or starting, or has a queued request.
+- The selected response is not the final assistant response of a finished turn.
+- The source task is archived or its runtime context cannot be copied safely.
+
+A failed operation does not leave a visible partial task. Confirm that the source task has stopped before retrying.
+
+### Reorder tasks [#branch-and-organize-reorder-tasks]
+
+Drag tasks within the **Pinned** and **Recent** groups in the sidebar. A task can move only within its current group; pin or unpin it first, then choose its position in the destination group.
+
+With a keyboard, focus the reorder handle, press Space to pick up the task, use the Up and Down arrow keys, and press Space again to save. Press Escape to cancel. If another window changes the list at the same time, LinkSense may reject the stale order; refresh and reorder again.
+
+### Archiving and deletion [#branch-and-organize-archiving-and-deletion]
+
+A branch and its source are independent tasks. Archiving or permanently deleting one does not automatically affect the other. If artifacts were copied into a branch, access and download them from the appropriate task under its current permissions.

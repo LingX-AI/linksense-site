@@ -29,7 +29,7 @@ const topics = [
   {
     title: 'knowledge',
     body: 'fullNote',
-    path: 'user-guide/knowledge-bases/create-and-manage/',
+    path: 'user-guide/knowledge-bases/',
     Icon: BookOpen,
   },
   {
