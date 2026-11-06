@@ -17,14 +17,7 @@ Fresh deployments default to one concurrent conversation and a 4 GiB per-user Wo
 
 ## Custom port
 
-Pass `LINKSENSE_HTTP_PORT` to the downloaded installer. This example uses Core; use `install-full.sh` for Full:
-
-```bash
-# Linux
-sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
-# macOS
-env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
-```
+For a fresh deployment, set `LINKSENSE_HTTP_PORT` using the [custom-port install commands](../index.mdx#install-on-a-custom-port) for your operating system. For an existing deployment, use `linksense port 19090`.
 
 ## CLI management
 

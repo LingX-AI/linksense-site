@@ -17,14 +17,7 @@ description: 核对 Docker 主机、管理现有部署并安全处理升级。
 
 ## 自定义端口
 
-安装时向已下载的脚本传入 `LINKSENSE_HTTP_PORT`。以下以 Core 为例，Full 对应 `install-full.sh`：
-
-```bash
-# Linux
-sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
-# macOS
-env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
-```
+新安装请按操作系统选择[自定义端口安装命令](../index.mdx#install-on-a-custom-port)，通过 `LINKSENSE_HTTP_PORT` 指定端口。已有部署使用 `linksense port 19090`。
 
 ## 命令行管理
 

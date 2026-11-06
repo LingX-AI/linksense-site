@@ -111,11 +111,13 @@ Confirm the flags include `cx16`, `lahf_lm`, `popcnt`, `ssse3`, `sse4_1`, `sse4_
 
 ### Check downloads and image pulls
 
-Terminal downloads from GitHub and Docker Engine image pulls are separate network paths. After downloading the selected installer, run its network check:
+Terminal downloads from GitHub and Docker Engine image pulls are separate network paths. Download the installer and run its network check. Leave `edition=core` for Core or change it to `edition=full` for Full:
 
 ```bash
-sh install-core.sh --check-network
-# Full: sh install-full.sh --check-network
+edition=core
+curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
+  -o "install-${edition}.sh" "https://raw.githubusercontent.com/LingX-AI/linksense/main/install-${edition}.sh" &&
+sh "install-${edition}.sh" --check-network
 ```
 
 The command should exit with status `0` and no `[LS_HOST_*]` error. It may pull and cache images, but it does not create an installation or start services.
@@ -196,17 +198,29 @@ Full also prints `Full release probe passed.` after its Knowledge checks. The ac
 | Docker API or Compose is too old | Server API is below `1.45`, or Compose is below `2.24.4` | Upgrade the relevant Docker component through its official installation path and rerun the checks. |
 | `[LS_HOST_memory]` | The host or Docker VM does not have enough available memory | Increase Docker Desktop memory or move the deployment to a larger host. |
 | `[LS_HOST_storage]` | The host, Docker VM, or backup location lacks free space | Remove only confirmed disposable files or expand storage; do not run broad Docker cleanup commands blindly. |
-| `[LS_HOST_pull]`, timeouts, or TLS errors | The terminal proxy works but Docker Engine has no proxy, or a registry is unreachable | Run the selected installer's `--check-network`; diagnose terminal and Docker Engine networking separately. |
+| `[LS_HOST_pull]`, timeouts, or TLS errors | The terminal proxy works but Docker Engine has no proxy, or a registry is unreachable | Run the [download and image pull check](#check-downloads-and-image-pulls); diagnose terminal and Docker Engine networking separately. |
 | Full logs say `CPU does not support x86-64-v2` | The VM does not expose the required CPU flags | Power off the VM and select host passthrough or a compatible x86-64-v2 CPU mode. |
 | The installation port is occupied | Another process uses `18081` | Set `LINKSENSE_HTTP_PORT` for a fresh installation; use `linksense port <port>` for an existing installation. |
 | Core / Full already exists, or installation was interrupted | Rerunning a different installer can target the wrong edition or directory | Run `linksense status` and `linksense doctor`; rerun only the same edition's installer for an interrupted installation. |
 
-For a fresh installation on port `19090`, using Core as the example:
+### Install on a custom port [#install-on-a-custom-port]
+
+For a fresh Core installation on port `19090`, run the block for your operating system. Each block downloads the installer from GitHub before running it. For Full, replace every `install-core.sh` in the block (including in the URL) with `install-full.sh`. For an existing installation, use `linksense port 19090` instead.
+
+**Linux**
 
 ```bash
-# Linux
-sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
-# macOS
+curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
+  -o install-core.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-core.sh &&
+sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy \
+  env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
+```
+
+**macOS**
+
+```bash
+curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
+  -o install-core.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-core.sh &&
 env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
 ```
 

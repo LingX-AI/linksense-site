@@ -38,7 +38,7 @@ export function WebsiteLayout({
     {
       text: t.install,
       desc: t.coreBody,
-      url: docsPath(lang, 'deploy/'),
+      url: installPath(lang),
       Icon: Download,
     },
     {
@@ -124,7 +124,6 @@ export function WebsiteLayout({
               </NavbarMenu>
             ),
           },
-          { text: t.install, url: installPath(lang) },
           {
             text: (
               <>
