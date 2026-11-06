@@ -24,6 +24,8 @@ sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_
 
 先启动 Docker Desktop，使用当前账号执行，不使用 `sudo`。
 
+首次使用 Docker 时，请先完成[在 macOS 安装并配置 Docker Desktop](../index.mdx#在-macos-安装并配置-docker-desktop)。
+
 ```bash
 curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
   -o install-core.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-core.sh &&
