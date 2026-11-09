@@ -1,7 +1,8 @@
 {
-  "title": "自主部署",
+  "title": "部署与入门",
   "pages": [
     "index",
+    "prepare",
     "core",
     "full",
     "first-setup",
@@ -9,5 +10,5 @@
     "development",
     "architecture"
   ],
-  "icon": "Wrench"
+  "icon": "Rocket"
 }

@@ -3,7 +3,6 @@ title: 运维、修复与升级
 description: 核对 Docker 主机、管理现有部署并安全处理升级。
 ---
 
-
 ## 环境与网络
 
 - 支持 Linux x86_64 / ARM64 和 macOS Intel / Apple Silicon。macOS 使用 Docker Desktop 的 Linux 容器，长期共享部署优先考虑 Linux。
@@ -17,19 +16,19 @@ description: 核对 Docker 主机、管理现有部署并安全处理升级。
 
 ## 自定义端口
 
-新安装请按操作系统选择[自定义端口安装命令](../index.mdx#install-on-a-custom-port)，通过 `LINKSENSE_HTTP_PORT` 指定端口。已有部署使用 `linksense port 19090`。
+新安装请按操作系统使用[自定义端口安装命令](./prepare.mdx#custom-port)，通过 `LINKSENSE_HTTP_PORT` 指定端口。已有部署使用 `linksense port 19090`。
 
 ## 命令行管理
 
-| 操作 | 命令 |
-| --- | --- |
-| 状态和地址 | `linksense status`、`linksense address` |
-| 启动、停止、重启 | `linksense start`、`linksense stop`、`linksense restart` |
-| 修改端口 | `linksense port 19090` |
-| 查看一次性初始化凭据 | `linksense credential` |
-| 查看日志 | `linksense logs api`、`linksense logs runner` |
-| 健康与网络诊断 | `linksense doctor`、`linksense doctor --network` |
-| 修复与升级 | `linksense repair`、`linksense upgrade` |
+| 操作                 | 命令                                                     |
+| -------------------- | -------------------------------------------------------- |
+| 状态和地址           | `linksense status`、`linksense address`                  |
+| 启动、停止、重启     | `linksense start`、`linksense stop`、`linksense restart` |
+| 修改端口             | `linksense port 19090`                                   |
+| 查看一次性初始化凭据 | `linksense credential`                                   |
+| 查看日志             | `linksense logs api`、`linksense logs runner`            |
+| 健康与网络诊断       | `linksense doctor`、`linksense doctor --network`         |
+| 修复与升级           | `linksense repair`、`linksense upgrade`                  |
 
 不带参数运行 `linksense` 可进入交互菜单。macOS 找不到命令时，将 `$HOME/.local/bin` 加入 `PATH`。网络检查可能拉取并缓存镜像，但不会启动服务。
 

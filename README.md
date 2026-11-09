@@ -44,7 +44,7 @@ pnpm preview
 
 - 官网文案：`src/content/messages.ts`、`src/content/other-locales.ts`。
 - 中文文档：`content/docs/zh/`；英文：`content/docs/en/`。
-- 文档目录：对应目录内的 `meta.json`，使用 Fumadocs 原生折叠侧栏，固定四个主入口，最多两级，不随当前指南切换。
+- 文档首页按部署、首个任务、管理和开发分流。左侧使用 Fumadocs 原生折叠菜单，固定“部署与入门、用户指南、管理员指南、开发者指南”四个主入口，最多两级，不随当前指南切换。
 - 相关小篇合并为连续主题文档：左侧只列主题，右侧目录按正文标题显示完整的多级章节；历史小篇 URL 在 `public/_redirects` 中跳转到对应章节。
 - 公共主题：`src/app/global.css`，直接基于上游主题，未加载旧站 CSS。
 - 文档搜索：Fumadocs + Orama，中文使用 Mandarin tokenizer；数据库在构建时导出，浏览器本地搜索，无搜索服务或模型 API。

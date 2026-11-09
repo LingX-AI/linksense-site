@@ -1,267 +1,46 @@
 ---
-title: LinkSense Deployment and First Steps
-icon: Wrench
-description: Choose an edition, check the host, install LinkSense, complete setup, and run the first task on one page.
+title: LinkSense documentation
+icon: BookOpen
+description: Choose the path that matches what you need to do.
 ---
 
-LinkSense is an open-source agentic work platform for organizations. It runs on your server or private cloud so administrators can deploy centrally while members work in their own AI workspaces and share Knowledge, Skills, Plugins, and Applications within their permissions.
-
-<Callout type="info" title="Before the first task">
-
-This page covers the complete path from choosing an edition to verifying the first task. If LinkSense is already installed, go directly to [Operations, repair, and upgrades](#operations-repair-and-upgrades). Do not rerun an installer or switch Core / Full in place.
-
-</Callout>
-
-## Choose a deployment
-
-Core and Full use the same product code. They differ in whether built-in Knowledge services are deployed, not in whether they are free or paid.
-
-| Edition | Includes | Choose it when |
-| --- | --- | --- |
-| **Core** | Agent workspace, task attachments, Skills, Plugins, MCP, Applications, and organization management | You are evaluating LinkSense or do not need built-in parsing, indexing, and retrieval for organizational Knowledge. |
-| **Full** | Everything in Core plus built-in Knowledge powered by Elasticsearch and Docling | You need to process, retrieve, and cite organizational documents. |
-
-Start with Core for evaluation; choose Full when you need built-in Knowledge.
-
-## Deployment prerequisites
-
-### Supported platforms
-
-- Linux on x86_64 or ARM64.
-- macOS on Intel or Apple Silicon using Docker Desktop Linux containers.
-- This workflow does not provide native Windows installation.
-- Plan model compute, GPU, and VRAM separately when running local models.
-
-### Resource planning
-
-| Scenario | CPU | Memory available to Docker | Free SSD |
-| --- | --- | --- | --- |
-| Core evaluation | 4 vCPU | 8 GiB | 60 GiB |
-| Fresh Full installation | 8 vCPU | 10 GiB installer hard preflight; plan 24 GiB | 120 GiB |
-| Full organization planning baseline | 16 vCPU | 32 GiB | 200 GiB |
-
-These figures assume external model APIs and do not establish a fixed concurrency or user limit. Test representative peak concurrency, large documents, and OCR before rollout.
-
-### Install and configure Docker Desktop on macOS
-
-Docker Desktop provides the Docker Engine, command-line tools, and Compose together. You do not need to create containers manually; the LinkSense installer does that after these checks.
-
-1. Open **Apple menu → About This Mac** to check the chip and installed memory. Download the matching **Apple silicon** or **Intel** edition from the [Docker Desktop for Mac installation page](https://docs.docker.com/desktop/setup/install/mac-install/).
-2. Open the downloaded `Docker.dmg`, drag **Docker** into **Applications**, then open **Applications → Docker**. Complete the first-run prompts and wait until Docker Engine is running.
-3. In Docker Desktop, select the gear icon to open **Settings → Resources → Advanced**. This is the **Advanced** section under **Resources**, not the separate top-level Advanced settings. Configure:
-
-| Docker Desktop setting | What to enter |
-| --- | --- |
-| **CPU limit** / **CPUs** | At least **4** for Core or **8** for Full, if the Mac has enough CPU cores. |
-| **Memory limit** | Start with **10–12 GB** for Core. For Full, plan **24 GB or more** and leave additional memory for macOS and other applications. A 16 GB Mac should start with Core; a 32 GB or larger Mac is a better starting point for Full. |
-| **Disk usage limit** | Allow enough capacity for existing Docker data plus at least **60 GiB free** for Core or **120 GiB free** for Full. The Mac's storage must also have that free space. |
-
-4. Select **Apply & Restart** and wait for Docker Engine to restart. Restarting Docker temporarily stops other running local containers, so save any work first.
-5. Reopen Terminal if necessary and run the following check. Run LinkSense installation commands as your current macOS account, without `sudo`.
-
-```bash
-docker info --format '{{.NCPU}} {{.MemTotal}}' |
-  awk '{printf "CPUs=%s\nDocker memory=%.2f GiB\n", $1, $2 / 1024 / 1024 / 1024}'
-```
-
-Example output for Core; the actual numbers depend on your Mac:
-
-```text
-CPUs=4
-Docker memory=10.00 GiB
-```
-
-Core needs at least **8 GiB reported by Docker Engine**. Full must satisfy the selected release's preflight requirement; the current documented floor is **10 GiB**, while the recommended capacity above is higher. The value in Docker Desktop's slider is an allocation limit, not necessarily the memory reported by the Engine. Increase it and restart again if the check or installer reports insufficient memory.
-
-**Disk usage limit is a maximum, not a free-space reading.** Include existing image and container usage when choosing it. Do not lower an existing disk limit just to match this guide, reset Docker, or delete volumes to pass a check; these actions can remove existing containers, images, and data. See [Docker Desktop resource settings](https://docs.docker.com/desktop/settings-and-maintenance/settings/#advanced) for the controls.
-
-### Check the host
-
-On Linux, install and start [Docker Engine and the Compose plugin](https://docs.docker.com/engine/install/) first. On macOS, complete the Docker Desktop steps above. Then run:
-
-```bash
-uname -s
-uname -m
-docker version
-docker compose version
-docker info --format 'CPUs={{.NCPU}} MemoryBytes={{.MemTotal}} DockerRoot={{.DockerRootDir}}'
-curl --version
-df -h
-```
-
-The expected result is:
-
-1. The system is `Linux` or `Darwin`, and the architecture is `x86_64`, `aarch64`, or `arm64`.
-2. `docker version` shows both Client and Server, with Server API version `1.45` or newer.
-3. Docker Compose is version `2.24.4` or newer.
-4. `curl` prints its version, and disk plus Docker VM resources meet the selected edition.
-
-If `docker` is not found, reopen Terminal after Docker Desktop has finished its initial setup. If there is no Server section or the daemon cannot be reached, open Docker Desktop and wait for the Engine to start before retrying.
-
-### Check the Full CPU requirement
-
-Full requires its x86_64 Docker host to expose `x86-64-v2`; this requirement does not apply to native ARM64. The commands below are for the Linux host or VM that will run Elasticsearch and Docling, not the macOS Terminal. On an Intel Mac, the installer checks the CPU features inside Docker Desktop's Linux VM.
-
-```bash
-LC_ALL=C lscpu
-grep -m1 '^flags' /proc/cpuinfo
-```
-
-Confirm the flags include `cx16`, `lahf_lm`, `popcnt`, `ssse3`, `sse4_1`, `sse4_2`, and `pni` (or `sse3`). If they are missing, change the virtual CPU mode before installing Full.
-
-### Check downloads and image pulls
-
-Terminal downloads from GitHub and Docker Engine image pulls are separate network paths. Download the installer and run its network check. Leave `edition=core` for Core or change it to `edition=full` for Full:
-
-```bash
-edition=core
-curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
-  -o "install-${edition}.sh" "https://raw.githubusercontent.com/LingX-AI/linksense/main/install-${edition}.sh" &&
-sh "install-${edition}.sh" --check-network
-```
-
-The command should exit with status `0` and no `[LS_HOST_*]` error. It may pull and cache images, but it does not create an installation or start services.
-
-## Install with a coding agent
-
-Give a coding agent this prompt; it defaults to Core:
-
-```text
-Help me install and start LinkSense by following https://raw.githubusercontent.com/LingX-AI/linksense/main/Install.md
-```
-
-For Full, explicitly request `LinkSense Full`. The agent should inspect the actual host, preserve existing installations, and report the observed address and health state. Downloading the installer alone does not establish success.
-
-## Install Core
-
-Core provides the complete agent workspace, task execution, and organizational sharing.
-
-### Linux
-
-```bash
-curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
-  -o install-core.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-core.sh &&
-sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy sh install-core.sh
-```
-
-### macOS
-
-Start Docker Desktop first, then run as the current account:
-
-```bash
-curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
-  -o install-core.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-core.sh &&
-sh install-core.sh
-```
-
-## Install Full
-
-Full adds built-in Knowledge parsing, indexing, and retrieval to Core. Confirm the resource and `x86-64-v2` requirements before installation.
-
-### Linux
-
-```bash
-curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
-  -o install-full.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-full.sh &&
-sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy sh install-full.sh
-```
-
-### macOS
-
-Start Docker Desktop first, then run as the current account:
-
-```bash
-curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
-  -o install-full.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-full.sh &&
-sh install-full.sh
-```
-
-### Successful installation output
-
-After image verification, database initialization, startup, and health checks, the installer prints output similar to:
-
-```text
-[linksense-installer] Installed LinkSense core vX.Y.Z successfully.
-LinkSense is ready at: http://<server-address>:18081
-
-Copy and securely save the credential below before continuing:
-<one-time initialization credential>
-```
-
-Full also prints `Full release probe passed.` after its Knowledge checks. The actual address and one-time credential shown in the terminal are authoritative. Do not paste the credential into chats, tickets, or public logs.
-
-## Common installation problems
-
-| Symptom | Confirmed cause | Fix |
-| --- | --- | --- |
-| `docker version` has no Server section, or cannot connect to the Docker daemon | Docker is stopped, or the account cannot access the Docker socket | Start Docker. On Linux, check account access; on macOS, check Docker Desktop. |
-| Docker API or Compose is too old | Server API is below `1.45`, or Compose is below `2.24.4` | Upgrade the relevant Docker component through its official installation path and rerun the checks. |
-| `[LS_HOST_memory]` | The host or Docker VM does not have enough available memory | Increase Docker Desktop memory or move the deployment to a larger host. |
-| `[LS_HOST_storage]` | The host, Docker VM, or backup location lacks free space | Remove only confirmed disposable files or expand storage; do not run broad Docker cleanup commands blindly. |
-| `[LS_HOST_pull]`, timeouts, or TLS errors | The terminal proxy works but Docker Engine has no proxy, or a registry is unreachable | Run the [download and image pull check](#check-downloads-and-image-pulls); diagnose terminal and Docker Engine networking separately. |
-| Full logs say `CPU does not support x86-64-v2` | The VM does not expose the required CPU flags | Power off the VM and select host passthrough or a compatible x86-64-v2 CPU mode. |
-| The installation port is occupied | Another process uses `18081` | Set `LINKSENSE_HTTP_PORT` for a fresh installation; use `linksense port <port>` for an existing installation. |
-| Core / Full already exists, or installation was interrupted | Rerunning a different installer can target the wrong edition or directory | Run `linksense status` and `linksense doctor`; rerun only the same edition's installer for an interrupted installation. |
-
-### Install on a custom port [#install-on-a-custom-port]
-
-For a fresh Core installation on port `19090`, run the block for your operating system. Each block downloads the installer from GitHub before running it. For Full, replace every `install-core.sh` in the block (including in the URL) with `install-full.sh`. For an existing installation, use `linksense port 19090` instead.
-
-**Linux**
-
-```bash
-curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
-  -o install-core.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-core.sh &&
-sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy \
-  env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
-```
-
-**macOS**
-
-```bash
-curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
-  -o install-core.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-core.sh &&
-env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
-```
-
-## First-time setup
-
-1. Open the actual address printed by the installer. Port `18081` is the default, but terminal output is authoritative.
-2. Use the one-time initialization credential to create the first administrator. It becomes invalid after use.
-3. Add at least one chat model channel in administration and keep it available for chat.
-4. Full also needs the appropriate embedding model for Knowledge.
-5. Run `linksense status` and `linksense doctor` in the terminal and confirm the deployment is healthy.
-
-Model protocol, network connectivity, and tool support must be verified separately. A successful chat does not prove that tool tasks work. See [Model settings](./admin-guide/models-and-usage.mdx#model-settings) for field-level details.
-
-## Complete the first task
-
-1. Send a short request from **New task** and confirm the chat model returns a result.
-2. Run a tool-using task, such as creating and opening a small file, and confirm the deliverable exists.
-3. On Full, upload a representative document and verify parsing, retrieval, and source citations.
-4. Review the task process and output before inviting more members or increasing concurrency.
-
-See [Your first task](./user-guide/getting-started/index.mdx#first-task) for product interaction details.
-
-## Operations, repair, and upgrades
-
-| Operation | Command |
-| --- | --- |
-| Status and actual address | `linksense status`, `linksense address` |
-| Start, stop, restart | `linksense start`, `linksense stop`, `linksense restart` |
-| Change port | `linksense port 19090` |
-| Show initialization credential | `linksense credential` |
-| View logs | `linksense logs api`, `linksense logs runner` |
-| Health and network diagnostics | `linksense doctor`, `linksense doctor --network` |
-| Repair and upgrade | `linksense repair`, `linksense upgrade` |
-
-An upgrade waits for running tasks and stores a database backup before migration. Migration failures do not automatically roll back the database. Retain the generated backup and make an off-host copy before upgrading. Never overwrite an existing Core / Full deployment with the other edition's installer.
-
-For host adaptation, backup recovery, and complete troubleshooting, see [Operations](./deploy/operations.mdx). For source changes and image builds, see [Source development](./deploy/development.mdx).
-
-## Continue reading
-
-- [Organizational capabilities and architecture](./deploy/architecture.mdx): see how teams share capabilities and how tasks run.
-- [User guide](./user-guide/overview.mdx): create tasks, upload files, install capabilities, and manage personal settings.
-- [Administrator guide](./admin-guide/overview.mdx): members, permissions, models, authentication, health, audit, and usage.
-- [Developer guide](./developer-guide/interactive-application.mdx): interactive Application packages and external integrations.
+import { Boxes, Code2, Play, ShieldCheck } from 'lucide-react'
+
+LinkSense is a self-hosted workspace for running AI tasks, sharing organizational capabilities, and governing how teams use models, data, and tools.
+
+## Choose your path
+
+<Cards>
+  <Card
+    icon={<Boxes />}
+    title="Deploy LinkSense"
+    description="Choose Core or Full, prepare Docker, and complete first-time setup."
+    href="./deploy/"
+  />
+  <Card
+    icon={<Play />}
+    title="Complete your first task"
+    description="Connect a model, create a task, and verify a real result."
+    href="./user-guide/getting-started/"
+  />
+  <Card
+    icon={<ShieldCheck />}
+    title="Administer LinkSense"
+    description="Manage members, access, models, usage, health, and audit."
+    href="./admin-guide/overview/"
+  />
+  <Card
+    icon={<Code2 />}
+    title="Build and integrate"
+    description="Create Applications and embed LinkSense tasks in other systems."
+    href="./developer-guide/interactive-application/"
+  />
+</Cards>
+
+## Understand the system
+
+See [Organizational capabilities and architecture](./deploy/architecture.mdx) for how personal work becomes shared team capability, how Applications combine resources, and how tasks execute inside managed Workers.
+
+## For AI assistants
+
+Use the [documentation index](/llms.txt) to discover the public pages, then follow the Markdown links for the relevant language and topic.

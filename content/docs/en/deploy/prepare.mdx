@@ -1,0 +1,119 @@
+---
+title: Prepare Docker and networking
+description: Prepare Docker, verify host resources, and check registry access before installing Core or Full.
+---
+
+Use this page for a fresh installation. For an existing deployment, start with [Operations, repair, and upgrades](./operations.mdx).
+
+## Supported hosts
+
+- Linux x86_64 or ARM64.
+- macOS Intel or Apple Silicon using Docker Desktop's Linux containers.
+- Native Windows installation is not supported.
+- Plan separately for local model compute, memory, and GPUs.
+
+## Install Docker
+
+On Linux, install Docker Engine and the Compose plugin from the [Docker official guide](https://docs.docker.com/engine/install/). On macOS, install Docker Desktop using the steps below.
+
+### Configure Docker Desktop on macOS [#configure-docker-desktop]
+
+1. Open **Apple menu → About This Mac** and confirm the chip and memory. Download the matching **Apple silicon** or **Intel** build from [Docker Desktop for Mac](https://docs.docker.com/desktop/setup/install/mac-install/).
+2. Open `Docker.dmg`, move **Docker** into **Applications**, and launch it. Wait until Docker Engine is running.
+3. Open **Settings → Resources → Advanced** and allocate resources for the selected edition.
+4. Select **Apply & Restart** and wait for Docker Engine to restart. This briefly stops other local containers.
+5. Reopen Terminal if needed. Install LinkSense with your current macOS account, without `sudo`.
+
+| Docker Desktop resource | Core                      | Full                       |
+| ----------------------- | ------------------------- | -------------------------- |
+| CPU                     | At least 4                | At least 8                 |
+| Memory                  | Start with 10–12 GB       | Prefer 24 GB or more       |
+| Disk                    | At least 60 GiB available | At least 120 GiB available |
+
+The memory limit is a maximum, while LinkSense preflight checks the memory Docker Engine can actually use. On a 16 GiB Mac, start with Core. A Full evaluation should generally use a 32 GiB or larger Mac.
+
+```bash
+docker info --format '{{.NCPU}} {{.MemTotal}}' |
+  awk '{printf "CPUs=%s\nDocker memory=%.2f GiB\n", $1, $2 / 1024 / 1024 / 1024}'
+```
+
+## Check the host
+
+Run:
+
+```bash
+uname -s
+uname -m
+docker version
+docker compose version
+docker info --format 'CPUs={{.NCPU}} MemoryBytes={{.MemTotal}} DockerRoot={{.DockerRootDir}}'
+curl --version
+df -h
+```
+
+Confirm:
+
+1. The system is `Linux` or `Darwin`, with an `x86_64`, `aarch64`, or `arm64` architecture.
+2. `docker version` includes **Server** and reports API version `1.45` or later.
+3. Docker Compose is version `2.24.4` or later.
+4. `curl` works and the host or Docker VM has enough memory and disk space.
+
+Full on x86_64 also requires `x86-64-v2`. The [operations guide](./operations.mdx#virtual-machines-and-knowledge) provides diagnostics and VM CPU configuration examples.
+
+## Check image downloads [#check-network]
+
+Terminal downloads and Docker Engine registry pulls use separate network paths. After downloading the installer, check the selected edition:
+
+```bash
+sh install-core.sh --check-network
+```
+
+For Full, run `sh install-full.sh --check-network`. A successful check exits with status `0` and no `[LS_HOST_*]` errors. It can pull and cache images without creating a deployment.
+
+If GHCR is slow or unreachable, the installer can rotate to public mirrors after 30 seconds without download progress. Configure a private mirror before installation when your organization requires one:
+
+```bash
+LINKSENSE_IMAGE_MIRRORS='ghcr.io=registry.example/ghcr' sh install-core.sh
+```
+
+See [host adaptation](https://github.com/LingX-AI/linksense/blob/main/deploy/release/HOST-ADAPTATION.md#registry-mirrors-for-release-images) for mirror syntax and Docker proxy configuration.
+
+## Install with a coding agent
+
+Give this prompt to a coding assistant:
+
+```text
+Help me install and start LinkSense by following https://raw.githubusercontent.com/LingX-AI/linksense/main/Install.md
+```
+
+Add `LinkSense Full` when you need Full. The assistant should inspect the actual host, preserve existing installations, and report the observed address and health status. Downloading the installer alone is not a successful installation.
+
+## Custom port [#custom-port]
+
+To install Core on port `19090`, use the command for your operating system. Replace `core` with `full` for Full.
+
+**Linux**
+
+```bash
+sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy \
+  env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
+```
+
+**macOS**
+
+```bash
+env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
+```
+
+The command above assumes the installer was already downloaded with the command on the [Core](./core.mdx) or [Full](./full.mdx) page. For an existing installation, use `linksense port 19090`.
+
+## Common installation problems
+
+| Symptom                                 | Cause                                                         | Resolution                                                                                                |
+| --------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| No Docker Server or daemon connection   | Docker is stopped or the account cannot access its socket     | Start Docker and check Linux permissions or Docker Desktop status.                                        |
+| API or Compose version is too old       | Server API is below `1.45` or Compose is below `2.24.4`       | Upgrade the relevant component using Docker's official method.                                            |
+| `[LS_HOST_memory]`                      | The host or Docker VM does not have enough usable memory      | Increase Docker Desktop memory or move to a larger host.                                                  |
+| `[LS_HOST_storage]`                     | The host, Docker VM, or backup location is short on space     | Remove only known disposable files or add capacity; do not run a blanket Docker prune.                    |
+| `[LS_HOST_pull]`, timeout, or TLS error | Docker Engine cannot reach a registry or lacks proxy settings | Run the network check and review terminal and Docker Engine networking separately.                        |
+| Existing Core or Full installation      | Another installer can overwrite the deployment identity       | Run `linksense status` and `linksense doctor`; resume only the same edition after an interrupted install. |

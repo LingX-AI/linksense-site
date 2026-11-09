@@ -3,7 +3,6 @@ title: 安装 Core
 description: 在 Linux 或 macOS 上安装已发布的 LinkSense Core Docker 镜像。
 ---
 
-
 Core 提供任务执行和组织共享。若需要内置知识库解析与检索，请选择 [Full](./full.mdx)。
 
 ## 检查环境
@@ -24,7 +23,7 @@ sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_
 
 先启动 Docker Desktop，使用当前账号执行，不使用 `sudo`。
 
-首次使用 Docker 时，请先完成[在 macOS 安装并配置 Docker Desktop](../index.mdx#在-macos-安装并配置-docker-desktop)。
+首次使用 Docker 时，请先完成[准备 Docker 与网络](./prepare.mdx#configure-docker-desktop)。
 
 ```bash
 curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \

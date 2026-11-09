@@ -1,5 +1,22 @@
 # Verification
 
+## November 9, 2026 — Task-first documentation home
+
+The documentation home is now a short route selector for deployment, first-task,
+administration, and development instead of duplicating the installation guide.
+The four persistent sidebar categories are deployment, User guide, Administrator
+guide, and Developer guide. The deployment category expands to Docker preparation,
+Core, Full, first setup, operations, source development, and architecture;
+architecture is no longer listed under Developer guide. All sidebar categories
+remain at most two levels.
+
+All 23 tests, TypeScript checks, and the production static export pass. The tests
+verify the four primary folders, two-level limit, deployment overview link, short
+documentation home, bilingual section parity, cross-references, and legacy
+redirects. The Codex browser verified the Chinese documentation home, its four
+route cards, and the expanded deployment menu at the local development URL.
+Mobile layout and screen-reader testing were not run.
+
 ## November 5, 2026 — Persistent sidebar and full section hierarchy
 
 The sidebar keeps the same four primary entries on every article: deployment

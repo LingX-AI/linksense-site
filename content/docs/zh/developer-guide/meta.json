@@ -2,7 +2,6 @@
   "title": "开发者指南",
   "icon": "Code",
   "pages": [
-    "../deploy/architecture",
     "interactive-application",
     "embed-application"
   ]

@@ -3,7 +3,6 @@ title: Operations, repair, and upgrades
 description: Check the Docker host, manage an existing deployment, and handle upgrades safely.
 ---
 
-
 ## Environment and network
 
 - Linux x86_64 / ARM64 and macOS Intel / Apple Silicon are supported. Use Linux containers in Docker Desktop on macOS; prefer Linux for a long-running shared deployment.
@@ -17,19 +16,19 @@ Fresh deployments default to one concurrent conversation and a 4 GiB per-user Wo
 
 ## Custom port
 
-For a fresh deployment, set `LINKSENSE_HTTP_PORT` using the [custom-port install commands](../index.mdx#install-on-a-custom-port) for your operating system. For an existing deployment, use `linksense port 19090`.
+For a fresh deployment, set `LINKSENSE_HTTP_PORT` using the [custom-port install commands](./prepare.mdx#custom-port). For an existing deployment, use `linksense port 19090`.
 
 ## CLI management
 
-| Action | Command |
-| --- | --- |
-| Status and address | `linksense status`, `linksense address` |
-| Start, stop, or restart | `linksense start`, `linksense stop`, `linksense restart` |
-| Change the port | `linksense port 19090` |
-| Show the one-time initialization credential | `linksense credential` |
-| Read logs | `linksense logs api`, `linksense logs runner` |
-| Check health and network | `linksense doctor`, `linksense doctor --network` |
-| Repair or upgrade | `linksense repair`, `linksense upgrade` |
+| Action                                      | Command                                                  |
+| ------------------------------------------- | -------------------------------------------------------- |
+| Status and address                          | `linksense status`, `linksense address`                  |
+| Start, stop, or restart                     | `linksense start`, `linksense stop`, `linksense restart` |
+| Change the port                             | `linksense port 19090`                                   |
+| Show the one-time initialization credential | `linksense credential`                                   |
+| Read logs                                   | `linksense logs api`, `linksense logs runner`            |
+| Check health and network                    | `linksense doctor`, `linksense doctor --network`         |
+| Repair or upgrade                           | `linksense repair`, `linksense upgrade`                  |
 
 Run `linksense` without arguments for the interactive menu. If the command is missing on macOS, add `$HOME/.local/bin` to `PATH`. Network checks can pull and cache images without starting services.
 

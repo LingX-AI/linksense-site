@@ -14,7 +14,7 @@ const documents = new Map(
   ]),
 )
 
-test('every guide keeps the same four primary menus with at most two levels', () => {
+test('the sidebar keeps four primary menus with at most two levels', () => {
   const files: VirtualFile[] = [
     ...[...documents].map(([path, source]) => ({
       type: 'page' as const,
@@ -40,28 +40,42 @@ test('every guide keeps the same four primary menus with at most two levels', ()
   })
   for (const locale of ['zh', 'en']) {
     const tree = source.getPageTree(locale)
-    const [deployment, ...guides] = tree.children
     assert.equal(tree.children.length, 4)
-    assert.equal(deployment.type, 'page')
-    if (deployment.type === 'page')
-      assert.equal(deployment.url, docsPath(locale))
-    assert.match(read(`content/docs/${locale}/index.mdx`), /^icon: Wrench$/m)
     assert.deepEqual(
-      guides.map((guide) => guide.name),
-      ['user-guide', 'admin-guide', 'developer-guide'].map(
-        (guide) =>
-          JSON.parse(read(`content/docs/${locale}/${guide}/meta.json`)).title,
+      tree.children.map((item) => item.name),
+      ['deploy', 'user-guide', 'admin-guide', 'developer-guide'].map(
+        (directory) =>
+          JSON.parse(read(`content/docs/${locale}/${directory}/meta.json`))
+            .title,
       ),
     )
-    for (const guide of [...guides, ...(tree.fallback?.children ?? [])]) {
-      assert.equal(guide.type, 'folder')
-      if (guide.type !== 'folder') continue
-      assert(!guide.root, 'Nested roots must not replace the shared menu')
+    for (const item of tree.children) {
+      assert.equal(item.type, 'folder')
+      if (item.type !== 'folder') continue
+      assert(!item.root, 'Nested roots must not replace the shared menu')
       assert(
-        guide.children.every((child) => child.type === 'page'),
+        item.children.every((child) => child.type === 'page'),
         'The sidebar must not nest more than two levels',
       )
     }
+    assert.equal(tree.children[0]?.type, 'folder')
+    if (tree.children[0]?.type === 'folder')
+      assert(
+        tree.children[0].children.some(
+          (item) =>
+            item.type === 'page' && item.url === docsPath(locale, 'deploy'),
+        ),
+        'Deployment overview must remain reachable from the first menu',
+      )
+  }
+})
+
+test('the documentation home routes by task without duplicating the runbook', () => {
+  for (const locale of ['zh', 'en']) {
+    const source = read(`content/docs/${locale}/index.mdx`)
+    assert(source.split('\n').length < 100, `${locale}: docs home is too long`)
+    assert.equal((source.match(/<Card\b/g) ?? []).length, 4)
+    assert.doesNotMatch(source, /```|docker compose|install-core\.sh/)
   }
 })
 

@@ -1,0 +1,119 @@
+---
+title: 准备 Docker 与网络
+description: 安装前准备 Docker、确认主机资源并检查镜像网络。
+---
+
+本页用于全新安装。已有部署请先查看[运维、修复与升级](./operations.mdx)。
+
+## 支持平台
+
+- Linux x86_64 或 ARM64。
+- macOS Intel 或 Apple Silicon，使用 Docker Desktop 的 Linux 容器。
+- 不提供原生 Windows 安装流程。
+- 使用本地模型时，算力、内存和 GPU 需要另行规划。
+
+## 安装 Docker
+
+Linux 按 [Docker 官方指南](https://docs.docker.com/engine/install/)安装 Docker Engine 和 Compose 插件。macOS 按以下步骤安装 Docker Desktop。
+
+### 在 macOS 安装并配置 Docker Desktop [#configure-docker-desktop]
+
+1. 打开 **苹果菜单 → 关于本机**，确认芯片和内存。按芯片类型从 [Docker Desktop for Mac](https://docs.docker.com/desktop/setup/install/mac-install/) 下载 **Apple silicon** 或 **Intel** 版本。
+2. 打开 `Docker.dmg`，把 **Docker** 拖入 **Applications（应用程序）**并启动，等待 Docker Engine 运行。
+3. 打开 **Settings（设置）→ Resources（资源）→ Advanced（高级）**，按所选方案分配资源。
+4. 点击 **Apply & Restart（应用并重启）**，等待 Docker Engine 重启。这会暂时停止其他本地容器。
+5. 必要时重新打开终端。安装 LinkSense 时使用当前 macOS 账号，不使用 `sudo`。
+
+| Docker Desktop 资源 | Core              | Full              |
+| ------------------- | ----------------- | ----------------- |
+| CPU                 | 至少 4            | 至少 8            |
+| 内存                | 可先分配 10–12 GB | 建议 24 GB 或更多 |
+| 磁盘                | 至少 60 GiB 可用  | 至少 120 GiB 可用 |
+
+内存上限是 Docker Desktop 允许的最大值，LinkSense 预检读取的是 Docker Engine 实际可用内存。16 GiB 的 Mac 建议先使用 Core；评估 Full 通常应从 32 GiB 或更大内存的 Mac 开始。
+
+```bash
+docker info --format '{{.NCPU}} {{.MemTotal}}' |
+  awk '{printf "CPUs=%s\nDocker memory=%.2f GiB\n", $1, $2 / 1024 / 1024 / 1024}'
+```
+
+## 检查主机
+
+运行：
+
+```bash
+uname -s
+uname -m
+docker version
+docker compose version
+docker info --format 'CPUs={{.NCPU}} MemoryBytes={{.MemTotal}} DockerRoot={{.DockerRootDir}}'
+curl --version
+df -h
+```
+
+确认：
+
+1. 系统为 `Linux` 或 `Darwin`，架构为 `x86_64`、`aarch64` 或 `arm64`。
+2. `docker version` 包含 **Server**，API version 不低于 `1.45`。
+3. Docker Compose 版本不低于 `2.24.4`。
+4. `curl` 可用，主机或 Docker 虚拟机有足够的内存和磁盘空间。
+
+Full 的 x86_64 主机还需要 `x86-64-v2`。诊断方法、指令集和虚拟机 CPU 配置示例见[运维说明](./operations.mdx#虚拟机与知识库)。
+
+## 检查镜像网络 [#check-network]
+
+终端下载和 Docker Engine 拉取镜像使用两条独立网络路径。下载所选安装器后，可以先检查网络：
+
+```bash
+sh install-core.sh --check-network
+```
+
+Full 使用 `sh install-full.sh --check-network`。检查成功时，命令以状态码 `0` 结束，且不出现 `[LS_HOST_*]` 错误；检查可能拉取并缓存镜像，但不会创建部署。
+
+如果 GHCR 很慢或无法访问，安装器在没有下载进度的 30 秒后会轮换公共镜像源。组织有私有镜像服务时，可在安装前配置：
+
+```bash
+LINKSENSE_IMAGE_MIRRORS='ghcr.io=registry.example/ghcr' sh install-core.sh
+```
+
+镜像源语法和 Docker 代理配置见[主机适配说明](https://github.com/LingX-AI/linksense/blob/main/deploy/release/HOST-ADAPTATION.md#registry-mirrors-for-release-images)。
+
+## 使用编程助手安装
+
+将以下提示交给编程助手：
+
+```text
+Help me install and start LinkSense by following https://raw.githubusercontent.com/LingX-AI/linksense/main/Install.md
+```
+
+需要 Full 时，在提示中写明 `LinkSense Full`。助手应检查真实主机、保留已有安装，并报告观察到的地址和健康状态；仅下载安装器不代表安装成功。
+
+## 自定义端口 [#custom-port]
+
+在 `19090` 端口安装 Core 时，使用对应系统的命令。安装 Full 时将 `core` 改为 `full`。
+
+**Linux**
+
+```bash
+sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy \
+  env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
+```
+
+**macOS**
+
+```bash
+env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
+```
+
+以上命令假设已经按 [Core](./core.mdx) 或 [Full](./full.mdx) 页面下载安装器。已有部署使用 `linksense port 19090`。
+
+## 常见安装问题
+
+| 现象                                            | 原因                                             | 处理方式                                                                  |
+| ----------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------- |
+| `docker version` 没有 Server，或无法连接 daemon | Docker 未启动，或当前账号无法访问 Docker socket  | 启动 Docker，并核对 Linux 权限或 Docker Desktop 状态。                    |
+| Docker API 或 Compose 版本不足                  | Server API 低于 `1.45`，或 Compose 低于 `2.24.4` | 按 Docker 官方方式升级对应组件。                                          |
+| 出现 `[LS_HOST_memory]`                         | 主机或 Docker 虚拟机可用内存不足                 | 增加 Docker Desktop 内存，或迁移到更大的主机。                            |
+| 出现 `[LS_HOST_storage]`                        | 主机、Docker VM 或备份位置空间不足               | 清理明确可删除的文件或扩容，不要盲目执行 Docker 全局清理。                |
+| 出现 `[LS_HOST_pull]`、超时或 TLS 错误          | Docker Engine 无法访问镜像仓库或没有配置代理     | 运行网络检查，分别核对终端和 Docker Engine 网络。                         |
+| 已存在 Core 或 Full 安装                        | 重复运行另一种安装器可能覆盖部署身份             | 先运行 `linksense status` 和 `linksense doctor`；中断安装只重跑同一方案。 |

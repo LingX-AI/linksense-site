@@ -1,7 +1,8 @@
 {
-  "title": "Self-hosting",
+  "title": "Deploy & start",
   "pages": [
     "index",
+    "prepare",
     "core",
     "full",
     "first-setup",
@@ -9,5 +10,5 @@
     "development",
     "architecture"
   ],
-  "icon": "Wrench"
+  "icon": "Rocket"
 }
