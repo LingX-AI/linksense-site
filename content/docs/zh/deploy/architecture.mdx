@@ -1,28 +1,94 @@
 ---
-title: 系统架构与执行边界
-description: 了解 LinkSense 的应用、API、Runner、用户 Worker 与知识库。
+title: 组织能力与系统架构
+description: 从个人 AI 工作空间到团队共享应用，了解任务如何在自有基础设施上运行。
 ---
 
+## 组织能力
 
-## 运行链路
+LinkSense 为每位成员提供独立的 AI 工作空间。个人在工作中积累的方法和资源，可以沉淀成由组织统一管理、跨团队复用的能力。
 
-Web 工作台向 API 提交任务。API 管理身份、权限、用量与任务状态，通过队列调度 Runner。Runner 按用户启动和复用 Docker Worker，在 Worker 中通过官方开源 Codex `app-server` 执行任务，事件经 API 流式返回 Web。
+| 能力 | 团队可以复用什么 |
+| --- | --- |
+| 知识库 | 让 AI 在授权范围内使用组织文档。内置的文档解析、索引和检索由 Full 提供。 |
+| 技能（Skills） | 把验证过的工作方法变成可重复使用的流程。 |
+| MCP 服务 | 让任务在权限范围内连接业务系统、执行操作。 |
+| 插件（Plugins） | 把技能和 MCP 集成打包，审核后分发。 |
+
+### 从个人实践到团队复用
+
+成员可以先在个人工作空间里开发和测试技能或插件，再将固定版本提交管理员审核。审核通过后，组织内的其他成员可以安装，并按需显式更新。具体流程见[版本审核与治理](../admin-guide/resource-governance.mdx#plugin-governance)。
+
+![从个人工作空间创建与测试，到版本审核、用户和用户组授权、连接业务系统，最终实现组织内共享与复用。](/diagrams/organizational-capability-lifecycle.svg)
+
+### 连接组织资源
+
+知识库可授权给指定用户或用户组。连接器可接入文档和邮件，MCP 可按需接入 ERP、CRM 等业务系统。连接与凭据分开管理：**委托执行，而非共享凭据**。配置模型时，除了检查连通性，也要验证工具调用是否可用。
+
+### 应用：把组织能力用起来
+
+应用把持续维护的指令、模型配置与知识库、技能、插件和 MCP 连接组合起来。它不是自主运行的 Agent，而是可复用的工作入口：获得授权的成员通过应用发起并拥有自己的任务。
+
+![指令、模型配置、知识库、技能、插件及 MCP 服务组合成应用，获授权的成员可发起各自的任务。](/diagrams/application-composition.svg)
+
+#### 示例：财务应用
+
+财务团队可以把制度知识库、费用审核技能和 ERP 集成组合成一个应用。获授权的同事无需重新配置，即可开始工作。在线应用服务可让成员按权限使用创建者维护的知识库和 MCP，无需授予底层管理权限，也不会在常规界面展示凭据。可安装的应用包则生成个人副本，可能需要单独配置。详见[应用的分享与访问](../user-guide/plugin-center/index.mdx#application-access)。
+
+![财务知识库、财务技能和 ERP 集成组合成财务应用，授权财务团队使用。](/diagrams/finance-application.svg)
+
+### 连接 AI 与组织的开放能力层
+
+LinkSense 把 AI 模型与组织中的人员、数据和业务系统连接起来，并在同一个平台管理资源归属、访问权限、发布与审核、凭据与模型配置、用量审计和任务运行环境。
+
+![LinkSense 将模型和 Codex 连接到个人工作空间与可共享的组织能力，并提供授权、治理和运维。](/diagrams/open-capability-layer.svg)
+
+## 基于开源 Codex 运行时
+
+LinkSense 在自己管理的 Worker 内运行上游 `@openai/codex` 软件包，通过 JSON-RPC 与 `codex app-server --stdio` 通信。LinkSense 不分叉 Codex，也不重写它的 Agent 循环，无需依赖 Codex 网页应用或 LinkSense 托管的运行时。模型推理可单独配置。
+
+| Codex 负责 | LinkSense 负责 |
+| --- | --- |
+| 推理与对话轮次、原生工具、技能与插件、子 Agent 和沙箱语义 | 工作空间、身份与资源权限、发布与治理、模型配置、Worker 管理、数据持久化、用量和运维 |
+
+上游运行时采用 [Apache-2.0 许可](https://github.com/openai/codex/blob/main/LICENSE)。Codex 是 OpenAI 的商标；LinkSense 是独立项目，与 OpenAI 无关联，也未获其认可。
+
+## 开源与自主部署
+
+你可以在自有服务器、私有云或 VPC 中部署 LinkSense，查看和修改源码，自主选择模型和集成服务。自托管不要求连接 LinkSense 运营的云端控制面，也不需要在线激活许可证。
+
+使用私有模型端点、本地知识库和本地 MCP 服务时，提示词、文件、任务记录、索引、凭据和审计记录可以留在你掌控的基础设施中。配置外部模型或集成后，相关数据仍可能发往外部服务。**自托管不等于完全离线隔离。** 详见[模型配置](../admin-guide/models-and-usage.mdx#model-settings)和仓库的[许可及署名例外](https://github.com/LingX-AI/linksense/blob/main/LICENSE-EXCEPTIONS.md)。
+
+## 系统架构
+
+Web 工作台向 API 提交任务，API 管理身份、权限、用量和任务状态。Runner 管理实际执行任务的 Docker Worker。
+
+![系统概览：网关提供 Web 和 API 入口；API 使用存储和配套服务，并通过已认证的 HTTP 连接 Runner；Runner 管理每位用户的 Docker Worker。](/diagrams/system-architecture.svg)
 
 | 层 | 组件 |
 | --- | --- |
 | 工作台 | React、TypeScript、Vite、TanStack Query |
-| 服务与存储 | Node.js、Fastify、PostgreSQL、Redis、MinIO |
+| 服务与存储 | Node.js、Fastify、PostgreSQL、Redis、S3 兼容对象存储 |
 | 任务运行 | Docker 用户 Worker、Codex `app-server` |
 | Full 知识库 | Docling 文档解析、Elasticsearch 索引与检索 |
 
-[系统架构图](https://github.com/LingX-AI/linksense/blob/main/docs/diagrams/system-architecture.svg) · [任务执行链路](https://github.com/LingX-AI/linksense/blob/main/docs/diagrams/realtime-execution-path.svg) · [事件传递](https://github.com/LingX-AI/linksense/blob/main/docs/diagrams/event-delivery.svg)
+### Worker 模型
 
-## 执行边界
+LinkSense 为每位活跃用户启动并复用 Docker Worker。同一用户的任务可共享 `HOME`、`CODEX_HOME` 和项目文件。闲置 Worker 会被回收；用户的软件包环境可以保留，生成的交付成果则独立存放在对象存储中。
 
-隔离单位是**用户 Worker**。同一用户的任务可共享 `HOME`、`CODEX_HOME` 和项目文件。普通任务允许互联网出站，不逐条审批命令；Plan 模式使用只读、禁网策略。接入外部模型或工具时，相应数据会按配置发送给服务提供方。
+### 运行链路
 
-Runner 控制器访问 Docker daemon，应作为可信组件管理。普通任务 Worker 不挂载 Docker socket。配置 HTTPS、模型权限及资源限制前，阅读仓库的[安全策略](https://github.com/LingX-AI/linksense/blob/main/.github/SECURITY.md#执行安全边界)。
+实时任务通常由 API 持久化后，通过 HTTP 交给 Runner，最终在用户 Worker 中由 Codex 执行。实时启动通常不先进入 BullMQ；该队列用于自动化及其他定时、后台工作。
 
-## 连接组织资源
+![实时任务：用户 → API → Runner 控制器 → 用户 Worker → Codex。](/diagrams/realtime-execution-path.svg)
 
-管理员可按用户和用户组授权知识、技能、插件和应用。可通过已授权的连接器访问文档与邮件，其他业务系统可按需通过 MCP 接入。配置模型时核对服务协议和工具能力，不能只凭网络连通或模型列表判断是否可用。
+### 事件传递
+
+Runner 对执行事件进行映射与脱敏，先写入持久化的待投递队列，再转交 API。API 保存事件并通过 SSE 将更新流式推送给浏览器。
+
+![Codex → Worker → Runner 映射与脱敏 → 持久化事件 outbox → API → PostgreSQL 与 Redis Pub/Sub → SSE → 浏览器。](/diagrams/event-delivery.svg)
+
+### 执行边界
+
+**用户 Worker**才是隔离边界，不是同一用户的任务目录。普通执行不逐条审批命令：网页、文件或工具返回中的提示词注入，可能让任务读取、修改或外传该用户的共享文件。Plan 模式使用只读且禁止联网的沙箱。
+
+任务 Worker 以非特权方式运行，不挂载 Docker socket，也不直接接入 PostgreSQL 或 Redis 的服务网络。Runner 控制器可以访问 Docker daemon，应作为可信管理组件。普通 Worker 允许互联网出站，应用不会默认执行通用出站白名单或屏蔽云元数据地址。开放给更多用户前，请在部署层设置网络限制，并阅读仓库的[执行安全策略](https://github.com/LingX-AI/linksense/blob/main/.github/SECURITY.md#执行安全边界)。

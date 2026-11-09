@@ -2,6 +2,7 @@
   "title": "Developer guide",
   "icon": "Code",
   "pages": [
+    "../deploy/architecture",
     "interactive-application",
     "embed-application"
   ]

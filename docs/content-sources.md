@@ -14,6 +14,10 @@ The framework, homepage Hero, navigation, Fumadocs layout, and theme are now ada
 
 The source boundary between the public docs/home portal and the black-hole marketing website is recorded in [newapi-reference.md](newapi-reference.md).
 
+## Organizational capabilities and architecture
+
+The bilingual `/doc/deploy/architecture/` and `/doc/zh-CN/deploy/architecture/` guides preserve the organization, finance example, Codex runtime, self-hosting, and architecture sections from the product READMEs at `c9ff6009bb8d8807dae56644f7563b5c4e8d1d28`. The seven original `docs/diagrams/` SVGs are served from this site's `public/diagrams/`. The product READMEs link here for the full explanation.
+
 ## Website product facts
 
 Reviewed 2026-10-16 against the LinkSense source checkout at `a3fcd0d`. These are content sources, not a claim of installation or runtime certification.

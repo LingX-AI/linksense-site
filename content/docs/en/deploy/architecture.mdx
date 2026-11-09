@@ -1,28 +1,94 @@
 ---
-title: Architecture and execution boundaries
-description: Understand the application, API, Runner, per-user Workers, and Knowledge services.
+title: Organizational capabilities and architecture
+description: From a personal AI workspace to shared team applications, and how tasks run on your infrastructure.
 ---
 
+## Organizational capabilities
 
-## Task execution path
+LinkSense gives each member their own AI workspace. What one person builds there can become a capability the organization shares, governs, and reuses across teams.
 
-The Web workspace submits tasks to the API. The API manages identity, permissions, usage, and task state, then schedules work through a queue. The Runner starts and reuses Docker Workers per user and runs the upstream open-source Codex `app-server` in those Workers. Events stream back to the workspace through the API.
+| Capability | What the organization can reuse |
+| --- | --- |
+| Knowledge bases | Give AI access to authorized organizational documents. Built-in document parsing, indexing, and retrieval are available in Full. |
+| Skills | Turn a proven way of working into a repeatable procedure. |
+| MCP servers | Give tasks controlled access to business systems and actions. |
+| Plugins | Package Skills and MCP integrations for reviewed distribution. |
+
+### From personal work to team reuse
+
+Teams can develop and test Skills and Plugins in a personal workspace, submit a fixed release for administrator review, and publish it for others to install. Updates are explicit. See [release review and governance](../admin-guide/resource-governance.mdx#plugin-governance) for the approval workflow.
+
+![Personal workspace → build and test → organizational capability. Release and review, user and group authorization, and system connections make that capability reusable.](/diagrams/organizational-capability-lifecycle.svg)
+
+### Connect organizational resources
+
+Knowledge-base owners can grant access to selected users or groups. Connectors provide access to documents and email, and MCP can integrate systems such as ERP or CRM. Connections and their credentials are managed separately: **delegate the work, not the credentials**. Check that the chosen model supports tools as well as connecting successfully.
+
+### Applications: put capabilities to work
+
+An Application combines maintained instructions and model configuration with Knowledge, Skills, Plugins, and MCP connections. It is a reusable entry point, not an autonomous agent: an authorized member starts and owns their own task.
+
+![Instructions, model settings, Knowledge, Skills, Plugins, and MCP servers form an Application. Authorized members start their own tasks.](/diagrams/application-composition.svg)
+
+#### Example: a finance application
+
+A finance team can combine its policy knowledge base, a Skill for reviewing expenses, and an ERP integration in one Application. Authorized team members can start work without recreating that setup. A managed online service can provide controlled use of creator-maintained Knowledge and MCP without giving users direct management access or showing the underlying credentials in the normal interface. An installable package, by contrast, creates a personal copy that may need its own configuration. See [Application access and usage](../user-guide/plugin-center/index.mdx#application-access).
+
+![Finance knowledge + finance Skill + ERP integration → finance Application → authorized finance team.](/diagrams/finance-application.svg)
+
+### An open capability layer
+
+LinkSense connects AI models to an organization's people, data, and systems. It manages ownership and permissions, review and publishing, credentials and model configuration, usage and audit records, and the environment that runs tasks.
+
+![LinkSense connects models and Codex to personal workspaces and shared organizational capabilities, with authorization, governance, and runtime operations.](/diagrams/open-capability-layer.svg)
+
+## Built on the open-source Codex runtime
+
+LinkSense runs the upstream `@openai/codex` package in its managed Workers and communicates with `codex app-server --stdio` over JSON-RPC. It does not fork Codex or replace its agent loop. It does not require the Codex web app or a LinkSense-hosted runtime. Model inference is configured separately.
+
+| Codex handles | LinkSense handles |
+| --- | --- |
+| Reasoning and turns, native tools, Skills and Plugins, subagents, and sandbox semantics | Workspaces, identity and resource access, publishing and governance, model configuration, Worker management, persistence, usage, and operations |
+
+The upstream runtime uses the [Apache-2.0 license](https://github.com/openai/codex/blob/main/LICENSE). Codex is a trademark of OpenAI. LinkSense is an independent project and is not affiliated with or endorsed by OpenAI.
+
+## Open source and self-hosted
+
+Run LinkSense on your own servers, private cloud, or VPC. You can inspect and modify the source and choose your models and integrations. A self-hosted deployment does not require a LinkSense-operated cloud control plane or online license activation.
+
+With private model endpoints, local Knowledge, and local MCP services, prompts, files, task history, indexes, credentials, and audit records can stay on infrastructure you control. External providers and integrations may still receive data when configured. **Self-hosted does not mean air-gapped.** See [model configuration](../admin-guide/models-and-usage.mdx#model-settings) and the repository's [license and attribution exceptions](https://github.com/LingX-AI/linksense/blob/main/LICENSE-EXCEPTIONS.md).
+
+## System architecture
+
+The web workspace submits tasks to the API. The API handles identity, permissions, usage, and task state. The Runner manages the Docker Workers that execute tasks.
+
+![System overview: the gateway serves the web workspace and API. The API uses storage and supporting services and talks to Runner over authenticated HTTP. Runner manages per-user Docker Workers.](/diagrams/system-architecture.svg)
 
 | Layer | Components |
 | --- | --- |
 | Workspace | React, TypeScript, Vite, TanStack Query |
-| Services and storage | Node.js, Fastify, PostgreSQL, Redis, MinIO |
+| Services and storage | Node.js, Fastify, PostgreSQL, Redis, S3-compatible object storage |
 | Execution | Per-user Docker Workers, Codex `app-server` |
 | Full Knowledge | Docling document parsing, Elasticsearch indexing and retrieval |
 
-[System diagram](https://github.com/LingX-AI/linksense/blob/main/docs/diagrams/system-architecture.svg) · [Execution path](https://github.com/LingX-AI/linksense/blob/main/docs/diagrams/realtime-execution-path.svg) · [Event delivery](https://github.com/LingX-AI/linksense/blob/main/docs/diagrams/event-delivery.svg)
+### Worker model
 
-## Execution boundaries
+LinkSense starts and reuses a Docker Worker per active user. Same-user tasks can share `HOME`, `CODEX_HOME`, and project files. Idle Workers are reclaimed; per-user package environments can persist, and generated artifacts are stored independently in object storage.
 
-The isolation boundary is the **per-user Worker**. Tasks owned by the same user can share `HOME`, `CODEX_HOME`, and project files. Normal tasks allow outbound internet access without per-command approval. Plan mode uses a read-only sandbox with network access disabled. External models and tools receive applicable data according to your configuration.
+### Task execution path
 
-Treat the Runner controller as trusted because it can access the Docker daemon. Task Workers do not mount the Docker socket. Read the repository's [security policy](https://github.com/LingX-AI/linksense/blob/main/.github/SECURITY.md#execution-boundaries) before configuring HTTPS, model access, and resource limits.
+For a normal real-time start, the API persists the task and dispatches to Runner over HTTP. Runner routes the work to the user's Worker, where Codex runs. Real-time starts do not normally pass through BullMQ; the queue is used for Automations and other scheduled and background work.
 
-## Connect organizational resources
+![Real-time start: user → API → Runner controller → user's Worker → Codex.](/diagrams/realtime-execution-path.svg)
 
-Administrators can grant access to knowledge, skills, plugins, and applications by user and group. Authorized connectors can access documents and email, and MCP can integrate other business systems where needed. Check protocol and tool compatibility when selecting a model; reachability or a model list alone is not enough.
+### Event delivery
+
+Runner maps and redacts execution events and stores them in a durable outbox before forwarding them to the API. The API persists events and streams updates to the browser via SSE.
+
+![Codex → Worker → Runner mapping and redaction → durable outbox → API → PostgreSQL and Redis Pub/Sub → SSE → browser.](/diagrams/event-delivery.svg)
+
+### Execution boundaries
+
+The **user's Worker**, not the task directory, is the isolation boundary. Normal execution does not prompt for approval on each command. A prompt injection in an untrusted webpage, file, or tool response could lead to reading, modifying, or sending that user's shared files. Plan mode uses a read-only sandbox with network access disabled.
+
+Task Workers run unprivileged, do not mount the Docker socket, and do not directly join the PostgreSQL or Redis service networks. The Runner controller has Docker daemon access and is a trusted management component. Normal Worker internet egress is allowed; the application does not enforce a general egress allowlist or block cloud metadata endpoints by default. Configure those controls at the deployment level and read the [execution security policy](https://github.com/LingX-AI/linksense/blob/main/.github/SECURITY.md#execution-boundaries) before opening access to more users.
