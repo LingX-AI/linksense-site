@@ -58,6 +58,22 @@ export const es: Messages = {
   governance: 'Usuarios, grupos y controles de acceso',
   usage: 'Cuotas, consumo y auditoría con datos sensibles ocultos',
   open: 'Una capa abierta de capacidades organizativas',
+  pathsTitle: 'Empieza por el trabajo que tienes delante.',
+  pathsBody:
+    'Despliega un espacio de trabajo, aprende el producto, administra tu organización o amplía LinkSense. La documentación sigue los mismos caminos.',
+  pathDeploy: 'Preparar LinkSense',
+  pathDeployBody:
+    'Elige Core o Full, comprueba el entorno y pon en marcha un espacio.',
+  pathUse: 'Usar el espacio de trabajo',
+  pathUseBody:
+    'Crea tareas, conecta herramientas, usa conocimientos y reúne los resultados.',
+  pathAdmin: 'Administrar la organización',
+  pathAdminBody:
+    'Gestiona personas, modelos, acceso, consumo y estado del despliegue.',
+  pathBuild: 'Ampliar LinkSense',
+  pathBuildBody:
+    'Crea aplicaciones de equipo, integra tareas y conecta sistemas externos.',
+  pathArchitecture: 'Ver cómo funciona LinkSense',
   faqTitle: 'Respuestas para empezar.',
   faq1: '¿En qué se diferencian Core y Full?',
   faq1a:
@@ -169,6 +185,22 @@ export const pt: Messages = {
   governance: 'Usuários, grupos e controle de acesso',
   usage: 'Cotas, uso e auditoria com dados sensíveis ocultos',
   open: 'Uma camada aberta de capacidades organizacionais',
+  pathsTitle: 'Comece pelo trabalho que está à sua frente.',
+  pathsBody:
+    'Implante um ambiente, conheça o produto, administre a organização ou amplie o LinkSense. A documentação segue os mesmos caminhos.',
+  pathDeploy: 'Preparar o LinkSense',
+  pathDeployBody:
+    'Escolha Core ou Full, verifique o ambiente e coloque um espaço em execução.',
+  pathUse: 'Usar o espaço de trabalho',
+  pathUseBody:
+    'Crie tarefas, conecte ferramentas, use conhecimento e reúna os resultados.',
+  pathAdmin: 'Administrar a organização',
+  pathAdminBody:
+    'Gerencie pessoas, modelos, acesso, consumo e integridade da implantação.',
+  pathBuild: 'Ampliar o LinkSense',
+  pathBuildBody:
+    'Crie aplicativos de equipe, integre tarefas e conecte sistemas externos.',
+  pathArchitecture: 'Ver como o LinkSense funciona',
   faqTitle: 'Algumas respostas para começar.',
   faq1: 'Qual é a diferença entre Core e Full?',
   faq1a:
@@ -279,6 +311,22 @@ export const fr: Messages = {
   governance: 'Utilisateurs, groupes et contrôle d’accès',
   usage: 'Quotas, consommation et audit expurgé',
   open: 'Une couche ouverte de capacités organisationnelles',
+  pathsTitle: 'Commencez par le travail qui vous attend.',
+  pathsBody:
+    'Déployez un espace, découvrez le produit, administrez votre organisation ou étendez LinkSense. La documentation suit les mêmes parcours.',
+  pathDeploy: 'Installer LinkSense',
+  pathDeployBody:
+    'Choisissez Core ou Full, vérifiez l’environnement et démarrez un espace.',
+  pathUse: 'Utiliser l’espace de travail',
+  pathUseBody:
+    'Créez des tâches, connectez des outils, utilisez les connaissances et rassemblez les résultats.',
+  pathAdmin: 'Administrer l’organisation',
+  pathAdminBody:
+    'Gérez les personnes, les modèles, les accès, l’usage et l’état du déploiement.',
+  pathBuild: 'Étendre LinkSense',
+  pathBuildBody:
+    'Créez des applications d’équipe, intégrez des tâches et connectez des systèmes externes.',
+  pathArchitecture: 'Voir le fonctionnement de LinkSense',
   faqTitle: 'Quelques réponses utiles.',
   faq1: 'Quelle différence entre Core et Full ?',
   faq1a:
@@ -390,6 +438,20 @@ export const ja: Messages = {
   governance: 'ユーザー、グループ、アクセス制御',
   usage: '利用枠、使用量、機密情報を除いた監査',
   open: 'オープンな組織向け機能基盤',
+  pathsTitle: '目の前の仕事から始めましょう。',
+  pathsBody:
+    '環境の導入、製品の利用、組織の管理、LinkSense の拡張。ドキュメントも同じ道筋で整理されています。',
+  pathDeploy: 'LinkSense を導入',
+  pathDeployBody:
+    'Core または Full を選び、ホストを確認してワークスペースを起動します。',
+  pathUse: 'ワークスペースを使う',
+  pathUseBody: 'タスクを作成し、ツールとナレッジを利用して成果をまとめます。',
+  pathAdmin: '組織を管理',
+  pathAdminBody: 'メンバー、モデル、権限、利用量、導入環境の状態を管理します。',
+  pathBuild: 'LinkSense を拡張',
+  pathBuildBody:
+    'チームアプリを作成し、タスクを埋め込み、外部システムと接続します。',
+  pathArchitecture: 'LinkSense の仕組みを見る',
   faqTitle: 'まず知っておきたいこと。',
   faq1: 'Core と Full の違いは？',
   faq1a:

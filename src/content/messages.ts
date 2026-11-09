@@ -77,6 +77,21 @@ const en = {
   governance: 'Users, groups and access controls',
   usage: 'Quotas, usage and redacted audit logs',
   open: 'An open organizational capability layer',
+  pathsTitle: 'Start with the work in front of you.',
+  pathsBody:
+    'Deploy a workspace, learn the product, run your organization, or build on top of LinkSense. The documentation follows the same paths.',
+  pathDeploy: 'Set up LinkSense',
+  pathDeployBody:
+    'Choose Core or Full, check your host, and bring a workspace online.',
+  pathUse: 'Use the workspace',
+  pathUseBody:
+    'Start tasks, connect tools, work with Knowledge, and collect results.',
+  pathAdmin: 'Run your organization',
+  pathAdminBody: 'Manage people, models, access, usage, and deployment health.',
+  pathBuild: 'Build on LinkSense',
+  pathBuildBody:
+    'Create team Applications, embed tasks, and connect external systems.',
+  pathArchitecture: 'See how LinkSense works',
   faqTitle: 'A few useful answers.',
   faq1: 'What is the difference between Core and Full?',
   faq1a:
@@ -188,6 +203,18 @@ const zh: Messages = {
   governance: '用户、用户组与访问控制',
   usage: '额度、用量与脱敏审计',
   open: '开源的组织能力层',
+  pathsTitle: '从你眼前的工作开始。',
+  pathsBody:
+    '无论是部署工作空间、开始使用产品、管理组织，还是基于 LinkSense 继续开发，文档都按同一条路径组织。',
+  pathDeploy: '部署 LinkSense',
+  pathDeployBody: '选择 Core 或 Full，检查主机环境，把工作空间运行起来。',
+  pathUse: '使用工作空间',
+  pathUseBody: '创建任务、连接工具、使用知识库，并集中管理成果。',
+  pathAdmin: '管理组织',
+  pathAdminBody: '管理成员、模型、权限、用量和部署健康。',
+  pathBuild: '基于 LinkSense 开发',
+  pathBuildBody: '创建团队应用、嵌入任务工作台，并连接外部系统。',
+  pathArchitecture: '了解 LinkSense 如何运行',
   faqTitle: '你可能想先了解。',
   faq1: 'Core 和 Full 有什么区别？',
   faq1a:

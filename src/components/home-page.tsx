@@ -57,6 +57,38 @@ const topics = [
   Icon: typeof Boxes
 }[]
 
+const paths = [
+  {
+    title: 'pathDeploy',
+    body: 'pathDeployBody',
+    path: 'deploy/',
+    Icon: Boxes,
+  },
+  {
+    title: 'pathUse',
+    body: 'pathUseBody',
+    path: 'user-guide/overview/',
+    Icon: BookOpen,
+  },
+  {
+    title: 'pathAdmin',
+    body: 'pathAdminBody',
+    path: 'admin-guide/overview/',
+    Icon: ShieldCheck,
+  },
+  {
+    title: 'pathBuild',
+    body: 'pathBuildBody',
+    path: 'developer-guide/interactive-application/',
+    Icon: Layers3,
+  },
+] as const satisfies readonly {
+  title: MessageKey
+  body: MessageKey
+  path: string
+  Icon: typeof Boxes
+}[]
+
 export function HomePage({ lang }: { lang: string }) {
   const t = getMessages(lang)
   return (
@@ -92,6 +124,8 @@ export function HomePage({ lang }: { lang: string }) {
           >
             <a
               href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-brand px-5 py-3 font-medium tracking-tight text-brand-foreground transition-colors hover:bg-brand-200 max-sm:text-sm"
             >
               {t.try}
@@ -127,6 +161,62 @@ export function HomePage({ lang }: { lang: string }) {
         </p>
         <div data-reveal-media className="mt-7">
           <ProductReel lang={lang} />
+        </div>
+      </section>
+      <section
+        aria-labelledby="paths-title"
+        className="mx-auto mt-12 border-t pt-12 sm:mt-16"
+      >
+        <div className="overflow-hidden rounded-2xl border bg-fd-card lg:grid lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+          <div className="p-7 sm:p-9 lg:p-10">
+            <h2
+              id="paths-title"
+              className="max-w-md text-2xl font-semibold tracking-tight text-balance sm:text-3xl"
+            >
+              {t.pathsTitle}
+            </h2>
+            <p
+              data-reveal-copy
+              className="mt-4 max-w-md text-sm leading-7 text-fd-muted-foreground"
+            >
+              {t.pathsBody}
+            </p>
+            <Link
+              href={docsPath(lang, 'deploy/architecture/')}
+              className="mt-7 inline-flex items-center gap-2 text-sm font-medium text-brand underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+            >
+              {t.pathArchitecture}
+              <ArrowUpRight className="size-4" aria-hidden />
+            </Link>
+          </div>
+          <div
+            data-reveal-group
+            className="grid gap-px border-t bg-fd-border sm:grid-cols-2 lg:border-t-0 lg:border-l"
+          >
+            {paths.map(({ title, body, path, Icon }) => (
+              <Link
+                key={path}
+                href={docsPath(lang, path)}
+                className="group bg-fd-card p-6 transition-colors hover:bg-fd-accent/60 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-brand"
+              >
+                <article className="flex h-full flex-col">
+                  <div className="flex items-center justify-between">
+                    <span className="grid size-10 place-items-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand group-hover:text-brand-foreground">
+                      <Icon className="size-5" aria-hidden />
+                    </span>
+                    <ArrowRight
+                      className="size-4 text-fd-muted-foreground/60 transition-transform group-hover:translate-x-0.5 group-hover:text-brand motion-reduce:transform-none"
+                      aria-hidden
+                    />
+                  </div>
+                  <h3 className="mt-5 font-semibold">{t[title]}</h3>
+                  <p className="mt-2 text-sm leading-6 text-fd-muted-foreground">
+                    {t[body]}
+                  </p>
+                </article>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
       <section
