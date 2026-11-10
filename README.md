@@ -56,7 +56,7 @@ pnpm preview
 
 ## 发布
 
-保留现有 Cloudflare Worker、域名与观测配置，静态目录改为 `out/`。`pnpm deploy` 先完成 Next 构建和发布包校验，再执行 `cf deploy --prebuilt`，避免框架检测或旧构建目录导致发布错误内容。`SITE_URL` 用于更换 canonical 域名；默认 `https://linksense.guygubaby.top`。
+保留现有 Cloudflare Worker、域名与观测配置，静态目录改为 `out/`。`pnpm deploy` 先完成 Next 构建和发布包校验，再执行 `cf deploy --prebuilt`，避免框架检测或旧构建目录导致发布错误内容。`SITE_URL` 用于更换 canonical 域名；默认 `https://linksense.org`。
 
 Cloudflare 的 `public/_redirects` 将旧 `/help/…` 永久跳转到对应的 `/doc/…`。`public/_headers` 声明静态搜索数据库的 JSON 类型。不存在的页面由导出的 `404.html` 处理。
 

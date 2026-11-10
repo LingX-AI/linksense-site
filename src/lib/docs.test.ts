@@ -143,7 +143,7 @@ test('retired article URLs redirect directly to preserved sections', () => {
     assert(!sources.has(from), `Duplicate redirect: ${from}`)
     sources.add(from)
     assert.equal(status, '301')
-    const target = new URL(to, 'https://linksense.guygubaby.top')
+    const target = new URL(to, 'https://linksense.org')
     const locale = target.pathname.startsWith('/doc/zh-CN/') ? 'zh' : 'en'
     const path = target.pathname.replace(/^\/doc\/(?:zh-CN\/)?/, '')
     const file = join('content/docs', locale, path.replace(/\/$/, ''))

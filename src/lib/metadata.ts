@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { getMessages, homePath } from './i18n'
 
 // Origin validation is retained from the upstream metadata module.
-export function resolveSiteUrl(value = 'https://linksense.guygubaby.top'): URL {
+export function resolveSiteUrl(value = 'https://linksense.org'): URL {
   const url = new URL(value)
   if (
     !['http:', 'https:'].includes(url.protocol) ||

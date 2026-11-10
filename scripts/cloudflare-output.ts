@@ -96,9 +96,9 @@ for (const [page, html] of documentation) {
     `Unresolved Markdown link in ${page}`,
   )
   for (const [, href] of html.matchAll(/href="([^"]+)"/g)) {
-    const url = new URL(href, `https://linksense.guygubaby.top${page}`)
+    const url = new URL(href, `https://linksense.org${page}`)
     if (
-      url.origin !== 'https://linksense.guygubaby.top' ||
+      url.origin !== 'https://linksense.org' ||
       !url.pathname.startsWith('/doc/')
     )
       continue
@@ -119,7 +119,7 @@ for (const line of readFileSync(join(root, 'public/_redirects'), 'utf8').split(
 )) {
   if (!line.startsWith('/doc/') || line.includes('*')) continue
   const [, destination] = line.split(/\s+/)
-  const url = new URL(destination, 'https://linksense.guygubaby.top')
+  const url = new URL(destination, 'https://linksense.org')
   const html = documentation.get(url.pathname)
   assert(html, `Missing legacy documentation destination: ${line}`)
   if (url.hash)
