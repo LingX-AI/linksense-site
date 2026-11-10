@@ -1,0 +1,41 @@
+---
+title: "Connecter et gérer les serveurs MCP"
+description: "Gérer les serveurs HTTP ou STDIO MCP intégrés et personnels."
+---
+
+
+Les serveurs MCP fournissent des outils aux tâches. Les entrées intégrées sont en lecture seule ; Les serveurs personnels sont assemblés uniquement pour vos nouvelles tâches.
+
+## MCP intégré [#built-in-mcp]
+
+LinkSense peut fournir des serveurs MCP de services de fichiers, de base de connaissances et créateurs de compétences. La plateforme les gère, donc vous ne pouvez pas les modifier, les désactiver ou les supprimer.
+
+## Ajouter un serveur HTTP [#add-an-http-server]
+
+1. Ouvrez **Paramètres → MCP** et choisissez **Ajouter un serveur**.
+2. Sélectionnez HTTP et entrez un nom ainsi qu’une URL HTTP streamable.
+3. Choisissez sans authentification, jeton porteur ou clé API.
+4. Définissez les délais de démarrage et d’outils.
+5. Testez la connexion et sauvegardez après la découverte des outils.
+
+Je préfère HTTPS. HTTP envoie des identifiants, des arguments et des résultats sans chiffrement de transport et nécessite une accusée de réception de risque distincte.
+
+## Ajouter un serveur STDIO [#add-a-stdio-server]
+
+Fournir un objet JSON sur un seul serveur avec `command`, `args` optionnelles et `env` optionnelles. Les valeurs d’environnement sont chiffrées et ne sont pas retournées. Une structure `mcpServers` à entrée unique est également acceptée.
+
+Les conteneurs de tâches utilisent le pnpm plutôt que le npm ou le NPX. Les déclarations `npx -y` prises en charge sont converties en exécution pnpm contrôlée.
+
+## Connexion requise [#required-connection]
+
+Lorsque **Obligatoire** est activé, une défaillance de connexion bloque le démarrage de la tâche. Un serveur optionnel défaillant peut être ignoré, mais ses outils ne seront pas disponibles.
+
+## Gérer les secrets et la suppression [#manage-secrets-and-deletion]
+
+Laisser les secrets HTTP sauvegardés ou les `env` STDIO hors d’une modification les préserve ; un objet `env` vide efface les variables STDIO. La suppression supprime définitivement la configuration et les valeurs chiffrées.
+
+<Callout type="warn" title="Limite de fiducie">
+
+Connectez-vous uniquement aux serveurs MCP de confiance. Les outils peuvent recevoir des arguments de tâche, accéder à des systèmes externes et renvoyer du contenu non fiable.
+
+</Callout>

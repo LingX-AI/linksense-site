@@ -1,0 +1,22 @@
+---
+title: "Primera montada"
+description: "Crea el primer administrador, configura un modelo y verifica la ejecución de la tarea."
+---
+
+
+## Crear al primer administrador [#create-the-first-administrator]
+
+Abre la dirección impresa por el instalador. El puerto predeterminado es `18081`, pero una instalación limpia puede seleccionar otro puerto disponible. Busca `linksense address` la dirección real. Utiliza la credencial única del instalador para crear al primer administrador. Mantén la credencial fuera de los chats, tickets y registros públicos.
+
+## Configurar un modelo [#configure-a-model]
+
+Usa [Configuración de modelos](../admin-guide/models-and-usage.mdx#model-settings) para añadir un canal de modelo y guardarlo en la interfaz de administración. Verifica la accesibilidad de la red, la compatibilidad de protocolos y el soporte de herramientas por separado. Configura un modelo de incrustación para el Conocimiento integrado en Full.
+
+## Verifica tu primera tarea [#verify-your-first-task]
+
+1. Ejecuta `linksense status` y `linksense doctor` para comprobar la salud del despliegue.
+2. Envía un mensaje corto siguiendo el [Primera guía de tareas](../user-guide/getting-started/index.mdx#first-task).
+3. Ejecuta una tarea que utilice una herramienta, como generar y abrir un archivo pequeño. Comprueba su salida por separado de la respuesta del chat.
+4. En Full, sube un documento representativo y comprueba que la recuperación cite la fuente correcta.
+
+Antes de exponer el despliegue públicamente, lee [Operaciones](./operations.mdx) y el [Límites de ejecución](./architecture.mdx#execution-boundaries).

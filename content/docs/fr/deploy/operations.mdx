@@ -1,0 +1,50 @@
+---
+title: "Opérations, réparations et améliorations"
+description: "Vérifiez l’hôte Docker, gérez un déploiement existant et gérez les mises à jour en toute sécurité."
+---
+
+## Environnement et réseau [#environment-and-network]
+
+- Linux x86_64 / ARM64 et macOS Intel / Apple Silicon sont pris en charge. Utiliser des conteneurs Linux dans Docker Desktop sur macOS ; je préfère Linux pour un déploiement partagé de longue durée.
+- Utilisez un Docker Engine local avec l’API v1.45+, Docker Compose v2.24.4+ et `curl`. Consultez la section **Server** de `docker version`. Certaines versions peuvent adapter un client Docker privé ou un binaire Compose ; l’installateur ne met pas à jour un daemon Docker partagé.
+- Vérifiez séparément les téléchargements et les tirages de registres. Les paramètres du proxy shell ne configurent pas le proxy du moteur Docker. Les commandes d’installation Linux ne conservent explicitement que les variables proxy listées sous `sudo`. Voir [Adaptation de l’hôte et diagnostic du réseau](https://github.com/LingX-AI/linksense/blob/main/deploy/release/HOST-ADAPTATION.md#network-and-proxies).
+- Répertoires d’installation par défaut : `/opt/linksense` sous Linux et `~/.linksense` sur macOS. Configurez un proxy inverse HTTPS et examinez [Limites d’exécution](./architecture.mdx#execution-boundaries) avant d’ouvrir l’accès publiquement.
+
+## Concurrence et travailleurs [#concurrency-and-workers]
+
+Les nouveaux déploiements par défaut sont une conversation simultanée et une limite de mémoire de 4 Gio par utilisateur pour un Worker. Avant d’ajuster la concurrence des tâches en [Paramètres système](../admin-guide/configuration.mdx#system-settings), prévoyez les travailleurs actifs, le traitement des documents et autres services. Les déploiements existants conservent des limites configurées ; l’ajout de matériel n’augmente pas automatiquement la concurrence.
+
+## Portée personnalisée [#custom-port]
+
+Pour un nouveau déploiement, configurez `LINKSENSE_HTTP_PORT` en utilisant le [Commandes d’installation custom-port](./prepare.mdx#custom-port). Pour un déploiement existant, utilisez `linksense port 19090`.
+
+## Gestion de CLI [#cli-management]
+
+| Action                                      | Commandement                                                  |
+| ------------------------------------------- | -------------------------------------------------------- |
+| Statut et adresse                          | `linksense status`, `linksense address`                  |
+| Démarrez, arrêtez ou redémarrez                     | `linksense start`, `linksense stop`, `linksense restart` |
+| Changer le port                             | `linksense port 19090`                                   |
+| Afficher l’identifiant d’initialisation à usage unique | `linksense credential`                                   |
+| Lecture des journaux                                   | `linksense logs api`, `linksense logs runner`            |
+| Vérifier la santé et le réseau                    | `linksense doctor`, `linksense doctor --network`         |
+| Réparation ou mise à niveau                           | `linksense repair`, `linksense upgrade`                  |
+
+Faites `linksense` sans arguments pour le menu interactif. Si la commande manque sur macOS, ajoutez-`$HOME/.local/bin` à `PATH`. Les vérifications réseau peuvent extraire et mettre en cache des images sans démarrer des services.
+
+## Réparations et améliorations [#repair-and-upgrades]
+
+La réparation utilise la version installée. La mise à jour draine les tâches en cours de jeu et sauvegarde une sauvegarde de la base de données pour `volume://linksense-backups/postgres/` avant la migration. Gardez le lieu de sauvegarde et une sauvegarde séparée hors hôte. Une défaillance après le début de la migration ne revient pas automatiquement en arrière de la base de données ; Inspectez les journaux et les sauvegardes et suivez les [Guide d’adaptation de l’hôte](https://github.com/LingX-AI/linksense/blob/main/deploy/release/HOST-ADAPTATION.md).
+
+Ne faites pas tourner l’installateur de l’autre édition sur un déploiement existant. Si la commande de gestion n’est pas disponible, utilisez le point d’entrée de réparation pour votre édition installée : [Core](https://github.com/LingX-AI/linksense/blob/main/repair-core.sh) ou [Full](https://github.com/LingX-AI/linksense/blob/main/repair-full.sh). Suivez les notes de la version cible pour les premières mises à jour à partir d’installations plus anciennes.
+
+## Machines virtuelles et connaissances [#virtual-machines-and-knowledge]
+
+Full sur x86_64 nécessite que les hôtes Docker exposent `x86-64-v2`. Vérifiez à l’intérieur de la VM qui exécute Elasticsearch et Docling, y compris tout hôte séparé pour ces services :
+
+```bash
+LC_ALL=C lscpu
+grep -m1 '^flags' /proc/cpuinfo
+```
+
+Cherchez `cx16`, `lahf_lm`, `popcnt`, `ssse3`, `sse4_1`, `sse4_2` et `pni` (ou `sse3`). Si des drapeaux manquent ou si un conteneur signale `Fatal glibc error: CPU does not support x86-64-v2`, éteignez la VM, sélectionnez un mode CPU compatible (par exemple, Proxmox `host` / `x86-64-v2-AES` ou libvirt `host-passthrough`), puis démarrer et vérifier à nouveau. Ajouter des vCPU n’ajoute pas d’instructions manquantes à l’hôte.

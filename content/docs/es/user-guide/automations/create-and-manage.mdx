@@ -1,0 +1,54 @@
+---
+title: "Crear y gestionar automatizaciones"
+description: "Realiza trabajo recurrente cada hora, diario, semana o mensual en una sola tarea fijada."
+---
+
+
+Los inicios de automatización activan un horario dentro de una tarea fija. Son útiles para informes, comprobaciones y resúmenes recurrentes.
+
+## Empieza con una sugerencia [#start-from-a-suggestion]
+
+La página de Automatizaciones ofrece sugerencias como **Resumen diario**, **Balance semanal** y **Seguimiento de pendientes**. Seleccionar uno abre el formulario de nueva automatización con un título, instrucción, nueva tarea objetivo y días y hora semanales sugeridos ya rellenados. Una sugerencia es solo una plantilla editable; Antes de guardar, verifica sus fuentes de datos, instrucciones, fechas, hora, zona horaria, modelo y esfuerzo de razonamiento.
+
+Algunas sugerencias se refieren a calendarios o correo electrónico. La automatización solo puede leer esos datos cuando la cuenta corriente ha instalado y autorizado las capacidades requeridas. Configúralos primero o edita la plantilla para que una ejecución sin supervisión no se detenga por autorización o falta de entrada.
+
+## Crear una automatización [#create-an-automation]
+
+1. Abre **Automatizaciones** y elige **Nueva automatización**.
+2. Introduce un título y una instrucción autónoma.
+3. Elige un objetivo:
+   - **Tarea existente:** seleccionar una tarea válida que tu cuenta esté fijada.
+   - **Nueva tarea:** LinkSense crea y fija automáticamente una tarea cuando se guarda la automatización; cada disparador posterior reutiliza esa tarea.
+4. Elige por horas, diarias, semanales o mensuales y establece un intervalo de 1 a 999:
+   - por hora: elegir minuto 0–59 dentro de cada intervalo;
+   - Diario: elegir una hora;
+   - Semanal: elige al menos un día laborable y una hora;
+   - Mensual: Elige un día y una hora.
+5. Confirma la zona horaria del dispositivo que se mostra. LinkSense convierte el horario guardado en tiempo del sistema.
+6. Opcionalmente, establece una fecha de caducidad. La automatización puede seguir funcionando en esa fecha y se detiene al día siguiente.
+7. Opcionalmente, habilitar un modelo específico y un esfuerzo de razonamiento. Cuando se desactiva, se utilizan los valores por defecto actuales de la cuenta.
+8. Guarda y revisa la siguiente partida que se muestre.
+
+Se omite una fecha mensual inexistente—por ejemplo, el día 31 en un mes sin esa fecha.
+
+## Revisa y corre ahora [#review-and-run-now]
+
+Filtra la lista por **Todos**, **Activo** o **Pausada**. Cada automatización muestra su última y siguiente ejecución. Elige **Abrir tarea** revisar la actividad completa y los artefactos.
+
+**Ejecutar ahora** se saltan el horario. Comienza inmediatamente cuando la tarea objetivo está inactiva o entra en la cola de esa tarea cuando está ocupada. No cambia las futuras carreras programadas.
+
+El área de notificaciones de la barra lateral muestra las partidas completadas o fallidas. Abre una notificación para visitar la tarea y borra su estado no leído.
+
+## Pausa, reanudar, editar y eliminar [#pause-resume-edit-and-delete]
+
+- La pausa impide nuevas ejecuciones programadas sin afectar al historial.
+- Reanudar calcula las futuras partidas del tiempo actual y el calendario guardado.
+- La edición afecta solo a las futuras ejecuciones.
+- Eliminar elimina el horario pero conserva las tareas y el historial vinculados.
+
+## Recomendaciones [#recommendations]
+
+- Escribe instrucciones que puedan ejecutarse sin necesidad de una pregunta de seguimiento.
+- Mantén el objetivo de automatización fijado y válido. Actualiza las automatizaciones vinculadas antes de desfijarlas o archivarlas.
+- Mantén activados los modelos, capacidades, credenciales y bases de conocimiento necesarias.
+- Revisa fallos regularmente porque los cambios de permisos o configuración pueden bloquear futuras ejecuciones.

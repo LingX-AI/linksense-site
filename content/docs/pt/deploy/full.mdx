@@ -1,0 +1,36 @@
+---
+title: "Instale Full"
+description: "Instale o LinkSense Full com conhecimento embutido no Linux ou macOS."
+---
+
+Full adiciona análise sintica, indexação e recuperação de conhecimento integradas ao Core.
+
+## Verifique os pré-requisitos [#check-prerequisites]
+
+Verifique a [Requisitos do docker](./operations.mdx#environment-and-network) e deixe espaço para OCR, documentos grandes e concorrência usando a [Orientação de dimensionamento](./index.mdx#plan-resources). Um host `x86_64` ou VM deve expor `x86-64-v2` ao Elasticsearch e ao Docling. Esse requisito x86 não se aplica ao ARM64 nativo. Veja [Compatibilidade de host](./operations.mdx#virtual-machines-and-knowledge) para diagnósticos.
+
+Use um novo diretório de implantação. Não sobrescreva uma instalação Core ou Full existente, nem execute o instalador de outra edição por cima. Execute o script somente após o sucesso do download; Separe as etapas se quiser inspecionar primeiro.
+
+## Linux [#linux]
+
+```bash
+curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
+  -o install-full.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-full.sh &&
+sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy sh install-full.sh
+```
+
+## macOS [#macos]
+
+Inicie o Docker Desktop e execute como seu usuário atual, sem `sudo`.
+
+Se você nunca usou o Docker antes, siga [Prepare Docker e redes](./prepare.mdx#configure-docker-desktop) primeiro.
+
+```bash
+curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
+  -o install-full.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-full.sh &&
+sh install-full.sh
+```
+
+## Inicializar [#initialize]
+
+Siga [Primeira configuração](./first-setup.mdx) para verificar uma tarefa simples. Configure os modelos de Conhecimento necessários, depois verifique análise sintática, recuperação e citações usando um documento representativo.

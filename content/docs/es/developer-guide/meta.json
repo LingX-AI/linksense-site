@@ -1,0 +1,8 @@
+{
+  "title": "Guía del desarrollador",
+  "icon": "Code",
+  "pages": [
+    "interactive-application",
+    "embed-application"
+  ]
+}

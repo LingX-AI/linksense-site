@@ -1,0 +1,36 @@
+---
+title: "ソース開発とイメージビルド"
+description: "Docker開発環境を起動し、ソースエントリポイントを見つけてイメージを構築します。"
+---
+
+
+## 開発環境を開始 [#start-the-development-environment]
+
+Node.js 24+、pnpm 10.34.6、Docker Engine / Compose、`rsync`、`mkcert`を準備します。 リポジトリのルートから実行します:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm dev:prepare
+pnpm dev
+```
+
+`pnpm dev:prepare`サービスを開始し、イメージやヘルプセンターを構築し、既存設定を保持しながら開発データベースを初期化します。 最初のランでは地元のCA `mkcert`信頼を求めることがあります。 `pnpm dev`ウォッチャーとログを接続します。`pnpm dev:stop`開発スタックを止めます。
+
+デフォルトアドレス:Web `http://localhost:18172` / `https://localhost:18173`、API `http://localhost:4000`、Runner `http://localhost:4010`。 ランチャーが報告した実際のアドレスを使いましょう。
+
+## ソースの入口 [#source-entry-points]
+
+- [ウェブワークスペースと管理](https://github.com/LingX-AI/linksense/tree/main/apps/web)
+- [API、権限、ビジネスロジック](https://github.com/LingX-AI/linksense/tree/main/apps/api)
+- [ランナーとタスクワーカー](https://github.com/LingX-AI/linksense/tree/main/apps/runner)
+
+[建築](./architecture.mdx)、[リポジトリ開発ガイド](https://github.com/LingX-AI/linksense/blob/main/deploy/development/README.md)、[貢献ガイド](https://github.com/LingX-AI/linksense/blob/main/.github/CONTRIBUTING.md)をご覧ください。 変更を提出する前に、影響を受けたテスト、タイプチェック、リント、ビルドを実行してください。
+
+## ソースからDockerイメージを構築する [#build-docker-images-from-source]
+
+```bash
+docker compose --env-file .env.example build \
+  migrate api runner runner-worker-image web
+```
+
+API Dockerfileは`runtime`および`migration`ターゲットを提供します。ランナーは`controller`と、`worker`を提供します。 マルチアーキテクチャイメージの場合は、適切なDockerfileとターゲットを合わせた`docker buildx build --platform linux/amd64,linux/arm64`を使用します。 通常の生産環境ではダイジェストピン留めの[公開画像](./index.mdx)を好む。 メンテナーの[git production runbook(Git)プロダクションランブック](https://github.com/LingX-AI/linksense/blob/main/deploy/production/README.md)は別のソースビルドワークフローをカバーしています。

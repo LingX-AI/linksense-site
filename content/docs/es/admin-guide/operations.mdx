@@ -1,0 +1,183 @@
+---
+title: "Salud, mejoras y auditoría"
+description: "Inspecciona el estado del sistema, realiza actualizaciones seguras, revisa los registros de auditoría y gestiona la retroalimentación de los usuarios."
+---
+
+Revisa el estado del sistema, sigue el flujo de trabajo de mantenimiento para actualizaciones y utiliza los registros de auditoría y la retroalimentación de los usuarios para investigar problemas.
+
+## Reconstrucciones de salud del sistema e índice [#health]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+**Configuración → Estado del sistema** es de solo lectura excepto para acciones de mantenimiento explícitamente proporcionadas.
+
+</Callout>
+
+### Áreas de salud [#health-health-areas]
+
+La página informa API, base de datos, Redis, protección de inicio de sesión local, correo electrónico de autenticación, análisis de documentos, recuperación e indexación, reclasificación opcional, runner, acceso al espacio de trabajo, ranuras de ejecución autorizadas, turnos reales en ejecución, recuperación, recuento de procesos hijos y límites de concurrencia. En despliegues de Docker también informa de CPU, memoria, PID y estado para API, Runner, trabajadores, Web, gateway, PostgreSQL, Redis y otros contenedores observados.
+
+Muestra resúmenes y recomendaciones redactados, no credenciales, cadenas de conexión, claves Redis, registros internos o secretos.
+
+### Interpretar el estado [#health-interpret-status]
+
+- Liveness significa que el proceso de la API está en ejecución.
+- La preparación significa que las dependencias críticas pueden atender todo el tráfico.
+- Un fallo de almacenamiento obligatorio hace que la preparación no esté disponible mientras la actividad continúa sondeando.
+- El análisis o recuperación de documentos puede no estar disponible sin que todas las funciones de LinkSense no estén disponibles.
+- Un ranker sin configurar es válido; El RRF sigue disponible.
+
+### Uso del disco [#health-disk-usage]
+
+El uso de discos es un total compacto en el resumen superior de salud. Incluye todos los espacios de proyecto de los usuarios, artefactos de tarea y adjuntos, entornos y cachés, además de bases de datos, índices de conocimiento, copias de seguridad, registros y programas de servicio para el despliegue actual. También se incluyen archivos conservados de tareas completadas o archivadas.
+
+Las mediciones utilizan el espacio asignado al sistema de archivos. Los archivos dispersos usan su tamaño asignado; Los directorios compartidos, enlaces físicos y capas de imagen se cuentan una vez. Las copias almacenadas separadas se cuentan por separado. Esto no es el uso total de disco del anfitrión. Se excluyen otros despliegues, cachés de compilación globales e imágenes históricas sin propiedad confirmada. El almacenamiento compartido con otro despliegue se marca como no medido cuando no puede ser atribuido. Las bases de datos, el almacenamiento de objetos y los índices en servidores externos están excluidos del uso local del disco y deben comprobarse por separado en esos servicios.
+
+El muestreo comienza una vez al inicio del servicio y luego se ejecuta cada hora en segundo plano. Nunca se inicia un nuevo escaneo mientras el anterior sigue en marcha. Los directorios grandes tienen límites independientes de tiempo y recursos. Otra información sanitaria aparece de inmediato. El uso del disco se añade automáticamente al resumen tras la primera medición completa. Las mediciones pendientes o incompletas permanecen ocultas; un subtotal nunca se muestra como el total. Pasa el cursor sobre el indicador para ver el tiempo de muestra. El escaneo no bloquea las comprobaciones de preparación ni la ejecución de tareas, y un fallo de muestreo no cambia en sí mismo la preparación del servicio.
+
+Los despliegues Docker utilizan la imagen Worker existente como contenedor temporal de solo lectura sin necesidad de red. Mide los metadatos del sistema de archivos sin leer el contenido del archivo y se elimina posteriormente. Esto requiere los permisos existentes de socket Docker y capacidades de contenedores para escaneo de solo lectura. Los controladores de almacenamiento que no exponen la imagen o la ubicación de capas grabables dejan esas categorías sin medir. Actualmente, los despliegues de procesos locales no pueden informar del uso completo del disco.
+
+No hay migración de bases de datos ni modificación, reubicación ni limpieza de archivos de usuario. Actualizar Runner, API y Web para medir el almacenamiento existente; No es necesario recrear tareas, proyectos y aplicaciones.
+
+### Uso de recursos de servicio [#health-service-resource-usage]
+
+**Uso de recursos de los servicios** muestra la última instantánea disponible del contenedor Docker. Un resultado no observable normalmente significa que el controlador Runner carece de un socket Docker o permiso utilizable; No significa que todos los contenedores se detengan. Las tarjetas son diagnósticas y no pueden reiniciar ni detener contenedores.
+
+### Fallida limpieza de recursos [#health-failed-resource-cleanup]
+
+Cuando la limpieza asincrónica tras la eliminación de tareas o capacidades falla repetidamente, la salud del sistema indica el tipo de recurso, la etapa, la razón estable y el recuento de intentos. Puedes intentar de nuevo uno o todos los objetos fallidos. LinkSense vuelve a comprobar el estado, pospone la limpieza de una tarea de objetivo activa y no interrumpe otras tareas en ejecución.
+
+No elimines manualmente directorios gestionados cuando los límites de ruta, permisos o estado de ejecución sean inciertos. Arregla primero los permisos de despliegue o Runner, y luego vuelve a intentarlo desde la salud del sistema.
+
+### Reconstruir todos los índices de conocimiento [#health-rebuild-all-knowledge-indexes]
+
+Después de cambiar el modelo de incrustación o detectar una desadaptación en todo el despliegue:
+
+1. Confirma que la configuración del modelo y las dimensiones es estable.
+2. Lee el impacto de la reconstrucción completa.
+3. Enciéndelo en una ventana de mantenimiento.
+4. Supervisa el progreso y los fracasos.
+5. Verifica la recuperación tras completarlo.
+
+La reconstrucción utiliza un límite de concurrencia a nivel de despliegue y mantiene las entradas fallidas reintentables. No empieces reconstrucciones duplicadas seleccionando la acción repetidamente.
+
+### Escalada [#health-escalation]
+
+Los operadores autorizados para despliegue deben resolver problemas de entorno, red o servicio externo. La página de salud no crea ni reconfigura automáticamente contenedores externos de Docling, Elasticsearch o de servicio de modelo.
+
+## Comprueba e instala actualizaciones de LinkSense [#system-update]
+
+<Callout type="info" title="Acción del administrador">
+
+Ve a **Configuración → Actualización del sistema**. La página web comprueba y muestra versiones; Nunca descarga ni instala una actualización de forma silenciosa.
+
+</Callout>
+
+### Comprobar estado de la versión [#system-update-check-version-status]
+
+La página revisa las versiones oficiales de LinkSense en GitHub y muestra las versiones actuales y más recientes, la hora de comprobación, la hora de publicación y las notas de versión. Selecciona **Comprobar ahora** para actualizar o abrir la página de lanzamiento de GitHub para obtener información completa.
+
+Una comprobación fallida no afecta a otras características del producto. LinkSense distingue una conexión a GitHub no disponible, limitación de velocidad y respuesta no reconocida. Reparar la salida del servidor o esperar a que se elimine el límite antes de volver a intentarlo.
+
+Los administradores ven un aviso de producto cuando hay una actualización disponible. Desestimarla solo se aplica a ese administrador y a ese liberador; una versión posterior muestra un nuevo aviso.
+
+### Prepárate para la mejora [#system-update-prepare-for-the-upgrade]
+
+1. Lee las notas de lanzamiento desde la versión actual hasta la versión de destino.
+2. Programa una ventana de bajo tráfico y notifica a los usuarios bajo **Configuración del sistema → Mantenimiento del sistema**.
+3. Verifica la capacidad del disco, los servicios de Docker y la ubicación de la copia de seguridad de PostgreSQL en el host.
+4. Espera o detén tareas que no deberían abarcar la actualización y asegúrate de que un administrador pueda seguir abriendo la salud del sistema.
+
+### Ejecuta en el host de despliegue [#system-update-run-on-the-deployment-host]
+
+Linux:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/LingX-AI/linksense/main/upgrade.sh | sudo sh
+```
+
+macOS (no usar `sudo`):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/LingX-AI/linksense/main/upgrade.sh | sh
+```
+
+El script detecta Core o Full, espera tareas en ejecución y crea y verifica una copia de seguridad de PostgreSQL antes de la migración de la base de datos. Guarda la ubicación de la copia de seguridad impresa por el script. Un fallo tras el inicio de la migración no reverte automáticamente la base de datos.
+
+### Instancias desplegadas desde la principal [#system-update-instances-deployed-from-main]
+
+Instancias usando `deploy/production/deploy-production.sh` cambiar de versión sin esperar a que terminen las tareas. Las imágenes se construyen primero; A partir de ahí comienzan el mantenimiento y el cierre de tareas. Se conservan las conversaciones y archivos existentes. Las solicitudes incompletas y en cola no se reproducen automáticamente: los usuarios deben revisar el progreso real antes de continuar manualmente. Los mensajes ya enviados u otros cambios externos no se deshacen.
+
+El cierre de tareas utiliza un breve periodo de gracia compartido en lugar de una espera separada para cada tarea. Siguen siendo necesarios copias de seguridad, aprobación de migración y comprobaciones de salud. Si falla el apagado o la persistencia del estado de la tarea, el despliegue informa de un error y mantiene el mantenimiento habilitado. Resuelve el error y vuelve a ejecutar el despliegue en lugar de reiniciar directamente los servicios anteriores.
+
+### Verifica después de actualizar [#system-update-verify-after-upgrading]
+
+Abre **Estado del sistema** y verifica la API, base de datos, Redis, almacenamiento, Runner, análisis de conocimiento y búsqueda. Ejecuta una tarea mínima para comprobar la ruta de ejecución. Luego termina el mantenimiento antes de tiempo o deja que la ventana expire.
+
+Si la actualización falla, conserva la salida del terminal y la ubicación de respaldo para un operador de despliegue. No vuelvas a ejecutar el script repetidamente antes de confirmar el estado de la base de datos.
+
+## Registros de auditoría [#audit]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+Abre **Configuración → Registros de auditoría**. La auditoría es para datos de seguridad, no para navegar por el contenido de los usuarios.
+
+</Callout>
+
+### Eventos [#audit-events]
+
+El área de auditoría tiene tres superficies de datos:
+
+- **Registros permanentes de auditoría** cubren cambios de cuentas y roles, grupos, importación y publicación de capacidades, ciclo de vida de credenciales, gobernanza del conocimiento, configuración de modelos y sistemas, y resultados de gestión.
+- **Metadatos de ejecución de tareas** es un resumen censurado entre usuarios del estado de ejecución, nombres de capacidades y conteos de archivos, sin títulos, mensajes ni acciones de descarga.
+- **Archivos generados por tareas eliminadas** informes mantenían el conteo de artefactos, tamaño, estado de suma de comprobación y tiempo de eliminación sin necesidad de ver, recuperar o descargar contenido.
+
+Filtra los eventos permanentes por tiempo, actor, tipo de objetivo, acción o resultado. Los metadatos de ejecución de tareas también pueden filtrarse por plugin, habilidad, código de error, estado del ejecutor, estado del archivo y fechas de creación o ejecución. Abre un registro para inspeccionar acciones estables, identificaciones requeridas, marcas de tiempo y metadatos estructurados y redactados. La interfaz no expone los campos de protocolo en bruto como contenido de usuario.
+
+### Límite de contenido [#audit-content-boundary]
+
+La auditoría no muestra el cuerpo de la tarea de otro usuario, archivos, contenido entregable, argumentos completos de herramientas, respuestas brutas de terceros, contraseñas, tokens, claves API, texto plano de credenciales, URLs base completas ni rutas internas.
+
+Algunos registros conservan la IP de origen y el User-Agent como metadatos restringidos y solo los muestran según la política.
+
+### Operaciones rechazadas [#audit-rejected-operations]
+
+La autoincapacidad, la autodegradación, los intentos contra el administrador final, las lecturas no autorizadas y las solicitudes de gobernanza inválidas se registran con sus códigos de error estables.
+
+### Recomendaciones [#audit-recommendations]
+
+- Empieza con un rango de tiempo muy limitado.
+- Conservar las reglas de minimización de datos al exportar o retransmitir datos de auditoría.
+- Correlaciona los eventos con los puntos temporales de salud del sistema.
+- Espera una auditoría mínima permanente después de que una entidad empresarial sea eliminada.
+
+## Gestionar la opinión de los usuarios [#feedback]
+
+<Callout type="info" title="Acción del administrador">
+
+Ve a **Configuración → Comentarios de usuarios**. Los usuarios habituales pueden ver sus propias publicaciones y respuestas bajo **Mis comentarios**, pero no pueden leer las publicaciones de otros usuarios.
+
+</Callout>
+
+### Comentarios sobre la revisión [#feedback-review-feedback]
+
+La lista paginada muestra al remitente, un extracto de texto, el recuento de imágenes, el estado de la respuesta y la hora de envío. Selecciona **Ver** para leer el texto completo y abrir vistas previas de imágenes. Si una imagen no se carga, actualízala antes de pedir al usuario que reenvíe material sensible a través de un canal no controlado.
+
+La retroalimentación puede contener información empresarial que el usuario haya decidido enviar. Úsalo solo para el diagnóstico de problemas y evita copiarlo en registros, tareas públicas o servicios externos no relacionados. La retroalimentación no es un registro de auditoría y no se vincula automáticamente a una ejecución de tarea concreta.
+
+### Responder a un usuario [#feedback-reply-to-a-user]
+
+Abre los detalles de los comentarios, escribe una respuesta o añade imágenes y selecciona **Enviar respuesta**. Se admiten respuestas solo de texto, solo imagen y combinadas. Cada respuesta permite hasta 2.000 caracteres y nueve imágenes, con un máximo de 5 MB por imagen. Se admiten PNG, JPEG, WebP y GIF, incluyendo imágenes pegadas.
+
+Puedes responder más de una vez; Las respuestas aparecen en orden cronológico. Las entregas fallidas conservan el borrador y las imágenes seleccionadas. Tras una respuesta exitosa, el usuario puede leerla bajo **Mis comentarios** y la lista muestra **Respondido**. Este estado no significa que el problema esté resuelto.
+
+### Eliminar retroalimentación [#feedback-delete-feedback]
+
+La eliminación elimina permanentemente los comentarios, todas las respuestas y todas sus imágenes y no puede deshacerse. Confirma que el manejo necesario está completo y que las reglas de retención organizativas permiten la eliminación. No elimina el remitente, las tareas, los registros de auditoría ni los datos de uso.
+
+### Guía de manejo [#feedback-handling-guidance]
+
+- Empieza con la hora, la página y el código de error estable reportados.
+- Pide información adicional solo a través de un canal organizativo aprobado.
+- Nunca pidas contraseñas, tokens, claves API, códigos QR o enlaces de un solo uso.
+- Para incidentes del sistema, correlaciona el informe con [Salud del sistema](#health) y [Registros de auditoría](#audit).

@@ -1,0 +1,36 @@
+---
+title: "Développement de sources et construction d’images"
+description: "Démarrez l’environnement de développement Docker, trouvez les points d’entrée source et créez des images."
+---
+
+
+## Démarrez l’environnement de développement [#start-the-development-environment]
+
+Préparez Node.js 24+, pnpm 10.34.6, Docker Engine / Compose, `rsync` et `mkcert`. Exécutez depuis la racine du dépôt :
+
+```bash
+pnpm install --frozen-lockfile
+pnpm dev:prepare
+pnpm dev
+```
+
+`pnpm dev:prepare` lance des services, construit des images et le centre d’aide, et initialise la base de données de développement tout en préservant la configuration existante. La première course peut demander à faire confiance au `mkcert` local de CA. `pnpm dev` attache des surveillants et des troncs ; `pnpm dev:stop` arrête la pile de développement.
+
+Adresses par défaut : Web `http://localhost:18172` / `https://localhost:18173`, API `http://localhost:4000`, Runner `http://localhost:4010`. Utilisez les adresses réelles rapportées par le lanceur.
+
+## Points d’entrée de source [#source-entry-points]
+
+- [Espace de travail web et administration](https://github.com/LingX-AI/linksense/tree/main/apps/web)
+- [API, permissions et logique métier](https://github.com/LingX-AI/linksense/tree/main/apps/api)
+- [Coureurs et travailleurs de tâches](https://github.com/LingX-AI/linksense/tree/main/apps/runner)
+
+Voyez les [Architecture](./architecture.mdx), [Guide de développement des dépôts](https://github.com/LingX-AI/linksense/blob/main/deploy/development/README.md) et [Guide des contributions](https://github.com/LingX-AI/linksense/blob/main/.github/CONTRIBUTING.md). Effectuez des tests affectés, des vérifications de type, des lints et des builds avant de soumettre les modifications.
+
+## Compilar des images Docker à partir de la source [#build-docker-images-from-source]
+
+```bash
+docker compose --env-file .env.example build \
+  migrate api runner runner-worker-image web
+```
+
+L’API Dockerfile fournit `runtime` et `migration` cibles ; le Coureur fournit `controller` et `worker`. Pour les images multi-architectures, utilisez `docker buildx build --platform linux/amd64,linux/arm64` avec le fichier Docker approprié et la cible. Je préfère les [Images publiées](./index.mdx) épinglées par digérage pour les installations de production normales. Le [Runbook de production git](https://github.com/LingX-AI/linksense/blob/main/deploy/production/README.md) des mainteneurs couvre un flux de travail distinct pour la construction du code source.

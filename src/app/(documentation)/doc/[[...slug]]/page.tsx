@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import {
   DocsBody,
   DocsDescription,
@@ -8,7 +9,14 @@ import {
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import type { MDXComponents } from 'mdx/types'
 import { source } from '@/lib/source'
-import { resolveDocRoute, withoutDocLocale } from '@/lib/i18n'
+import {
+  docsI18n,
+  docsPath,
+  homeLocales,
+  resolveDocRoute,
+  withoutDocLocale,
+} from '@/lib/i18n'
+import { getDocsUI } from '@/content/docs-ui'
 import { pageMetadata } from '@/lib/metadata'
 import { getMDXComponents } from '@/mdx-components'
 import { PageActions } from '@/components/page-actions'
@@ -16,13 +24,20 @@ import { PageActions } from '@/components/page-actions'
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  return ['en', 'zh'].flatMap((lang) =>
+  return docsI18n.languages.flatMap((lang) =>
     source
       .getPages(lang)
       .flatMap((page) =>
-        lang === 'zh'
-          ? [{ slug: ['zh-CN', ...page.slugs] }]
-          : [{ slug: page.slugs }, { slug: ['en-US', ...page.slugs] }],
+        lang === 'en'
+          ? [{ slug: page.slugs }, { slug: ['en-US', ...page.slugs] }]
+          : [
+              {
+                slug: [
+                  homeLocales[lang as keyof typeof homeLocales],
+                  ...page.slugs,
+                ],
+              },
+            ],
       ),
   )
 }
@@ -63,6 +78,17 @@ export default async function Page({
       <DocsDescription className="mb-2">
         {page.data.description}
       </DocsDescription>
+      {lang !== 'en' && lang !== 'zh' && (
+        <p className="mb-4 text-sm text-fd-muted-foreground">
+          {getDocsUI(lang).translationNotice}{' '}
+          <Link
+            href={docsPath('en', slugs.length ? `${slugs.join('/')}/` : '')}
+            className="underline underline-offset-4"
+          >
+            {getDocsUI(lang).englishOriginal}
+          </Link>
+        </p>
+      )}
       <PageActions lang={lang} markdownUrl={`/markdown/${lang}/${path}`} />
       <DocsBody>
         <MDX

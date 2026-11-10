@@ -1,0 +1,133 @@
+---
+title: "Sistema e configuração de login"
+description: "Gerencie configurações do produto, concorrência, janelas de manutenção, e-mail de autenticação e métodos de login."
+---
+
+Revise a configuração do sistema e da autenticação juntos. Cada seção explica o escopo da mudança, o manuseio secreto e o comportamento de falha.
+
+## Configurações de sistema e produto [#system-settings]
+
+<Callout type="info" title="Operação administrativa">
+
+Abra **Configurações → Configurações do sistema**. Apenas a configuração explicitamente suportada do produto é gravável; Os segredos de infraestrutura permanecem gerenciados pela implantação.
+
+</Callout>
+
+### Configurações do produto [#system-settings-product-settings]
+
+A página atual pode expor configurações não sensíveis, como nome de exibição do produto e idioma padrão. Atualizações salvas usam uma revisão compartilhada e entram em vigor sem reiniciar o serviço.
+
+A auditoria permanente registra o ator, a chave de definição, valores antes e depois e os metadados da solicitação.
+
+### Configuração de implantação somente leitura [#system-settings-read-only-deployment-configuration]
+
+Banco de dados, Redis, MinIO, processamento de documentos, outros parâmetros de tempo de execução do runner, limites de arquivos, chaves JWT/HMAC/criptografia, períodos de token e retenção permanecem em configuração controlada de `.env` ou implantação.
+
+A página pode mostrar um estado configurado redigido, mas nunca strings de conexão, endpoints internos completos, senhas, chaves, tokens ou material de criptografia. Os canais de modelo são exceções explícitas gerenciadas na página de Configurações do Modelo.
+
+### Concorrência de tarefas [#system-settings-task-concurrency]
+
+A aba **Tarefas simultâneas** permite que administradores sobreponham dois padrões de implantação:
+
+- O limite de tarefas em execução em todo o sistema limita tarefas em execução para todos os usuários.
+- O limite de processos por tarefa por usuário limita os processos do servidor de aplicativos Codex carregados por cada trabalhador usuário.
+
+Deixar qualquer um dos campos em branco mantém o padrão correspondente de implantação. Nova tarefa inicia, leia as configurações salvas mais recentes sem reiniciar o serviço. Reduzir um limite não interrompe tarefas em execução; A admissão de novas tarefas ou processos é pausada até que o uso atual caia abaixo do novo limite.
+
+### Atualização do sistema [#system-settings-system-update]
+
+**Atualização do sistema** é uma página de administrador separada que verifica as versões oficiais do GitHub e mostra o fluxo de trabalho seguro de atualização. A página web nunca atualiza a implantação silenciosamente. Veja [Verifique e instale atualizações do LinkSense](./operations.mdx#system-update) para preparação, comandos do host e verificação pós-atualização.
+
+### Manutenção programada [#system-settings-scheduled-maintenance]
+
+Abra a aba **Manutenção do sistema**, insira um motivo e os horários de início e término, então ative a manutenção programada. A manutenção só se ativa quando o horário atual entra na janela configurada e termina automaticamente no horário de término especificado.
+
+Quando a manutenção termina, o sistema desliga automaticamente a manutenção programada e libera o motivo, horário de início, horário de término e duração. Não é necessário salvar mais, e a limpeza roda mesmo quando nenhum administrador deixa a página de configurações aberta. Uma página de configurações aberta é atualizada em poucos segundos. A manutenção que terminou enquanto o serviço estava parado é liberada quando o serviço recomeça.
+
+Durante a manutenção ativa, administradores logados veem um diálogo **Manutenção do sistema ativada** em páginas que não sejam as configurações de login e manutenção. Selecione **Não mostrar novamente** para ocultá-lo durante o período de manutenção atual, para sua conta neste navegador. A escolha sobrevive à navegação, atualiza e reabre o navegador, e sincroniza entre abas. Editar os detalhes de manutenção ou estender o período atual não mostra novamente; começar um novo período já ajuda. Outras contas e dispositivos não são afetados. Selecione **Configurações de manutenção** para abrir diretamente a página de configuração. O lembrete permanece oculto nessa página, inclusive após uma atualização ou navegação repetida. O botão de fechar e Esc descartam apenas o lembrete da página atual; Navegando para outra página aparece novamente. O diálogo desaparece quando a manutenção termina ou é desativada e nunca aparece na página de login ou configurações de manutenção. Um link **Manutenção do sistema ativada** também permanece no canto inferior direito das páginas de administrador logadas e abre as configurações de manutenção. Fechar ou suprimir o diálogo não esconde esse indicador; Desaparece quando a manutenção termina.
+
+Durante a manutenção:
+
+- Usuários comuns veem a razão e a janela de manutenção esperada em uma página dedicada e não podem chamar APIs empresariais.
+- Os administradores ainda podem fazer login e usar o sistema para inspecionar o status, ajustar o cronograma ou encerrar a manutenção antecipadamente.
+- Login, inicialização, saúde e identificação do usuário atual permanecem disponíveis para que administradores não possam ser bloqueados.
+
+Confirme o fuso horário do dispositivo antes de salvar e forneça um horário realista de encerramento.
+
+### Conflito e fracasso [#system-settings-conflict-and-failure]
+
+Verificações de revisão impedem que um administrador substitua silenciosamente outro. Em caso de conflito, atualize, inspecione o estado mais recente e confirme a mudança novamente.
+
+O servidor rejeita tentativas de alterar uma configuração apenas de implantação mesmo quando uma solicitação personalizada contorna a interface.
+
+### Recomendações [#system-settings-recommendations]
+
+- Altere as configurações de exibição da organização durante um período de baixo risco.
+- Valide os resultados com uma conta de usuário comum.
+- Use as seções separadas de autenticação para alterações na capacidade de login.
+
+## E-mail de autenticação e métodos de login [#authentication-settings]
+
+<Callout type="info" title="Operação administrativa">
+
+Em **Configurações → Configurações do sistema**, use **E-mail de autenticação** para entrega de e-mails e **Métodos de acesso** para contas empresariais e de terceiros. Cada configuração salva de forma independente.
+
+</Callout>
+
+### Modos de configuração [#authentication-settings-configuration-modes]
+
+E-mail de autenticação, SSO empresarial (OIDC) e login no suporte do Teams:
+
+- **Herdar do ambiente de implantação**;
+- **Gerenciado nas configurações do sistema** com armazenamento criptografado;
+- **Desativado**, sem recurso ambiental para o ambiente.
+
+Mudar do modo gerenciado ou desativar a autenticação configurada requer confirmação.
+
+### E-mail de autenticação [#authentication-settings-authentication-email]
+
+Configure o host SMTP, porta, STARTTLS ou TLS direto, remetente, nome de usuário opcional e senha. Um nome de usuário vazio significa que não há autenticação de senha SMTP. Este serviço envia e-mail de primeira senha e redefinição; verifique sua conexão na Saúde do Sistema.
+
+### Inscrição aberta [#authentication-settings-open-registration]
+
+Ative o registro aberto em **Métodos de login → Contas de terceiros**. Usuários autoregistrados compartilham o padrão de cota semanal de membros em [Gestão de cotas](./models-and-usage.mdx#quota-settings) com usuários criados ou importados por administradores.
+
+Desabilitar o registro aberto bloqueia novas solicitações e invalida links de ativação que foram emitidos, mas ainda não usados. Ele não exclui contas criadas diretamente por administradores, contas ativadas existentes ou outros métodos de login configurados.
+
+### Contas empresariais [#authentication-settings-enterprise-accounts]
+
+Use contas gerenciadas pela organização. Novas contas exigem ativação de administrador, independentemente da configuração de registro aberto.
+
+#### SSO Empresarial (OIDC) [#authentication-settings-enterprise-sso-oidc]
+
+Insira uma URL do emissor HTTPS, ID do cliente e segredo do cliente. O LinkSense deriva e exibe uma URL de retorno de leitura somente que também deve ser registrada com o provedor.
+
+Uma nova revisão invalida um callback inacabado iniciado sob uma revisão antiga. O usuário deve reiniciar o login. Uma identidade SSO pela primeira vez cria uma conta pendente por e-mail; um administrador deve habilitá-lo antes que o usuário faça login novamente.
+
+#### SSO Empresarial (SAML 2.0) [#authentication-settings-enterprise-sso-saml-20]
+
+Configure o HTTPS para o site, depois insira o ID da entidade do provedor de identidade, a URL de login e o certificado de assinatura do PEM. Registre o ID da entidade do provedor de serviço exibido e a URL de retorno do ACS com seu provedor, ou salve e habilite o SAML para baixar e importar os metadados XML.
+
+O provedor deve assinar declarações e fornecer endereços de e-mail precisos, gerenciados pela organização. Corresponda exatamente ao nome do atributo do e-mail; Digite `NameID` para usar esse identificador como endereço de e-mail. O atributo do nome é opcional. Contas existentes são correspondidas por e-mail e mantêm suas funções. Novas contas precisam ser ativadas como administrador; Contas desativadas não podem fazer login.
+
+Se seu provedor exigir solicitações de autenticação assinadas, ative a assinatura de requisições e insira o certificado RSA do provedor de serviço e a chave privada correspondente. As chaves salvas nunca são devolvidas; Deixe a chave privada em branco ao mudar outros campos. Salvar com a assinatura de requisição desativada remove esse certificado e a chave. Substitua certificados de provedor de identidade expirados para restaurar o login.
+
+Os membros começam a partir de **Faça login com uma conta empresarial SAML** na página de login do LinkSense. Conclua cada fluxo em cinco minutos; Reinicie após uma alteração de configuração. Esta versão suporta apenas login iniciado pelo SP, sem login iniciado por IdP, asserções criptografadas ou logout único. Sair do LinkSense não faz desligar o provedor de identidade.
+
+#### Faça login dentro do Teams [#authentication-settings-sign-in-within-teams]
+
+Entrem em cena os IDs de tenant e cliente do Microsoft Entra. As configurações do LinkSense não substituem o registro do Entra, o URI do ID da Aplicação, o manifesto do Teams ou o consentimento do administrador.
+
+### Contas de terceiros [#authentication-settings-third-party-accounts]
+
+Configure contas pessoais do Google, Apple, Microsoft, Facebook e GitHub. Para contas de trabalho ou escola da Microsoft, configure o Microsoft Entra ID em contas Enterprise.
+
+Para o GitHub, crie um aplicativo OAuth nas configurações do desenvolvedor e copie o endereço de callback do diálogo de configuração para a URL de chamada de autorização. Insira o ID do Cliente e o Secret do Cliente no LinkSense e ative-o. Crie aplicativos separados para ambientes de teste e produção com URLs de callback diferentes. O login solicita acesso apenas por e-mail, não acesso ao repositório. Se o GitHub não conseguir fornecer um e-mail verificado, novos usuários devem verificar seu e-mail pelo LinkSense.
+
+Quando o cadastro está aberto, novos usuários podem começar após a verificação por e-mail sem a ativação do administrador. Usuários existentes devem fazer login primeiro e vincular sua conta sob **Configurações → Segurança → Contas de terceiros vinculadas**; E-mails correspondentes não são mesclados automaticamente. Fechar o registro não bloqueia o login para contas vinculadas.
+
+### Manuseio secreto [#authentication-settings-secret-handling]
+
+A API retorna apenas flags configurados, nunca senhas SMTP ou segredos OIDC. No modo gerenciado, deixe um segredo inalterado em branco; trocar de modo exige entrar novamente.
+
+Configuração corrompida ou indecifrável falha fechada e nunca volta a um valor antigo não confirmado.

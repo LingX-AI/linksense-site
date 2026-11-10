@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { source } from '@/lib/source'
-import { i18n, homePath, installPath } from '@/lib/i18n'
+import { docsI18n, i18n, homePath, installPath } from '@/lib/i18n'
 import { siteUrl } from '@/lib/metadata'
 
 export const dynamic = 'force-static'
@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/',
     '/install/',
     ...i18n.languages.flatMap((lang) => [homePath(lang), installPath(lang)]),
-    ...['zh', 'en'].flatMap((lang) =>
+    ...docsI18n.languages.flatMap((lang) =>
       source.getPages(lang).map((page) => page.url),
     ),
   ]

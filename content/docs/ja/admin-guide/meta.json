@@ -1,0 +1,12 @@
+{
+  "title": "管理者ガイド",
+  "pages": [
+    "overview",
+    "accounts",
+    "resource-governance",
+    "models-and-usage",
+    "configuration",
+    "operations"
+  ],
+  "icon": "Shield"
+}

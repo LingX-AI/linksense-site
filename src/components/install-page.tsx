@@ -10,7 +10,7 @@ import {
   installSearchSchema,
   manualInstallCommand,
 } from '@/lib/product'
-import { docsPath, formatMessage, getMessages } from '@/lib/i18n'
+import { docsPath, formatMessage, getMessages, homeLocales } from '@/lib/i18n'
 import { buttonVariants } from './ui/button'
 import { Segmented } from './ui/segmented'
 
@@ -87,7 +87,7 @@ export function InstallPage({ lang }: { lang: string }) {
           <div className="mt-6 flex flex-wrap gap-4">
             <Link
               href={installGuideUrl(
-                lang === 'zh' ? 'zh-CN' : 'en-US',
+                homeLocales[lang as keyof typeof homeLocales],
                 edition,
                 platform,
               )}

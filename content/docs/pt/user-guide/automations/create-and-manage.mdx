@@ -1,0 +1,54 @@
+---
+title: "Criar e gerenciar automações"
+description: "Realize trabalho recorrente a cada hora, diariamente, semanalmente ou mensalmente em uma única tarefa fixada."
+---
+
+
+O início de automações gira em uma programação dentro de uma tarefa fixa. Eles são úteis para relatórios, checagens e resumos recorrentes.
+
+## Comece com uma sugestão [#start-from-a-suggestion]
+
+A página de Automações oferece sugestões como **Resumo diário**, **Revisão semanal** e **Acompanhamento de pendências**. Selecionar um abre o formulário de nova automação com um título, instrução, nova tarefa-alvo e dias e horários semanais sugeridos já preenchidos. Uma sugestão é apenas um modelo editável; Antes de salvar, verifique suas fontes de dados, instruções, datas, hora, fuso horário, modelo e esforço de raciocínio.
+
+Algumas sugestões se referem a calendários ou e-mails. A automação só pode ler esses dados quando a conta corrente tiver instalado e autorizado as capacidades necessárias. Configure-os primeiro ou edite o template para que uma execução sem vigilância não pare para autorização ou falta de entrada.
+
+## Criar uma automação [#create-an-automation]
+
+1. Abra **Automações** e escolha **Nova automação**.
+2. Insira um título e uma instrução autônoma.
+3. Escolha um alvo:
+   - **Tarefa existente:** selecionar uma tarefa válida atualmente fixada pela sua conta.
+   - **Nova tarefa:** o LinkSense cria e fixa automaticamente uma tarefa quando a automação é salva; todo gatilho posterior reutiliza essa tarefa.
+4. Escolha por hora, diário, semanal ou mensal e defina um intervalo de 1 a 999:
+   - a cada hora: escolher o minuto 0–59 dentro de cada intervalo;
+   - diariamente: escolha um horário;
+   - Semanalmente: escolha pelo menos um dia da semana e um horário;
+   - Mensalmente: Escolha um dia e um horário.
+5. Confirme o fuso horário do dispositivo exibido. O LinkSense converte a programação salva em tempo de sistema.
+6. Opcionalmente, defina uma data de validade. A automação ainda pode rodar nessa data e para a partir do dia seguinte.
+7. Opcionalmente, ative um modelo específico e um esforço de raciocínio. Quando desativado, os padrões atuais da conta são utilizados.
+8. Salve e revise a próxima corrida exibida.
+
+Uma data mensal inexistente é pulada — por exemplo, o dia 31 em um mês sem essa data.
+
+## Revise e execute agora [#review-and-run-now]
+
+Filtre a lista por **Todos**, **Ativo** ou **Pausado**. Cada automação mostra sua última e próxima execução. Escolha **Abrir tarefa** revisar toda a atividade e os artefatos.
+
+**Executar agora** pula a agenda. Ele começa imediatamente quando a tarefa alvo está ociosa ou entra na fila dessa tarefa quando está ocupada. Não altera as futuras temporadas programadas.
+
+A área de notificações na barra lateral mostra execuções concluídas ou falhadas. Abra uma notificação para visitar a tarefa e limpe seu estado não lido.
+
+## Pausar, retomar, editar e excluir [#pause-resume-edit-and-delete]
+
+- Pausar impede novas execuções agendadas sem afetar o histórico.
+- Retomar calcula as corridas futuras a partir do tempo atual e do cronograma salvo.
+- A edição afeta apenas as futuras edições.
+- Excluir remove o cronograma, mas preserva tarefas e histórico vinculados.
+
+## Recomendações [#recommendations]
+
+- Escreva instruções que possam ser executadas sem necessidade de perguntas adicionais.
+- Mantenha a meta de automação fixa e válida. Atualize as automações vinculadas antes de desfixar ou arquivar.
+- Mantenha os modelos, capacidades, credenciais e bases de conhecimento necessárias ativados.
+- Revise falhas regularmente porque alterações de permissões ou configurações podem bloquear execuções futuras.

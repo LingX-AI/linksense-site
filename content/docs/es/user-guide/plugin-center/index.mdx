@@ -1,0 +1,387 @@
+---
+title: "Plugins, habilidades y aplicaciones"
+description: "Descubre e instala capacidades, luego gestiona habilidades personales, aplicaciones, intercambio y credenciales."
+---
+
+Empieza descubriendo e instalando capacidades, luego crea, gestiona y comparte tus propias habilidades y aplicaciones según sea necesario.
+
+## Descubrir, instalar y actualizar capacidades [#discover-and-install]
+
+Plugin Center ofrece un único catálogo para plugins publicados, Skills, extensiones MCP y aplicaciones.
+
+El **Repositorio de habilidades de ClawHub** es una fuente externa de habilidades separada. Consulta [Instalar Skills desde ClawHub](#clawhub) para sus comprobaciones previas a la instalación y el límite de confianza.
+
+### Explorar y buscar [#discover-and-install-browse-and-search]
+
+1. Abre **Centro de Plugins**.
+2. Selecciona plugins, habilidades, MCP o aplicaciones.
+3. Busca por nombre, descripción o editorial.
+4. Abre los detalles y revisa el editor, las notas de la publicación, el resumen de riesgos, el manifiesto y el hash del contenido.
+
+### Instalación [#discover-and-install-install]
+
+La instalación crea una copia personal de la versión aprobada actual. Antes de confirmar, comprueba si contiene scripts ejecutables o un servidor MCP, accede a servicios externos, requiere variables o credenciales de entorno y proviene de un editor de confianza.
+
+Gestiona el estado habilitado de la copia instalada desde el área Instalado o Personal.
+
+Las aplicaciones utilizan un flujo de distribución separado. Las acciones directas aparecen bajo **Solicitudes → Compartidas conmigo**, mientras que las publicaciones públicas aparecen en **Centro de Aplicaciones**. Dependiendo de la opción de uso que ofrezca el creador, instala una copia independiente de la aplicación o instala el servicio de aplicación online antes de usarla. Consulta [Utilizar aplicaciones de organización](#organization-apps) para la diferencia. Los creadores pueden [Crear y gestionar aplicaciones](#create-applications).
+
+### Actualización [#discover-and-install-update]
+
+Cuando aparezca **Actualización disponible**, compara las notas de lanzamiento y actualízala explícitamente. La aprobación de un nuevo lanzamiento de catálogo nunca reemplaza silenciosamente tu copia instalada.
+
+### Desinstalar [#discover-and-install-uninstall]
+
+Desinstalar elimina tu copia y la configuración personal relacionada sin cambiar la versión del catálogo ni las instalaciones de otros usuarios. Los hechos históricos de tareas y auditorías permanecen.
+
+<Callout type="warn" title="Suspensión por riesgo">
+
+Un administrador puede suspender una inscripción arriesgada. Un anuncio suspendido queda oculto y todas las copias instaladas se bloquean para iniciar nuevas tareas hasta que se restaure.
+
+</Callout>
+
+## Instalar Skills desde ClawHub [#clawhub]
+
+ClawHub es una fuente externa de habilidades. LinkSense muestra metadatos sincronizados localmente, pero ni LinkSense ni ClawHub revisan ni respaldan todas las habilidades de terceros que se muestran allí.
+
+### Encuentra e inspecciona una Habilidad [#clawhub-find-and-inspect-a-skill]
+
+Ve a **Centro de Plugins → Repositorio de Habilidades de ClawHub**, busca por nombre y, opcionalmente, ordena por descargas o estrellas. Abre los detalles para inspeccionar el autor, la versión, la hora de actualización, los temas, los requisitos de la plataforma, el registro de cambios y la página canónica de ClawHub.
+
+Las descargas y los conteos de estrellas pueden dar contexto sobre el uso, pero no son una revisión de seguridad.
+
+### Instalar o actualizar [#clawhub-install-or-update]
+
+1. Elige la versión para instalar.
+2. Espera a que LinkSense recupere y valide el paquete.
+3. Revisa los avisos de fuente, integridad y riesgo.
+4. Confirma la instalación en tus propias habilidades.
+
+Cuando ya tienes instalado el mismo código fuente, LinkSense ofrece una actualización; No reinstala la misma versión. La habilidad instalada sigue siendo visible y manejable bajo **Mis capacidades**.
+
+### Seguridad y disponibilidad [#clawhub-security-and-availability]
+
+LinkSense puede bloquear la instalación cuando una Skill está marcada, no tiene una versión instalable, no cumple los requisitos de la plataforma o falla la validación de integridad. No saltes la advertencia ni trates las credenciales solicitadas por una Habilidad desconocida como configuraciones normales.
+
+Actualiza más tarde cuando el repositorio esté temporalmente indisponible o no haya sincronizado ningún dato. Desinstalar elimina tu copia personal y su configuración; No cambia los metadatos del repositorio ni elimina el historial de tareas completadas.
+
+## Gestionar plugins personales y habilidades [#personal-content]
+
+Las capacidades personales te pertenecen y no son visibles automáticamente para otros usuarios.
+
+### Importar un paquete ZIP [#personal-content-import-a-zip-package]
+
+1. Abre **Centro de Plugins → Personal** y elige **Capacidad adicional**.
+2. Selecciona un paquete postal local.
+3. Espera mientras LinkSense analiza su fuente, archivos, manifiestos y declaraciones de riesgo.
+4. Revisa la vista previa y confirma los riesgos antes de instalarla.
+
+El avance expira. Repite la comprobación si es así, y nunca instales un paquete no confiable.
+
+### Crear una habilidad [#personal-content-create-a-skill]
+
+Elige la opción manual de Habilidad e introduce una `SKILL.md` completa. LinkSense previsualiza el contenido y las declaraciones antes de la instalación.
+
+Introduce primero el identificador de habilidad, seguido de un nombre de visualización opcional. LinkSense genera un título legible a partir del identificador, como "Notas de reunión" para `meeting-notes`. Puedes reemplazarlo por un nombre que contenga caracteres y espacios chinos, o borrarlo. Una vez edites o borres el nombre de visualización, cambiar el identificador no sobrescribirá tu elección. Los nombres de visualización soportan hasta 64 caracteres y no cambian el identificador utilizado para invocar la Habilidad.
+
+Las Habilidades importadas conservan sus nombres de visualización cuando se proporcionan. De lo contrario, LinkSense muestra un título legible basado en el identificador. Las habilidades existentes no necesitan ser importadas de nuevo.
+
+Una habilidad generada en una tarea debe ser primero validada y registrada como un ZIP descargable completo. Solo se instala después de tu confirmación explícita.
+
+### Consulta y desinstala Skills en una conversación [#personal-content-view-and-uninstall-skills-in-a-conversation]
+
+Pide al asistente que "enumere todas mis habilidades habilitadas." La lista incluye las habilidades integradas disponibles y las habilidades personales que creaste, importaste o instalaste desde Plugin Center o ClawHub, independientemente de si se seleccionan para la tarea actual o no. Se excluyen las habilidades deshabilitadas o fallidas, los paquetes completos de plugins y las habilidades incluidas dentro de esos plugins.
+
+Para eliminar una habilidad personal, di "desinstalar mi habilidad de notas de reunión." Si el nombre no está claro o coincide con varias habilidades, el asistente te pedirá que identifiques la que quieres identificar. Las habilidades integradas son proporcionadas por el sistema y no pueden desinstalarse. El modo Plan puede listar habilidades pero no puede desinstalarlas.
+
+Desinstalar elimina permanentemente tu copia de instalación, los archivos de Skills, la configuración personal asociada y las vinculaciones de credenciales. Se conservan el historial de tareas, los registros de auditoría, las instalaciones de otros usuarios y las versiones publicadas del Centro de Plugins. Una tarea en ejecución puede seguir usando sus Habilidades cargadas; Los turnos posteriores cargan el estado de instalación actualizado.
+
+### Gestionar el ciclo de vida [#personal-content-manage-lifecycle]
+
+- Desactivar excluye la capacidad de nuevas tareas.
+- Actualizar realiza nuevamente las comprobaciones de código fuente y riesgo.
+- Eliminar permanentemente elimina las vinculaciones de capacidades, configuración y credenciales.
+- Los registros históricos conservan solo la versión y los datos de origen necesarios para la trazabilidad.
+
+Al actualizar una Habilidad personal, el diálogo carga su nombre de visualización actual, descripción, instrucciones completas y lista de archivos. El identificador sigue siendo el mismo. Tanto si creaste la habilidad manualmente como si importaste un código ZIP, elige una de las opciones de radio **Método de actualización**:
+
+- **Editar contenido de la Skill**: Actualizar el nombre de visualización, la descripción y las instrucciones. Se conservan los scripts, plantillas, imágenes, otros archivos y configuraciones existentes que no hayas editado.
+- **Sustituir el paquete completo de la Skill**: Sube un ZIP que contenga todos los archivos necesarios. El nuevo paquete reemplaza la habilidad actual, eliminando los archivos existentes que faltaban en el nuevo paquete. Para cambiar scripts o recursos, usa **Descargar paquete completo de la Skill**, edita los archivos localmente y sube el paquete actualizado.
+
+Elige **Revisar cambios y riesgos** para comprobar archivos añadidos, modificados y eliminados, así como los riesgos en la habilidad resultante. Las eliminaciones de archivos requieren un acuse de recibo separado antes de confirmar la actualización. Comprobar cambios, cambiar de método o volver al editor no cambia la habilidad instalada.
+
+La edición no puede enviarse sin cambios. Si las instrucciones son demasiado largas para editar online, aún puedes descargar y reemplazar el paquete completo. Si la habilidad cambia mientras editas, vuelve a abrir el diálogo y revisa su contenido más reciente antes de enviarla. Las previsualizaciones pendientes de la actualización creadas antes de una actualización de versión también deben comprobarse de nuevo.
+
+### Publicar [#personal-content-publish]
+
+Elige una capacidad propiedad en **Mis publicaciones**, añade notas de lanzamiento y preséntala. LinkSense crea una instantánea inmutable para revisión de administradores; Los cambios posteriores en tu copia personal no alteran la instantánea.
+
+Cada lanzamiento requiere una decisión separada. Puedes retirar una liberación pendiente. Tras la aprobación, la versión pasa a ser la versión actual del Centro de Plugins.
+
+## Crear y gestionar aplicaciones [#create-applications]
+
+Las aplicaciones proporcionan puntos de entrada controlados para flujos de trabajo repetibles. Un creador puede combinar un modelo, instrucciones, plugins, habilidades, bases de conocimiento y servidores MCP y luego compartir el resultado. Una aplicación no amplía permisos que su creador o usuarios no tengan ya.
+
+En **Mis aplicaciones**, usa el filtro junto a buscar para elegir **Todas las aplicaciones**, **En desarrollo**, **Aplicaciones estándar** o **Aplicaciones interactivas**. Los filtros funcionan junto con la búsqueda. Las aplicaciones interactivas incluyen borradores de desarrollo no publicados, mientras que las aplicaciones Standard los excluyen. La URL conserva el filtro seleccionado cuando recargas la página.
+
+### Ver detalles de la solicitud [#create-applications-view-application-details]
+
+**Mis aplicaciones** muestra la versión publicada siempre que exista una. Las solicitudes que solo tienen un borrador muestran **Borrador** y un icono de esquina de código. Las aplicaciones publicadas nunca muestran ese icono de esquina; cuando tienen cambios no publicados, **Nueva versión de desarrollo** aparece después del recuento MCP. Los detalles muestran la versión de desarrollo por separado, incluyendo su nombre, descripción, icono, plugin / habilidad, recuento de base de conocimientos y MCP, y el último tiempo guardado. **En desarrollo** incluye tanto aplicaciones solo en borrador como aplicaciones publicadas con nuevas versiones de desarrollo, con una tarjeta por aplicación.
+
+Las acciones de desarrollo están en el menú de tres puntos de la carta: **Continuar el desarrollo** abre un proyecto existente, mientras **Desarrollar nueva versión** inicia uno. La acción **Usar** de la carta siempre abre la versión publicada.
+
+Haz clic en el cuerpo de una tarjeta de aplicación en **Mis aplicaciones**, **Compartido conmigo** o **Centro de aplicaciones** para ver su nombre, descripción completa, creador, tipo, modelo, versión (cuando esté disponible), fechas y recursos agrupados en plugins, habilidades, servidores MCP y bases de conocimiento. **Usar** y el menú de acciones siguen siendo controles separados.
+
+- Las tarjetas y detalles en **Mis aplicaciones** muestran la misma versión instalada, incluyendo su nombre, descripción, icono y recursos. Las aplicaciones no publicadas muestran su configuración actual y los borradores de desarrollo se muestran por separado. Las listas de recursos para aplicaciones compartidas y el centro de aplicaciones utilizan su versión publicada correspondiente, sin las selecciones de recursos no publicadas del creador.
+- Las listas de recursos muestran primero el nombre configurado del recurso. Cuando difiere de la declaración de la solicitud, **Declarado mediante solicitud** aparece debajo. Un cheque verde indica **Configurado**; Pasa el cursor por encima para ver la etiqueta. Las declaraciones no emparejadas aparecen como **Sin configurar**, y los recursos deshabilitados o eliminados aparecen como **No disponible**. **Configurado** solo significa que un recurso está vinculado; El uso real sigue dependiendo de las credenciales, la autorización y la disponibilidad del servicio.
+- Los detalles no muestran IDs de recursos, credenciales, ajustes de conexión ni instrucciones de aplicación. Ver los nombres de los recursos no otorga permiso para navegar o gestionar esos recursos.
+
+### Crear una aplicación estándar [#create-applications-create-a-standard-application]
+
+1. Ve a **Centro de Plugins → Aplicaciones → Mis aplicaciones**.
+2. Selecciona **Crear aplicación → Crear aplicación estándar**.
+3. Introduce un nombre y una descripción y elige un icono predefinido o sube una imagen. Las aplicaciones estándar e interactivas utilizan por defecto el icono de cubo colorido. Se conservan los iconos existentes.
+4. Arregla un modelo y un esfuerzo de razonamiento, o deja que los usuarios los elijan en el chat.
+5. Introduce las instrucciones de la aplicación y selecciona los plugins, habilidades, bases de conocimiento y servidores MCP que gestiones.
+6. Guarda y luego selecciona **Usar** para verificar el flujo de trabajo completo.
+
+Los usuarios compartidos no pueden ver las instrucciones de la aplicación. Los plugins utilizan las credenciales vinculadas del creador. Las herramientas MCP pueden tener efectos secundarios externos, así que verifica su propósito y permisos antes de añadirlas.
+
+### Crea una aplicación interactiva en la conversación [#create-applications-build-an-interactive-application-in-conversation]
+
+1. En Mis aplicaciones, elige Crear aplicación → crea una aplicación interactiva a través del chat, introduce un nombre y empieza a construir. También puedes pedir a una tarea normal que construya una aplicación interactiva de LinkSense.
+2. Describe tus necesidades en la conversación sobre desarrollo. La vista previa adyacente se actualiza a medida que cambian los archivos, sin exportar ni importar paquetes. Haz clic en el nombre o la descripción encima de la vista previa para editarlo. Cambia el guardado automáticamente después de que dejes de escribir o salgas del campo.
+3. Prueba la aplicación con tareas reales, archivos y resultados. Su conversación de pruebas es separada de la conversación sobre desarrollo.
+4. Utiliza las capacidades de Configurar para buscar, seleccionar o eliminar plugins, habilidades, bases de conocimiento y servidores MCP que la aplicación pueda utilizar. Guardar escribe tus opciones en la configuración de la aplicación, actualiza la vista previa e incluye las opciones cuando instalas o actualizas la aplicación. Si la conversación cambia la aplicación al mismo tiempo, recarga la configuración antes de guardar. Los errores de vista previa aparecen en los registros de depuración y pueden ser inspeccionados por el asistente.
+5. Elige Publicar cuando estés listo y confirma en el diálogo. Esto permite que la aplicación sea utilizada por tu cuenta en Mis aplicaciones. Más tarde, elige Desarrollar en el menú de la aplicación, luego Publicar actualización y confirmar. Esto no comparte ni lista automáticamente la solicitud.
+
+Los cambios incompletos conservan la última vista previa funcional. Una prueba activa termina en su versión original antes de cambiar a los cambios más recientes. La publicación revisa cualquier cambio que no haya llegado a la vista previa. Si el contenido cambia después de que se abra el diálogo de confirmación, revísalo y confirma de nuevo.
+
+Un estado sutil de **Borrador** o **Publicado** aparece junto al nombre de la solicitud. Cambios adicionales devuelven el contenido actual a **Borrador**. El menú de tres puntos en la esquina superior derecha contiene **Publicar / Publicar actualización**, **Configurar funciones**, **Nueva conversación de depuración**, **Historial de conversaciones de depuración** y **Registros de depuración**. La vista previa de la aplicación se actualiza automáticamente, sin necesidad de actualizar manualmente. Selecciona historial o registros para ver su contenido a continuación, luego usa el botón de cerrar en la esquina superior derecha de esa vista para volver a la aplicación sin perder las entradas del formulario. Solo las pruebas enviadas aparecen en **Historial de conversaciones de depuración** en el panel de desarrollo, fuera de la barra lateral, búsqueda regular de tareas y lista de archivo. Revisa las entradas, salidas, archivos y actividades allí. Editar código o actualizar una vista previa no crea registros vacíos, y los números de versión de la vista previa interna no se muestran. **Nueva conversación de depuración** reinicia la vista previa y conserva las pruebas enviadas. Los registros antiguos pueden eliminarse individualmente. Detén cualquier prueba activa y resuelve las solicitudes pendientes antes de reiniciar o eliminar la aplicación.
+
+Las ediciones de borrador dejan las versiones instaladas, compartidas y listadas sin cambios. **Publicar actualización** activa la actualización solo para el creador. Guarda la organización compartiendo de nuevo o presenta un nuevo anuncio del Centro de Aplicaciones, y luego los destinatarios instalan manualmente la actualización. Véase [Compartir aplicaciones y configurar acceso externo](#application-access).
+
+Archivar o eliminar una tarea de desarrollo preserva el historial de conversaciones de aplicaciones, borradores y depuraciones en **Mis aplicaciones**. Selecciona **Continuar el desarrollo** en el menú de tres puntos para continuar; Si la tarea original se eliminó, se abre una nueva tarea con los mismos archivos fuente y el mismo historial de conversaciones de depuración. Elige **Eliminar borrador de desarrollo** en el menú de tres puntos para eliminar el borrador y sus conversaciones de depuración manteniendo la aplicación publicada. **Eliminar** elimina toda la aplicación, incluyendo su historial de borradores y depuraciones. Ambas acciones preservan tareas de desarrollo, tareas regulares y archivos de espacio de trabajo, y eliminan los recursos de ejecución asociados en segundo plano.
+
+### Anota la vista previa y pide a LinkSense que la cambie [#create-applications-annotate-the-preview-and-ask-linksense-to-change-it]
+
+Selecciona **Anotar** inmediatamente a la izquierda del menú de tres puntos en la parte superior derecha de la vista de desarrollo. Haz clic en un elemento o arrastra para seleccionar un área y luego elige **Pregunta a LinkSense** junto a la selección. Describe el cambio en el popover y elige **Añadir anotación**. Sigue añadiendo solicitudes para otras selecciones. Cada anotación tiene un marcador numerado. La lista de anotaciones te permite localizar, eliminar, borrar o enviar todas las anotaciones juntas.
+
+Las solicitudes van a la conversación de desarrollo a la izquierda. LinkSense edita la aplicación actual y la vista previa se actualiza después de que la envíes. Si la conversación de desarrollo está ocupada, las anotaciones se unen a sus solicitudes pendientes sin crear otra tarea de prueba. Los botones de la app no se activan mientras se anota. Puedes salir del modo de anotación para probar la app y volver más tarde con las anotaciones añadidas conservadas.
+
+Las actualizaciones de previsualización automática se pausan durante la anotación para que las ubicaciones seleccionadas se mantengan estables. Si otra acción actualiza la aplicación, se te pedirá que selecciones de nuevo. Las propuestas fallidas conservan anotaciones. Límpialos y sale del modo de anotación, espera a que se actualice la vista previa y selecciona de nuevo.
+
+### Editar el icono de la app y los detalles [#create-applications-edit-the-app-icon-and-details]
+
+Haz clic en el icono junto al nombre de la app en la cabecera de desarrollo para seleccionar un preajuste o subir una imagen, y edita el nombre y la descripción. En Mis aplicaciones, elige Editar para una app instalada o Editar detalles de la app para un borrador. Las imágenes deben ser PNG, JPEG o WebP, como máximo 512 KiB y 1024 píxeles por cara.
+
+También puedes subir una imagen en la conversación de desarrollo y decir "Usa esto como icono de la app", o pedir cambiar el nombre o la descripción. Cambia guarda en el borrador y actualiza su vista previa. Publica cuando estés listo para usarlos en mis aplicaciones.
+
+### Importar una aplicación interactiva [#create-applications-import-an-interactive-application]
+
+Selecciona **Importar aplicación interactiva** y sube un código postal cuya raíz contenga `manifest.json` y `index.html`. La página se ejecuta en un iframe aislado y utiliza el SDK de LinkSense para iniciar tareas o controlar el panel de chat nativo. Consulta [Crea una aplicación interactiva](../../developer-guide/interactive-application.mdx) para el paquete y el contrato de API.
+
+Al preparar un paquete, abre **Lista de declaración de recursos** desde el cuadro de diálogo de importación para elegir los recursos que necesita. Cerrar la lista vuelve al cuadro de diálogo de importación y se conserva el paquete seleccionado.
+
+Al actualizar un paquete interactivo, la versión del manifiesto puede permanecer sin cambios o aumentar, pero no puede ser inferior a la versión existente más alta. **Actualizar** activa inmediatamente la configuración de paquetes y recursos por ti. Guarda la organización compartiendo o actualiza el listado del Centro de Aplicaciones por separado; Los destinatarios instalan las actualizaciones manualmente. Si tienes tareas regulares ejecutándose para esta aplicación, la actualización se bloquea hasta que las detienes o terminen.
+
+### Actualizar, desactivar y eliminar [#create-applications-update-disable-and-delete]
+
+La siguiente ejecución de una tarea existente utiliza la versión instalada actualmente, en lugar de permanecer vinculada a su versión original. Las tareas en ejecución no cambian de versión a mitad de ejecución, y los resultados históricos permanecen sin cambios. Simplemente abrir o actualizar una tarea histórica no instala las actualizaciones automáticamente.
+
+Para aplicaciones estándar e interactivas, elige **Editar** y luego **Guardar**. La edición mantiene la versión actual; Las solicitudes sin versión empiezan en 0.0.1. Puedes introducir una versión superior de x.x.x, pero no puedes bajarla. Guardar actualiza tu tarjeta, los datos y las tareas posteriores juntos. Las etiquetas de versiones sin cambios siguen produciendo discos separados. Los guardados fallidos no dejan cambios parciales. El guardado está bloqueado mientras tienes tareas normales ejecutándose para esta aplicación. La compartición organizacional y las actualizaciones del Centro de Aplicaciones permanecen separadas y requieren que los destinatarios la instalen manualmente. Los botones de crear, importar y actualizar paquetes leen **Crear**, **Importar** y **Actualizar**; Cada una activa la aplicación guardada para ti inmediatamente.
+
+- Las ediciones de configuración se guardan en la aplicación actual. Utiliza **Guardar opciones de uso compartido** para actualizar el intercambio de organizaciones y actualiza el listado del Centro de Aplicaciones por separado. Ninguna de las dos acciones reescribe los turnos en carrera ni los resultados históricos.
+- Desactivar impide nuevas tareas pero mantiene el historial de tareas existente.
+- La aplicación deja de estar disponible cuando una dependencia requerida es desactivada, eliminada o deja de ser accesible. Reparar la dependencia antes de activar o probar de nuevo.
+- Eliminar elimina la aplicación del Centro de Plugins y evita nuevas tareas; No elimina tareas existentes de los usuarios.
+
+Antes de la publicación organizacional, revisa también [Compartir y acceso externo](#application-access) y [Uso de la aplicación](#application-usage).
+
+## Utiliza aplicaciones compartidas y del Centro de Aplicaciones [#organization-apps]
+
+Una aplicación de organización puede combinar modelos, plugins, habilidades, bases de conocimiento e instrucciones fijas como un paquete de aplicación instalable o un servicio de aplicación online gestionado por el creador.
+
+Las aplicaciones pueden ser estándar o interactivas. Una aplicación interactiva abre una interfaz de flujo de trabajo proporcionada por el creador con el chat confiable de LinkSense en un panel separado a la derecha. Arrastra el divisor para redimensionar el chat, o ocultarlo y volver a abrirlo sin detener la tarea ni perder los datos de la aplicación.
+
+### Encuentra una aplicación [#organization-apps-find-an-application]
+
+Abierto **Centro de Plugins → Aplicaciones**:
+
+- **Compartido conmigo** contiene versiones concedidas directamente a ti o a uno de tus grupos.
+- **Centro de Aplicaciones** contiene comunicados públicos aprobados por los administradores.
+- **Mis aplicaciones** contiene aplicaciones que creaste y paquetes instalados como copias personales.
+
+Las tarjetas identifican las opciones de uso disponibles. Los detalles muestran el creador, propósito, versión, guía de uso y un resumen de recursos.
+
+### Elige una opción de uso [#organization-apps-choose-a-usage-option]
+
+Una solicitud estándar puede ofrecer una o ambas opciones. Las aplicaciones interactivas solo soportan **Servicio de aplicación en línea**:
+
+| Opción | Lo que crea la instalación | Quién mantiene los recursos y la configuración |
+| --- | --- | --- |
+| Paquete de aplicación | Una copia independiente bajo **Mis aplicaciones** cuyo código fuente puedas ver y editar | La app y los plugins o habilidades incluidos se guardan en tu cuenta; Configuras cualquier credencial, base de conocimientos y conexiones externas que pueda necesitar |
+| Servicio de solicitud en línea | Acceso online al servicio del creador sin instalar tu propia copia local | Usas las credenciales configuradas por el creador; El creador mantiene la versión y los recursos de la app, y no obtienes permiso para navegar por su contenido o configuración |
+
+Revisa la versión, la guía de uso y la configuración necesaria antes de instalarla. Un paquete de aplicación puede usar un nombre instalado personalizado. Si muestra **Requiere configuración** después, completa sus recursos y credenciales bajo **Mis aplicaciones**. Para un servicio, elige **Usar** después de la instalación para iniciar una tarea.
+
+### Iniciar una tarea de aplicación [#organization-apps-start-an-application-task]
+
+Selecciona una aplicación o servicio instalado y sigue su interfaz de tareas. Dependiendo de su configuración:
+
+- el modelo es fijado por el creador o seleccionado por ti;
+- los plugins, habilidades, bases de conocimiento e instrucciones en un servicio son mantenidos por el creador; los mantienes en tu copia independiente del paquete;
+- Las bases de conocimiento de un servicio solo son buscables dentro de la aplicación y no otorgan acceso a navegar, previsualizar, descargar o gestionar.
+
+La instalación pina una versión explícita. Después de que el creador vuelva a compartir o el Centro de Aplicaciones apruebe una versión más reciente, **Actualización disponible** aparece pero no reemplaza silenciosamente tu instalación. Termina todas las tareas normales de esa aplicación y luego instala la actualización manualmente. Las nuevas tareas y la siguiente ejecución en una tarea existente utilizan la nueva versión tras una actualización exitosa; los giros en marcha y los resultados históricos no se reescriben. Las actualizaciones de paquetes identifican qué configuraciones personales pueden conservarse, y una actualización fallida deja la instalación antigua disponible.
+
+Las tareas interactivas de la aplicación permanecen disponibles en la barra lateral de la tarea. Tras cambiar de tarea, actualizar o volver más tarde, LinkSense abre la versión de la aplicación registrada para esa tarea, restaura los datos estructurados emitidos previamente y continúa recibiendo nuevos resultados. Esto no reejecuta la tarea ni instala una versión más reciente simplemente abriendo la página. Después de actualizar manualmente la instalación, una tarea existente adopta esa versión en su siguiente ejecución; Reabrirlo después usa la versión que adoptó.
+
+### Aplicaciones no disponibles [#organization-apps-unavailable-applications]
+
+Una solicitud deshabilitada, una concesión de servicio revocada, un servicio no listado del Centro de Aplicaciones o un modelo, capacidad, credencial o base de conocimiento no disponible pueden bloquear el trabajo de nuevo servicio. El historial de tareas existente se conserva. Revocar una subvención no elimina un paquete instalado de forma independiente, aunque sus recursos personales y controles de riesgo para administradores siguen aplicándose. Contacta con el creador o con un administrador para resolver una dependencia del servicio.
+
+Para construir o mantener un punto de entrada, véase [Crear y gestionar aplicaciones](#create-applications). [Compartir aplicaciones y configurar acceso externo](#application-access) explica subvenciones de organizaciones y el acceso a iframe.
+
+### Análisis de uso para creadores [#organization-apps-usage-analytics-for-creators]
+
+Los creadores de aplicaciones pueden abrir **Más acciones → Análisis de uso** en una tarjeta de aplicación y revisar usuarios activos, tareas, turnos, llamadas de modelo, tokens y costes para todo el tiempo, los últimos 7 o 30 días, o un rango de fechas personalizado. La página también ofrece tendencias, composición de tokens y costes, y desglose por modelo y carga de trabajo sin exponer nombres de usuario ni direcciones de correo electrónico.
+
+Los totales de tokens y costes cubren solo las llamadas registradas después de que comenzaron la recogida. El conteo de tareas y turnos puede incluir historia anterior, pero LinkSense no estima tokens antiguos ni costes usando los precios actuales de los modelos. Los tokens sin una instantánea de precios fiable se identifican como sin valorar.
+
+Consulta [Ver uso de la aplicación](#application-usage) para definiciones de rango y métrica.
+
+### Diferencia respecto a las tareas normales [#organization-apps-difference-from-regular-tasks]
+
+Seleccionas recursos para tareas habituales. Un servicio utiliza una combinación gestionada por el creador, mientras que un paquete crea una copia independiente que tú mantienes. Ninguna de las dos opciones concede permisos adicionales: LinkSense sigue validando todos los recursos del servidor.
+
+## Compartir aplicaciones y configurar acceso externo [#application-access]
+
+### Compartir dentro de la organización [#application-access-share-inside-the-organization]
+
+En **Mis aplicaciones**, abre el menú de tres puntos de la aplicación, elige **Compartir dentro de la organización**, añade usuarios o grupos y selecciona opciones de uso:
+
+- **Paquete de solicitud:** disponible solo para aplicaciones estándar. Los usuarios instalan su propia copia de la aplicación, configuran cualquier credencial que pueda necesitar y pueden ver su código fuente. También configuran sus propias bases de conocimiento y conexiones externas.
+- **Servicio de solicitud online:** publicar la solicitud como un servicio online. Los usuarios acceden a ella en línea con tus credenciales configuradas, sin instalar su propia copia local. Las aplicaciones interactivas solo admiten esta opción.
+
+Una solicitud estándar puede ofrecer ambas opciones. Los destinatarios deben instalar explícitamente antes de usarlos. Un usuario de servicio no obtiene permiso para navegar por instrucciones ocultas, credenciales de creador o documentos en las bases de conocimiento de la aplicación.
+
+Revocar una concesión impide la instalación y el uso de nuevos servicios, pero no elimina un paquete de aplicación instalado de forma independiente. Las tareas y resultados existentes permanecen con cada usuario. Si un usuario tiene acceso tanto directamente como a través de un grupo, eliminar una concesión puede no eliminar el acceso.
+
+#### Actualizar una aplicación interactiva compartida [#application-access-update-a-shared-interactive-application]
+
+Si **Publicar actualización** o **Actualizar paquete de aplicación** exitosas solo se actualizan la instalación del creador. El intercambio de organizaciones y el Centro de Aplicaciones deben actualizarse por separado, y los demás usuarios deben instalar manualmente la nueva versión. Las revisiones de borrador no se publican antes.
+
+1. Elige **Publicar actualización** en la vista de desarrollo y confirma, o elige **Actualizar paquete de aplicación** en el menú de la aplicación e importa el nuevo código ZIP.
+2. Configura todos los recursos necesarios e introduce una versión de `x.x.x` versión de lanzamiento superior.
+3. Abre **Compartir dentro de la organización** de nuevo y elige **Guardar opciones de uso compartido** para poner a disposición esta versión publicada. El diálogo preselecciona usuarios y grupos de usuarios existentes; Ajustalos según sea necesario.
+
+Los destinatarios deben instalar manualmente una actualización disponible. Si alguna de sus tareas para esta aplicación está en ejecución, deben detenerlas o esperar a completarse antes de instalarlas. Después de la instalación:
+
+| Escenario | Versión utilizada |
+| --- | --- |
+| Nueva tarea | La versión instalada actualmente; Aún no se ha instalado una actualización disponible. |
+| Siguiente ejecución en una tarea existente | La versión instalada actualmente, que conserva las conversaciones y los archivos de trabajo. |
+| Ya funcionando | Conserva su versión; no cambia a mitad de ejecución y evita la instalación concurrente. |
+| Solo abrir o actualizar una tarea histórica sin enviar una solicitud | Ninguno ejecuta una tarea ni instala automáticamente una actualización. |
+
+Los resultados históricos no se reescriben. Los archivos de tareas y el contexto de conversación siguen disponibles. La instalación fallida deja la versión instalada sin cambios.
+
+El Centro de Aplicaciones ofrece su versión aprobada y listada actualmente, que los usuarios deben instalar manualmente. Publicar o **Guardar opciones de uso compartido** no actualiza el Centro de Solicitudes; Envía una actualización de listado separada para su revisión.
+
+### Acceso a iframe externo [#application-access-external-iframe-access]
+
+Solo el creador de la aplicación puede abrir **Más acciones → Acceso externo**. Confíjalo de la siguiente manera:
+
+1. Añadir orígenes permitidos en sitios web, uno por línea sin duplicados. Usa HTTPS en producción; el desarrollo local puede usar HTTP en localhost o 127.0.0.1.
+2. Elige **Autenticación requerida** o **Sin autenticación**.
+3. Opcionalmente, añade hasta cuatro preguntas iniciales por origen, cada una no superior a 500 caracteres.
+4. Guarda la configuración de seguridad y copia la URL o fragmento del iframe para ese origen.
+5. Prueba la integración completa del host y luego enciende **Activar acceso externo**.
+
+Un origen permitido debe coincidir exactamente con el protocolo, el host y el puerto de la página del host. Desactivar el acceso externo invalida nuevas solicitudes y sesiones externas ya abiertas.
+
+#### Cómo recibe el acceso externo las actualizaciones [#application-access-how-external-access-receives-updates]
+
+El acceso externo utiliza la versión actual del creador. No espera a que la organización comparta ni a que se anuncie un Centro de Aplicaciones, y los usuarios externos no instalan actualizaciones manualmente.
+
+- Una nueva sesión externa comienza con la versión actual del creador.
+- Antes de iniciar una nueva tarea o continuar una conversación, la instalación de un usuario externo existente se actualiza automáticamente si todas las tareas de ese usuario para esta aplicación han finalizado.
+- Si alguna tarea se inicia, se ejecuta o sigue deteniéndose, la versión anterior permanece en uso sin interrumpir las tareas activas. Durante una actualización, se pide a otras solicitudes de nuevo inicio que lo intenten de nuevo en breve.
+- Si una actualización falla, esa solicitud de inicio reporta un error. Se conservan la versión anterior, las conversaciones y los archivos de trabajo; El siguiente inicio revisa de nuevo la actualización.
+- Simplemente abrir, actualizar o restaurar una sesión no activa una actualización. Los borradores no publicados no afectan a usuarios externos.
+
+Estas normas se aplican tanto al acceso autenticado como al público. El intercambio de organizaciones y el Centro de Aplicaciones siguen requiriendo instalación manual.
+
+### Autenticación requerida [#application-access-authentication-required]
+
+Un backend empresarial de confianza intercambia el ID de la aplicación y el secreto de la app por un ticket de corta duración. El frontend solo pasa el ticket al iframe. Mantén la app en secreto en el servidor; Nunca lo pongas en código del navegador, URLs, registros o capturas de pantalla. Rotar el secreto invalida inmediatamente el antiguo secreto y los billetes no utilizados relacionados.
+
+Consulta [Incrustar una aplicación LinkSense](../../developer-guide/embed-application.mdx) para el flujo de solicitudes, la identidad del usuario y el protocolo `postMessage`.
+
+### Sin autenticación [#application-access-no-authentication]
+
+El modo público no requiere que el backend empresarial emita un ticket, pero las solicitudes siguen estando limitadas a los orígenes permitidos. Cualquiera que pueda acceder a la página anfitriona puede crear una sesión de solicitud. Úsalo solo para contenido de bajo riesgo que no requiera identidad externa; No es control de acceso.
+
+## Ver uso de la aplicación [#application-usage]
+
+Un creador de aplicaciones puede seleccionar **Más acciones → Uso** en una aplicación bajo **Creado por mí**. Ser usuario compartido o tener acceso a la página de uso de todo el administrador no otorga automáticamente esta vista del creador.
+
+### Elige un rango [#application-usage-choose-a-range]
+
+Elige todas las horas, los últimos 7 días, los últimos 30 días o fechas personalizadas. La página muestra usuarios activos, tareas, turnos reales, llamadas de modelo, tokens y costes, con tendencias, composición de tokens y costes, y desglose de modelos y cargas de trabajo.
+
+Un usuario activo es un usuario distinto que creó una tarea de aplicación o que realmente inició un turno durante el periodo seleccionado. La vista de creador no revela nombres de usuario ni direcciones de correo electrónico.
+
+### Interpreta los datos [#application-usage-interpret-the-data]
+
+- Se atribuye una tarea a la aplicación registrada cuando fue creada. Renombrar o actualizar la aplicación no cambia la atribución histórica.
+- Los turnos cuentan las ejecuciones reales, no los drafts, reconexiones ni eventos duplicados.
+- Las llamadas de modelos de cobertura de tokens y costes después de que comenzaron las recogidas. Las tareas anteriores aún pueden contarse, pero LinkSense no estima sus costes usando los precios actuales.
+- Los tokens sin una instantánea fiable de precios aparecen como **Tokens sin precio**.
+- El coste utiliza el precio ahorrado en el momento de la llamada; los cambios posteriores de precios no recalculan la historia.
+
+Los administradores pueden comparar aplicaciones a nivel organizacional en [Análisis de uso y costes](../../admin-guide/models-and-usage.mdx#usage), sujeto al límite de datos del administrador.
+
+## Gestionar credenciales de plugins [#credentials]
+
+Las credenciales de los plugins contienen claves API, tokens y otros detalles de autorización que los plugins utilizan para acceder a servicios externos. Añade una credencial y enlázala a un plugin para usar estos datos automáticamente cuando el plugin se ejecute. Los valores de autorización guardados no se muestran de nuevo.
+
+### Añadir una credencial [#credentials-add-a-credential]
+
+1. Abre **Configuración → Credenciales de plugins** y selecciona **Añadir credencial**.
+2. Introduce un nombre y un identificador de servicio reconocibles. No incluyas secretos en el nombre.
+3. Sigue las instrucciones del plugin para introducir nombres de configuración y valores de autorización. Puedes añadir varios elementos.
+4. Guarda y luego selecciona **Vincular plugin**.
+
+Al editar, deja un valor en blanco para conservarlo, o introduce un valor nuevo para reemplazarlo.
+
+### Revisa los plugins enlazados y la configuración [#credentials-check-linked-plugins-and-configuration]
+
+Cada credencial muestra cuántos plugins la utilizan. Varios elementos para el mismo plugin se agrupan, como "Usado por 1 plugin" y "2 elementos vinculados".
+
+- **Credenciales configuradas**: los elementos de configuración declarados por el plugin tienen información correspondiente. Esto no verifica el acceso a servicios externos.
+- **Se necesitan más datos**: consulta los detalles de configuración para ver qué falta, luego selecciona **Completar configuración** desde el menú de tres puntos del plugin.
+- **Esta credencial está desactivada**: selecciona **Activar credencial** para usarlo de nuevo.
+- **Enlaces en conflicto / Configuración necesitan actualización**: revisa la información guardada y selecciona **Resolver vinculaciones** en el menú de tres puntos del plugin.
+- **Plugin no disponible**: el plugin no está disponible o no tienes acceso. Desvincula o contacta con un administrador.
+
+Los nombres de configuración y los enlaces aparecen bajo **Ver detalles de configuración**. Selecciona **Detalles de la credencial** en el menú de información de la credencial para ver su identificador de servicio. Las credenciales no vinculadas no se utilizan automáticamente.
+
+### Vincula un plugin [#credentials-link-a-plugin]
+
+1. Selecciona **Vincular plugin** o elige **Gestionar vinculaciones** desde el menú de tres puntos junto a un plugin existente.
+2. Elige el plugin y revisa el número de elementos seleccionados. Los nombres coincidentes se seleccionan automáticamente.
+3. Para los elementos no emparejados, selecciona **Seleccionar o ajustar datos** y elige la información correspondiente de esta credencial. Si aún no se ha guardado un valor, edita la credencial para añadirlo primero.
+4. Selecciona **Guardar vinculaciones**. El plugin usará esta información en las ejecuciones posteriores.
+
+Cada elemento de configuración debe tener una fuente explícita de credenciales. Guardar actualiza la información que has seleccionado para el plugin.
+
+### Desactivar, desvincular o eliminar [#credentials-disable-unlink-or-delete]
+
+- **Desactivar una credencial**: conserva la credencial y los enlaces, pero deja de usarlos en las siguientes partidas. Habilita que lo use de nuevo.
+- **Desvincular plugin**: selecciona **Desvincular plugin** en el menú de más del plugin. Tras confirmar, elimina todos los enlaces entre esta credencial y el plugin seleccionado. Quédate con la credencial.
+- **Elimina un enlace de información**: eliminar una relación individual en los detalles de configuración. Quédate con el valor que ahorras.
+- **Eliminar una credencial**: eliminar permanentemente la credencial y sus enlaces. Esto no se puede deshacer.
+
+Las credenciales solo se usan para tus propios plugins. Las credenciales de otros usuarios nunca se seleccionan automáticamente.

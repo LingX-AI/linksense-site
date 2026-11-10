@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { locales } from '@/content/messages'
 
 export const repository = 'https://github.com/LingX-AI/linksense'
 export const demoUrl = 'https://explore.linksense.org/'
@@ -6,7 +7,8 @@ export const agentInstallUrl =
   'https://raw.githubusercontent.com/LingX-AI/linksense/main/Install.md'
 
 export function docsUrl(language: string | undefined, path = '') {
-  return `/doc/${language === 'zh-CN' ? 'zh-CN/' : ''}${path}`
+  const locale = locales.find((item) => item === language)
+  return `/doc/${locale && locale !== 'en-US' ? `${locale}/` : ''}${path}`
 }
 
 export type Edition = 'core' | 'full'

@@ -1,0 +1,41 @@
+---
+title: "Conecta y gestiona los servidores MCP"
+description: "Gestiona servidores HTTP o STDIO MCP integrados y personales y con streaming."
+---
+
+
+Los servidores MCP proporcionan herramientas para las tareas. Las entradas integradas son de solo lectura; Los servidores personales se montan solo para tus nuevas tareas.
+
+## MCP integrado [#built-in-mcp]
+
+LinkSense puede ofrecer servidores MCP de servicio de archivos, base de conocimiento y creadores de Skills. La plataforma los gestiona, así que no puedes editarlos, desactivarlos ni eliminarlos.
+
+## Añadir un servidor HTTP [#add-an-http-server]
+
+1. Abre **Configuración → MCP** y elige **Añadir servidor**.
+2. Selecciona HTTP e introduce un nombre y una URL HTTP Streamable.
+3. Elige no autenticación, token portador o clave API.
+4. Establece los tiempos de inicio y de las herramientas.
+5. Prueba la conexión y guarda después de descubrir herramientas.
+
+Prefiero HTTPS. HTTP envía credenciales, argumentos y resultados sin cifrado de transporte y requiere un acuse de recibo de riesgo separado.
+
+## Añadir un servidor STDIO [#add-a-stdio-server]
+
+Proporciona un objeto JSON de un solo servidor con `command`, `args` opcional y `env` opcional. Los valores del entorno se cifran y no se devuelven. También se acepta una estructura de `mcpServers` de entrada única.
+
+Los contenedores de tareas usan pnpm en lugar de npm o npx. Las declaraciones `npx -y` soportadas se convierten en ejecución pnpm controlada.
+
+## Conexión requerida [#required-connection]
+
+Cuando **Obligatorio** está activado, el fallo de conexión bloquea el inicio de la tarea. Un servidor opcional fallido puede ser saltado, pero sus herramientas no estarán disponibles.
+
+## Gestionar secretos y eliminación [#manage-secrets-and-deletion]
+
+Dejar los secretos HTTP guardados o `env` STDIO fuera de una edición los preserva; un objeto `env` vacío elimina las variables STDIO. La eliminación elimina permanentemente la configuración y los valores cifrados.
+
+<Callout type="warn" title="Límite de fideicomiso">
+
+Conecta solo servidores MCP de confianza. Las herramientas pueden recibir argumentos de tarea, acceder a sistemas externos y devolver contenido no confiable.
+
+</Callout>

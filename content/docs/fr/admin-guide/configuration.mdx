@@ -1,0 +1,133 @@
+---
+title: "Configuration système et connexion"
+description: "Gérez les paramètres produit, la concurrence, les fenêtres de maintenance, les emails d’authentification et les méthodes de connexion."
+---
+
+Vérifiez la configuration du système et de l’authentification ensemble. Chaque section explique l’étendue du changement, la gestion secrète et le comportement de défaillance.
+
+## Paramètres système et produit [#system-settings]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+Ouvre **Paramètres → Paramètres système**. Seule la configuration produit explicitement supportée est écrivable ; Les secrets d’infrastructure restent gérés par le déploiement.
+
+</Callout>
+
+### Paramètres du produit [#system-settings-product-settings]
+
+La page actuelle peut exposer des paramètres non sensibles tels que le nom d’affichage du produit et la langue par défaut. Les mises à jour sauvegardées utilisent une révision partagée et prennent effet sans redémarrage du service.
+
+L’audit permanent enregistre l’acteur, la clé de définition, les valeurs avant et après, et les métadonnées de la demande.
+
+### Configuration de déploiement en lecture seule [#system-settings-read-only-deployment-configuration]
+
+La base de données, Redis, MinIO, le traitement des documents, les autres paramètres d’exécution du runner, les limites de fichiers, les clés JWT/HMAC/chiffrement, les périodes de jetons et la conservation restent en configuration `.env` contrôlée ou de déploiement.
+
+La page peut afficher un état configuré censuré mais jamais de chaînes de connexion, de terminaux internes complets, de mots de passe, de clés, de jetons ou de matériel de chiffrement. Les canaux modèles sont une exception explicite gérée sur la page des paramètres du modèle.
+
+### Concurrence des tâches [#system-settings-task-concurrency]
+
+L’onglet **Concurrence des tâches** permet aux administrateurs de passer outre deux paramètres par défaut de déploiement :
+
+- La limite de tâches à l’échelle du système limite l’exécution des tâches à tous les utilisateurs.
+- La limite de processus par tâche par utilisateur limite les processus Codex du serveur d’applications chargés par chaque travailleur utilisateur.
+
+Laisser l’un ou l’autre champ vide conserve le déploiement par défaut correspondant. Nouvelle tâche commence, lis les derniers paramètres enregistrés sans redémarrage de service. Abaisser une limite n’interrompt pas les tâches en cours ; l’admission à une nouvelle tâche ou processus est suspendue jusqu’à ce que l’utilisation actuelle descende en dessous de la nouvelle limite.
+
+### Mise à jour du système [#system-settings-system-update]
+
+**Mise à jour du système**’est une page administrateur distincte qui vérifie les versions officielles de GitHub et montre le flux de travail sécurisé des mises à jour. La page web ne met jamais à jour le déploiement silencieusement. Voir [Vérifier et installer les mises à jour LinkSense](./operations.mdx#system-update) pour la préparation, les commandes hôte et la vérification post-mise à niveau.
+
+### Entretien programmé [#system-settings-scheduled-maintenance]
+
+Ouvrez l’onglet **Maintenance du système**, entrez une raison ainsi que les heures de début et de fin, puis activez la maintenance programmée. La maintenance ne devient active que lorsque l’heure actuelle entre dans la fenêtre configurée et se termine automatiquement à l’heure de fin spécifiée.
+
+Lorsque la maintenance se termine, le système désactive automatiquement la maintenance programmée et efface la raison, l’heure de début, l’heure de fin et la durée. Aucune sauvegarde supplémentaire n’est requise, et le nettoyage s’exécute même sans l’administrateur qui a ouvert la page des paramètres. Une page de paramètres ouverte se met à jour en quelques secondes. La maintenance qui s’est terminée pendant l’arrêt du service est autorisée à la reprise du service.
+
+Pendant la maintenance active, les administrateurs connectés voient une **Maintenance du système activée** de dialogue sur des pages autres que les paramètres de connexion et maintenance. Sélectionnez **Ne plus afficher** pour le masquer pendant la période de maintenance en cours, pour votre compte dans ce navigateur. Le choix survit à la navigation, rafraîchit et rouvrit le navigateur, et se synchronise entre les onglets. Modifier les détails de maintenance ou prolonger la période actuelle ne l’affiche pas à nouveau ; commencer une nouvelle période l’a. Les autres comptes et appareils ne sont pas affectés. Sélectionnez **Paramètres de maintenance** pour ouvrir directement la page de configuration. Le rappel reste caché sur cette page, même après un rafraîchissement ou une navigation répétée. Le bouton fermer et Échap ne rappellent que le rappel de la page en cours ; Naviguer vers une autre page le montre à nouveau. La boîte disparaît à la fin ou à la désactivation de la maintenance et n’apparaît jamais sur la page de connexion ou de paramètres de maintenance. Un lien **Maintenance du système activée** reste également dans le coin inférieur droit des pages administrateur connectées et ouvre les paramètres de maintenance. Fermer ou supprimer le dialogue ne masque pas cet indicateur ; Il disparaît à la fin de la maintenance.
+
+Pendant la maintenance :
+
+- Les utilisateurs réguliers voient la raison et la fenêtre de maintenance attendue sur une page dédiée et ne peuvent pas appeler les API métier.
+- Les administrateurs peuvent toujours se connecter et utiliser le système pour inspecter le statut, ajuster le planning ou mettre fin à la maintenance plus tôt.
+- La connexion, l’initialisation, la santé et l’identification de l’utilisateur actuel restent disponibles, donc les administrateurs ne peuvent pas être exclus.
+
+Confirmez le fuseau horaire de l’appareil avant de sauvegarder et fournissez une heure de fin réaliste.
+
+### Conflit et échec [#system-settings-conflict-and-failure]
+
+Les vérifications de révision empêchent un administrateur d’écraser silencieusement un autre. En cas de conflit, actualisez, inspectez le dernier état et confirmez à nouveau le changement.
+
+Le serveur rejette les tentatives de modification d’un paramètre de déploiement uniquement, même lorsqu’une requête personnalisée contourne l’interface.
+
+### Recommandations [#system-settings-recommendations]
+
+- Modifier les paramètres d’affichage à l’échelle de l’organisation pendant une période à faible risque.
+- Validez les résultats avec un compte utilisateur classique.
+- Utilisez les sections d’authentification séparées pour les modifications des capacités de connexion.
+
+## E-mail d’authentification et méthodes de connexion [#authentication-settings]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+Dans **Paramètres → Paramètres système**, utilisez **E-mails d’authentification** pour la livraison d’emails et **Méthodes de connexion** pour les comptes professionnels et tiers. Chaque configuration sauvegarde indépendamment.
+
+</Callout>
+
+### Modes de configuration [#authentication-settings-configuration-modes]
+
+E-mail d’authentification, SSO d’entreprise (OIDC) et connexion dans le support Teams :
+
+- **Environnement de déploiement héritier**;
+- **Géré dans les paramètres système** avec stockage chiffré ;
+- **Handicapé**, sans solution de secours environnementale.
+
+Passer du mode géré ou désactiver l’authentification configurée nécessite une confirmation.
+
+### Email d’authentification [#authentication-settings-authentication-email]
+
+Configurez l’hôte SMTP, le port, le STARTTLS ou le TLS direct, l’expéditeur, le nom d’utilisateur optionnel et le mot de passe. Un nom d’utilisateur vide signifie qu’il n’y a pas d’authentification de mot de passe SMTP. Ce service envoie un premier mot de passe et un e-mail de réinitialisation ; vérifiez sa connexion dans la santé du système.
+
+### Inscription ouverte [#authentication-settings-open-registration]
+
+Activez l’inscription ouverte sous **Méthodes de connexion → comptes tiers**. Les utilisateurs auto-enregistrés partagent la norme de quota hebdomadaire des membres en [Gestion des quotas](./models-and-usage.mdx#quota-settings) avec les utilisateurs créés ou importés par les administrateurs.
+
+Désactiver l’enregistrement ouvert bloque les nouvelles requêtes et invalide les liens d’activation émis mais pas encore utilisés. Il ne supprime pas les comptes créés directement par les administrateurs, les comptes activés existants ou d’autres méthodes de connexion configurées.
+
+### Comptes d’entreprise [#authentication-settings-enterprise-accounts]
+
+Utilisez des comptes gérés par l’organisation. Les nouveaux comptes nécessitent une activation d’administrateur quel que soit le réglage d’enregistrement ouvert.
+
+#### SSO d’entreprise (OIDC) [#authentication-settings-enterprise-sso-oidc]
+
+Saisissez une URL HTTPS de l’émetteur HTTPS, un identifiant client et un secret client. LinkSense dérive et affiche une URL de rappel en lecture seule qui doit également être enregistrée auprès du fournisseur.
+
+Une nouvelle révision invalide un rappel inachevé commencé sous une ancienne révision. L’utilisateur doit redémarrer la connexion. Une identité SSO pour la première fois crée un compte en attente par email ; un administrateur doit l’activer avant que l’utilisateur ne se reconnecte.
+
+#### SSO d’entreprise (SAML 2.0) [#authentication-settings-enterprise-sso-saml-20]
+
+Configurez HTTPS pour le site, puis entrez l’ID d’entité du fournisseur d’identité, l’URL de connexion et le certificat de signature PEM. Enregistrez l’ID d’entité du fournisseur de services affiché et l’URL de rappel ACS auprès de votre fournisseur, ou enregistrez et activez le SAML pour télécharger et importer les métadonnées XML.
+
+Le fournisseur doit signer des déclarations et fournir des adresses e-mail exactes et gérées par l’entreprise. Correspondez exactement au nom de l’attribut email ; Saisissez `NameID` pour utiliser cet identifiant comme adresse e-mail. L’attribut du nom est optionnel. Les comptes existants sont jumelés par email et conservent leurs rôles. Les nouveaux comptes nécessitent une activation d’administrateur ; Les comptes désactivés ne peuvent pas se connecter.
+
+Si votre fournisseur nécessite des demandes d’authentification signées, activez la signature de requêtes et entrez le certificat RSA du fournisseur de services ainsi que la clé privée correspondante. Les clés sauvegardées ne sont jamais retournées ; Laissez la clé privée vide lorsque vous changez d’autres champs. Sauvegarder avec la signature de requête désactivée supprime ce certificat et cette clé. Remplacez les certificats d’identité expirés pour rétablir la connexion.
+
+Les membres commencent par **Connectez-vous avec un compte SAML entreprise** sur la page de connexion LinkSense. Terminer chaque flux en cinq minutes ; Redémarrez après un changement de configuration. Cette version ne supporte que la connexion initiée par SP, sans connexion initiée par IdP, sans assertions chiffrées ni déconnexion unique. Se déconnecter de LinkSense ne signifie pas se déconnecter du fournisseur d’identité.
+
+#### Se connecter dans les équipes [#authentication-settings-sign-in-within-teams]
+
+Voici les identifiants de tenant et de client Microsoft Entra. Les paramètres LinkSense ne remplacent pas l’enregistrement Entra, l’URI de l’ID d’application, le manifeste Teams ou le consentement de l’administrateur.
+
+### Comptes tiers [#authentication-settings-third-party-accounts]
+
+Configurez Google, Apple, les comptes personnels Microsoft, Facebook et GitHub. Pour les comptes professionnels ou scolaires Microsoft, configurez Microsoft Entra ID sous les comptes Entreprise.
+
+Pour GitHub, créez une application OAuth dans les paramètres développeur et copiez l’adresse de rappel depuis la boîte de dialogue de configuration dans l’URL de rappel d’autorisation. Saisissez son identifiant client et son secret client dans LinkSense et activez-les. Créez des applications séparées pour les environnements de test et de production avec des URL de rappel différentes. La connexion uniquement demande l’accès par email, pas l’accès au dépôt. Si GitHub ne peut pas fournir d’adresse e-mail vérifiée, les nouveaux utilisateurs doivent vérifier leur adresse via LinkSense.
+
+Lorsque l’inscription est ouverte, les nouveaux utilisateurs peuvent commencer après une vérification par e-mail sans activation de l’administrateur. Les utilisateurs existants doivent d’abord se connecter et lier leur compte sous **Paramètres → sécurité → Comptes tiers liés** ; Les emails correspondants ne sont pas automatiquement fusionnés. La fermeture de l’enregistrement ne bloque pas la connexion pour les comptes liés.
+
+### Manipulation des secrets [#authentication-settings-secret-handling]
+
+L’API ne renvoie que des drapeaux configurés, jamais des mots de passe SMTP ni des secrets OIDC. En mode manœuvre, laissez un secret inchangé vide ; Changer de mode nécessite de le rentrer à nouveau.
+
+La configuration corrompue ou non déchiffrée échoue et ne retombe jamais sur une ancienne valeur non confirmée.

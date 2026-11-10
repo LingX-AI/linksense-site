@@ -1,0 +1,200 @@
+---
+title: "Modelos, cuotas y uso"
+description: "Configura modelos y capacidades de generación, establece cuotas de miembros y revisa el uso, costes y facturas."
+---
+
+Configurar los modelos disponibles, establecer políticas de cuotas y revisar los registros reales de uso y facturación.
+
+## Configuración de modelo y generación [#model-settings]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+Abre **Configuración → Ajustes de modelos**. Los cambios afectan a turnos posteriores o al procesamiento de documentos, no a trabajos en ejecución o históricos.
+
+</Callout>
+
+### Canales proveedores [#model-settings-provider-channels]
+
+Al añadir un canal, elige primero el proveedor de servicios, luego introduce un nombre, una URL base y una clave API. Seleccionar un proveedor rellena su dirección y protocolo recomendados. Si no se proporciona ninguna dirección, introduzca la dirección de servicio compatible disponible en su cuenta. Estos valores predeterminados son puntos de partida; Verifica tu cuenta, región y las capacidades reales del servicio. El protocolo siempre es visible en **Ajustes avanzados** y puede ajustarse según sea necesario.
+
+Usa **Canal actual** para cambiar de catálogo de modelos y elige **Editar canal** del menú de tres puntos del canal para abrir un diálogo centrado. Abrir un canal existente conserva su dirección y protocolo guardados. Una clave guardada nunca se devuelve. Deja la clave vacía para conservarla solo cuando el proveedor, la dirección, el proyecto y la región no cambien. Después de cambiar cualquiera de esos detalles de conexión, introduce la clave de la nueva conexión antes de guardar o probar.
+
+Guarda primero la configuración de conexión del canal y luego usa **Añadir modelo** para configurar los modelos por separado. Los canales sin modelos no añaden entradas a la lista de modelos del compositor. La lista compacta muestra nombres, tipos, precios y disponibilidad de conversaciones. Abre el cuadro de edición para configurar un modelo. Guardar solo envía los cambios de ese diálogo; Cancelar te permite descartar ediciones no guardadas.
+
+### Encuentra modelos y prueba la conexión [#model-settings-find-models-and-test-the-connection]
+
+Después de guardar un canal, selecciona **Añadir modelo** y luego haz clic **Consigue modelos disponibles** a la derecha del selector de modelos. Busca por nombre de modelo o ID y selecciona un modelo. El selector permanece desactivado hasta que se recuperan los modelos. Si el servicio no ofrece una lista de modelos, devuelve una lista vacía o omite tu modelo, elige **Introduce un modelo manualmente** e introduce el ID proporcionado por el proveedor.
+
+LinkSense solo completa el nombre, la longitud del contexto y la información de entrada de imagen que realmente devuelve el servicio. Confirma capacidades que no se han suministrado. Comprueba e introduce los precios reales del proveedor tú mismo; Los precios cero por defecto son solo para estimaciones locales de uso. Los precios, los esfuerzos de razonamiento, la longitud del contexto y las capacidades de imagen siempre son visibles en la **Ajustes avanzados** del modelo.
+
+**Consigue modelos disponibles** y **Conexión con modelos de prueba** son operaciones separadas: recuperar una lista no confirma que un modelo responda. Introduce un ID de modelo para probar mientras editas un canal, o prueba el modelo actual de chat al añadirlo o editarlo. La prueba envía un mensaje corto. Una respuesta de texto normal, no vacía, confirma que la conexión funciona; No se requiere ninguna llamada a herramientas. La prueba puede tener una pequeña carga y nunca guarda la configuración. Un resultado exitoso solo se aplica a esa conexión y modelo en el momento de la prueba; Prueba de nuevo después de hacer cambios. No sustituye la validación con tareas reales, comprensión de imágenes o recuperación de conocimiento. Aquí no hay pruebas de conexión disponibles para modelos de incrustación o ranker; valida aquellos en los entornos de recuperación de conocimiento descritos a continuación.
+
+Durante la configuración inicial, guarda el primer modelo de chat con **Disponible en conversaciones** activado. LinkSense lo establece tanto como el modelo por defecto de conversación como el modelo de nombre automático de tareas. Vuelve a **Nueva tarea**, revisa el modelo y el esfuerzo de razonamiento, y envía una solicitud sencilla para verificar el uso.
+
+### Modos de protocolo [#model-settings-protocol-modes]
+
+Los modos de protocolo son Respuestas nativas, compatibilidad función-herramienta de Respuestas y conversión de Completaciones de chat. La compatibilidad cambia solo la forma del protocolo: nunca ejecuta herramientas ni se repite un turno completo.
+
+### Modelos y precios [#model-settings-models-and-prices]
+
+Los ID de modelo son únicos en diferentes canales. Configura tipo, nombre visual, proveedor, soporte de imagen, esfuerzos de razonamiento y precios:
+
+- modelos de chat: entrada, entrada en caché y precios de salida;
+- Modelos de incrustación y ranker: precio de entrada.
+
+Los precios utilizan USD por millón de tokens y se registran con su uso futuro. Un cambio de precio nunca recalcula la historia.
+
+Configura **Longitud del contexto del modelo** con un recuento positivo de tokens o déjalo vacío para detección automática. LinkSense utiliza este valor como indicador de ventana de contexto y para dejar que el entorno de ejecución compacte el contexto antes de acercarse al límite del modelo. Entra en escena la capacidad real del modelo de proveedor; un número mayor no amplía el modelo upstream.
+
+Solo los modelos de chat muestran el interruptor Disponible en conversaciones; Los modelos de embedding y ranker no lo hacen. La disponibilidad de conversaciones solo controla la lista de modelos del compositor. No afecta a la nominación automática de tareas, la recuperación de conocimientos, la reclasificación ni la comprensión de imágenes. Una vez configurados los modelos de chat, al menos uno debe permanecer disponible en las conversaciones. Ocultar o eliminar el modelo por defecto selecciona otro modelo disponible para conversaciones.
+
+Los esfuerzos de razonamiento soportados son editables para modelos de chat. Selecciona uno o más de Ligero, Medio, Alto, Extra alto, Máximo y Ultra. El esfuerzo de razonamiento por defecto debe permanecer en el conjunto seleccionado; Eliminar el valor predeterminado actual selecciona automáticamente el primer esfuerzo restante.
+
+### Orden de los modelos [#model-settings-model-order]
+
+Arrastra el mando inicial de un modelo, o elige **Subir** o **Bajar** en su menú de acciones, para reordenar los modelos dentro del canal actual. Los usuarios del teclado pueden pulsar Espacio para coger una manilla, usar las flechas para moverse, pulsar Espacio para confirmar o Escape para cancelar.
+
+Usa **Subir canal** o **Bajar canal** bajo **Acciones del canal** para reordenar los canales. Cambia la partida de guardado automáticamente. Un guardado fallido preserva el orden anterior y muestra un error. El compositor lista los modelos de chat disponibles para conversaciones en orden de canal, luego en el orden de los modelos dentro de cada canal. Reordenar no cambia el modelo seleccionado por el usuario.
+
+### Modelos de autodenominación de conversaciones y tareas [#model-settings-conversation-and-task-auto-naming-models]
+
+Al final de la lista de proveedores, selecciona por separado el modelo por defecto de conversación y el modelo de auto-nombramiento de tareas. La conversación por defecto debe estar disponible en las conversaciones. El nombre automático de tareas puede usar cualquier modelo de chat configurado y nunca lee un modelo de nombres incorporado proporcionado por el despliegue. Sus tokens de entrada, entrada en caché y salida se registran bajo la carga de trabajo de nombre automático de tareas; El uso se marca como estimado cuando el proveedor no devuelve los recuentos de tokens.
+
+### Modelo de extracción de memoria [#model-settings-memory-extraction-model]
+
+Selecciona **Modelo de extracción de recuerdos** de los modelos de chat existentes. Reutiliza el canal, credenciales y precios del modelo; No se necesitan configuraciones de conexión separadas. La disponibilidad de conversación no afecta a la extracción. Borra la selección de extracción antes de eliminar el modelo seleccionado o su canal.
+
+**Usar el modelo de la tarea actual** utiliza el modelo de cada tarea para la extracción. La extracción siempre utiliza el esfuerzo de razonamiento soportado con la configuración más baja del modelo seleccionado, sin cambiar el esfuerzo propio de la tarea. Esta selección solo se aplica a la extracción; La consolidación sigue utilizando el modelo de tareas actual.
+
+La generación de memoria requiere la participación voluntaria del usuario. Se aplican cambios a los tiempos de ejecución de tareas iniciados posteriormente y se preservan las memorias existentes. Las tareas que pertenecen a un solo usuario comparten estado de memoria nativa. El motor nativo utiliza marcadores de procesamiento exitoso, bloqueos de trabajo y cambios de entrada para evitar trabajos duplicados. Cambiar de modelo o reiniciar no reinicia ese estado. La recuperación de fallos y el historial actualizado aún pueden causar nuevas llamadas al modelo; La deduplicación no es un límite de reintento ni de gasto.
+
+### Cuotas de usuarios [#model-settings-user-quotas]
+
+Configura las cuotas de usuarios en la página de [Gestión de cuotas](#quota-settings) separada, en créditos.
+
+### Modelos de recuperación de conocimiento [#model-settings-knowledge-retrieval-models]
+
+Selecciona un modelo de incrustación configurado y un clasificador opcional. La disponibilidad de conversaciones no afecta a estos modelos de sistema. El guardado realiza validación de servicios reales y dimensiones vectoriales.
+
+<Callout type="warn" title="Cambio del modelo de incrustación">
+
+El cambio invalida inmediatamente todos los índices de conocimiento existentes. La recuperación permanece indisponible hasta que se complete una reconstrucción completa en Salud del Sistema. Planifica primero un periodo de mantenimiento.
+
+</Callout>
+
+Sin un clasificador, o cuando fallan las llamadas de clasificación, LinkSense utiliza resultados RRF de peso igual.
+
+### Comprensión de imágenes [#model-settings-image-understanding]
+
+Selecciona un modelo de chat configurado marcado como soporte para la comprensión de imágenes. La disponibilidad de conversación no afecta a la comprensión de la imagen. Guardar la entrada de imágenes de las sondas, la salida estructurada y el razonamiento deshabilitado. Solo afecta a nuevos procesamientos o reconstrucciones.
+
+### Modelo de transcripción de voz [#model-settings-voice-transcription-model]
+
+Cuando está activada, la entrada de micrófono en tareas ordinarias y aplicaciones embebidas utiliza este servicio. Selecciona un proveedor, verifica la URL base e introduce una clave API junto con un modelo o nombre de despliegue. Azure OpenAI también requiere una versión de API. Las claves de API guardadas nunca se devuelven; Deja el campo vacío mientras editas para conservar la clave existente.
+
+Los proveedores disponibles son Alibaba Cloud Model Studio, OpenAI, servicios compatibles con OpenAI, Azure OpenAI, Groq, Deepgram, AssemblyAI, ElevenLabs, Rev.ai, Gladia y fal.ai. Los proveedores por defecto son solo puntos de inicio de conexión; La disponibilidad de modelos, la región, la autorización y la facturación provienen de la cuenta de tu proveedor.
+
+Después de guardar, usa [Entrada de voz](../user-guide/tasks/index.mdx#voice-input) para probar una grabación corta sin datos sensibles. Desactivar esta configuración bloquea nuevas solicitudes de transcripción pero no afecta a las tareas mecanografiadas.
+
+### Modelo de generación de imágenes [#model-settings-image-generation-model]
+
+Cuando está activada, los usuarios pueden invocar la capacidad integrada de generación de imágenes desde una tarea. Selecciona un proveedor, introduce el modelo y la clave API, y configura un precio por imagen. LinkSense registra ese precio en función del número de imágenes realmente producidas para su uso y créditos. Seleccionar un proveedor rellena su URL base predeterminada, que puedes cambiar por tu propia dirección de servicio para cualquier proveedor.
+
+Los proveedores compatibles son Alibaba Cloud Model Studio, OpenAI, servicios compatibles con OpenAI, Google Gemini, Stability AI, fal.ai, Replicate y Together AI. Para la generación de imágenes compatibles con OpenAI, introduzca la URL base, la clave API y el nombre del modelo proporcionados por el servicio. Alibaba Cloud Model Studio también requiere un ID y región de Workspace. Los límites de proveedores y modelos varían; una solicitud no puede pedir más de 10 imágenes, y la salida en tiempo de ejecución está limitada por el límite actual del modelo.
+
+La salida transparente puede generarse de forma nativa o manejarse automáticamente para sujetos adecuados y de bordes limpios. Elige un modelo con transparencia natural para cabello complejo, pelaje, cristal, humo, brillo y bordes translúcidos.
+
+La edición de imágenes utiliza el servicio y modelo configurados aquí; No es necesario guardar los ajustes existentes de nuevo. Los contratos compatibles incluyen OpenAI GPT Image, Gemini Image Models, Bailian Qwen Image 2.x y posteriores, o Qwen Image Edit, fal.ai FLUX. 2 editar / kontext, replicar FLUX kontext y juntos AI FLUX. 2 / Kontext. Un servicio compatible con OpenAI debe implementar subidas de archivos a `/images/edits`; El apoyo por `/images/generations` por sí solo es insuficiente. El adaptador de estabilidad actual solo permite generación de texto a imagen. El recuento de imágenes de referencia y el soporte de máscaras dependen del modelo seleccionado; Las solicitudes no soportadas se rechazan antes de llamar al proveedor.
+
+Las claves de API guardadas nunca se devuelven; Deja el campo vacío mientras editas para conservar la clave existente. Introduce una nueva clave y verifica el precio después de cambiar de proveedor. Usa [Generar imágenes](../user-guide/tasks/index.mdx#generate-images) para una validación de una sola imagen después de la configuración.
+
+## Gestión de cuotas [#quota-settings]
+
+Los administradores abren **Configuración → Gestión de cuotas** para configurar el precio de conversión crediticia y un estándar semanal de cuotas para todos los miembros.
+
+### Conversión de créditos [#quota-settings-credit-conversion]
+
+Establece el importe en USD representado por un crédito. El impago es USD 0.01 por crédito: una call de USD 0.25 consume 25 créditos. El precio debe ser positivo, con hasta seis decimales.
+
+Los precios de los modelos se mantienen en configuración de modelo, en USD por millón de tokens. Uso de costes, uso medido y la instantánea de precios del modelo; El consumo crediticio utiliza el precio de conversión cuando se registra ese uso. Los cambios posteriores en la conversión no revaloran los créditos registrados. El consumo se redondea al máximo a seis decimales. Los créditos restantes se muestran como enteros descartando la fracción; Los saldos reales y las comprobaciones de cuotas mantienen la precisión decimal.
+
+### Cuota semanal de miembros [#quota-settings-member-weekly-quota]
+
+La cuota semanal de miembros es el valor compartido por defecto para los miembros creados posteriormente por un administrador, importados de Excel o creados mediante registro abierto. Introduce una cantidad positiva con hasta seis decimales. En blanco significa ilimitado. La cuota se reinicia cada lunes a medianoche en la zona horaria del sistema.
+
+Guardar la configuración actualiza solo el valor por defecto y no sobrescribe las cuotas semanales individuales de los miembros existentes. Los miembros existentes aún pueden ajustarse individualmente o en bloque bajo **Usuarios y grupos → Usuarios**. El cambio de registro abierto sigue bajo **Configuración del sistema → Registro abierto**, pero los usuarios autoregistrados ya no tienen un estándar de cuota separado.
+
+### Reiniciar y aplicar a todos [#quota-settings-reset-and-apply-to-all]
+
+La gestión de cuotas proporciona dos acciones inmediatas en bloque. Cada acción abre un diálogo de confirmación; Cancelar no cambia nada.
+
+- **Restablecer las cuotas de todos** restaura la cuota semanal de cada miembro existente a 100% de su límite actual. No cambia los límites, y los miembros ilimitados permanecen ilimitados.
+- **Aplicar el límite a todos** ahorra la cuota semanal del formulario y sobrescribe inmediatamente la cuota semanal individual de cada miembro existente, incluyendo los ajustes individuales anteriores. Blank hace que cada miembro sea ilimitado. Esta acción no reinicia los créditos usados ni guarda otras ediciones no guardadas en el formulario de precio de conversión.
+
+Ambas acciones incluyen miembros activos y discapacitados y no cambian el estado de la cuenta. El uso histórico sigue disponible. El consumo tras un reinicio manual se deduce normalmente, y el calendario de reinicio semanal del calendario permanece sin cambios.
+
+Para dar a todos los miembros un nuevo límite con 100% restantes, primero aplica el límite a todos y luego reinicia las cuotas para todos.
+
+Alcanzar la cuota semanal evita nuevas tareas y solicitudes de seguimiento. Las tareas en ejecución terminan y pueden hacer que el consumo final supere el límite. Ajustar la cuota no elimina ni vuelve a valorar los créditos registrados.
+
+Las estadísticas de coste de tokens y USD siguen disponibles. La gestión de cuotas no proporciona pagos ni recargas.
+
+## Uso, coste y facturación [#usage]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+Abre **Configuración → Análisis de uso**. La pestaña **Análisis de uso** informa datos de recursos, mientras que **Facturación** contiene declaraciones cerradas del modelo de mes natural. Las cuotas de crédito siguen por debajo de **Gestión de cuotas**.
+
+</Callout>
+
+Configura los créditos en [Gestión de cuotas](#quota-settings) y ajusta a los usuarios existentes bajo **Usuarios y grupos → Usuarios**.
+
+### Intervalo temporal [#usage-time-range]
+
+Elige todas las horas, los últimos 7 días, los últimos 30 días o fechas personalizadas. Las tendencias se agregan por día, mes o año según el rango.
+
+### Opiniones [#usage-views]
+
+- Global: tareas, turnos reales, llamadas de modelos, fichas y coste total.
+- Carga de trabajo: respuestas de IA, nombre automático de tareas, generación de memoria, incrustaciones de documentos, incrustaciones de recuperación y consulta, reclasificación y generación de imágenes.
+- Modelo: método de colección, calls, turns, detalles de tokens y coste para generación, incrustación, reclasificación e modelos de imagen.
+- Aplicación: tareas, turnos, llamadas, tokens, costes y detalles por modelo atribuidos al crear cada tarea; Las tareas creadas fuera de una aplicación aparecen como no asociadas.
+- Grupo: la actividad de los miembros actuales proyectada en cada grupo.
+- Usuario: usuarios activos y con discapacidad, grupos actuales y detalles por modelo.
+
+Las fichas se abrevian como K, M o B; los conteos de tarea, turno, llamada y miembros permanecen enteros.
+
+### Conteo [#usage-counting]
+
+Una tarea y un turno real crean un hecho de actividad inmutable cada uno. Los borradores, solicitudes pendientes, reconexiones y eventos duplicados no añaden turnos. Las instantáneas acumuladas nativas de tokens se deduplican por incremento. Las cargas de trabajo externas utilizan un uso confiable cuando está disponible o estimaciones de entrada protegidas por etiquetas.
+
+### Coste [#usage-cost]
+
+El uso almacena los precios activos en el momento de la llamada en USD por millón de tokens. La entrada en caché forma parte de la entrada, y la salida de razonamiento es parte de la salida, por lo que ninguna está doblemente cargada.
+
+Los cambios futuros de precio no recalculan la historia. Cero es un precio válido; Los tokens antiguos sin un precio fiable permanecen **Tokens sin precio**.
+
+### Solapamiento de grupos [#usage-group-overlap]
+
+Un usuario en varios grupos contribuye a cada grupo. Las filas de grupo se solapan y no deben sumarse para obtener un total global. Los usuarios sin un grupo efectivo aparecen como no agrupados.
+
+### Clasificación y exportación [#usage-sorting-and-export]
+
+Las tablas de detalle pueden ordenarse por las columnas expuestas en la página. **Exportar Excel** utiliza el rango actual y las definiciones de filtros para crear un libro de trabajo multi-hoja con el resumen, las tendencias y el modelo actual, carga de trabajo, aplicación, grupo y dimensiones y detalles del usuario. Revisa el alcance antes de exportar y almacena o transfiere el archivo bajo la política organizacional. Las exportaciones no contienen prompts, textos de respuesta, contenido de archivos ni credenciales.
+
+### Extractos mensuales [#usage-monthly-statements]
+
+Abre la pestaña **Facturación** para revisar el periodo de apertura actual y los extractos mensuales generados. Los extractos se cierran en meses naturales del calendario en la zona horaria del sistema y se generan automáticamente tras finalizar el mes. La tarjeta del periodo actual muestra el tiempo de generación esperado. Si el servicio se reinicia o se actualiza, también recupera los meses cerrados que faltan.
+
+Cada extracto mensual es una instantánea inmutable de costes por modelo con tokens de entrada, caché, salida y total, modo de precios y cantidad:
+
+- Un modelo con un precio único durante el mes muestra su tasa por millón de tokens. Un cambio de precio durante el mes se denomina **Precios mixtos**.
+- Los tokens sin una instantánea fiable de precios permanecen sin valorar y no se revaloran con el catálogo actual.
+- Las sentencias se agregan solo por modelo. No incluyen indicaciones, respuestas, contenido de archivos, detalles de usuario ni ajustes de cuota.
+- Cambios posteriores de precio, eliminación de tareas o cambios de membresía no recalculan una sentencia generada.
+
+Abre una declaración para previsualizar sus líneas de modelos, o exporta un PDF en el lenguaje de interfaz actual. Las exportaciones se registran en el registro de auditoría. Almacena el archivo descargado según la política de facturación y registros financieros de tu organización.
+
+### Retención [#usage-retention]
+
+Los hechos de tarea, turno, llamada, token, coste, atribución de aplicación y estados generados sobreviven a la eliminación dura de la tarea. No contienen indicaciones, respuestas, contenido de archivos, credenciales, URLs base ni claves de API.

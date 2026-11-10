@@ -1,0 +1,135 @@
+---
+title: "Primeros pasos"
+description: "Inicia sesión, regístrate, gestiona la seguridad de la cuenta y completa tu primera tarea."
+---
+
+Sigue los pasos a continuación para preparar tu cuenta y comenzar tu primera tarea. Inicia sesión con una cuenta existente, o usa el registro solo cuando necesites solicitar una nueva cuenta.
+
+## Iniciar sesión en LinkSense [#sign-in]
+
+Dependiendo de la configuración del despliegue, LinkSense puede ofrecer correo electrónico y contraseña, inicio de sesión único empresarial y inicio de sesión en Microsoft Teams. La página de inicio de sesión solo muestra los métodos que están activados actualmente.
+
+Si la página de inicio de sesión muestra **Crear cuenta**, también puedes usar la [Flujo de registro abierto](#registration) habilitada por el administrador para solicitar y activar una cuenta.
+
+### Correo electrónico y contraseña [#sign-in-email-and-password]
+
+1. Abre la página de inicio de sesión de LinkSense.
+2. Introduce el correo electrónico y la contraseña asociados a tu cuenta.
+3. Selecciona **Iniciar sesión**.
+
+La coincidencia de correos electrónicos es insensible a mayúsculas y minúsculas. Los fallos repetidos pueden activar una protección temporal contra el inicio de sesión. Revisa tus credenciales, espera antes de intentarlo de nuevo o pide a un administrador que confirme el estado de la cuenta.
+
+### Inicio de sesión único [#sign-in-single-sign-on]
+
+Elige la opción SSO empresarial y completa la autenticación con el proveedor de identidad. Una cuenta SSO por primera vez puede crearse en un estado deshabilitado y requerir la activación del administrador antes de que vuelvas a iniciar sesión.
+
+### Microsoft Teams [#sign-in-microsoft-teams]
+
+Cuando la integración de Teams está configurada, LinkSense utiliza tu identidad de Teams. Si la organización no ha configurado el inicio de sesión en Teams, la pestaña vuelve a la página estándar de inicio de sesión de LinkSense.
+
+### Si falla el inicio de sesión [#sign-in-if-sign-in-fails]
+
+- Confirma que la cuenta no está desactivada.
+- Los usuarios locales pueden elegir **He olvidado la contraseña o quiero crearla por primera vez**.
+- Reinicia SSO desde la página de inicio de sesión si una llamada antigua ha caducado.
+- Para un error de servicio, comparte solo el error visible y la hora con un administrador, nunca una contraseña ni un token de acceso.
+
+## Regístrate y activa una cuenta [#registration]
+
+La página de inicio de sesión muestra **Crear cuenta** solo cuando un administrador ha habilitado el registro abierto y el servicio de correo electrónico de autenticación está disponible. Las cuentas creadas directamente por un administrador no utilizan este flujo.
+
+### Solicitar un correo de activación [#registration-request-an-activation-email]
+
+1. Selecciona **Crear cuenta** en la página de inicio de sesión.
+2. Introduce una dirección de correo electrónico a la que puedas acceder.
+3. Selecciona **Enviar correo de activación**.
+4. Abre el enlace de activación única desde tu bandeja de entrada.
+
+Para evitar revelar si una dirección está registrada, la página de solicitud normalmente muestra el mismo resultado para cada envío. Revisa el spam y vuelve a intentarlo más tarde si no llega ningún correo. Si aún no llega, pide a un administrador que verifique el registro abierto y el servicio de correo electrónico.
+
+### Establece una contraseña y activa [#registration-set-a-password-and-activate]
+
+Abre el enlace antes de que caduque, luego introduce y confirma una nueva contraseña. La contraseña debe contener 8–16 caracteres e incluir mayúsculas y minúsculas, un número y puntuación o un símbolo. LinkSense te inicia sesión después de que la activación tenga éxito.
+
+Un enlace de activación solo funciona una vez. Solicita uno nuevo si caducó, ya se usó o el registro abierto está desactivado. Desactivar el registro abierto también invalida los enlaces de activación que aún no se han utilizado.
+
+### Uso disponible para cuentas registradas [#registration-usage-available-to-registered-accounts]
+
+Las cuentas auto-registradas utilizan el mismo estándar semanal de cuota crediticia que otros miembros de la organización. Una cuota semanal no fijada es ilimitada. Cuando se agota la cuota, no se pueden iniciar tareas, enviar seguimientos ni transcribir la entrada de voz; una tarea que ya está en ejecución no se interrumpe. La cuota se reinicia cada lunes a medianoche en la zona horaria del sistema. La barra lateral muestra los créditos restantes como enteros con la parte fraccionaria omitida, mientras que el saldo real mantiene la precisión fraccional. Contacta con un administrador si necesitas cambiar tu cuota.
+
+### El correo ya está registrado [#registration-the-email-is-already-registered]
+
+Si LinkSense dice explícitamente que la dirección ya tiene cuenta, vuelve a la página de inicio de sesión o usa **He olvidado la contraseña o quiero crearla por primera vez**. No sigas solicitando correos de activación.
+
+## Contraseñas, restablecer enlaces y SSO [#password-and-sso]
+
+LinkSense nunca muestra tu contraseña existente en páginas, registros o correos electrónicos.
+
+### Establecer o restablecer una contraseña [#password-and-sso-set-or-reset-a-password]
+
+1. En la página de inicio de sesión, elige **He olvidado la contraseña o quiero crearla por primera vez**.
+2. Introduce el correo electrónico de tu cuenta.
+3. Si hay acceso a contraseña local disponible, LinkSense envía un enlace seguro de una sola vez.
+4. Abre el enlace y elige una contraseña que cumpla con las reglas de la página.
+5. Vuelve a la página de inicio de sesión e inicia sesión.
+
+La respuesta de envío no revela si existe una cuenta. Un enlace de restablecimiento es de un solo uso y expira; Solicita otro cuando sea necesario.
+
+### Cambiar una contraseña existente [#password-and-sso-change-an-existing-password]
+
+Abre **Configuración → Seguridad**, introduce las contraseñas actual y nueva, y envía. Todas las sesiones existentes se revocan tras un cambio exitoso, por lo que debes iniciar sesión de nuevo.
+
+### Cuentas SSO [#password-and-sso-sso-accounts]
+
+Los administradores determinan qué métodos locales, SSO y Teams están disponibles. La autenticación exitosa del proveedor de identidad no anula la activación de la cuenta de LinkSense. Una cuenta nueva o una deshabilitada puede requerir aún una acción de administrador.
+
+<Callout type="warn" title="Protege la cuenta">
+
+Nunca compartas contraseña, URL de restablece, token de navegador o URL de retorno SSO.
+
+</Callout>
+
+## Crea tu primera tarea [#first-task]
+
+Una tarea es un espacio de trabajo que mantiene juntos mensajes, archivos, contexto y entregables relacionados.
+
+### Primera montada [#first-task-first-time-setup]
+
+Elige un idioma de interfaz en la esquina superior derecha de la página de inicio de sesión o inicialización. Después de iniciar sesión, cámbialo en **Configuración → General**. LinkSense soporta chino simplificado, inglés, español, portugués brasileño, francés y japonés.
+
+Cuando un administrador utiliza por primera vez LinkSense antes de configurar un modelo, la página de **Nueva tarea** muestra la guía de **Empieza** y el menú de cuentas en la barra lateral ofrece un acceso directo de guía. Ambos desaparecen una vez que la cuenta y el modelo están listos. Otros miembros no ven estas guías.
+
+- Los administradores pueden elegir **Configurar modelo** abrir [Configuración de modelos](../../admin-guide/models-and-usage.mdx#model-settings), añadir un modelo, probar su conexión y guardar.
+- Si el estado del modelo no se carga, elige **Reintentar**. No puedes enviar una nueva tarea hasta que la configuración del modelo esté lista y su estado se haya cargado correctamente.
+
+Si no hay modelo disponible, otros miembros deberían pedir a un administrador que configure uno y luego refrescar la página **Nueva tarea**.
+
+Puedes descartar la guía. Este navegador recuerda esa opción por separado para cada cuenta. Los administradores pueden volver a abrirlo a través de **Guía para empezar** en el menú de cuentas de la barra lateral mientras la configuración del modelo aún no está completa.
+
+### Enviar obras [#first-task-submit-work]
+
+1. Selecciona **Nueva tarea** en la barra lateral.
+2. Describe el objetivo, el material disponible y la salida esperada.
+3. Añade archivos, plugins, habilidades o bases de conocimiento cuando sea necesario.
+4. Revisa el modelo y el esfuerzo de razonamiento.
+5. Envía la solicitud.
+
+Ejemplo:
+
+> Revisa los datos de ventas adjuntos, identifica los tres cambios más importantes y crea un resumen en inglés junto con una hoja de detalles en Excel.
+
+### Seguir a la ejecución [#first-task-follow-execution]
+
+La tarea muestra respuestas, actividad de capacidades y archivos generados. LinkSense genera un título a partir de la primera petición; Puedes renombrarlo desde la lista de tareas recientes.
+
+Mientras el trabajo está en marcha, puedes detenerlo, dirigirlo con una aclaración solo por texto o poner otra solicitud en cola. Las solicitudes con adjuntos o selecciones explícitas de capacidades se colocan automáticamente.
+
+### Refinar el resultado [#first-task-refine-the-result]
+
+Continúa con la misma tarea en vez de empezar de nuevo:
+
+- Reescribe el resumen para una audiencia ejecutiva.
+- Añade una columna año tras año al cuaderno de ejercicios.
+- Exporta la conclusión final en PDF.
+
+Cada turno permanece en el historial de tareas, y los archivos generados aparecen como entregables descargables.

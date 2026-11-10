@@ -1,0 +1,183 @@
+---
+title: "Santé, améliorations et audit"
+description: "Inspectez l’état du système, effectuez des mises à niveau sécurisées, examinez les enregistrements d’audit et gérez les retours des utilisateurs."
+---
+
+Vérifiez l’état du système, suivez le flux de maintenance pour les mises à jour, et utilisez les registres d’audit et les retours des utilisateurs pour enquêter sur les problèmes.
+
+## Reconstructions de santé système et d’index [#health]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+**Paramètres → État du système** est en lecture seule, sauf pour les actions de maintenance explicitement fournies.
+
+</Callout>
+
+### Domaines de santé [#health-health-areas]
+
+La page rapporte l’API, la base de données, le Redis, la protection de connexion locale, les emails d’authentification, l’analyse analytique, la récupération et l’indexation des documents, le reclassement optionnel, le runner, l’accès à l’espace de travail, les emplacements de course autorisés, les tours réels en cours, la récupération, le nombre de processus enfants et les limites de concurrence. Dans les déploiements Docker, il rapporte également le processeur, la mémoire, le PID et l’état de l’API, du Runner, des ouvriers, du Web, de la passerelle, de PostgreSQL, de Redis et d’autres conteneurs observés.
+
+Il affiche des résumés et recommandations expurgés, pas les identifiants, les chaînes de connexion, les clés Redis, les journaux internes ou les secrets.
+
+### Interprète de statut [#health-interpret-status]
+
+- La vivacité signifie que le processus API est en cours.
+- La préparation signifie que les dépendances critiques peuvent desservir tout le trafic.
+- Une défaillance de stockage obligatoire rend la préparation indisponible pendant que la disponibilité continue de sonder.
+- L’analyse ou la récupération de documents peuvent être indisponibles sans rendre toutes les fonctionnalités de LinkSense indisponibles.
+- Un classeur non configuré est valide ; Le RRF reste disponible.
+
+### Utilisation du disque [#health-disk-usage]
+
+L’utilisation du disque est un total compact dans le résumé principal de la santé. Il inclut tous les espaces de projet des utilisateurs, les artefacts de tâches et pièces jointes, les environnements et caches, ainsi que les bases de données, les index de connaissances, les sauvegardes, les journaux et les programmes de service pour le déploiement en cours. Les fichiers conservés des tâches terminées ou archivées sont également inclus.
+
+Les mesures utilisent l’espace alloué au système de fichiers. Les fichiers clairsemés utilisent leur taille allouée ; Les répertoires partagés, les liens physiques et les calques d’image sont comptés une fois. Les copies stockées séparément sont comptées séparément. Ce n’est pas l’utilisation totale du disque par l’hôte. D’autres déploiements, caches de compilation globaux et images historiques sans propriété confirmée sont exclus. Le stockage partagé avec un autre déploiement est marqué comme non mesuré lorsqu’il ne peut pas être attribué. Les bases de données, le stockage objet et les index sur les serveurs externes sont exclus de l’utilisation locale du disque et doivent être vérifiés séparément dans ces services.
+
+L’échantillonnage commence une fois au démarrage du service puis s’exécute toutes les heures en arrière-plan. Un nouveau scan n’est jamais lancé tant que le scan précédent est toujours en cours. Les grands annuaires ont des limites de temps et de ressources indépendantes. D’autres informations de santé apparaissent immédiatement. L’utilisation du disque est ajoutée automatiquement au résumé après la première mesure complète. Les mesures en attente ou incomplètes restent cachées ; un sous-total n’est jamais affiché comme le total. Survolez l’indicateur pour voir le temps d’échantillonnage. Le balayage ne bloque pas les vérifications de préparation ni l’exécution de tâches, et une erreur d’échantillonnage ne modifie pas elle-même la préparation au service.
+
+Les déploiements Docker utilisent l’image Worker existante comme conteneur temporaire en lecture seule sans réseau. Il mesure les métadonnées du système de fichiers sans lire le contenu des fichiers et est supprimé par la suite. Cela nécessite les permissions existantes du socket Docker et les capacités de conteneur pour le balayage en lecture seule. Les pilotes de stockage qui n’exposent pas les emplacements des couches d’image ou d’écriture laissent ces catégories non mesurées. Les déploiements à processus locaux ne peuvent actuellement pas signaler l’utilisation complète du disque de déploiement.
+
+Il n’y a ni migration de base de données, ni modification, déplacement ou nettoyage de fichiers utilisateur. Mettre à jour Runner, API et Web pour mesurer le stockage existant ; Les tâches, projets et applications n’ont pas besoin d’être recréés.
+
+### Utilisation des ressources de service [#health-service-resource-usage]
+
+**Utilisation des ressources des services** affiche le dernier instantané du conteneur Docker disponible. Un résultat non observable signifie normalement que le contrôleur Runner ne dispose pas d’un socket Docker utilisable ni d’une permission ; Cela ne signifie pas que tous les conteneurs sont arrêtés. Les cartes sont diagnostiques et ne peuvent ni redémarrer ni arrêter les conteneurs.
+
+### Échec du nettoyage des ressources [#health-failed-resource-cleanup]
+
+Lorsque le nettoyage asynchrone après la suppression de tâches ou de capacités échoue à plusieurs reprises, la santé du système indique le type de ressource, l’étape, la raison stable et le nombre de tentatives. Vous pouvez réessayer un ou tous les objets ratés. LinkSense revérifie l’état, reporte le nettoyage pour une tâche d’objectif active, et n’interrompt pas les autres tâches en cours.
+
+Ne supprimez pas manuellement les répertoires gérés lorsque les limites de chemin, les permissions ou l’état d’exécution sont incertains. Corrigez d’abord les permissions de déploiement ou Runner, puis réessayez depuis la santé système.
+
+### Reconstruire tous les index de connaissances [#health-rebuild-all-knowledge-indexes]
+
+Après avoir modifié le modèle d’embarquage ou détecté un décalage à l’échelle du déploiement :
+
+1. Confirmez que la configuration du modèle et des dimensions est stable.
+2. Lisez l’impact de la reconstruction complète.
+3. Démarrez-la pendant une période de maintenance.
+4. Surveillez les progrès et les échecs.
+5. Vérifiez la récupération après l’achèvement.
+
+La reconstruction utilise une limite de concurrence à l’échelle du déploiement et permet de réessayer les entrées échouées. Ne commencez pas les reconstructions en double en sélectionnant l’action à plusieurs reprises.
+
+### Escalade [#health-escalation]
+
+Les opérateurs autorisés à déployer doivent résoudre les problèmes d’environnement, de réseau ou de service externe. La page santé ne crée ni ne reconfigure automatiquement des conteneurs externes Docling, Elasticsearch ou de modélisation.
+
+## Vérifier et installer les mises à jour LinkSense [#system-update]
+
+<Callout type="info" title="Action de l’administrateur">
+
+Va à **Paramètres → Mise à jour du système**. La page web vérifie et affiche les versions ; Il ne télécharge ni n’installe une mise à jour silencieusement.
+
+</Callout>
+
+### Vérifier le statut de la version [#system-update-check-version-status]
+
+La page vérifie les versions officielles de LinkSense sur GitHub et affiche les versions actuelles et les plus récentes, l’heure de vérification, l’heure de publication et les notes de sortie. Sélectionnez **Vérifier maintenant** pour rafraîchir ou ouvrir la page de version GitHub pour obtenir toutes les informations.
+
+Un échec de vérification n’affecte pas les autres caractéristiques du produit. LinkSense distingue une connexion GitHub indisponible, une limitation de fréquence et une réponse non reconnue. Réparez la sortie du serveur ou attendez que la limite soit levée avant de réessayer.
+
+Les administrateurs consultent un avis produit lorsqu’une mise à jour est disponible. Le rejet ne s’applique qu’à cet administrateur et à cette libération ; une version ultérieure affiche un nouvel avis.
+
+### Préparez-vous à la mise à niveau [#system-update-prepare-for-the-upgrade]
+
+1. Lisez les notes de version de la version actuelle jusqu’à la version cible.
+2. Planifiez une fenêtre à faible trafic et prévenez les utilisateurs sous **Paramètres système → Maintenance du système**.
+3. Vérifiez la capacité du disque, les services Docker et la sauvegarde PostgreSQL sur l’hôte.
+4. Attendez ou arrêtez les tâches qui ne devraient pas s’étendre à la mise à jour et assurez-vous qu’un administrateur puisse toujours ouvrir la santé système.
+
+### Exécution sur l’hôte de déploiement [#system-update-run-on-the-deployment-host]
+
+Linux :
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/LingX-AI/linksense/main/upgrade.sh | sudo sh
+```
+
+macOS (ne pas utiliser `sudo`) :
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/LingX-AI/linksense/main/upgrade.sh | sh
+```
+
+Le script détecte Core ou Full, attend les tâches en cours d’exécution, et crée et vérifie une sauvegarde PostgreSQL avant la migration de la base de données. Enregistrez l’emplacement de sauvegarde imprimé par le script. Une défaillance après le début de la migration ne revient pas automatiquement en arrière de la base de données.
+
+### Instances déployées depuis la main [#system-update-instances-deployed-from-main]
+
+Les instances utilisant `deploy/production/deploy-production.sh` versions switch sans attendre la fin des tâches. Les images se construisent d’abord ; La maintenance et l’arrêt des tâches commencent ensuite. Les conversations et fichiers existants sont conservés. Les requêtes inachevées et en file d’attente ne sont pas rejouées automatiquement : les utilisateurs doivent vérifier l’avancement réel avant de continuer manuellement. Les messages déjà envoyés ou d’autres modifications externes ne sont pas annulées.
+
+L’arrêt des tâches utilise une courte période de grâce partagée plutôt qu’une attente séparée pour chaque tâche. Les sauvegardes, l’approbation de la migration et les vérifications de santé restent nécessaires. Si l’arrêt ou la persistance de l’état de la tâche échouent, le déploiement signale une erreur et maintient la maintenance activée. Résolvez l’erreur et relancez le déploiement au lieu de redémarrer directement les services précédents.
+
+### Vérifier après la mise à niveau [#system-update-verify-after-upgrading]
+
+Ouvrir **État du système** et vérifier l’API, la base de données, les Redis, le stockage, le Runner, l’analyse des connaissances et la recherche. Exécutez une tâche minimale pour vérifier le chemin d’exécution. Puis arrêter la maintenance plus tôt ou laisser expirer la fenêtre.
+
+Si la mise à niveau échoue, conservez la sortie terminale et la sauvegarde pour un opérateur de déploiement. Ne relancez pas le script à plusieurs reprises avant d’avoir confirmé l’état de la base de données.
+
+## Journaux d’audit [#audit]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+Ouvre **Paramètres → Journaux d’audit**. L’audit sert à faire des informations sur la sécurité, pas à naviguer dans le contenu utilisateur.
+
+</Callout>
+
+### Événements [#audit-events]
+
+La zone d’audit comporte trois surfaces de données :
+
+- **Journaux d’audit permanents** couvrent les changements de comptes et de rôles, les groupes, l’importation et la publication de capacités, le cycle de vie des identifiants, la gouvernance des connaissances, la configuration des modèles et systèmes, ainsi que les résultats de gestion.
+- **Métadonnées d’exécution de tâches** est un résumé expurgé multi-utilisateurs de l’état d’exécution, des noms de capacités et du nombre de fichiers, sans titres, messages ni actions de téléchargement.
+- **Artefacts de tâches supprimées** rapports ont conservé le nombre d’artefacts, la taille, l’état de la somme de contrôle et le temps de suppression sans lecture, récupération ou téléchargement de contenu.
+
+Filtrez les événements permanents par temps, acteur, type de cible, action ou résultat. Les métadonnées d’exécution des tâches peuvent également être filtrées par plugin, compétence, code d’erreur, statut du coureur, statut de l’archive, et dates de création ou d’exécution. Ouvrez un enregistrement pour inspecter les actions stables, les identifiants requis, les horodatages et les métadonnées structurées expurgées. L’interface n’expose pas les champs bruts du protocole comme contenu utilisateur.
+
+### Limite de contenu [#audit-content-boundary]
+
+L’audit ne montre pas le corps de la tâche d’un autre utilisateur, les fichiers, le contenu livrable, les arguments complets de l’outil, les réponses brutes de tiers, les mots de passe, les jetons, les clés API, le texte clair des identifiants, les URL de base complètes ou les chemins internes.
+
+Certains enregistrements conservent l’IP source et l’User-Agent comme métadonnées restreintes et ne les affichent que selon la politique.
+
+### Opérations rejetées [#audit-rejected-operations]
+
+L’auto-désactivation, l’auto-rétrogradation, les tentatives contre l’administrateur final, les lectures non autorisées et les demandes de gouvernance invalides sont enregistrées avec leurs codes d’erreur stables.
+
+### Recommandations [#audit-recommendations]
+
+- Commencez par une plage de temps étroite.
+- Préserver les règles de minimisation des données lors de l’exportation ou du relais des faits d’audit.
+- Corréliez les événements avec les points temporels de santé du système.
+- Attendez-vous à un audit minimal permanent après la suppression d’une entité commerciale.
+
+## Gérer les retours des utilisateurs [#feedback]
+
+<Callout type="info" title="Action de l’administrateur">
+
+Va à **Paramètres → Avis des utilisateurs**. Les utilisateurs réguliers peuvent consulter leurs propres publications et réponses sous **Mes avis**, mais ne peuvent pas lire celles d’autres utilisateurs.
+
+</Callout>
+
+### Avis sur les avis [#feedback-review-feedback]
+
+La liste pagination montre le soumissionnaire, un extrait textuel, le nombre d’images, le statut des réponses et le délai de soumission. Sélectionnez **Afficher** pour lire le texte complet et ouvrir les aperçus des images. Si une image ne se charge pas, rafraîchissez avant de demander à l’utilisateur de renvoyer du matériel sensible via un canal non contrôlé.
+
+Les retours peuvent contenir des informations commerciales que l’utilisateur a choisi de soumettre. Utilisez-le uniquement pour le diagnostic des problèmes et évitez de le copier dans les journaux, les tâches publiques ou des services externes non liés. Le retour d’information n’est pas un journal d’audit et n’est pas automatiquement associé à une tâche donnée.
+
+### Répondre à un utilisateur [#feedback-reply-to-a-user]
+
+Ouvrez les détails des retours, écrivez une réponse ou ajoutez des images, et sélectionnez **Envoyer la réponse**. Les réponses uniquement texte, image uniquement et combinées sont prises en charge. Chaque réponse permet jusqu’à 2 000 caractères et neuf images, avec un maximum de 5 Mo par image. PNG, JPEG, WebP et GIF sont pris en charge, y compris les images collées.
+
+Vous pouvez répondre plus d’une fois ; Les réponses apparaissent dans l’ordre chronologique. Les soumissions échouées préservent le brouillon et les images sélectionnées. Après une réponse réussie, l’utilisateur peut la lire sous **Mes avis**, et la liste affiche **Répondu**. Ce statut ne signifie pas que le problème est résolu.
+
+### Supprimer les retours [#feedback-delete-feedback]
+
+La suppression supprime définitivement les retours, toutes les réponses et toutes leurs images et ne peuvent pas être annulées. Confirmez que la gestion nécessaire est complète et que les règles de conservation organisationnelles permettent la suppression. Il ne supprime pas le soumissionnaire, les tâches, les enregistrements d’audit ou les données d’utilisation.
+
+### Guidage de conduite [#feedback-handling-guidance]
+
+- Commencez par l’heure signalée, la page et le code d’erreur stable.
+- Demandez des informations supplémentaires uniquement via un canal organisationnel approuvé.
+- Ne demandez jamais de mots de passe, de jetons, de clés API, de codes QR ou de liens à usage unique.
+- Pour les incidents système, corrélez le rapport avec [Santé du système](#health) et [Journaux d’audit](#audit).

@@ -1,6 +1,7 @@
 import { flattenTree } from 'fumadocs-core/page-tree'
 import { source } from '@/lib/source'
-import { withoutDocLocale } from '@/lib/i18n'
+import { homeLocales, withoutDocLocale } from '@/lib/i18n'
+import { languageNames } from '@/content/messages'
 import { siteUrl } from '@/lib/metadata'
 
 export const dynamic = 'force-static'
@@ -22,7 +23,7 @@ export function GET() {
       return `- [${page.data.title}](${url}): ${page.data.description ?? ''}`
     })
     return [
-      `## ${language === 'zh' ? '简体中文' : 'English'}`,
+      `## ${languageNames[homeLocales[language as keyof typeof homeLocales]]}`,
       '',
       ...entries,
     ].join('\n')
@@ -34,7 +35,7 @@ export function GET() {
       '',
       '> An open-source agentic work platform for organizations, deployed on your own infrastructure.',
       '',
-      'This index links to the plain Markdown versions of the public documentation. Choose English or Simplified Chinese and follow the relevant topic.',
+      'This index links to the plain Markdown versions of the public documentation. Choose a language and follow the relevant topic.',
       '',
       'Core includes the agent workspace and organizational capabilities. Full adds built-in Knowledge parsing, indexing, and retrieval. Deployment prerequisites, model configuration, and execution boundaries are described in the guides.',
       '',

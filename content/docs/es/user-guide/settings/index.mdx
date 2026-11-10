@@ -1,0 +1,209 @@
+---
+title: "Configuración personal"
+description: "Gestiona preferencias generales, tu perfil, cuotas, apariencia, seguridad y tareas archivadas."
+---
+
+Los ajustes se agrupan por propósito a continuación. Revisa su alcance antes de cambiarlos y lee las indicaciones relevantes antes de cambiar contraseñas, restablecer la memoria o eliminar contenido permanentemente.
+
+## Configuraciones generales [#general]
+
+Abre el menú de la cuenta y elige **Configuración → General**.
+
+### Lenguaje de interfaz [#general-interface-language]
+
+LinkSense admite chino simplificado e inglés. La interfaz cambia inmediatamente y la preferencia se guarda para Web y Teams.
+
+El centro de ayuda tiene su propio menú de idiomas. Un enlace de ayuda abierto desde LinkSense utiliza automáticamente el lenguaje de la interfaz actual.
+
+### Mensajes enviados durante la ejecución [#general-messages-sent-during-execution]
+
+Elige el valor predeterminado para un mensaje enviado mientras se está ejecutando un turno:
+
+- **Ejecución de la corriente de dirección** añade una aclaración solo de texto al giro en carrera.
+- **Añadir a la cola como siguiente solicitud** comienza después de que el turno actual alcanza un estado final.
+
+Una solicitud con un archivo adjunto o un plugin explícito, una habilidad o una selección de base de conocimiento se coloca en cola independientemente del valor predeterminado.
+
+Si falla el guardado, LinkSense restaura el valor anterior y muestra un error. Inténtalo después de que vuelva la conexión.
+
+### Notificaciones del navegador [#general-browser-notifications]
+
+Las notificaciones del navegador están desactivadas por defecto. Cuando activas **Activar notificaciones del navegador**, el navegador pide permiso si no se ha concedido ya. Las notificaciones solo se activan después de permitir el permiso. LinkSense envía inmediatamente una notificación de prueba tras activarla; También puedes seleccionar **Enviar notificación de prueba** en cualquier momento.
+
+Si las notificaciones no están activadas efectivamente en el navegador actual, y este soporta notificaciones sin un permiso denegado permanentemente, LinkSense muestra un aviso en la esquina inferior izquierda. **Activar** ejecuta el mismo flujo completo de activación y prueba que Configuración. **Ahora no** oculta el aviso solo para la sesión actual del navegador, así que puede volver a aparecer después de volver a abrir el navegador. Cuando el permiso está bloqueado, LinkSense no muestra un aviso inutilizable; Permite notificaciones en los permisos del navegador del sitio primero.
+
+La configuración solo se aplica al usuario actual y al navegador actual. No se sincroniza con otros navegadores o dispositivos. Una página de LinkSense debe permanecer abierta. Las notificaciones pueden aparecer mientras la página está en segundo plano, pero no después de que la página o el navegador estén cerrados. LinkSense no utiliza Web Push ni un Service Worker para la entrega en segundo plano.
+
+Cuando está habilitado, LinkSense envía una notificación cuando una tarea normal o automatización alcanza un estado terminal. La notificación refleja el resultado real:
+
+- **Sucedió**: la tarea se completó con éxito; Una automatización también debe haber producido un resultado que puedas ver.
+- **Suspendido**: la tarea falló, o una automatización terminó sin producir un resultado que puedas ver.
+- **Interrumpido**: la tarea o automatización fue interrumpida.
+
+La primera vez que activas la configuración, LinkSense arranca desde la posición actual del terminal y no envía notificaciones de trabajos anteriores.
+
+LinkSense envía la notificación del sistema incluso cuando ya estás viendo la tarea. El título de la notificación muestra el nombre de la tarea. Su cuerpo identifica una tarea regular o automatización y muestra el estado real de **Sucedió**, **Suspendido** o **Interrumpido**. El nombre de la tarea es visible para el navegador y el sistema operativo, pero la notificación no incluye entradas, respuestas, detalles de error, archivos adjuntos ni nombres de artefactos. Al hacer clic en la notificación se centra en LinkSense y se abre directamente la tarea correspondiente.
+
+Si el navegador no soporta notificaciones, no puede guardar la configuración, no puede acceder al servicio de notificación de finalización de tareas o se ha denegado el permiso, la página de configuración explica el problema. El switch se guarda como habilitado solo después de que el permiso, la notificación de prueba y la línea base de completion-listener estén listas. Si el navegador reinicia una subvención existente a **Pregunta**, selecciona **Conceder permiso y enviar la prueba**. Después de denegar el permiso, permite notificaciones para el sitio de LinkSense en la configuración de tu navegador antes de volver a activar el interruptor. Si LinkSense informa que la prueba fue enviada pero no aparece ninguna notificación del sistema, compruebe si el sistema operativo permite que este navegador envíe notificaciones y si está activado Do Not Disturb o Focus.
+
+### Instala en un escritorio o pantalla de inicio [#general-install-on-a-desktop-or-home-screen]
+
+LinkSense publica metadatos de instalación de aplicaciones web. En un navegador compatible, utiliza **Instalar la aplicación**, **Añadir a la pantalla de inicio** o el comando equivalente del menú para abrir LinkSense en una ventana independiente. El nombre del comando depende del navegador y del sistema operativo.
+
+La instalación no permite el uso sin conexión; LinkSense sigue necesitando una conexión con el despliegue. Iniciar desde el icono instalado vuelve al punto de entrada de la aplicación y utiliza la sesión de inicio de sesión almacenada en ese navegador. Cierra sesión normalmente después de usar un dispositivo compartido.
+
+## Perfil y uso personal [#profile]
+
+Open **Configuración → Perfil** para gestionar la información visible de la cuenta y los datos de uso.
+
+### Nombre de visualización [#profile-display-name]
+
+Edita y guarda el nombre que aparece en la barra lateral, las listas de usuarios de administradores y otras muestras de identidad seguras. No cambia el correo de inicio de sesión.
+
+### Avatar [#profile-avatar]
+
+Sube una imagen soportada desde el área de avatar. LinkSense valida su tipo y tamaño. Reemplazar un avatar solo cambia la pantalla y nunca cambia la propiedad de la tarea.
+
+### Uso personal [#profile-personal-usage]
+
+El perfil puede mostrar tokens totales, tareas, turnos, llamadas de modelo, días activos, tokens promedio por turno, un mapa de calor de actividad de 365 días y rachas actuales o más largas.
+
+Estos valores son insights, no ajustes de uso, facturación o controles de ejecución. Pueden permanecer datos mínimos de actividad y uso tras la eliminación de tareas sin restaurar el contenido de la tarea.
+
+### Fallos de actualización [#profile-update-failures]
+
+Corrige las entradas que violan los límites visibles y vuelve a intentarlo. Una cuenta deshabilitada pierde su sesión activa y no puede continuar con los cambios de perfil.
+
+## Análisis de cuotas y uso [#quota]
+
+Abre **Configuración → Cuota** para ver tu propia cuota y uso. Los usuarios autoregistrados y los miembros de la organización utilizan la misma página.
+
+### Resumen [#quota-overview]
+
+Consulta los créditos usados, los créditos restantes, tu límite semanal y la siguiente hora de reinicio. Las cuentas ilimitadas siguen mostrando el consumo real. Las cuotas semanales se reinician todos los lunes en la zona horaria del sistema. Después de que un administrador reinicie tu cuota, la visión general cuenta el uso desde ese reinicio; El análisis de datos mantiene cargos históricos.
+
+Los créditos se redondean al número entero más cercano para su visualización. Las cargas reales mantienen su precisión fraccionaria. El uso inferior a medio crédito puede mostrarse como 0 pero aún así contribuye al total.
+
+### Analítica [#quota-analytics]
+
+Elige los últimos 7 o 30 días. Las fechas usan la zona horaria de tu navegador. El rango de 30 días es una ventana de análisis, no una cuota mensual.
+
+- Historial crediticio: cargos diarios por carga de trabajo o modelo, basados en cargos registrados en el momento del consumo.
+- Clasificación de tareas: amplía los detalles del modelo y la carga de trabajo o abre una tarea. Otras tareas de uso y eliminadas se agrupan por separado.
+- Llamadas a plugins y MCP: llamadas terminadas en tareas retenidas, incluyendo fallos. Los recuentos de actividad no son recuentos de cargos.
+- Habilidades: la misma habilidad cuenta una vez por turno.
+- Mensajes: mensajes de usuario en turnos de tareas, agrupados por modelo. Excluye las respuestas de la IA, los mensajes en cola y el historial copiado en forks.
+
+Los gráficos muestran hasta cinco categorías, agrupando las categorías más pequeñas como **Otros**. Los valores de categoría redondeados de forma independiente pueden no sumar exactamente el total mostrado.
+
+## Personalización, instrucciones y memoria [#personalization]
+
+Abre **Configuración → Personalización** para preferencias que se apliquen a tareas futuras.
+
+### Instrucciones personalizadas [#personalization-custom-instructions]
+
+Utiliza instrucciones personalizadas para las preferencias de estables:
+
+- Respuesta en inglés por defecto.
+- Ejecuta pruebas unitarias relevantes tras los cambios de código.
+- Antepon las conclusiones de los informes por encima de las pruebas que lo respalden.
+
+Las instrucciones guardadas se aplican de turnos futuros. Las normas de la plataforma, los límites de seguridad y la gobernanza de los administradores siguen siendo una prioridad más alta. Nunca guardes contraseñas ni tokens aquí.
+
+### Nombre automático de tareas [#personalization-automatic-task-naming]
+
+Elige cuándo se actualizan los nombres de las tareas. Los cambios se guardan automáticamente:
+
+- **Primer mensaje** (por defecto): nombra una tarea cuando envías un mensaje por primera vez y luego mantén su nombre.
+- **Cada mensaje**: actualiza el nombre con cada nuevo mensaje, usando la última petición y el contexto reciente.
+
+Los nombres de tareas editados manualmente permanecen sin cambios. Esta preferencia se aplica a mensajes futuros tanto en tareas nuevas como existentes; Cambiarlo no cambia el nombre de tareas históricas en masa. El nombre se ejecuta de forma independiente a la ejecución de la tarea y mantiene el nombre actual si la generación falla.
+
+### Mostrar razonamiento [#personalization-show-reasoning]
+
+**Mostrar razonamiento** está activado por defecto y las preferencias guardadas existentes se conservan. Cuando está habilitado, muestra el texto de razonamiento completo proporcionado por el modelo durante las tareas y en el historial de tareas. Algunos modelos solo ofrecen resúmenes o no tienen texto completo; en esos casos no se muestra ningún cuerpo de razonamiento completo. Los cambios se guardan por usuario y afectan solo a la pantalla, no al esfuerzo de razonamiento. Los resúmenes breves de razonamiento existentes y las llamadas a herramientas no se ven afectados por este cambio.
+
+Durante una tarea, pasa el cursor sobre **Pensamiento** y haz clic en la flecha de la derecha para expandir las llamadas a herramientas de esa fase. Haz clic de nuevo para colapsarlos. La flecha está ausente cuando no hay llamadas de herramientas. Tras completarlo, puedes volver a consultar los registros en el historial de actividades.
+
+### Memoria [#personalization-memory]
+
+La memoria está apagada por defecto, y puedes activarla cuando lo necesites. Cuando está habilitado, LinkSense puede obtener memoria personal de tareas elegibles y utilizarla en trabajos futuros. Las tareas que involucran herramientas externas o contexto web no generan memoria.
+
+Desactivar la memoria detiene la creación y el uso de memoria, pero no borra automáticamente las entradas guardadas.
+
+### Reinicio [#personalization-reset]
+
+Reiniciar permanentemente elimina toda la memoria personal y no se puede deshacer. No elimina tareas, instrucciones personalizadas, plugins, habilidades, bases de conocimientos u otros ajustes.
+
+Confirma que quieres **Restablecer**, en lugar de simplemente apagar la memoria.
+
+## Apariencia y tamaño del texto [#appearance]
+
+Abre **Configuración → Apariencia** para ver preferencias de visualización.
+
+### Tema [#appearance-theme]
+
+- **Sistema** sigue el sistema operativo o el proveedor de WebView y responde a los cambios.
+- **Luz** siempre usa la interfaz de luz.
+- **Oscuro** siempre usa la interfaz oscura.
+
+Los cambios en el tema no afectan al contenido de la tarea, ni a los archivos ni a la ejecución.
+
+### Tamaño de fuente de la interfaz [#appearance-ui-font-size]
+
+Ajusta el tamaño de la base dentro del rango permitido por la página. La navegación, formularios, controles, ajustes y la interfaz de tareas escalan juntos manteniendo la jerarquía.
+
+El contenido de vista previa de documentos, Markdown, Office o PDF puede tener su propio zoom de visor.
+
+### Entre entornos [#appearance-across-environments]
+
+La preferencia de apariencia se aplica en Web y Teams para el entorno actual del navegador. El modo sistema puede resolverse de forma diferente según el dispositivo.
+
+Usa el zoom de un visor de documentos si solo el contenido de previsualización está saturado en lugar de reducir toda la interfaz de LinkSense.
+
+## Seguridad y cambios de contraseña [#security]
+
+**Configuración → Seguridad** cambia una contraseña de inicio de sesión local. Una cuenta solo SSO puede no necesitar esta operación.
+
+### Cambia la contraseña [#security-change-the-password]
+
+1. Introduce la contraseña actual.
+2. Introduce una nueva contraseña que cumpla con las reglas de la página.
+3. Confirma la nueva contraseña.
+4. Entrégate.
+
+Tras el éxito, LinkSense revoca todas las sesiones y requiere iniciar sesión de nuevo, incluso en otros dispositivos.
+
+### Calidad de la contraseña [#security-password-quality]
+
+Sigue la validación en directo. Evita nombres de organizaciones, direcciones de correo electrónico, frases comunes y contraseñas reutilizadas en otro sistema.
+
+### Contraseña olvidada [#security-forgotten-password]
+
+Vuelve a la página de inicio de sesión y solicita un enlace de restablecimiento único. Si el correo electrónico de autenticación no está configurado o no está disponible, pide a un administrador que restaure esa capacidad.
+
+### Seguridad [#security-safety]
+
+- Los administradores nunca necesitan tu contraseña.
+- No lo coloques en una tarea, nombre de credencial, descripción MCP o instrucción personalizada.
+- Para comportamientos sospechosos de inicio de sesión, cambia la contraseña y indica al administrador solo la hora y los síntomas no sensibles para la revisión de la auditoría.
+
+## Tareas archivadas [#archived-tasks]
+
+Abre **Configuración → Tareas archivadas**.
+
+### Restauración [#archived-tasks-restore]
+
+Desarchivar devuelve una tarea a la lista reciente usando su último orden de actividad. No repite un giro histórico.
+
+### Eliminar una tarea [#archived-tasks-delete-one-task]
+
+La eliminación permanente requiere confirmación y no puede restaurar el cuerpo de la tarea, los archivos adjuntos, los mensajes ni los entregables accesibles.
+
+### Borrar todas las tareas archivadas [#archived-tasks-clear-all-archived-tasks]
+
+Esta acción afecta solo a tus tareas archivadas, no a trabajos no archivados. Descarga primero cualquier cosa importante porque la operación no se puede deshacer.
+
+### Hechos conservados [#archived-tasks-retained-facts]
+
+Tras la eliminación de datos de eliminación forzada, pueden permanecer auditorías mínimas, seguridad, limpieza de recursos y uso. Pueden incluir conteos de tareas o turnos y instantáneas de tokens o costes, pero no títulos recuperables, cuerpos de mensajes, contenido de archivos o argumentos de herramientas.

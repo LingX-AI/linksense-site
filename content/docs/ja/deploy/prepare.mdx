@@ -1,0 +1,119 @@
+---
+title: "Dockerとネットワークの準備をする"
+description: "CoreまたはFullをインストールする前に、Docker、ホストのリソース、レジストリへのアクセスを確認します。"
+---
+
+このページを新規インストールにご利用ください。 既存の展開なら、まず[運用、修理、アップグレード](./operations.mdx)から始めましょう。
+
+## サポートホスト [#supported-hosts]
+
+- Linux x86_64またはARM64。
+- IntelまたはApple Silicon搭載のmacOSで、Docker DesktopのLinuxコンテナを使用。
+- ネイティブのWindowsインストールはサポートされていません。
+- ローカルモデルの計算、メモリ、GPUについては別々に計画してください。
+
+## Dockerをインストールする [#install-docker]
+
+Linuxでは、[Docker公式ガイド](https://docs.docker.com/engine/install/)からDocker EngineとComposeプラグインをインストールしてください。 macOSでは、以下の手順を使ってDocker Desktopをインストールしてください。
+
+### macOSでDocker Desktopの設定 [#configure-docker-desktop]
+
+1. **Apple Menu → このMacについて**を開いてチップとメモリを確認してください。 [Docker Desktop for Mac](https://docs.docker.com/desktop/setup/install/mac-install/)から対応する**アップルシリコン**または**インテル**ビルドをダウンロードしてください。
+2. `Docker.dmg`を開けて、**Docker**を**アプリケーション**に移動させて発射します。 Docker Engineが稼働するまで待ちましょう。
+3. **設定→リソース →アドバンスド**を開き、選ばれた版にリソースを割り当ててください。
+4. **適用して再スタート**を選択して、Docker Engineが再起動するのを待ちます。 これにより他の地元のコンテナが一時的に停止します。
+5. 必要ならターミナルを再開してください。 現在のmacOSアカウントでLinkSenseをインストールし、`sudo`なしでインストールしてください。
+
+| Docker Desktopリソース | Core                      | Full                       |
+| ----------------------- | ------------------------- | -------------------------- |
+| CPU                     | 少なくとも4                | 少なくとも8                 |
+| メモリ                | まずは10–12 GBから始めます           | 24 GB以上を推奨します       |
+| ディスク                    | 少なくとも60 GiBは利用可能です | 少なくとも120 GiBは利用可能です |
+
+メモリ制限は最大値ですが、LinkSenseのプリフライトチェックはDocker Engineが実際に使えるメモリです。 16 GiB Macなら、まずCoreから始めましょう。 Full評価では一般的に32 GiBまたはそれ以上のMacを使うべきです。
+
+```bash
+docker info --format '{{.NCPU}} {{.MemTotal}}' |
+  awk '{printf "CPUs=%s\nDocker memory=%.2f GiB\n", $1, $2 / 1024 / 1024 / 1024}'
+```
+
+## ホストを確認しましょう [#check-the-host]
+
+ラン:
+
+```bash
+uname -s
+uname -m
+docker version
+docker compose version
+docker info --format 'CPUs={{.NCPU}} MemoryBytes={{.MemTotal}} DockerRoot={{.DockerRootDir}}'
+curl --version
+df -h
+```
+
+確認:
+
+1. システムは`Linux`または`Darwin`、`x86_64`、`aarch64`、または`arm64`アーキテクチャで構成されています。
+2. `docker version`に**Server**セクションがあり、APIバージョンが`1.45`以降であることを確認します。
+3. Docker Composeはバージョン`2.24.4`以降です。
+4. 動作`curl`、ホストやDockerのVMには十分なメモリとディスク容量があります。
+
+x86_64 Fullも`x86-64-v2`が必要です。 [運用ガイド](./operations.mdx#virtual-machines-and-knowledge)は診断およびVM CPU構成の例を提供します。
+
+## コンテナイメージのダウンロードを確認する [#check-network]
+
+ターミナルのダウンロードとDocker Engineのレジストリプルは別々のネットワークパスを使用します。 インストーラーをダウンロードした後、選択したエディションを確認してください:
+
+```bash
+sh install-core.sh --check-network
+```
+
+Fullなら、`sh install-full.sh --check-network`走ってください。 チェックが成功するとステータス`0`、`[LS_HOST_*]`エラーなしで退出します。 デプロイメントを行わずに画像をプル・キャッシュできます。
+
+GHCRが遅い、またはアクセスできない場合、ダウンロードが30秒間進まないとインストーラーがパブリックミラーに切り替わることがあります。 組織でプライベートミラーが必要な場合は、インストール前に設定してください:
+
+```bash
+LINKSENSE_IMAGE_MIRRORS='ghcr.io=registry.example/ghcr' sh install-core.sh
+```
+
+ミラー構文やDockerプロキシ設定については[ホスト適応](https://github.com/LingX-AI/linksense/blob/main/deploy/release/HOST-ADAPTATION.md#registry-mirrors-for-release-images)を参照してください。
+
+## コーディングエージェントでインストール [#install-with-a-coding-agent]
+
+このプロンプトをコーディングアシスタントに渡してください:
+
+```text
+次の手順に従って LinkSense をインストールして起動するのを手伝ってください: https://raw.githubusercontent.com/LingX-AI/linksense/main/Install.md
+```
+
+必要なときに`LinkSense Full`を加えてくださいFull。 アシスタントは実際のホストを点検し、既存の設備を保存し、観察された住所と健康状態を報告する必要があります。 インストーラーだけをダウンロードするだけでは成功したインストールとは言えません。
+
+## カスタムポート [#custom-port]
+
+ポート`19090`にCoreをインストールするには、OSに合ったコマンドを使ってください。Fullの場合は`core`を`full`に置き換えてください。
+
+**Linux**
+
+```bash
+sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy \
+  env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
+```
+
+**macOS**
+
+```bash
+env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
+```
+
+上記のコマンドは、インストーラーがすでに[Core](./core.mdx)または[Full](./full.mdx)ページのコマンドでダウンロードされていることを前提としています。 既存の設置には`linksense port 19090`をご利用ください。
+
+## 一般的な設置問題 [#common-installation-problems]
+
+| 症状                                 | 原因                                                         | 解決                                                                                                |
+| --------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Docker Serverやデーモン接続はありません   | Dockerが停止されたり、アカウントがソケットにアクセスできなくなる     | Dockerを起動し、Linux権限またはDocker Desktopの状態を確認してください。                                        |
+| APIやComposeのバージョンが古すぎる | サーバーAPIが`1.45`未満、またはComposeが`2.24.4`未満 | Dockerの公式手順で該当コンポーネントをアップグレードしてください。 |
+| `[LS_HOST_memory]`                      | ホストやDockerのVMには十分な使用可能なメモリがありません      | Docker Desktopのメモリを増やすか、より大きなホストに移動しましょう。                                                  |
+| `[LS_HOST_storage]`                     | ホスト、Docker VM、またはバックアップの場所がスペース不足です     | 既知の使い捨てファイルのみを削除するか、容量を追加する;一括りにDockerのプルーンを実行しないでください。                    |
+| `[LS_HOST_pull]`、タイムアウト、またはTLSエラー | Docker Engineはレジストリにアクセスできず、プロキシ設定もありません | ネットワークチェックを実行し、ターミナルとDocker Engineのネットワークを別々に確認してください。                        |
+| 既存の設置CoreまたはFull      | 別のインストーラーがデプロイIDを上書きすることもできます       | `linksense status`走って`linksense doctor`;インストールが中断された後は、同じエディションだけを再開してください。 |

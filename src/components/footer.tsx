@@ -2,24 +2,26 @@ import Link from 'next/link'
 import { Github } from 'lucide-react'
 import { docsPath, getMessages } from '@/lib/i18n'
 import { repository } from '@/lib/product'
+import { getDocsUI } from '@/content/docs-ui'
 
 export function Footer({ lang }: { lang: string }) {
   const t = getMessages(lang)
+  const docs = getDocsUI(lang)
   const sections = [
     {
       title: t.docs,
       links: [
         { label: t.docs, href: docsPath(lang) },
         {
-          label: lang === 'zh' ? '用户指南' : 'User guide',
+          label: docs.userGuide,
           href: docsPath(lang, 'user-guide/overview/'),
         },
         {
-          label: lang === 'zh' ? '管理员指南' : 'Administrator guide',
+          label: docs.adminGuide,
           href: docsPath(lang, 'admin-guide/overview/'),
         },
         {
-          label: lang === 'zh' ? '开发者指南' : 'Developer guide',
+          label: docs.developerGuide,
           href: docsPath(lang, 'developer-guide/interactive-application/'),
         },
       ],

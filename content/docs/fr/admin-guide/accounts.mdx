@@ -1,0 +1,110 @@
+---
+title: "Comptes, groupes et autorisations"
+description: "Créer et maintenir des comptes et des groupes, et comprendre les limites administratives et d’accès au contenu."
+---
+
+Maintenir les comptes membres, organiser les groupes pour la collaboration et vérifier les limites entre les rôles et l’accès au contenu.
+
+## Gestion des utilisateurs [#users]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+Ouvre **Paramètres → Utilisateurs et groupes → Utilisateurs**. Les administrateurs peuvent activer l’enregistrement ouvert dans les paramètres Système.
+
+</Callout>
+
+### Créer des utilisateurs [#users-create-users]
+
+Fournissez un nom, un e-mail unique, un poste et des groupes optionnels. Un nouvel utilisateur n’a pas de mot de passe local et LinkSense n’envoie pas automatiquement d’invitation.
+
+L’utilisateur peut se connecter via SSO ou Teams configuré, ou demander un e-mail pour définir un mot de passe local. Les administrateurs ne peuvent pas définir, voir, importer ou réinitialiser les mots de passe des utilisateurs.
+
+### Importation Excel [#users-excel-import]
+
+Téléchargez le modèle, remplissez le nom, l’email, le rôle et les groupes, puis téléchargez-le. L’importation valide les champs requis, l’unicité globale des emails, les rôles valides et les noms de groupes existants. Le modèle n’a pas de colonne de mot de passe et signale les lignes invalides pour correction.
+
+### Édit [#users-edit]
+
+Vous pouvez mettre à jour le nom, l’email, le poste et l’appartenance au groupe. Un changement d’e-mail révoque immédiatement toutes les sessions et les liens de mot de passe inutilisés, nécessitant une connexion avec le nouvel e-mail.
+
+### Quotas de crédits [#users-credit-quotas]
+
+Fixez des quotas hebdomadaires individuellement ou en gros, en crédits. Les quantités positives acceptent jusqu’à six décimales. Vide signifie illimité, et les modifications en masse n’affectent que les utilisateurs sélectionnés.
+
+Atteindre la limite empêche les nouvelles tâches pendant que les tâches en cours se terminent. Les quotas hebdomadaires sont réinitialisés chaque lundi à minuit dans le fuseau horaire du système.
+
+Les membres créés, importés ou auto-enregistrés partagent le quota hebdomadaire par défaut en [Gestion des quotas](./models-and-usage.mdx#quota-settings). Sauvegarder le code par défaut n’affecte pas les membres existants ; Utilisez **Appliquer la limite à tous** lorsqu’une écrasation est prévue.
+
+### Désactiver et restaurer [#users-disable-and-restore]
+
+La désactivation rejette la nouvelle connexion, expire les sessions actives lors de la requête suivante, bloque les nouvelles activités et téléchargements, et annule les requêtes qui n’ont pas commencé. Un virage en continu jusqu’à son état final d’origine. L’historique, les bases de connaissances, les publications publiées et les données d’audit subsistent.
+
+La restauration permet l’accès à nouveau mais ne redémarre pas les requêtes en file d’attente annulées.
+
+### Protection des administrateurs [#users-administrator-protection]
+
+Un administrateur ne peut pas se désactiver ou rétrograder lui-même, et au moins un administrateur actif doit rester en place. Le serveur vérifie cela de manière transactionnelle même lors de changements simultanés. Les tentatives rejetées sont auditées.
+
+## Gestion des groupes d’utilisateurs [#groups]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+Ouvre **Paramètres → Utilisateurs & groupes → groupes**. Un groupe est une commodité d’autorisation, pas une hiérarchie organisationnelle.
+
+</Callout>
+
+### Règles [#groups-rules]
+
+- Les groupes sont plats et ne peuvent pas contenir des groupes enfants.
+- Un utilisateur peut appartenir à plusieurs groupes.
+- Les noms sont uniques à l’échelle mondiale.
+- L’adhésion ne change jamais le rôle d’utilisateur ou d’administrateur.
+
+### Créer et modifier [#groups-create-and-edit]
+
+Ajoutez un nom et une description optionnelle, puis sélectionnez les utilisateurs existants. Ajout et suppression d’adhésion : acteur et temps enregistrés.
+
+Le retrait normal révoque la relation tout en conservant l’historique nécessaire. Un utilisateur peut conserver l’accès à la base de connaissances via un autre groupe ou un partage direct.
+
+### Voir les adhésions [#groups-view-memberships]
+
+Le tableau utilisateur peut afficher seulement un sous-ensemble compact de noms. Utilisez les détails complets du groupe ou l’aperçu de débordement accessible avant de prendre une décision.
+
+### Supprimer un groupe [#groups-delete-a-group]
+
+La délétion est irréversible. La même transaction supprime les adhésions actives et révoquées ainsi que les subventions de base de connaissances pour éviter les conflits orphelins. L’audit permanent ne conserve que les métadonnées minimales d’identifiant de groupe et de comptage affecté.
+
+Avant suppression, identifiez les accès dérivés du groupe, créez un remplaçant lorsque nécessaire, et tenez compte de la sémantique de l’adhésion courante dans le rapport d’utilisation.
+
+### Déclaration d’utilisation [#groups-usage-reporting]
+
+L’utilisation par groupe applique l’activité de chaque utilisateur à chaque groupe auquel il appartient actuellement. Les lignes se chevauchent et ne doivent pas être additionnées pour calculer les totaux globaux.
+
+## Rôles et limites d’autorisation [#roles]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+**Paramètres → Rôles et autorisations** est un aperçu en lecture seule. Les rôles personnalisés ne sont pas disponibles.
+
+</Callout>
+
+### Rôles fixes [#roles-fixed-roles]
+
+- **Utilisateur** gère les tâches personnelles, les capacités et les bases de connaissances possédées et utilise les ressources qui leur sont attribuées.
+- **Administrateur** gère également les utilisateurs, les groupes, la gouvernance des catalogues, la gouvernance des connaissances, les modèles, les paramètres, la santé, l’audit et l’utilisation.
+
+Il n’existe pas de super administrateur, d’administrateur de département, d’administrateur en lecture seule ou de bundle de permissions personnalisé. Le premier administrateur n’a aucun privilège caché.
+
+### Le rôle n’est pas l’accès au contenu [#roles-role-is-not-content-access]
+
+La gouvernance administrative n’expose pas automatiquement les tâches d’un autre utilisateur, le contenu de capacités personnelles ou les documents de la base de connaissances d’un autre utilisateur. La propriété et le partage continuent de contrôler l’accès au contenu.
+
+### Changer de rôle [#roles-change-a-role]
+
+Changez un autre compte depuis la gestion utilisateur. Avant de rétrograder un administrateur, assurez-vous qu’un autre administrateur actif subsiste.
+
+Un administrateur ne peut pas se rétrograder ou désactiver lui-même, ni rétrograder ou désactiver l’administrateur actif final. Le serveur applique cela lors de la transaction de mise à jour.
+
+### Groupes et rôles [#roles-groups-and-roles]
+
+Les groupes offrent des subventions de participation fixe et de ressources. Ajouter un utilisateur à un groupe ne peut pas en faire un administrateur.

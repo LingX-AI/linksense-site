@@ -1,0 +1,14 @@
+{
+  "title": "Déploiement et démarrage",
+  "pages": [
+    "index",
+    "prepare",
+    "core",
+    "full",
+    "first-setup",
+    "operations",
+    "development",
+    "architecture"
+  ],
+  "icon": "Rocket"
+}

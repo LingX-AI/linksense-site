@@ -1,0 +1,587 @@
+---
+title: "Tâches"
+description: "Créer et planifier des tâches, suivre l’exécution, travailler avec les fichiers et organiser l’historique."
+---
+
+Commencez par une demande claire, puis suivez l’exécution, relisez les livrables et organisez votre travail. Continuez à affiner la même tâche au lieu de tout recommencer.
+
+## Créer et exécuter des tâches [#create-and-run]
+
+### Rédigez une requête actionnable [#create-and-run-write-an-actionable-request]
+
+Une demande utile indique normalement :
+
+- Objectif : ce qu’il faut accomplir.
+- Entrées : fichiers, données ou bases de connaissances à utiliser.
+- Contraintes : langue, format, longueur, plage de dates ou règles obligatoires.
+- Livrable : une réponse ou un fichier Word, Excel, PowerPoint, PDF, image ou archive.
+
+### Sélectionnez un modèle et un effort de raisonnement [#create-and-run-select-a-model-and-reasoning-effort]
+
+Cliquez sur le bouton modèle et effort de raisonnement en bas du compositeur pour ouvrir la carte de sélection. Glissez le curseur pour prévisualiser les niveaux d’effort et relâchez pour sauvegarder. Vous pouvez aussi cliquer sur une position sur la piste ou utiliser les touches fléchées. Le curseur affiche uniquement les niveaux pris en charge par le modèle actuel.
+
+Cliquez sur le nom du modèle en haut de la carte pour changer de modèle. Le bouton de réinitialisation en haut à droite restaure l’effort par défaut du modèle actuel. Changer de modèle maintient votre niveau d’effort lorsque cela est supporté ; sinon, le modèle par défaut du nouveau modèle est utilisé.
+
+Le sélecteur affiche uniquement les modèles de chat marqués comme disponibles dans les conversations. L’effort de modèle et de raisonnement est corrigé lorsqu’un nouveau tour commence. Les changements ultérieurs des administrateurs ne réécrivent pas les tours en cours ou historiques.
+
+Si un modèle précédent n’est plus disponible dans les conversations, sélectionnez un autre modèle ou utilisez la version par défaut de la conversation.
+
+L’anneau dans la carte modèle montre l’utilisation contextuelle de la tâche en cours. Quand elle approche de la limite, terminez le tour actuel et suivez [Gestion du brouillon et du contexte](#context-and-drafts) pour compacter le contexte.
+
+### Ajouter des capacités [#create-and-run-add-capabilities]
+
+Avant d’envoyer, vous pouvez sélectionner des plugins activés ou des Compétences, choisir des bases de connaissances accessibles et consulter le statut personnel du MCP. Ces ressources sont fixes pour le tour.
+
+Le prévol bloque l’exécution si une capacité est désactivée, qu’une accréditation manque ou que l’accès à la base de connaissances n’est plus valide.
+
+Quand parler est plus pratique, utilisez [Entrée vocale](#voice-input) pour convertir la parole par microphone en un brouillon modifiable. C’est toujours toi qui décides quand l’envoyer.
+
+Lorsqu’un administrateur a activé un modèle de génération d’images, vous pouvez aussi [générer des images](#generate-images) directement. La sortie réussie est enregistrée comme des artefacts de tâche.
+
+### Utilisez le mode Objectif pour un travail plus long [#create-and-run-use-goal-mode-for-longer-work]
+
+Lorsqu’une demande ne peut pas être complétée en une seule réponse, utilisez un [Tâche objectif](#goal-tasks). Choisissez **+**, puis **But**, décrivez un résultat mesurable, et ajoutez des fichiers, plugins, compétences ou bases de connaissances comme pour une tâche normale.
+
+Les tâches d’objectifs affichent une étiquette d’objectif sur le message utilisateur et une carte d’objectif pendant que le travail est en cours. Après l’avoir terminé, la réponse finale montre combien de temps il a fallu pour atteindre l’objectif.
+
+### Planifier avant la mise en œuvre [#create-and-run-plan-before-implementation]
+
+Lorsque vous devez d’abord confirmer la portée, le risque et les étapes de mise en œuvre, sélectionnez **Ajouter → mode Plan**. LinkSense analyse la demande, pose des questions de clarification lorsque nécessaire, et attend que vous implémentez, révisiez, passiez ou retiriez le plan une fois le plan prêt. Voir [Utiliser le mode Plan](#plan-mode).
+
+Tapez `/` pour ouvrir des raccourcis pour une nouvelle tâche, la compactation contextuelle, les plugins, les compétences, les applications, les bases de connaissances et le MCP. La disponibilité dépend toujours de l’état actuel de la tâche et de vos permissions de ressources.
+
+### Commandes de course [#create-and-run-run-controls]
+
+- **Arrête** demande l’interruption du tour en cours.
+- Une perte de connexion temporaire permet de récupérer le même tour plutôt que de créer un doublon.
+- Rafraîchir la page n’efface pas l’état de la tâche.
+- L’activité montre les plans, les actions des outils et les évolutions de statut. L’aperçu de la tâche rassemble des sous-agents, des fichiers d’artefacts et des sources externes. Voir [Consultez l’avancement des tâches, les artefacts et les sources](#progress-and-sources).
+- Après l’échec, résoudre le problème de modèle, de capacité ou d’entrée visible avant de réessayer.
+
+<Callout type="info" title="Tâches et tours">
+
+Une tâche comporte plusieurs tours. Une continuation crée un nouveau tournant ; Les rafraîchissements de page, les reconnexions et la livraison d’événements en double ne le font pas.
+
+</Callout>
+
+## Gestion du brouillon et du contexte [#context-and-drafts]
+
+### Brouillons non envoyés [#context-and-drafts-unsent-drafts]
+
+LinkSense fait un effort optimal pour conserver le texte du compositeur ainsi que les plugins, compétences et bases de connaissances sélectionnés dans le navigateur actuel. Lorsque vous revenez à la même tâche ou au compositeur de nouvelles tâches, vous pouvez continuer à éditer.
+
+Les brouillons ne se synchronisent pas entre appareils ou navigateurs et ne remplacent pas un stockage permanent. Effacer les données du site, utiliser une navigation privée ou manquer de stockage dans le navigateur peut supprimer un brouillon. Le projet correspondant est approuvé après qu’une demande ait été soumise avec succès. Les pièces jointes qui n’ont pas fini d’être téléchargées ne font pas partie de ce brouillon local.
+
+Lorsque vous collez une grande quantité de texte, LinkSense peut la convertir en pièce jointe pour garder le compositeur gérable. Vérifiez-le ou supprimez-le dans la liste des pièces jointes avant de l’envoyer.
+
+### Voir la fenêtre de contexte [#context-and-drafts-view-the-context-window]
+
+L’anneau dans le sélecteur de modèles indique combien de temps de la fenêtre contextuelle de la tâche en cours est utilisée. Élargissez-le pour voir les valeurs d’occasion et totales. Si le modèle n’a pas signalé d’utilisation ou si l’administrateur n’a pas configuré de longueur de contexte, l’interface indique que l’utilisation du contexte n’est pas disponible.
+
+À mesure que la fenêtre de contexte approche de sa limite, LinkSense utilise une longueur de contexte de modèle connue pour permettre à l’exécution de compacter automatiquement son contexte de travail. L’activité montre l’état de compaction. Si la longueur est inconnue ou si vous devez encore condenser le contexte délibérément, terminez le tour actuel avant de faire une compactation manuelle.
+
+### Contexte compact [#context-and-drafts-compact-context]
+
+Dans une tâche existante, arrêtée et non archivée, entrez `/` et choisissez **Contexte compact**, ou envoyez la commande `/compact` autonome. Une tâche en cours, une tâche sans historique ou une tâche archivée ne peuvent pas être compressées.
+
+La compactation manuelle résume le contexte de travail en une base plus courte pour la continuation. Il ne supprime pas les messages, pièces jointes ou artefacts visibles dans la page. L’activité indique si la compactation est en cours, terminée ou incomplète. Soumettez la prochaine demande après la compaction.
+
+### Lorsque la limite de contexte est dépassée [#context-and-drafts-when-the-context-limit-is-exceeded]
+
+Si une tâche ordinaire s’arrête uniquement parce que la fenêtre de contexte du modèle a été dépassée, LinkSense tente de continuer une fois dans la même demande utilisateur. Le modèle est instruit d’utiliser l’état persisté de la tâche et de l’espace de travail sans répéter les commandes complétées, les modifications de fichiers ou les actions de l’outil. Ce n’est pas une demande d’un second utilisateur.
+
+Si la récupération échoue toujours, lisez l’erreur visible, compactez le contexte et indiquez exactement où le travail doit continuer. N’envoyez pas la même demande à répétition, car cela pourrait répéter une action externe ou entraîner un coût supplémentaire.
+
+Voir [Créer et exécuter des tâches](#create-and-run) et [Requêtes en cours et en file d’attente](#running-requests) pour les contrôles associés.
+
+## Utiliser le mode Plan [#plan-mode]
+
+Le mode plan est utile lorsqu’une requête est complexe, coûteuse à mettre en œuvre ou nécessite un périmètre convenu avant que les fichiers ne soient modifiés. Cela diffère d’un [Tâche de but](#goal-tasks) : le mode Plan produit un plan et attend l’approbation, tandis qu’une tâche d’objectif continue de travailler jusqu’à ce que l’objectif soit atteint ou nécessite votre attention.
+
+### Activation du mode Plan [#plan-mode-enable-plan-mode]
+
+Dans le compositeur, sélectionnez **Ajouter → mode Plan**, décrivez l’objectif, l’état actuel, les contraintes et les critères d’acceptation, puis envoyez la demande. Une puce **Plan** apparaît dans le compositeur ; Retirez-le pour quitter le mode avant d’envoyer.
+
+Vous ne pouvez pas changer de mode lorsqu’une tâche est en cours ou en cours, qu’une requête est en file d’attente, qu’un objectif non est terminé ou qu’elle soit liée à une automatisation. Les surfaces contrôlées, telles que les applications interactives, peuvent également omettre le mode Plan.
+
+### Répondez à des questions de clarification [#plan-mode-answer-clarification-questions]
+
+LinkSense pourrait demander plus d’informations avant de terminer le plan. Remplissez les champs obligatoires et soumettez le formulaire pour poursuivre la même course. Les valeurs marquées comme secrètes ne sont pas reprises dans l’interface de la tâche. Une question peut expirer, auquel cas il faut la reprendre.
+
+### Révisez le plan [#plan-mode-review-the-plan]
+
+Une fois le plan prêt, choisissez l’une de ces actions :
+
+- **Oui, mettez en œuvre ce plan** quitte le mode Plan et commence un nouveau tour d’implémentation.
+- **Non, reviens d’abord le plan** soumet vos retours, reste en mode Planification, et crée un plan entièrement révisé.
+- **Skip** laisse la décision non résolue et garde le mode Plan actif.
+- **Mode Plan de sortie** revient en mode par défaut sans mettre en œuvre le plan.
+
+Avant l’approbation, revoir le périmètre, modifier les fichiers, les dépendances, les risques et la vérification. Si le plan est obsolète ou si l’état de la tâche a changé, LinkSense rejette l’ancienne action ; Rafraîchir et utiliser l’état actuel.
+
+### Suivez l’avancement de la mise en œuvre [#plan-mode-follow-implementation-progress]
+
+Lors de la mise en œuvre, l’aperçu de la tâche peut afficher les étapes du plan, l’étape en cours, les modifications de fichiers, les artefacts et l’activité des sous-agents. Le statut des étapes reflète l’avancement de l’exécution et ne signifie pas en soi que chaque résultat intermédiaire a passé les vérifications d’acceptation de votre entreprise.
+
+## Utiliser les tâches Objectifs [#goal-tasks]
+
+Les tâches cibles concernent des travaux nécessitant des progrès soutenus, comme la création d’une présentation, le résumé de documents longs, la recherche d’un sujet et la production d’un livrable, ou la réalisation d’une demande complexe en plusieurs étapes.
+
+Après le début d’un Objectif, LinkSense continue de travailler vers le même objectif jusqu’à ce que celui-ci soit atteint, qu’une limite soit atteinte ou que votre contribution soit nécessaire. Un message normal ne démarre pas par défaut en mode Objectif. Vous pouvez choisir **But** avant d’envoyer, et LinkSense peut aussi créer un objectif pendant le travail lorsqu’une tâche normale nécessite un progrès soutenu.
+
+### Commence un objectif [#goal-tasks-start-a-goal]
+
+1. Sélectionnez **+** dans le coin inférieur gauche de la boîte d’entrée.
+2. Choisissez **But** dans le menu des capacités.
+3. Confirmez que la puce **But** apparaît dans le coin inférieur gauche de la boîte d’entrée.
+4. Décrivez ce que vous souhaitez que LinkSense accomplisse.
+5. Ajoutez des fichiers, des plugins, des compétences, des bases de connaissances, un modèle ou un effort de raisonnement selon les besoins.
+6. Envoie la tâche.
+
+Survolez la puce **But** dans la boîte d’entrée pour sortir du mode Objectif. Après votre sortie, le message suivant est envoyé comme une demande de tâche normale.
+
+### Créer un objectif lors de l’exécution [#goal-tasks-create-a-goal-during-execution]
+
+Lorsqu’une tâche normale nécessite plusieurs étapes de travail soutenu, LinkSense peut créer un objectif pendant son exécution. La tâche en cours passe directement en mode Objectif et affiche la carte Objectif sans soumettre à nouveau votre demande ni créer un second message utilisateur.
+
+Les étapes suivantes continuent dans la même tâche. L’interface affiche le statut habituel de l’objectif lorsque celui-ci est complété, atteint une limite ou nécessite votre attention. La continuation automatique ne soumet pas à nouveau votre demande initiale ni les actions de l’outil de relecture déjà terminées.
+
+### Rédigez un objectif mesurable [#goal-tasks-write-a-measurable-goal]
+
+Plus l’objectif est concret, plus il est facile pour LinkSense de savoir quand il est terminé. Incluent :
+
+- Résultat : le livrable attendu, tel qu’un article, un cahier d’exercices, une présentation, un rapport d’analyse ou une archive.
+- Portée : dossiers, dates, sujets, sources ou limites.
+- Critères : langue, format, longueur, nombre de pages, exigences de qualité ou sections obligatoires.
+- Condition d’arrêt : qu’est-ce qui compte comme terminé et quand LinkSense doit vous demander en premier.
+
+Exemple :
+
+> Utilisez le matériel produit joint pour créer un pitch deck chinois de 10 pages avec le positionnement, les fonctionnalités principales, la valeur client, la comparaison des concurrents et les prochaines étapes, puis générez un fichier téléchargeable.
+
+### Utilisation des capacités et des fichiers [#goal-tasks-use-capabilities-and-files]
+
+Les tâches cibles peuvent utiliser des fichiers, des plugins, des compétences, des bases de connaissances et un MCP personnel, comme les tâches classiques. Les capacités sélectionnées avant l’envoi sont utilisées comme contexte pour cette tâche d’objectif.
+
+Si vous devez ajouter du nouveau matériel ou modifier des capacités pendant que l’objectif est en cours, envoyez une autre requête dans la même tâche. Les requêtes avec de nouvelles pièces jointes ou des sélections de capacités suivent les règles de file d’attente de requêtes en cours afin que le contexte actif ne soit pas interrompu de manière inattendue.
+
+### Statut de suivre l’objectif [#goal-tasks-follow-goal-status]
+
+Le message utilisateur qui a lancé un Objectif affiche une icône de But et **But** étiquette dans son coin inférieur droit, afin que vous puissiez le distinguer des requêtes normales plus tard.
+
+Pendant que l’objectif est actif, une carte Objectif apparaît au-dessus de la boîte d’entrée. Il affiche l’état actuel, l’objectif et le temps écoulé. Sélectionnez l’heure pour voir les détails des objectifs, y compris le temps utilisé, les jetons utilisés et le budget des jetons.
+
+Le budget des jetons dans les détails des objectifs appartient à cet objectif. Les quotas de crédit par utilisateur fixés par un administrateur sont un réglage au niveau du compte qui détermine si vous pouvez commencer de nouvelles tâches. Les deux réglages s’appliquent indépendamment.
+
+Après l’accomplissement de l’Objectif, la carte Objectif disparaît et la réponse finale de l’assistant affiche un marqueur de complétion tel que « Atteint l’objectif dans une durée ».
+
+### Pause, reprise, et dissipe [#goal-tasks-pause-resume-and-clear]
+
+- Objectif : modifier l’objectif tout en préservant le temps et les jetons déjà utilisés.
+- Pause Objectif : arrêter la future continuation automatique ; Un virage déjà en cours peut encore se terminer naturellement.
+- Reprendre un objectif : continuer un objectif qui est en pause, nécessite de l’attention ou s’est arrêté à une limite.
+- Objectif clair : supprimer les enregistrements de statut et d’utilisation de l’objectif de la tâche ; cela ne force pas l’arrêt de la course native actuelle.
+
+Utilisez la tâche **Arrête** action si vous voulez interrompre immédiatement le tour en cours. Mettre un objectif en pause et arrêter le tour en cours sont des actions différentes.
+
+### Statuts communs [#goal-tasks-common-statuses]
+
+| Statut | Signification |
+| --- | --- |
+| Objectif en cours | LinkSense travaille automatiquement vers cet objectif. |
+| But mis en pause | L’objectif ne continuera pas automatiquement à moins que vous ne le repreniez. |
+| Un objectif nécessite de l’attention | LinkSense a besoin de votre avis, d’un changement externe ou d’une confirmation. |
+| Utilisation des objectifs limités | La limite d’utilisation actuelle empêche la poursuite de l’Objectif. |
+| Budget objectif limité | The Goal a atteint son budget de jetons configuré. |
+| But accompli | LinkSense a marqué l’objectif comme accompli. |
+
+## Organiser les tâches avec des projets [#projects]
+
+Les projets gardent ensemble les tâches et fichiers associés. Les tâches du même projet partagent leurs fichiers. Les tâches personnelles sans projet partagent un espace de travail commun. Vos tâches personnelles partagent également les plugins installés, les compétences, les outils et l’état de connexion.
+
+### Créer un projet [#projects-create-a-project]
+
+1. Cliquez **+** à côté de Projets dans la barre latérale et entrez un nom.
+2. Sélectionnez le projet au-dessus du compositeur lors de la création d’une tâche.
+3. Envoie un message. Les autres tâches du projet peuvent continuer à utiliser ces fichiers.
+
+Chaque tâche peut appartenir à un seul projet. Agrandir ou rabaisser les projets, les faire glisser pour les réorganiser, et épingler des tâches individuelles. Les noms et affectations sont enregistrés sur votre compte ; Les préférences d’extension restent dans le navigateur actuel.
+
+Les nouvelles tâches de développement d’applications appartiennent à **制作应用**. Ce projet est créé lors de la création initiale d’une tâche de développement, ou réutilisé si vous avez déjà un projet portant ce nom. Son icône et sa couleur peuvent être modifiées ; son nom est fixe. Les tâches de développement existantes conservent leurs projets et fichiers originaux. Les tâches d’aperçu, de test et d’application quotidienne ne sont pas affectées.
+
+### Modifier le nom, l’icône et la couleur [#projects-edit-the-name-icon-and-color]
+
+Choisissez **Modifier** dans le menu **…** d’un projet. Cliquez sur l’icône à côté du nom, choisissez une couleur, puis choisissez une icône dans la grille. Cliquez sur **Terminé** pour revenir à la boîte de dialogue, puis **Enregistrer**. Le nom, l’icône et la couleur sont sauvegardés ensemble et affichés dans la barre latérale et le sélecteur de projet. **Annuler** rejette tes changements. Vous pouvez aussi choisir une icône et une couleur lors de la création d’un projet.
+
+Les projets existants utilisent par défaut l’icône de dossier. Les tâches sans projet apparaissent sous **Récents**, tandis que les tâches épinglées restent sous **Épinglés**.
+
+### Déplacez une tâche [#projects-move-a-task]
+
+Glissez une tâche sur un projet ou choisissez Déplacer pour projeter depuis son menu. Terminez le travail en cours, les messages en file d’attente, les plans en attente et les objectifs actifs avant de les déplacer.
+
+Les tâches de développement d’applications ne peuvent pas être transférées à un autre projet ni quitter leur projet actuel. Vous pouvez toujours les épingler, archiver et réorganiser au sein de leur groupe. Avant de supprimer un projet contenant des sources d’applications, supprimez les applications associées dans Mes applications.
+
+Les nouveaux messages utilisent les fichiers du projet de destination. Les fichiers du projet original y sont toujours présents, et les pièces jointes historiques restent accessibles. Les pièces jointes téléchargées qui n’ont pas été envoyées sont également conservées.
+
+Une tâche dérivée d’une réponse hérite du projet et partage ses fichiers. Chaque tâche conserve son propre historique de messages.
+
+### Supprimer des tâches ou supprimer des projets [#projects-delete-tasks-or-remove-projects]
+
+Supprimer une tâche supprime son historique de messages et conserve les fichiers du projet. **Retirer le projet** déplace ses tâches dans l’espace de travail commun et conserve les fichiers originaux ainsi que les pièces jointes historiques. Supprime les fichiers séparément quand tu veux les supprimer.
+
+Les services de candidature en ligne ont leur propre environnement de travail. Regrouper une tâche applicative dans un projet organise la tâche sans déplacer les fichiers de service ni l’état de connexion dans votre espace de travail personnel.
+
+### Durée d’exécution et fichiers historiques [#projects-runtime-and-historical-files]
+
+Vos tâches personnelles ne font qu’un seul environnement personnel. Un environnement inactif s’arrête pour économiser des ressources tout en conservant les fichiers et les paramètres, puis se lance automatiquement quand c’est nécessaire. L’environnement reste en fonctionnement tant que les tâches, sites web ou services sont actifs.
+
+Les fichiers des tâches créées avant la mise à jour sont conservés dans le répertoire `imports/task-id` du projet. Les pièces jointes historiques restent accessibles depuis l’historique des messages.
+
+## Consultez l’avancement des tâches, les artefacts et les sources [#progress-and-sources]
+
+### Activité [#progress-and-sources-activity]
+
+Une tâche en cours d’exécution affiche une activité visible dans l’ordre temporel, telle que le raisonnement des progrès, les plans, les actions de l’outil, la compactation du contexte et les changements de statut. Développez un élément pour voir les détails que LinkSense est autorisé à afficher. Les secrets, adresses internes et données protégées sont cachés.
+
+La reconnexion réseau, un rafraîchissement de page ou la relivraison d’événements pour le même tour se poursuivent ce tour ; Cela ne signifie pas que la tâche a été exécutée une seconde fois. Pour les longs historiques, LinkSense charge les échanges antérieurs en pages. Faites défiler ou sélectionnez un groupe d’histoire pour continuer à les consulter.
+
+### Aperçu de la tâche [#progress-and-sources-task-overview]
+
+L’aperçu en début de tâche rassemble :
+
+- sous-agents, leurs états actuels et le nombre de complétion ;
+- des artéfacts enregistrés, avec aperçu ou téléchargement pour les types pris en charge ;
+- Sources web externes identifiées dans les réponses des assistants.
+
+Si une tâche n’a pas utilisé de sous-agents, généré de fichiers ou inclus des sources externes, la zone associée est vide. Utilisez l’activité ci-dessous des messages pour les plans et les détails des outils.
+
+### Sources externes et citations de connaissances [#progress-and-sources-external-sources-and-knowledge-citations]
+
+La liste **Sources** collecte et déduplique les liens web externes issus des réponses des assistants. Sélectionner une source ouvre la page originale dans une nouvelle fenêtre. Si aucun titre de page n’est disponible, l’URL est affichée. Cette liste vous aide à revenir à la source ; il ne s’agit pas d’une approbation supplémentaire de contenu externe par LinkSense.
+
+Les citations de la base de connaissances utilisent des marqueurs numérotés dans la réponse et peuvent ouvrir un extrait cité ou une source d’emplacement. Ils sont distincts des sources web externes. Voir [Utilisez des bases de connaissances et relisez les citations](../knowledge-bases/index.mdx#use-and-citations).
+
+### Vérifier les résultats importants [#progress-and-sources-verify-important-results]
+
+- Vérifiez que les conclusions correspondent aux sources citées et aux fichiers joints.
+- Pour les décisions concernant les finances, les questions juridiques, la santé, la sécurité ou les systèmes de production, ouvrez et consultez la source principale.
+- Téléchargez les artefacts importants dans un lieu approuvé par l’organisation. Les URL de téléchargement temporaires ne sont pas des liens de partage permanents.
+
+Voir [Fichiers, aperçus et artefacts](#files-and-results) pour un aperçu et un comportement de téléchargement.
+
+## Fichiers, aperçus et livrables [#files-and-results]
+
+### Ajouter des pièces jointes [#files-and-results-add-attachments]
+
+Choisissez les fichiers dans le compositeur, attendez la fin du téléchargement, puis envoyez la requête. Les fichiers Common Office, PDF, texte, image, tableur, présentation et archives sont acceptés sous réserve des limites indiquées par le déploiement.
+
+Nommez les fichiers dans votre invite lorsque plusieurs sont joints.
+
+Lorsque vous collez une grande quantité de texte, LinkSense peut la convertir en pièce jointe texte. Lisez son nom et son contenu avant de l’envoyer. Il reste soumis aux mêmes limites de taille, d’autorisation et de sécurité qu’un fichier téléchargé manuellement.
+
+### Fichiers d’aperçu [#files-and-results-preview-files]
+
+Les pièces jointes et livrables supportés s’ouvrent à l’intérieur de la tâche. Les images, PDF, fichiers Word, tableurs, présentations, HTML, archives, texte et audio ou vidéo pris en charge utilisent des contrôles appropriés de page, zoom, feuille de calcul, diapositive, liste de fichiers ou lecture. Un fichier qui ne peut pas être prévisualisé en toute sécurité peut tout de même être téléchargé lorsque vous y avez accès.
+
+Les aperçus sont en lecture seule. Les livrables HTML s’exécutent sur une surface isolée et ne peuvent pas hériter des privilèges de la page LinkSense.
+
+Les aperçus de présentation, Word, tableur et HTML peuvent joindre une requête à un contenu sélectionné. Vous pouvez collecter plusieurs demandes avant de les envoyer ; voir [Annoter un aperçu de fichier](#file-annotations).
+
+### Voir les diagrammes dans les réponses [#files-and-results-view-diagrams-in-responses]
+
+Après la fin d’un bloc Sirène, LinkSense l’affiche sous forme d’aperçu de diagramme adapté au thème actuel de lumière ou d’obscurité. Ouvrez les actions du diagramme pour copier la source de la Sirène, exporter un PNG, ou agrandir l’aperçu et zoomer ou déplacer les détails. Tant qu’une réponse est encore en flux, un état de chargement empêche que la source incomplète soit traitée comme le diagramme final.
+
+Si le rendu échoue, vous pouvez toujours copier la source et l’envoyer avec l’erreur observée à la tâche pour correction. Un PNG exporté reflète le rendu actuel et n’est pas enregistré comme un nouvel artefact de tâche.
+
+### Livrables de téléchargement [#files-and-results-download-deliverables]
+
+Les documents et médias générés apparaissent sous forme de cartes de livrables. Une action de téléchargement crée une URL autorisée de courte durée. Si elle expire, téléchargez à nouveau depuis la tâche ; ne considérez pas l’URL temporaire comme un partage permanent.
+
+Un livrable HTML peut également être publié en tant que site public qui ne nécessite pas de connexion. Voir [Publiez et gérez des sites](#publish-websites) pour la publication, les mises à jour, la désédition et les limites de sécurité.
+
+### Parcourez les artefacts de la tâche en un seul endroit [#files-and-results-browse-task-artifacts-in-one-place]
+
+Ouvrez **Bibliothèque de ressources** dans la barre latérale et choisissez **Fichiers des tâches** pour parcourir les livrables enregistrés de vos tâches par nom de tâche et heure de création. Les fichiers pris en charge utilisent la même expérience d’aperçu que la page de tâche, et chaque fichier listé peut être téléchargé directement. Les artefacts provenant de tâches archivées restent listés avec une étiquette archivée.
+
+La recherche correspond à la fois aux noms de tâches et aux noms de fichiers. Utilisez le filtre de type de fichier à côté pour afficher des images, Word, Excel, PPT, HTML, PDF, archives, texte, audio, vidéo ou autres fichiers. Combinez le filtre avec un terme de recherche pour affiner davantage les résultats, ou sélectionnez **Tous les types** pour supprimer la restriction de type.
+
+Sélectionnez un nom de tâche pour revenir à la tâche d’origine afin de mieux comprendre le contexte. Les artefacts d’une tâche supprimée définitivement ne sont plus disponibles via cette liste.
+
+### Meilleurs résultats de fichiers [#files-and-results-better-file-results]
+
+- Spécifiez le format et le nom de fichier requis.
+- Décrivez la structure de répertoire ou d’archive pour plusieurs fichiers.
+- Examinez l’aperçu avant de demander des révisions.
+- Déplacez les téléchargements importants vers un lieu de stockage approuvé par l’organisation.
+
+<Callout type="warn" title="Données sensibles">
+
+Téléchargez uniquement les informations nécessaires pour le travail. Un plugin ou un outil externe sélectionné peut traiter les entrées selon ses capacités déclarées, il faut donc d’abord examiner son résumé des risques.
+
+</Callout>
+
+## Publiez et gérez des sites [#publish-websites]
+
+LinkSense peut publier un livrable HTML enregistré d’une tâche en tant que site public. Les visiteurs n’ont pas besoin de se connecter, donc toute personne possédant le lien peut l’ouvrir. Examinez la page pour des informations sensibles avant de publier.
+
+### Publiez un nouveau site [#publish-websites-publish-a-new-site]
+
+1. Ouvrez l’aperçu d’un livrable HTML dans une tâche.
+2. Choisissez **Publier en tant que site** dans la barre d’aperçus.
+3. Sélectionnez **Nouveau site**, puis saisissez un nom de site et une description optionnelle.
+4. Saisissez éventuellement un nom de lien, ou laissez-le vide pour en générer un.
+5. Choisissez **Publier le site** et attendez le lien du site.
+6. Copiez le lien et testez le contenu ainsi que les interactions dans une fenêtre déconnectée.
+
+Sélectionner à nouveau **Publier en tant que site** pour le même HTML affiche l’adresse actuelle et le statut de publication du site lié. Vous pouvez aussi choisir **Mettre à jour un autre site**.
+
+Un nom de lien personnalisé doit contenir 3–80 lettres, chiffres ou traits d’union sans trait d’union initial ou de fin. Choisissez un autre nom s’il est déjà utilisé.
+
+Un site peut inclure du CSS, du JavaScript, des images, des polices et d’autres ressources statiques enregistrées lors de l’enregistrement du livrable. La publication échoue si un fichier HTML autonome fait référence à des fichiers locaux qui n’ont pas été sauvegardés. Demandez à LinkSense de régénérer et d’enregistrer l’intégralité du livrable web dans ce cas.
+
+### Mettre à jour un site existant [#publish-websites-update-an-existing-site]
+
+Lorsque vous publiez à partir d’un livrable HTML plus récent, choisissez **Mettre à jour le site existant**, recherchez un site que vous possédez, puis sélectionnez-le. Après une mise à jour réussie :
+
+- Le site conserve son lien, son nom et sa description ;
+- le contenu public passe au nouveau livrable web ;
+- la tâche source devient la tâche qui a fourni la nouvelle page ;
+- Un site non publié reste inédit jusqu’à ce que vous le republiiez depuis **Mes sites**.
+
+Vous pouvez également ouvrir **Bibliothèque de ressources → Mes sites**, choisir **Publier la mise à jour** dans le menu d’un site, et sélectionner un livrable HTML à partir de la tâche source actuelle. Si cette tâche a été supprimée, commencez par un livrable dans une autre tâche et choisissez **Mettre à jour le site existant**.
+
+### Gérer mes sites [#publish-websites-manage-my-sites]
+
+Ouvrez **Bibliothèque de ressources → Mes sites** pour rechercher par nom de site ou lien et filtrez par **Publié** ou **Inédit**.
+
+Chaque site propose ces actions :
+
+- **Visitez ou copiez le lien :** ouvrir la version publique actuelle ou partager son lien.
+- **Édit :** changer son nom, sa description ou son nom du lien. Changer le nom du lien invalide immédiatement l’ancien lien.
+- **Mise à jour :** sélectionner un livrable HTML plus récent depuis la tâche source.
+- **Déséditer ou republier :** contrôler l’accès des visiteurs. La désédition conserve le site, le lien réservé et la version sauvegardée.
+- **Télécharger le site web :** télécharger la version complète actuelle sous forme d’archive ZIP.
+- **Supprimer le site :** supprimer définitivement le site, toutes les versions publiées et sa réservation de liens. La tâche et le livrable originaux sont toujours présents, et le nom du lien supprimé peut être utilisé à nouveau.
+
+Supprimer définitivement la tâche source dépublie automatiquement ses sites, mais leurs versions sauvegardées restent téléchargeables depuis **Mes sites**. Vous pouvez ensuite générer une page dans une autre tâche, choisir **Mettre à jour le site existant**, la reconnecter, puis republier.
+
+### Accès public et limites de sécurité [#publish-websites-public-access-and-security-boundaries]
+
+Les sites publics fonctionnent sur une surface isolée. Ils ne peuvent pas lire les cookies de connexion LinkSense, le stockage local ni la page mère, et ne peuvent pas enregistrer un travailleur de service. Cette fonctionnalité héberge des sites web statiques et des interactions côté navigateur ; il ne fait pas tourner de programmes serveur ni n’hérite de vos permissions LinkSense.
+
+Les navigateurs des visiteurs chargent directement des ressources HTTPS externes, sous réserve de la disponibilité et des règles d’origine croisée. Un site ne peut pas compter sur l’authentification LinkSense, le repli de route côté serveur ou un stockage persistant du navigateur d’origine similaire. Avant de publier, confirmez que :
+
+- la page et ses ressources statiques se chargent complètement ;
+- elle ne contient aucun mot de passe, jeton, donnée personnelle, adresse interne ou contenu de tâche qui devrait rester privé ;
+- Les formulaires et requêtes externes n’envoient pas de données à un service non fiable ;
+- Les anciens liens se comportent comme prévu après que vous ayez désédité, renommé ou supprimé le site.
+
+Voir [Fichiers, aperçus et livrables](#files-and-results) pour l’aperçu, le téléchargement et la navigation des artefacts de tâches.
+
+## Annoter un aperçu de fichier [#file-annotations]
+
+Les annotations conservent l’emplacement et la modification demandée ensemble lors de la révision des présentations, des documents Word, des tableurs et des artefacts HTML. Une annotation crée une nouvelle demande de tâche ; il n’édite pas directement le fichier original dans le navigateur.
+
+### Ajouter des annotations [#file-annotations-add-annotations]
+
+1. Ouvrez un aperçu de fichier supporté depuis une tâche.
+2. Sélectionnez **Annoter** ou passez en mode annotion.
+3. Sélectionnez des éléments de diapositive, du contenu Word, une plage de tableur, un tableau ou une image, ou des éléments HTML.
+4. Saisissez une question ou une demande de modification et sélectionnez **Ajouter une annotation**.
+5. Sélectionnez d’autres lieux ou ouvrez **Annotations en attente** pour les examiner.
+
+Un lot peut contenir jusqu’à 20 annotations. La liste identifie la page, la diapositive, la feuille ou les éléments de chaque élément. Vous pouvez localiser ou retirer un article, ou éliminer le lot.
+
+### Traiter le lot [#file-annotations-process-the-batch]
+
+Sélectionnez **Traiter tout** quand vous êtes prêt. LinkSense combine les annotations restantes pour le même fichier en une seule requête tout en préservant la relation entre chaque sélection et instruction. Si l’envoi échoue, les brouillons restent disponibles pour que vous puissiez corriger l’état réseau ou la tâche et réessayer.
+
+Passer à un autre fichier élimine les annotations non envoyées pour le fichier en cours. Vérifiez d’abord le fichier et les sélections, surtout lorsque l’aperçu indique que le contenu mis à jour est disponible.
+
+### Réouverture des annotations historiques [#file-annotations-reopen-historical-annotations]
+
+Les annotations envoyées restent sous forme de cartes de messages utilisateur dans la tâche. Sélectionnez une carte pour rouvrir le fichier et l’emplacement correspondants. Si la tâche ou le fichier a été supprimé définitivement, la carte ne peut pas restaurer son contenu.
+
+## Générer des images [#generate-images]
+
+Après qu’un administrateur ait configuré et activé un modèle de génération d’images, décrivez l’image que vous souhaitez dans une tâche ordinaire. LinkSense utilise sa capacité intégrée de génération d’images et enregistre les résultats réussis comme des artefacts de tâche.
+
+### Rédigez une demande claire [#generate-images-write-a-clear-request]
+
+Incluent :
+
+- Sujet : la personne, le produit, la scène ou les éléments graphiques ;
+- style : photographie, illustration, 3D, affiche, icone, etc. ;
+- Composition : point de vue, disposition, espacement, couleurs et éclairage ;
+- Texte : toute copie courte qui doit apparaître et où elle doit se trouver ;
+- Sortie : Nombre d’images, dimensions ou orientation, et si l’arrière-plan doit être transparent.
+
+Par exemple : « Générez une icône 1024×1024 produit minimal, gardez le sujet complet à l’intérieur de la toile avec du rembourrage de chaque côté, et utilisez un fond transparent. » LinkSense demande normalement une image lorsqu’aucun comptage n’est donné. Le fournisseur et le modèle configurés peuvent imposer des limites de nombre ou de taille plus faibles.
+
+### Modifier une image existante [#generate-images-edit-an-existing-image]
+
+Téléchargez une photo et décrivez le changement, par exemple : « Remplacez l’arrière-plan de cette photo par une plage tout en préservant la personne, les vêtements et la pose. » Vous pouvez aussi demander une autre modification d’une image déjà générée. LinkSense envoie l’image originale avec vos instructions et crée une nouvelle image enregistrée sans écraser la source.
+
+Utilisez des images PNG, JPEG ou WebP jusqu’à 8 Mio chacune et 10 Mio au total, y compris un masque optionnel. Jusqu’à quatre images de référence sont acceptées, sous réserve des limites du modèle sélectionné. Expliquez le rôle de chaque référence. Un masque d’édition local doit être un PNG transparent correspondant aux dimensions de la première image ; Les régions transparentes indiquent où modifier.
+
+Un administrateur doit configurer un modèle qui supporte l’édition. Le support des images de référence n’implique pas le support du masque. Les requêtes non prises en charge sont rapportées explicitement plutôt que de générer silencieusement uniquement à partir du texte. L’édition générative peut modifier d’autres détails, donc inspectez le résultat avant utilisation.
+
+### Fonds transparents [#generate-images-transparent-backgrounds]
+
+Demandez explicitement un fond transparent pour les autocollants, icônes, découpes de produits ou éléments de composition. Les sujets simples avec des bords clairs peuvent être traités automatiquement. Les cheveux, la fourrure, le verre, la fumée, la lueur et les matériaux translucides nécessitent un support natif du modèle pour des bords transparents de haute qualité. Si le modèle actuel ne peut pas fournir cette qualité, LinkSense rapporte la limitation au lieu de remplacer silencieusement un résultat de qualité inférieure.
+
+### Voir les résultats et le coût [#generate-images-view-results-and-cost]
+
+Les images générées remplacent directement la zone de chargement. Lorsqu’un tour génère plusieurs images, l’image sélectionnée apparaît à gauche avec des vignettes à droite. Cliquez sur une vignette pour changer d’image. Cliquez sur l’image principale pour ouvrir un aperçu plus grand et survolez pour révéler le bouton de téléchargement ; Sur les appareils tactiles, le bouton de téléchargement reste visible. Les images reçoivent des noms de scènes descriptifs, avec des numéros de séquence pour les images générées ensemble. Vous pouvez aussi les trouver sous **Artefacts de la bibliothèque → des tâches**. L’administrateur configure un prix par image pour le service de génération ; Le nombre d’images réellement générées contribue à l’utilisation et aux crédits.
+
+### Si la génération échoue [#generate-images-if-generation-fails]
+
+Les images créées avec du code ou un rendu SVG apparaissent également dans la galerie d’images une fois enregistrées comme artefacts de tâche, avec des contrôles d’aperçu, de commutation et de téléchargement. Les images de référence vues lors du traitement ne remplacent pas les livrables finaux.
+
+- **Non configuré ou désactivé :** demander à un administrateur de configurer la génération d’images.
+- **Le prestataire a rejeté la demande :** examiner la requête, le modèle ou la configuration de l’administrateur avant de soumettre une demande révisée.
+- **Service indisponible :** réessayer plus tard.
+- **Fond transparent non supporté :** utiliser un modèle avec transparence native, ou demander un arrière-plan classique si la qualité des contours le permet.
+- Si la page signale une défaillance d’enregistrement ou d’utilisation d’un artefact, ne générez pas immédiatement à nouveau. Le prestataire peut déjà avoir traité et facturé la demande ; Demandez d’abord à un administrateur de le vérifier.
+
+Voir [Fichiers, aperçus et artefacts](#files-and-results) pour l’aperçu, le téléchargement et le comportement de liens temporaires.
+
+## Utiliser l’entrée vocale [#voice-input]
+
+L’entrée vocale ne convertit la parole en texte que dans le champ d’entrée. Il ne soumet jamais automatiquement une tâche ni n’associe l’enregistrement à la tâche.
+
+### Enregistrer et transcrire [#voice-input-record-and-transcribe]
+
+1. Sélectionnez le bouton microphone dans le compositeur de tâches ou un champ d’action de sélection Office.
+2. La première fois que vous l’utilisez, laissez la page LinkSense actuelle accéder à votre microphone.
+3. Commencez à parler quand la durée de l’enregistrement et la forme d’onde apparaissent.
+4. Sélectionnez le bouton d’arrêt. L’enregistrement s’arrête également automatiquement à cinq minutes.
+5. Attends que **Transcription de discours** finisse.
+6. Révisez et modifiez le texte inséré dans le champ, puis choisissez d’envoyer ou d’exécuter l’action.
+
+Vous ne pouvez pas commencer un nouvel enregistrement ni soumettre la saisie actuelle pendant la transcription. Le texte existant est conservé, et la transcription est ajoutée à la version actuelle.
+
+### Limites d’enregistrement [#voice-input-recording-limits]
+
+- Un enregistrement doit durer au moins une seconde.
+- Un enregistrement unique peut durer jusqu’à cinq minutes.
+- Si l’audio dépasse la taille de transfert sûre, raccourcis-le et enregistre à nouveau.
+- Le navigateur doit prendre en charge `MediaRecorder`, et l’appareil doit disposer d’un microphone disponible.
+
+Web et Teams suivent les mêmes règles. L’audio n’existe que pendant la demande d’enregistrement et de transcription en cours. L’enregistrement original n’est pas stocké en pièce jointe de tâche ni écrit dans le stockage de fichiers, l’espace de travail, les enregistrements d’audit ou les journaux.
+
+### Si l’entrée vocale n’est pas disponible [#voice-input-if-voice-input-is-unavailable]
+
+- Permission refusée : autoriser l’accès au microphone dans le navigateur ou les permissions du site Teams, puis réessayer.
+- Pas d’appareil : vérifiez la connexion du microphone et le périphérique d’entrée système.
+- Activité des appareils : fermer les applications qui ont un accès exclusif au microphone.
+- Aucune voix reconnue : rapprochez-vous du micro, réduisez le bruit de fond, et enregistrez à nouveau.
+- Transcription expirée ou échouée : réessayez plus tard ou continuez avec la saisie clavier.
+
+<Callout type="warn" title="Confidentialité">
+
+L’enregistrement est envoyé au service de reconnaissance vocale configuré par l’opérateur de déploiement. Ne divulguez pas de mots de passe, de clés ou d’informations sensibles qui ne sont pas nécessaires pour la tâche.
+
+</Callout>
+
+## Envoyer des requêtes pendant qu’une tâche est en cours d’exécution [#running-requests]
+
+Quand un tour est encore en cours, LinkSense utilise le contenu de votre message et la préférence en **Paramètres → Général** pour choisir une action sûre.
+
+### Dirige le virage actuel [#running-requests-steer-the-current-turn]
+
+Le guidage est utile pour clarifier immédiatement uniquement par texte :
+
+- Analysez seulement les trois derniers mois.
+- Mettez la conclusion en premier.
+- Arrêtez de faire une présentation et créez plutôt un cahier d’exercices.
+
+La clarification est transmise à l’exécution en cours plutôt que de commencer un tour parallèle.
+
+### Mettez la prochaine demande en file d’attente [#running-requests-queue-the-next-request]
+
+La file d’attente préserve le tour en cours et commence la nouvelle requête une fois terminée. LinkSense met toujours en file une requête qui :
+
+- contient un nouvel accessoire ;
+- change des plugins, des compétences ou des bases de connaissances ; ou
+- nécessite un contexte d’exécution neuf et stable.
+
+Les requêtes en attente apparaissent dans la tâche et peuvent être modifiées ou supprimées lorsque l’interface propose ces actions.
+
+### Arrête [#running-requests-stop]
+
+Arrêter demande une interruption. Des messages ou livrables déjà visibles peuvent rester, tandis qu’une action inachevée de l’outil peut ne pas produire de résultat utilisable.
+
+### Choisissez le modèle par défaut [#running-requests-choose-the-default]
+
+En **Paramètres → Messages généraux → envoyés pendant l’exécution**, choisissez **Exécution du courant de direction** ou **Mettre en attente pour la prochaine demande**. Cette préférence s’applique au Web et à Teams ; Les requêtes portant des ressources sont toujours en file d’attente.
+
+## Gérer l’historique des tâches [#manage-history]
+
+### Tâches récentes [#manage-history-recent-tasks]
+
+La barre latérale liste les tâches non archivées par activité récente et en charge d’autres au fur et à mesure que vous faites défiler. Une tâche accomplie en arrière-plan affiche un marqueur non lu jusqu’à ce que vous l’ouvriez.
+
+### Recherche [#manage-history-search]
+
+Utilisez **Rechercher** dans la barre latérale pour faire correspondre les titres de tâches, messages, pièces jointes, artefacts, plugins ou compétences. Les résultats n’incluent jamais la tâche d’un autre utilisateur.
+
+Lorsque vous ouvrez un long historique de tâches, LinkSense affiche d’abord le contenu récent et charge les échanges antérieurs dans les pages. Chargez l’historique pertinent avant de citer ou de partager des contenus plus anciens.
+
+### Renom et épinglage [#manage-history-rename-and-pin]
+
+Renommer une tâche à partir de ses actions. Intégrer le travail en cours au groupe Pinned ; Déverrouillez-le dans Récent. Si la limite de broches est atteinte, détache d’abord une tâche ancienne.
+
+Les tâches épinglées et récentes peuvent chacune être réorganisées par glisser-déposer ou clavier. Les modifications simultanées de deux fenêtres utilisent la dernière version du serveur. Voir [Tâches de branchement et de réorganisation](#branch-and-organize) pour les instructions complètes.
+
+### Continuer dans une direction différente de l’histoire [#manage-history-continue-a-different-direction-from-history]
+
+Sélectionnez **Branchez-vous vers un nouveau chat** sur la réponse finale d’assistant d’un tour terminé pour copier l’historique et le contexte à l’exécution à travers ce point dans une nouvelle tâche indépendante. Une tâche ne peut pas être branchée pendant l’exécution, lorsqu’elle a une requête en file d’attente, ou après son archivage.
+
+### Archives [#manage-history-archive]
+
+L’archivage supprime une tâche de la liste récente sans la supprimer immédiatement. Ouvrez **Paramètres → Tâches archivées** pour le restaurer ou le supprimer.
+
+### Suppression permanente [#manage-history-permanent-deletion]
+
+Supprimer une tâche ou effacer toutes les tâches archivées ne peut pas être annulé. Les messages récupérables, les pièces jointes et l’historique des tâches sont supprimés conformément à la politique système. Des faits d’audit, d’utilisation ou de ressources peuvent subsister, mais ne peuvent pas restaurer le contenu des tâches.
+
+<Callout type="info" title="Organisation">
+
+Épingle le travail actif, archive le travail terminé, et supprime définitivement seulement après avoir téléchargé ce dont tu as encore besoin.
+
+</Callout>
+
+### Partagez la conversation en cours [#manage-history-share-the-current-conversation]
+
+Sélectionnez **Partager** dans l’en-tête de la tâche, relisez l’aperçu, puis sélectionnez **Lien copié**. Le lien ne contient que les messages et les informations jointes dans cette aperçu, sans votre nom. Les pièces jointes ne sont pas disponibles en téléchargement public.
+
+L’aperçu est corrigé lorsque la boîte de dialogue s’ouvre. Les messages ultérieurs, les sorties streamées supplémentaires et les modifications de contenus existants ne sont pas ajoutés à ce partage. Pour partager du contenu mis à jour, fermez et rouvrez la boîte de dialogue et copiez un nouveau lien. Chaque nouveau lien a son propre instantané ; les liens antérieurs restent inchangés.
+
+L’aperçu du partage ne charge pas d’historique supplémentaire. Pour inclure les messages plus anciens, chargez-les dans la tâche originale avant d’ouvrir la boîte de dialogue de partage. Supprimer définitivement la tâche source invalide également ses liens de partage.
+
+## Tâches de branchement et de réorganisation [#branch-and-organize]
+
+### Dérivation à partir d’une réponse [#branch-and-organize-branch-from-a-response]
+
+Dans une tâche arrêtée, trouvez la réponse de l’assistant final que vous souhaitez utiliser comme point de branchement et sélectionnez **Branchez-vous vers un nouveau chat** parmi ses actions de message. LinkSense crée et ouvre une nouvelle tâche contenant la conversation, les pièces jointes, les artefacts, les citations de connaissances et le contexte d’exécution reprenable via cette réponse.
+
+La branche n’inclut rien après la réponse sélectionnée et ne modifie pas la tâche source. Son titre reçoit un suffixe de séquence et il commence à être détaché. Les messages, fichiers et exécutions ultérieures sont indépendants dans les deux tâches.
+
+Vous ne pouvez pas ramifier lorsque :
+
+- La tâche source est en cours d’exécution ou en démarrage, ou possède une requête en file d’attente.
+- La réponse sélectionnée n’est pas la réponse finale de l’assistant d’un tour terminé.
+- La tâche source est archivée ou son contexte d’exécution ne peut pas être copié en toute sécurité.
+
+Une opération ratée ne laisse pas de tâche partielle visible. Confirmez que la tâche source s’est arrêtée avant de réessayer.
+
+### Réorganisation des tâches [#branch-and-organize-reorder-tasks]
+
+Glisser les tâches dans les **Épinglés** et **Récents** groupes dans la barre latérale. Une tâche ne peut se déplacer que dans son groupe actuel ; Épinglez-le ou débroyez-le d’abord, puis choisissez sa position dans le groupe de destination.
+
+Avec un clavier, concentrez-vous sur la poignée de réordre, appuyez sur Espace pour reprendre la tâche, utilisez les touches haut et bas, puis appuyez à nouveau sur Espace pour enregistrer. Appuyez sur Échap pour annuler. Si une autre fenêtre modifie la liste en même temps, LinkSense peut rejeter l’ordre obsolet ; Rafraîchir et recommander à nouveau.
+
+### Archivage et suppression [#branch-and-organize-archiving-and-deletion]
+
+Une branche et sa source sont des tâches indépendantes. L’archivage ou la suppression définitive de l’un n’affecte pas automatiquement l’autre. Si des artefacts ont été copiés dans une branche, accédez-les et téléchargez-les depuis la tâche appropriée sous les autorisations actuelles.

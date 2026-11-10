@@ -1,0 +1,32 @@
+---
+title: "Elige un despliegue"
+description: "Elige Core o Full según los requisitos de conocimiento y la capacidad del plan."
+---
+
+LinkSense puede funcionar en tu propio servidor o nube privada. Core y Full utilizan el mismo código de producto y difieren en si los servicios de conocimiento integrados están desplegados.
+
+## Core y Full [#core-and-full]
+
+| Edición            | Incluye                                                                                           | Elíjalo cuando                                                                         |
+| ------------------ | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [Core](./core.mdx) | Espacio de trabajo de agentes, adjuntos de tareas, habilidades, plugins, MCP, aplicaciones y gestión organizacional | No necesitas análisis sintáctico, indexado o recuperación incorporados para el Conocimiento organizacional. |
+| [Full](./full.mdx) | Core más Conocimiento integrado impulsado por Elasticsearch y Docling                                  | Necesitas procesar, recuperar y citar documentos organizativos.                      |
+
+## Recursos del plan [#plan-resources]
+
+| Edición | Punto de partida de la evaluación            | Prevuelo de memoria Docker                                                 |
+| ------- | ------------------------------------ | ----------------------------------------------------------------------- |
+| Core    | 4 vCPU y 60 GiB de espacio libre en SSD  | 8 GiB                                                                   |
+| Full | 8 vCPU y 120 GiB de espacio libre en SSD | 10 GiB para una instalación nueva de v0.3.13; consulta el manifiesto de la versión seleccionada |
+
+Permite la sobrecarga de VM al asignar la memoria de Docker Desktop. En un Mac de 16 GiB, empieza con Core y considera asignar 10–12 GB a Docker Desktop, luego revisa los informes de memoria de Docker Engine.
+
+Para despliegues de Full organizacionales, comienza la planificación de capacidad en 16 vCPU, 32 GiB de memoria y 200 GiB de espacio libre SSD. Estas recomendaciones asumen una API de modelo externa. Planifica el cálculo y las GPUs para la inferencia local por separado. Prueba cargas de trabajo reales en picos de concurrencia, incluyendo documentos grandes y OCR. Superar el prevuelo no establece la capacidad máxima.
+
+## Elige un método de instalación [#choose-an-installation-method]
+
+- Prepara Docker, los recursos de alojamiento y el acceso al registro: sigue [Preparar Docker y redes](./prepare.mdx).
+- Instala las imágenes publicadas en Docker: abre la guía [Core](./core.mdx) o [Full](./full.mdx). No es necesario consultar la fuente.
+- Usa un agente de programación: dale el [Guía de instalación de repositorios](https://raw.githubusercontent.com/LingX-AI/linksense/main/Install.md) y tu objetivo de despliegue.
+- Cambiar el código o las imágenes de compilación: sigue [Desarrollo de la fuente](./development.mdx).
+- Gestiona una instalación existente: empieza por [Operaciones, reparaciones y mejoras](./operations.mdx).

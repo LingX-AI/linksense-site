@@ -1,0 +1,50 @@
+---
+title: "運用、修理、アップグレード"
+description: "Dockerホストを確認し、既存のデプロイメントを管理し、アップグレードを安全に処理してください。"
+---
+
+## 環境とネットワーク [#environment-and-network]
+
+- Linux x86_64 / ARM64およびmacOS Intel / Apple Siliconに対応しています。 macOSのDocker DesktopでLinuxコンテナを使用し、長期的な共有デプロイメントにはLinuxを好みます。
+- ローカルのDocker Engine（API v1.45+）、Docker Compose v2.24.4+、`curl`を使用してください。`docker version`の**Server**セクションを確認してください。一部のリリースでは専用のDockerクライアントやComposeバイナリを適応させることがありますが、インストーラーは共有Dockerデーモンをアップグレードしません。
+- ダウンロードとレジストリの引き込みは別々に確認してください。 シェルプロキシの設定はDocker Engineプロキシを設定しません。 Linuxのインストールコマンドは、`sudo`の下にあるプロキシ変数のみを明示的に保持します。 [ホスト適応とネットワーク診断](https://github.com/LingX-AI/linksense/blob/main/deploy/release/HOST-ADAPTATION.md#network-and-proxies)。
+- デフォルトのインストールディレクトリ:Linuxでは`/opt/linksense`、macOSでは`~/.linksense`です。 HTTPSリバースプロキシを設定し、公開アクセスを開[執行境界](./architecture.mdx#execution-boundaries)前に確認してください。
+
+## 並行性とワーカー [#concurrency-and-workers]
+
+新規展開はデフォルトで1つの同時会話と1ユーザーあたり4 GiBのワーカーメモリ制限が設定されます。 [システム設定](../admin-guide/configuration.mdx#system-settings)のタスク同時進行度を調整する前に、アクティブワーカー、文書処理、その他のサービスの予算を立ててください。 既存の展開は設定された制限を維持します。ハードウェアを追加するからといって自動的に並行性が増えるわけではありません。
+
+## カスタムポート [#custom-port]
+
+新規展開の場合は、[カスタムポートインストールコマンド](./prepare.mdx#custom-port)を使って`LINKSENSE_HTTP_PORT`を設定してください。 既存の展開の場合は`linksense port 19090`を使いましょう。
+
+## CLI管理 [#cli-management]
+
+| 戦闘                                      | 指揮                                                  |
+| ------------------------------------------- | -------------------------------------------------------- |
+| 現状と住所                          | `linksense status`, `linksense address`                  |
+| スタート、ストップ、または再スタート                     | `linksense start`, `linksense stop`, `linksense restart` |
+| ポートの変更                             | `linksense port 19090`                                   |
+| ワンタイム初期化認証情報を表示します | `linksense credential`                                   |
+| ログを読む                                   | `linksense logs api`, `linksense logs runner`            |
+| 健康状態を確認し、ネットワークを広げる                    | `linksense doctor`, `linksense doctor --network`         |
+| 修理またはアップグレード                           | `linksense repair`, `linksense upgrade`                  |
+
+インタラクティブメニューの引数なしで`linksense`実行してください。 macOSでコマンドがなければ、`PATH`に`$HOME/.local/bin`を追加してください。 ネットワークチェックはサービスを開始せずに画像を取得・キャッシュできます。
+
+## 修理とアップグレード [#repair-and-upgrades]
+
+Repairはインストールされたリリースを使用します。 アップグレードは実行中のタスクを削減し、移行前にデータベースバックアップを`volume://linksense-backups/postgres/`保存します。 バックアップの場所は保持しつつ、オフホストのバックアップは別に管理してください。 移行開始後の失敗は自動的にデータベースのロールバックではありません。ログやバックアップを確認し、[宿主適応ガイド](https://github.com/LingX-AI/linksense/blob/main/deploy/release/HOST-ADAPTATION.md)に従ってください。
+
+他のエディションのインストーラーを既存のデプロイと照らして動かさないでください。 管理コマンドが使えない場合は、インストール済みエディションの修復エントリーポイント:[Core](https://github.com/LingX-AI/linksense/blob/main/repair-core.sh)または[Full](https://github.com/LingX-AI/linksense/blob/main/repair-full.sh)を使いましょう。 古いインストールからの初次アップグレードについては、ターゲットリリースの注意事項に従ってください。
+
+## 仮想マシンと知識 [#virtual-machines-and-knowledge]
+
+Full on x86_64はdockerホストが`x86-64-v2`を公開する必要があります。 ElasticsearchとDoclingを実行しているVMの内部、そしてそれらのサービス専用のホストも確認してください:
+
+```bash
+LC_ALL=C lscpu
+grep -m1 '^flags' /proc/cpuinfo
+```
+
+`cx16`、`lahf_lm`、`popcnt`、`ssse3`、`sse4_1`、`sse4_2`、`pni`(または`sse3`)を探してください。 フラグが欠落している場合やコンテナが`Fatal glibc error: CPU does not support x86-64-v2`を報告する場合は、VMをシャットダウンし、互換性のあるCPUモードを選択します(例: Proxmox `host` / `x86-64-v2-AES` または libvirt `host-passthrough`)を起動してから再度確認してください。 vCPUを追加してもホストから欠けている命令は追加されません。

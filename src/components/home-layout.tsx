@@ -18,6 +18,7 @@ import {
 import { baseOptions, linkItems } from '@/lib/layout.shared'
 import { docsPath, getMessages, installPath } from '@/lib/i18n'
 import { repository } from '@/lib/product'
+import { getDocsUI } from '@/content/docs-ui'
 import { Footer } from './footer'
 
 export function WebsiteLayout({
@@ -28,9 +29,10 @@ export function WebsiteLayout({
   children: ReactNode
 }) {
   const t = getMessages(lang)
+  const docs = getDocsUI(lang)
   const items = [
     {
-      text: lang === 'zh' ? '快速开始' : 'Getting started',
+      text: docs.gettingStarted,
       desc: t.installBody,
       url: docsPath(lang),
       Icon: Rocket,
@@ -42,19 +44,19 @@ export function WebsiteLayout({
       Icon: Download,
     },
     {
-      text: lang === 'zh' ? '用户指南' : 'User guide',
+      text: docs.userGuide,
       desc: t.heroBody,
       url: docsPath(lang, 'user-guide/overview/'),
       Icon: BookOpen,
     },
     {
-      text: lang === 'zh' ? '管理员指南' : 'Administrator guide',
+      text: docs.adminGuide,
       desc: t.governance,
       url: docsPath(lang, 'admin-guide/overview/'),
       Icon: ShieldCheck,
     },
     {
-      text: lang === 'zh' ? '开发者指南' : 'Developer guide',
+      text: docs.developerGuide,
       desc: t.open,
       url: docsPath(lang, 'developer-guide/interactive-application/'),
       Icon: Code,

@@ -1,0 +1,22 @@
+---
+title: "Primeira configuração"
+description: "Crie o primeiro administrador, configure um modelo e verifique a execução da tarefa."
+---
+
+
+## Crie o primeiro administrador [#create-the-first-administrator]
+
+Abra o endereço impresso pelo instalador. A porta padrão é `18081`, mas uma instalação limpa pode selecionar outra porta disponível. Faça `linksense address` para verificar o endereço real. Use a credencial única do instalador para criar o primeiro administrador. Mantenha a credencial fora de chats, tickets e registros públicos.
+
+## Configurar um modelo [#configure-a-model]
+
+Use [Configurações de modelos](../admin-guide/models-and-usage.mdx#model-settings) para adicionar um canal modelo e salvá-lo na interface de administração. Verifique a acessibilidade da rede, compatibilidade de protocolos e suporte à ferramenta separadamente. Configure um modelo de embedding para o Conhecimento embutido no Full.
+
+## Verifique sua primeira tarefa [#verify-your-first-task]
+
+1. Execute `linksense status` e `linksense doctor` para checar a saúde da implantação.
+2. Envie uma mensagem curta seguindo o [Primeiro guia de tarefa](../user-guide/getting-started/index.mdx#first-task).
+3. Execute uma tarefa que use uma ferramenta, como gerar e abrir um arquivo pequeno. Verifique a saída separadamente da resposta do chat.
+4. Em Full, faça upload de um documento representativo e verifique se a recuperação cita a fonte correta.
+
+Antes de expor a implantação publicamente, leia [Operações](./operations.mdx) e o [Limites de execução](./architecture.mdx#execution-boundaries).

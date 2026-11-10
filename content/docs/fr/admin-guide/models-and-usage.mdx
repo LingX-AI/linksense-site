@@ -1,0 +1,200 @@
+---
+title: "Modèles, quotas et utilisation"
+description: "Configurez les modèles et les capacités de génération, fixez des quotas de membres et examinez l’utilisation, les coûts et les factures."
+---
+
+Configurez les modèles disponibles, définissez les politiques de quotas et examinez les dossiers d’utilisation et de facturation réels.
+
+## Modèles et réglages de génération [#model-settings]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+Ouvre **Paramètres → Paramètres des modèles**. Les changements affectent les tours ultérieurs ou le traitement des documents, pas les travaux en cours ou historiques.
+
+</Callout>
+
+### Chaînes fournisseurs [#model-settings-provider-channels]
+
+Lors de l’ajout d’un canal, choisissez d’abord le fournisseur de service, puis saisissez un nom, une URL de base et une clé API. Le choix d’un prestataire permet de remplir son adresse et son protocole recommandés. Si aucune adresse n’est fournie, saisissez l’adresse de service compatible disponible sur votre compte. Ces paramètres par défaut sont des points de départ ; Vérifiez votre compte, votre région et les capacités réelles du service. Le protocole est toujours visible en **Paramètres avancés** et peut être ajusté selon les besoins.
+
+Utilisez **Chaîne actuelle** pour changer de catalogue de modèles et choisissez **Chaîne d’édition** dans le menu à trois points de la chaîne pour ouvrir une boîte de dialogue centrée. L’ouverture d’un canal existant conserve son adresse et son protocole enregistrés. Une clé enregistrée n’est jamais retournée. Laissez la clé vide pour la conserver uniquement lorsque le fournisseur, l’adresse, le projet et la région sont inchangés. Après avoir modifié ces détails de connexion, saisissez la clé de la nouvelle connexion avant de sauvegarder ou tester.
+
+Sauvegardez d’abord les paramètres de connexion du canal, puis utilisez **Ajouter un modèle** pour configurer les modèles séparément. Les chaînes sans modèles n’ajoutent pas d’entrées à la liste des modèles du compositeur. La liste compacte affiche les noms, types, prix et disponibilité des conversations. Ouvrez la boîte de dialogue d’édition pour configurer un modèle. La sauvegarde ne soumet que les changements de ce dialogue ; Annuler permet de supprimer les modifications non enregistrées.
+
+### Trouvez des modèles et testez la connexion [#model-settings-find-models-and-test-the-connection]
+
+Après avoir enregistré une chaîne, sélectionnez **Ajouter un modèle**, puis cliquez **Obtenez les modèles disponibles** à droite du sélecteur de modèles. Recherchez par nom ou identifiant de modèle et sélectionnez un modèle. Le sélecteur reste désactivé jusqu’à ce que les modèles soient récupérés. Si le service ne propose pas de liste de modèles, renvoie une liste vide ou omet votre modèle, choisissez **Entrez un modèle manuellement** et saisissez l’ID fourni par le fournisseur.
+
+LinkSense ne remplit que le nom, la longueur du contexte et les informations d’entrée d’image effectivement retournées par le service. Confirmez les capacités qui n’ont pas été fournies. Vérifiez et saisissez vous-même les prix réels du fournisseur ; Les prix par défaut à zéro sont uniquement pour les estimations locales de l’usage. Le prix, les efforts de raisonnement, la longueur du contexte et les capacités d’image sont toujours visibles dans le **Paramètres avancés** du modèle.
+
+**Obtenez les modèles disponibles** et **Connexion du modèle test** sont des opérations distinctes : récupérer une liste ne confirme pas qu’un modèle répond. Saisissez un identifiant de modèle à tester lors de l’édition d’une chaîne, ou testez le modèle de chat actuel lors de l’ajout ou de l’édition. Le test envoie un court message. Une réponse texte normale, non vide, confirme que la connexion fonctionne ; Aucun appel d’outil n’est requis. Le test peut entraîner une petite charge et ne sauvegarde jamais les paramètres. Un résultat réussi ne s’applique qu’à cette connexion et à ce modèle au moment de l’essai ; Retestez après avoir fait des modifications. Il ne remplace pas la validation par de vraies tâches, la compréhension d’images ou la récupération de connaissances. Les tests de connexion ici ne sont pas disponibles pour les modèles d’embedding ou de classement ; Validez ceux dans les contextes de recherche des connaissances décrits ci-dessous.
+
+Lors de la configuration initiale, sauvegardez le premier modèle de chat avec **Disponible dans les conversations** activé. LinkSense le définit à la fois comme modèle par défaut de conversation et comme modèle d’auto-nommage des tâches. Retournez à **Nouvelle tâche**, vérifiez le modèle et l’effort de raisonnement, et soumettez une simple demande pour vérifier l’utilisation.
+
+### Modes de protocole [#model-settings-protocol-modes]
+
+Les modes protocolaires sont les Réponses natives, la compatibilité fonction-outil Réponses et la conversion Chat Completions. La compatibilité ne modifie que la forme du protocole — elle n’exécute jamais d’outils ni ne rejoue un tour complet.
+
+### Modèles et prix [#model-settings-models-and-prices]
+
+Les identifiants de modèle sont uniques selon les canaux. Configurez le type, le nom d’affichage, le fournisseur, le support de l’image, les efforts de raisonnement et les prix :
+
+- Modèles de chat : entrée, entrée en cache et prix de sortie ;
+- Modèles d’intégration et de classement : prix d’entrée.
+
+Les prix utilisent des jetons USD par million et sont instantanés selon les usages futurs. Un changement de prix ne recalcule jamais l’histoire.
+
+Réglez **Longueur du contexte du modèle** à un nombre positif de tokens, ou laissez-le vide pour une détection automatique. LinkSense utilise cette valeur comme indicateur de fenêtre de contexte et pour permettre à l’exécution de compacter le contexte avant d’approcher la limite du modèle. Voici la capacité réelle du modèle fournisseur ; un nombre plus élevé n’élargit pas le modèle amont.
+
+Seuls les modèles de chat affichent l’option Disponible dans les conversations ; Les modèles d’intégration et de classement ne le font pas. La disponibilité des conversations ne contrôle que la liste des modèles du compositeur. Cela n’affecte pas la nommage automatique des tâches, la récupération des connaissances, le reclassement ou la compréhension des images. Une fois les modèles de chat configurés, au moins un doit rester disponible dans les conversations. Cacher ou supprimer le modèle par défaut permet de choisir un autre modèle disponible pour la conversation.
+
+Les efforts de raisonnement supportés sont modifiables pour les modèles de chat. Sélectionnez une ou plusieurs catégories Léger, Moyen, Haut, Extra Haut, Maximum et Ultra. L’effort de raisonnement par défaut doit rester dans l’ensemble sélectionné ; Supprimer le défaut actuel sélectionne automatiquement le premier effort restant.
+
+### Ordre des modèles [#model-settings-model-order]
+
+Faites glisser la poignée principale d’un modèle, ou choisissez **Avancez** ou **Descends** dans son menu d’actions pour réorganiser les modèles dans le canal courant. Les utilisateurs du clavier peuvent appuyer sur Espace pour prendre une poignée, utiliser les flèches pour bouger, appuyer sur Espace pour confirmer, ou Échaper pour annuler.
+
+Utilisez **Déplacer le canal vers le haut** ou **Déplacer le canal vers le bas** sous **Actions sur les canaux** pour réorganiser les chaînes. Ça change automatiquement la sauvegarde. Une sauvegarde ratée préserve l’ordre précédent et affiche une erreur. Le compositeur liste les modèles de chat disponibles pour la conversation dans l’ordre des canaux, puis l’ordre des modèles au sein de chaque canal. Le réordre ne modifie pas le modèle sélectionné par l’utilisateur.
+
+### Modèles d’auto-nommage de conversation et de tâches [#model-settings-conversation-and-task-auto-naming-models]
+
+À la fin de la liste des fournisseurs, sélectionnez séparément le modèle par défaut de conversation et le modèle d’auto-nommage des tâches. Le mode par défaut de la conversation doit être disponible dans les conversations. Le nommage automatique des tâches peut utiliser n’importe quel modèle de chat configuré et ne lit jamais un modèle de nommage intégré fourni par le déploiement. Ses jetons d’entrée, d’entrée en cache et de sortie sont enregistrés sous la charge de travail de nommage automatique de la tâche ; L’utilisation est indiquée comme estimée lorsque le fournisseur ne retourne pas de comptes de jetons.
+
+### Modèle d’extraction de mémoire [#model-settings-memory-extraction-model]
+
+Sélectionnez **Modèle d’extraction de mémoire** parmi les modèles de chat existants. Il réutilise le canal, les identifiants et les prix du modèle ; aucun réglage de connexion séparé n’est nécessaire. La disponibilité des conversations n’affecte pas l’extraction. Effacez la sélection d’extraction avant de supprimer le modèle sélectionné ou son canal.
+
+**Utiliser le modèle de tâches actuel** utilise le modèle de chaque tâche pour l’extraction. L’extraction utilise toujours l’effort de raisonnement supporté le plus bas configuré par le modèle sélectionné, sans modifier l’effort propre de la tâche. Cette sélection ne s’applique qu’à l’extraction ; La consolidation continue d’utiliser le modèle de tâches actuel.
+
+La génération de mémoire nécessite l’adhésion de l’utilisateur. Des modifications s’appliquent aux temps d’exécution des tâches lancées par la suite et à la préservation des mémoires existantes. Les tâches appartenant à un utilisateur partagent un état natif de mémoire. Le moteur natif utilise des marqueurs de traitement réussi, des verrouillages de tâches et des modifications d’entrée pour éviter les doublons. Changer de modèle ou redémarrer ne réinitialise pas cet état. La récupération des pannes et l’historique mis à jour peuvent encore entraîner de nouveaux appels de modèles ; La déduplication n’est pas une limite de réévaluation ou de dépense.
+
+### Quotas d’utilisateurs [#model-settings-user-quotas]
+
+Configurez les quotas d’utilisateurs dans la page [Gestion des quotas](#quota-settings) séparée, en crédits.
+
+### Modèles de recherche de connaissances [#model-settings-knowledge-retrieval-models]
+
+Sélectionnez un modèle d’intégration configuré et un classeur optionnel. La disponibilité des conversations n’affecte pas ces modèles système. La sauvegarde effectue une validation réelle des services et des dimensions vectorielles.
+
+<Callout type="warn" title="Changement du modèle d’embarquement">
+
+Ce changement invalide immédiatement tous les index de connaissances existants. La récupération reste indisponible tant qu’une reconstruction complète ne s’est pas terminée en santé système. Prévoyez d’abord une fenêtre d’entretien.
+
+</Callout>
+
+Sans classeur, ou en cas d’échec des appels de classeur, LinkSense utilise des résultats RRF à poids égal.
+
+### Compréhension de l’image [#model-settings-image-understanding]
+
+Sélectionnez un modèle de chat configuré marqué comme supportant la compréhension des images. La disponibilité des conversations n’affecte pas la compréhension de l’image. Sauvegarder l’entrée d’image des sondes, la sortie structurée et le comportement de raisonnement désactivé. Cela n’affecte que les nouveaux traitements ou les reconstructions.
+
+### Modèle de transcription vocale [#model-settings-voice-transcription-model]
+
+Lorsqu’elle est activée, l’entrée micro dans les tâches ordinaires et les applications embarquées utilise ce service. Sélectionnez un fournisseur, vérifiez l’URL de base, puis saisissez une clé API ainsi qu’un nom de modèle ou de déploiement. Azure OpenAI nécessite également une version API. Les clés API sauvegardées ne sont jamais retournées ; Laissez le champ vide pendant l’édition afin de conserver la clé existante.
+
+Les fournisseurs disponibles sont Alibaba Cloud Model Studio, OpenAI, les services compatibles OpenAI, Azure OpenAI, Groq, Deepgram, AssemblyAI, ElevenLabs, Rev.ai, Gladia et fal.ai. Les paramètres par défaut du fournisseur sont uniquement des points de départ de connexion ; La disponibilité des modèles, la région, l’autorisation et la facturation proviennent de votre compte fournisseur.
+
+Après l’enregistrement, utilisez [Entrée vocale](../user-guide/tasks/index.mdx#voice-input) pour tester un enregistrement court sans données sensibles. Désactiver ce paramètre bloque les nouvelles requêtes de transcription mais n’affecte pas les tâches tapées.
+
+### Modèle de génération d’images [#model-settings-image-generation-model]
+
+Lorsqu’elle est activée, les utilisateurs peuvent utiliser la capacité intégrée de génération d’images depuis une tâche. Sélectionnez un fournisseur, saisissez le modèle et la clé API, puis configurez un prix par image. LinkSense enregistre ce prix par rapport au nombre d’images réellement produites pour l’utilisation et les crédits. Sélectionner un fournisseur remplit son URL de base par défaut, que vous pouvez changer pour votre propre adresse de service pour n’importe quel fournisseur.
+
+Les fournisseurs pris en charge sont Alibaba Cloud Model Studio, OpenAI, les services compatibles OpenAI, Google Gemini, Stability AI, fal.ai, Replicate et Together AI. Pour la génération d’images compatible OpenAI, saisissez l’URL de base, la clé API et le nom du modèle fournis par le service. Alibaba Cloud Model Studio nécessite également un identifiant et une région d’espace de travail. Les limites des fournisseurs et des modèles varient ; une requête ne peut demander plus de 10 images, et la sortie à l’exécution est limitée par la limite actuelle du modèle.
+
+La sortie transparente peut être générée nativement ou gérée automatiquement pour des sujets aux bords nets appropriés. Choisissez un modèle avec une transparence native pour les cheveux complexes, la fourrure, le verre, la fumée, la lueur et les bords translucides.
+
+L’édition d’image utilise le service et le modèle configurés ici ; Les paramètres existants n’ont pas besoin d’être sauvegardés à nouveau. Les contrats pris en charge incluent OpenAI GPT Image, Gemini Image Models, Bailian Qwen Image 2.x et versions ultérieures, ou Qwen Image Edit, fal.ai FLUX. 2 modifier / kontext, reproduire FLUX kontext, et ensemble AI FLUX. 2 / Kontext. Un service compatible OpenAI doit implémenter les téléchargements de fichiers à `/images/edits` ; Le soutien à `/images/generations` seul est insuffisant. L’adaptateur Stability actuel ne permet que la génération texte vers image. Le nombre d’images de référence et le support du masque dépendent du modèle sélectionné ; Les requêtes non prises en charge sont rejetées avant d’appeler le fournisseur.
+
+Les clés API sauvegardées ne sont jamais retournées ; Laissez le champ vide pendant l’édition afin de conserver la clé existante. Saisissez une nouvelle clé et vérifiez le prix après avoir changé de fournisseur. Utilisez [Générer des images](../user-guide/tasks/index.mdx#generate-images) pour une validation d’une seule image après configuration.
+
+## Gestion des quotas [#quota-settings]
+
+Les administrateurs ouvrent **Paramètres → Gestion des quotas** pour configurer le prix de conversion de crédit et un quota hebdomadaire standard pour tous les membres.
+
+### Conversion de crédits [#quota-settings-credit-conversion]
+
+Fixez le montant USD représenté par un crédit. Le défaut est de 0.01 USD par crédit : un call de 0.25 USD consomme 25 crédits. Le prix doit être positif, avec jusqu’à six décimales.
+
+Les prix des modèles restent dans les paramètres des modèles, en USD par million de jetons. Utilisation des coûts mesurés et l’instantané des prix du modèle ; La consommation de crédit utilise le prix de conversion lorsque cette utilisation est enregistrée. Les modifications ultérieures de conversion ne refixent pas le prix des crédits enregistrés. La consommation est arrondie à six décimales. Les crédits restants sont affichés sous forme d’entiers en défaussant la fraction ; Les soldes réels et les contrôles de quotas conservent une précision décimale.
+
+### Quota hebdomadaire des membres [#quota-settings-member-weekly-quota]
+
+Le quota hebdomadaire des membres est la norme partagée par défaut pour les membres créés par la suite par un administrateur, importés depuis Excel ou créés par enregistrement ouvert. Entrez un montant positif avec jusqu’à six décimales. Blanc signifie illimité. Le quota se réinitialise chaque lundi à minuit dans le fuseau horaire du système.
+
+Sauvegarder le paramètre ne met à jour que le prédéfini et ne remplace pas les quotas hebdomadaires individuels des membres existants. Les membres existants peuvent toujours être ajustés individuellement ou en bloc sous **Utilisateurs et groupes → Utilisateurs**. Le commutateur d’inscription ouverte reste sous **Paramètres système → Inscription ouverte**, mais les utilisateurs auto-enregistrés n’ont plus de norme de quotas distincte.
+
+### Réinitialisez et appliquez à tous [#quota-settings-reset-and-apply-to-all]
+
+La gestion des quotas permet de prendre deux mesures immédiates en bloc. Chaque action ouvre une boîte de dialogue de confirmation ; Annuler ne change rien.
+
+- **Réinitialiser tous les quotas** rétablit le quota hebdomadaire de chaque membre existant à 100% de sa propre limite actuelle. Elle ne modifie pas les limites, et les membres illimités restent illimités.
+- **Appliquer la limite à tous** sauve le quota hebdomadaire du formulaire et écrase immédiatement le quota hebdomadaire individuel de chaque membre existant, y compris les ajustements individuels précédents. Blank rend chaque membre illimité. Cette action ne réinitialise pas les crédits utilisés ni ne sauvegarde d’autres modifications non enregistrées dans le formulaire de prix de conversion.
+
+Les deux actions incluent les membres actifs et handicapés et ne modifient pas le statut du compte. L’usage historique reste disponible. La consommation après une réinitialisation manuelle est normalement déduite, et le calendrier de réinitialisation par semaine calendaire reste inchangé.
+
+Pour donner à tous les membres une nouvelle limite avec 100% restantes, appliquez d’abord la limite à tous, puis réinitialisez les quotas pour tous.
+
+Atteindre le quota hebdomadaire empêche de nouvelles tâches et de demandes de suivi. Les tâches en cours se terminent et peuvent faire dépasser la consommation finale au-dessus de la limite. Ajuster le quota ne supprime ni ne réévalue les crédits enregistrés.
+
+Les statistiques de coût des jetons et USD restent disponibles. La gestion des quotas ne fournit ni paiements ni rechargements.
+
+## Utilisation, coût et facturation [#usage]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+Ouvre **Paramètres → Analyse de l’utilisation**. L’onglet **Analyse de l’utilisation** rapporte les données sur les ressources, tandis que **Facturation** contient les états du modèle du mois naturel fermés. Les quotas de crédit restent inférieurs à **Gestion des quotas**.
+
+</Callout>
+
+Configurez les crédits dans [Gestion des quotas](#quota-settings), et ajustez les utilisateurs existants sous **Utilisateurs et groupes → Utilisateurs**.
+
+### Plage de temps [#usage-time-range]
+
+Choisissez toutes les heures, les 7 derniers jours, les 30 derniers jours ou les dates personnalisées. Les tendances s’agrégent par jour, mois ou année en fonction de la fourchette.
+
+### Vues [#usage-views]
+
+- Global : tâches, tours réels, appels de modèles, jetons et coût total.
+- Charge de travail : réponses IA, nommage automatique des tâches, génération de mémoire, incorporations de documents, saisies de recherche-requête, reclassement et génération d’images.
+- Modèle : méthode de collecte, calls, turns, détails des jetons, et coût pour la génération, l’intégration, le reclassement et les modèles d’image.
+- Application : tâches, tours, appels, jetons, coûts et détails par modèle attribués lors de la création de chaque tâche ; Les tâches créées en dehors d’une application apparaissent comme non associées.
+- Groupe : l’activité des membres actuels projetée dans chaque groupe.
+- Utilisateur : utilisateurs actifs et handicapés, groupes actuels, et détails par modèle.
+
+Les jetons s’abrègent K, M ou B ; les nombres de tâches, de tournage, d’appel et de membres restent entiers.
+
+### Comptage [#usage-counting]
+
+Une tâche et un tour réel créent chacun un fait d’activité immuable. Les brouillons, les demandes en attente, les reconnexions et les événements en double n’ajoutent pas de tours. Les instantanés cumulatifs natifs des jetons sont dédupliqués par incrément. Les charges de travail externes utilisent une utilisation fiable lorsque cela est disponible ou des estimations d’entrées protégées par étiquette.
+
+### Coût [#usage-cost]
+
+L’utilisation stocke les prix actifs au moment de l’appel en USD par million de tokens. L’entrée mise en cache fait partie de l’entrée, et la sortie de raisonnement fait partie de la sortie, donc aucune n’est doublement chargée.
+
+Les évolutions futures des prix ne recalculent pas l’historique. Zéro est un prix valable ; Les jetons plus anciens sans prix fiable restent **Jetons sans tarif**.
+
+### Recoupement des groupes [#usage-group-overlap]
+
+Un utilisateur dans plusieurs groupes contribue à chaque groupe. Les lignes de groupe se chevauchent et ne doivent pas être additionnées pour un total global. Les utilisateurs sans groupe efficace apparaissent comme non groupés.
+
+### Tri et exportation [#usage-sorting-and-export]
+
+Les tableaux de détail peuvent être triés selon les colonnes exposées sur la page. **Exporter en Excel** utilise les définitions actuelles de plage et de filtre pour créer un classeur multi-feuilles avec le résumé, les tendances, ainsi que le modèle, la charge de travail, l’application, le groupe, ainsi que les dimensions et détails utilisateur. Revérifiez l’étendue avant d’exporter et stockez ou transférez le fichier selon la politique organisationnelle. Les exportations ne contiennent pas d’invites, de texte de réponse, de contenu de fichiers ou d’identifiants.
+
+### Relevés mensuels [#usage-monthly-statements]
+
+Ouvrez l’onglet **Facturation** pour consulter la période d’ouverture en cours et générer les relevés mensuels. Les relevés se ferment sur les mois naturels du calendrier dans le fuseau horaire du système et sont générés automatiquement après la fin du mois. La carte de la période actuelle indique le temps de génération attendu. Si le service redémarre ou est mis à niveau, il rattrape aussi les mois fermés manquants.
+
+Chaque relevé mensuel est un instantané immuable des coûts par modèle avec les entrées, entrées mises en cache, sorties et totaux de tokens, le mode de tarification et le montant :
+
+- Un modèle avec un seul prix dans le mois affiche son taux par million de tokens. Une variation de prix au cours du mois est appelée **Prix mixtes**.
+- Les jetons sans instantané fiable des prix restent non valorisés et ne sont pas réévalués par le catalogue actuel.
+- Les énoncés sont agrégés uniquement par modèle. Ils n’incluent pas d’invites, de réponses, de contenu de fichiers, de détails utilisateur ou de paramètres de quota.
+- Les changements ultérieurs de prix, la suppression de tâches ou les modifications d’adhésion ne recalculent pas une instruction générée.
+
+Ouvrez une instruction pour prévisualiser ses gammes de modèles, ou exportez un PDF dans le langage d’interface actuel. Les exportations sont enregistrées dans le journal d’audit. Stockez le fichier téléchargé conformément à la politique de facturation et de gestion financière de votre organisation.
+
+### Conservation [#usage-retention]
+
+Les faits de tâche, de turn, d’appel, de jeton, de coût, d’attribution d’application et de déclaration générée survivent à la suppression de tâche. Ils ne contiennent pas d’invites, de réponses, de contenus de fichiers, de références, d’URL de base ou de clés API.

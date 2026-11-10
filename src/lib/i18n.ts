@@ -18,7 +18,7 @@ export const i18n = defineI18n({
 
 export const docsI18n = defineI18n({
   defaultLanguage: 'en',
-  languages: ['en', 'zh'],
+  languages: Object.keys(homeLocales),
   parser: 'dir',
 })
 
@@ -46,15 +46,21 @@ export function installPath(lang: string) {
 }
 
 export function docsPath(lang: string, path = '') {
-  return docsUrl(lang === 'zh' ? 'zh-CN' : 'en-US', path)
+  return docsUrl(homeLocales[lang as keyof typeof homeLocales], path)
 }
 
 export function resolveDocRoute(slug: string[] = []) {
-  if (slug[0] === 'zh-CN') return { lang: 'zh', slugs: slug.slice(1) }
-  if (slug[0] === 'en-US') return { lang: 'en', slugs: slug.slice(1) }
+  const locale = Object.entries(homeLocales).find(
+    ([, code]) => code === slug[0],
+  )
+  if (locale) return { lang: locale[0], slugs: slug.slice(1) }
   return { lang: 'en', slugs: slug }
 }
 
 export function withoutDocLocale(path: string) {
-  return path.replace(/^(zh|en)\//, '')
+  const separator = path.indexOf('/')
+  return separator !== -1 &&
+    Object.hasOwn(homeLocales, path.slice(0, separator))
+    ? path.slice(separator + 1)
+    : path
 }

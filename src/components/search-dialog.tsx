@@ -15,22 +15,18 @@ import {
 import { useDocsSearch } from 'fumadocs-core/search/client'
 import { useI18n } from 'fumadocs-ui/contexts/i18n'
 import { create } from '@orama/orama'
-import { createTokenizer } from '@orama/tokenizers/mandarin'
+import { getDocsUI } from '@/content/docs-ui'
+import { searchOptions } from '@/lib/search-i18n'
 
 function initOrama(locale?: string) {
-  return locale === 'zh'
-    ? create({
-        schema: { _: 'string' },
-        components: { tokenizer: createTokenizer() },
-      })
-    : create({ schema: { _: 'string' }, language: 'english' })
+  return create({ schema: { _: 'string' }, ...searchOptions(locale) })
 }
 
 export default function LocalSearchDialog(props: SharedProps) {
   const { locale, text } = useI18n()
   const { search, setSearch, query } = useDocsSearch({
     type: 'static',
-    from: '/api/search',
+    from: `/api/search-index/${locale ?? 'en'}`,
     locale,
     initOrama,
   })
@@ -47,7 +43,7 @@ export default function LocalSearchDialog(props: SharedProps) {
           <SearchDialogIcon />
           <SearchDialogInput aria-label={text.search} />
           <SearchDialogClose
-            aria-label={locale === 'zh' ? '关闭搜索' : 'Close search'}
+            aria-label={getDocsUI(locale ?? 'en').closeSearch}
           />
         </SearchDialogHeader>
         <SearchDialogList

@@ -1,0 +1,116 @@
+---
+title: "Gouvernance des plugins et des connaissances"
+description: "Examinez les plugins et applications, régez les bibliothèques de connaissances et configurez les sources de données externes."
+---
+
+Examinez les capacités partagées, régissez l’état des connaissances et maintenez les connexions aux sources de données. Les privilèges administratifs n’accordent pas automatiquement l’accès au contenu des utilisateurs.
+
+## Revue du Centre de plugins et du Centre d’applications [#plugin-governance]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+Ouvre **Paramètres → Centre de plugins**. La revue s’applique à un instantané immuable soumis, et non à un annuaire source personnel mutable.
+
+</Callout>
+
+### Critiquer une sortie [#plugin-governance-review-a-release]
+
+Inspectez le publieur, le type, le numéro de publication, les notes de version, les fichiers, les bits exécutables, le contenu SHA-256 du contenu, le manifeste, le contenu Compétence, le logo et les déclarations pour le MCP, scripts, connexions externes, variables d’environnement, identifiants ou téléchargements de dépendances.
+
+Chaque version nécessite une revue distincte et LinkSense vérifie à nouveau l’intégrité des snapshots avant l’approbation.
+
+### Examiner les publications du Centre de Candidatures [#plugin-governance-review-application-center-releases]
+
+Une revue de l’application montre son créateur, son type standard ou interactif, sa version, les notes de version et les options d’utilisation proposées. Ouvrez le détail pour inspecter ses instructions, les noms des plugins et des compétences, les comptes de la base de connaissances et du MCP, et — pour une application interactive — les chemins des fichiers package.
+
+Un **Paquet d’application** devient une copie utilisateur maintenue de manière indépendante dont le code source est accessible par les utilisateurs et dont ils configurent les identifiants nécessaires. Un **Service d’application en ligne** fonctionne en ligne avec des ressources gérées par les créateurs et des identifiants configurés, sans que les utilisateurs n’aient à installer leur propre copie locale. Les applications interactives ne peuvent pas être distribuées sous forme de paquets copiables et installables et ne supportent que l’option de service. Avant l’approbation, vérifiez que les notes de version correspondent au comportement soumis et évaluez les instructions, les connexions externes, le périmètre des données et les options d’utilisation. Le rejet nécessite une raison.
+
+### Approuver ou rejeter [#plugin-governance-approve-or-reject]
+
+- L’approbation rend ce snapshot actuel et publie un brouillon d’annonce pour la première fois.
+- Le rejet nécessite une raison claire et n’affecte pas une ancienne version approuvée ou des copies installées.
+
+Un administrateur qui est également l’éditeur peut examiner sa propre publication, sous réserve de toute politique organisationnelle plus stricte.
+
+### Suspension et restauration [#plugin-governance-suspend-and-restore]
+
+La suspension masque la liste et bloque l’installation, les mises à jour et chaque copie installée pour qu’ils ne démarrent pas de nouvelles tâches. Les virages en course conservent leur instantané de démarrage et ne reçoivent pas d’état final fabriqué.
+
+La restauration rend la liste et les copies installées éligibles à des travaux ultérieurs.
+
+Le Centre d’Applications a un statut de fiche distinct. La suspension d’administrateur nécessite une raison et bloque les nouvelles installations et le début des services tout en préservant l’historique des tâches. Il ne supprime pas à distance les packages d’applications indépendants déjà installés par les utilisateurs ; Ces derniers restent soumis à leur gestion de ressources personnelles, État et capacité de plateforme. La restauration de la fiche permet aux utilisateurs éligibles de réinstaller ou d’utiliser à nouveau le service.
+
+### Non listé contre suspendu [#plugin-governance-unlisted-versus-suspended]
+
+Une entrée non répertoriée par l’éditeur n’accepte aucune nouvelle installation, tandis que les copies existantes peuvent s’exécuter et se mettre à jour. La suspension administrateur est une application des risques et bloque les nouvelles exécutions provenant des copies existantes.
+
+### Audit et confidentialité [#plugin-governance-audit-and-privacy]
+
+Les actions de révision et de gouvernance sont auditées. L’examen de la candidature ne révèle que les instructions requises de la version soumise ainsi que le résumé des ressources. Le poste ne donne pas accès au plugin personnel non soumis, à Skill ou au contenu de brouillon de candidature.
+
+## Gouvernance fondée sur la base de connaissances [#knowledge-governance]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+Ouvre **Paramètres → Bases de connaissances**. La page expose les métadonnées de gouvernance sans accorder automatiquement le contenu du document, l’aperçu ou le téléchargement.
+
+</Callout>
+
+### Trouver les entrées [#knowledge-governance-find-entries]
+
+Recherchez par nom ou propriétaire et examinez le cycle de vie, la disponibilité, la source, le nombre de documents et les résumés de capacité.
+
+### Actions de gouvernance [#knowledge-governance-governance-actions]
+
+- Désactivez ou activez l’utilisation dans les tâches futures.
+- Archiver en mode lecture seule.
+- Supprimez définitivement une base de connaissances déjà archivée.
+- Essaie de réessayer le nettoyage de ressources raté.
+- Révoquez une source d’accès sélectionnée.
+- Transférez la propriété à un autre utilisateur actif.
+
+Les actions nécessitant une raison la stockent dans des métadonnées d’audit sécurisées. La suppression permanente reste une confirmation distincte après l’archivage.
+
+### Propriétaire handicapé [#knowledge-governance-disabled-owner]
+
+Une base de connaissances détenue subsiste et les bénéficiaires conservent l’accès existant. Le propriétaire handicapé ne peut pas l’entretenir. Transférez la propriété ou désactivez la base de connaissances si nécessaire.
+
+### Recherche et indexation [#knowledge-governance-retrieval-and-indexing]
+
+Les propriétaires réessaient des échecs de documents individuels. Un déploiement à l’échelle du déploiement ou un désaccord d’index nécessite une reconstruction complète à partir de la santé système, et non des modifications ad hoc de la base de connaissances de chaque utilisateur.
+
+### Limite d’autorisation [#knowledge-governance-authorization-boundary]
+
+Si un administrateur doit lire un document, le propriétaire doit accorder l’accès via le chemin de partage normal. Les API de gouvernance ne doivent pas contourner l’autorisation de contenu.
+
+## Sources de base de connaissances [#knowledge-sources]
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+Ouvert **Paramètres → Bases de connaissances → Sources de connaissances** pour une configuration externe du code source.
+
+</Callout>
+
+### Configurer SharePoint [#knowledge-sources-configure-sharepoint]
+
+Saisissez les informations sur le locataire Microsoft Entra et l’application demandées par la page. LinkSense vérifie l’identité de l’application lors de la sauvegarde et ne renvoie jamais le secret stocké.
+
+Utilisez `Sites.Selected` lorsque possible, avec les administrateurs Microsoft 365 accordant un accès en lecture uniquement aux sites approuvés.
+
+### Créer une base de connaissances externe [#knowledge-sources-create-an-external-knowledge-base]
+
+Après avoir activé la source, un administrateur peut saisir une URL de dossier SharePoint lors de la création d’une base de connaissances. LinkSense vérifie l’accès à ce dossier avant de programmer la synchronisation.
+
+### Synchronisation [#knowledge-sources-synchronization]
+
+- Les nouveaux fichiers utilisent le même pipeline de traitement sécurisé que les téléchargements locaux.
+- Le contenu modifié crée une version de remplacement.
+- Un changement de nom seulement effectue un changement de nom.
+- La suppression à distance permet d’entrer le nettoyage contrôlé des citations, index, objets et quotas.
+- Les formats non pris en charge sont marqués comme sautés sans bloquer d’autres fichiers.
+
+### Dépannage [#knowledge-sources-troubleshoot]
+
+En cas d’échec d’authentification, vérifiez le locataire, l’identifiant de l’application, la validité du secret et l’autorisation du site cible dans Microsoft 365. Ne collez jamais un secret client dans des notes d’audit, des tickets ou un chat.
+
+LinkSense ne démarre pas ou ne reconfigure pas automatiquement un service externe inaccessible. Rétablissez la connectivité et réessayez depuis l’interface supportée.

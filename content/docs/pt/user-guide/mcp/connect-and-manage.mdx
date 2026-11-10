@@ -1,0 +1,41 @@
+---
+title: "Conecte e gerencie servidores MCP"
+description: "Gerencie servidores HTTP ou STDIO MCP streamáveis integrados e pessoais."
+---
+
+
+Servidores MCP fornecem ferramentas para as tarefas. As entradas embutidas são somente leitura; Servidores pessoais são montados apenas para suas novas tarefas.
+
+## MCP embutido [#built-in-mcp]
+
+O LinkSense pode fornecer servidores MCP de serviço de arquivos, base de conhecimento e criadores de Skill. A plataforma gerencia eles, então você não pode editar, desativar ou excluir.
+
+## Adicionar um servidor HTTP [#add-an-http-server]
+
+1. Abra **Configurações → MCP** e escolha **Adicionar servidor**.
+2. Selecione HTTP e insira um nome e URL HTTP Streamable.
+3. Escolha sem autenticação, token portador ou chave API.
+4. Defina timeouts de inicialização e de ferramentas.
+5. Teste a conexão e salve depois que as ferramentas forem descobertas.
+
+Prefiro HTTPS. HTTP envia credenciais, argumentos e resultados sem criptografia de transporte e requer um reconhecimento de risco separado.
+
+## Adicionar um servidor STDIO [#add-a-stdio-server]
+
+Forneça um objeto JSON de um servidor com `command`, `args` opcional e `env` opcional. Os valores do ambiente são criptografados e não retornados. Uma estrutura de `mcpServers` de entrada única também é aceita.
+
+Os containers de tarefas usam pnpm em vez de npm ou npx. Declarações `npx -y` suportadas são convertidas para execução pnpm controlada.
+
+## Conexão necessária [#required-connection]
+
+Quando **Obrigatório** é ativado, a falha de conexão bloqueia a inicialização da tarefa. Um servidor opcional com falha pode ser pulado, mas suas ferramentas não estarão disponíveis.
+
+## Gerenciar segredos e exclusão [#manage-secrets-and-deletion]
+
+Deixar segredos HTTP salvos ou `env` STDIO fora de uma edição os preserva; um objeto `env` vazio elimina variáveis STDIO. A exclusão remove permanentemente valores de configuração e criptografados.
+
+<Callout type="warn" title="Limite do trust">
+
+Conecte apenas servidores MCP confiáveis. Ferramentas podem receber argumentos de tarefa, acessar sistemas externos e retornar conteúdo não confiável.
+
+</Callout>

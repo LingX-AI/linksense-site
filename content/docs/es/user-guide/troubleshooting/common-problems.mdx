@@ -1,0 +1,90 @@
+---
+title: "Solucionar problemas comunes"
+description: "Resolver problemas comunes de inicio de sesión, tareas, archivos, canales de mensajes, plugins, MCP y bases de conocimiento."
+---
+
+
+## Fallos de inicio de sesión [#sign-in-fails]
+
+- Utiliza un método habilitado y confirma que la cuenta está activa.
+- Solicita un restablecimiento de una contraseña local.
+- Reinicia SSO desde la página de inicio de sesión.
+- Espera a que la protección de inicio de sesión se enfríe en lugar de intentarlo de nuevo continuamente.
+
+## Una tarea no puede empezar [#a-task-cannot-start]
+
+Lee el mensaje previo al vuelo:
+
+- Elige otro modelo si el seleccionado está deshabilitado.
+- Elimina o actualiza un plugin o skill no disponible.
+- Arregla una vinculación explícita de credenciales que falta o que entra en conflicto.
+- Prueba la URL, la autenticación y el tiempo de espera de un servidor MCP requerido.
+- Selecciona una base de conocimiento que siga activada y accesible.
+- Si tu cuota semanal de crédito se agota, espera al siguiente reinicio semanal o pide a un administrador que la ajuste o que la restablezca manualmente.
+
+## Desconexiones de ejecución [#execution-disconnects]
+
+Para denegaciones de acceso del proveedor, límites de tarifa, solicitudes rechazadas, cortes temporales o tiempos de espera, sigue el mensaje y pide a un administrador que revise la configuración o la conectividad del proveedor. Los administradores pueden ejecutar `linksense logs runner`, correlacionar la solicitud y los IDs, e inspeccionar `upstreamStatus`, `upstreamRequestId`, `protocolMode`, `model` y `failureCode` en `model provider request failed` entradas. Comparte solo los campos de diagnóstico censurados, excluyendo credenciales, contenido de conversación y respuestas completas a nivel inicial. Un chat regular exitoso no demuestra que funcionen varias rondas de herramientas.
+
+Las herramientas de gestión actualizadas proporcionan `linksense doctor --network` para comprobar descargas de terminales y Docker extrae de forma independiente; Antes de instalarla, ejecuta `--check-network` con el bootstrap descargado desde `main`. Para versiones antiguas como v0.3.8 que carecen de esta opción, el bootstrap descarga el asistente de diagnóstico en una revisión de código fuente fija para comprobar la versión seleccionada sin ejecutar su instalador. Vuelve a descargar el bootstrap si una copia local antigua devuelve 64. Diagnosticar puede descargar imágenes, pero no ejecuta contenedores ni reinicia servicios. No verifican la ejecución de tareas respaldadas por proveedores.
+
+Actualiza y reabre la misma tarea para que LinkSense pueda recuperar el turno original. No envíes copias repetidas durante una interrupción de red. Inténtalo solo después de que el turno haya fallado definitivamente.
+
+Cuando se supera la ventana de contexto del modelo, una tarea ordinaria intenta continuar automáticamente una vez. Si finalmente falla, espera a que la tarea se detenga, compacta su contexto y indica dónde debe continuar el trabajo. Véase [Gestión de borradores y contexto](../tasks/index.mdx#context-and-drafts).
+
+Si no se puede presentar una decisión de plan, comprueba si la tarea ya ha entrado en un nuevo turno, objetivo o estado de automatización; Una decisión obsoleta no puede anular un estado más reciente. Si falla la ramificación, confirma que la tarea de origen se ha detenido, no tiene petición en cola y no está archivada.
+
+## Falla la subida o la vista previa [#upload-or-preview-fails]
+
+- Revisa el tipo, tamaño y límites de lotes.
+- Asegúrate de que la extensión coincida con el contenido real del archivo.
+- Un fallo en la vista previa no significa necesariamente que el original se pierda; Prueba a descargar.
+- Para documentos de conocimiento, inspecciona la fase de procesamiento fallida y vuelve a intentarlo.
+
+## La búsqueda no da resultados [#search-has-no-results]
+
+La búsqueda del centro de ayuda se genera mediante una compilación de producción estática y no está disponible en el servidor de desarrollo. La búsqueda de productos solo devuelve los datos a los que tu cuenta puede acceder.
+
+## Un sitio no puede ser publicado ni abierto [#a-site-cannot-be-published-or-opened]
+
+- Solo se puede publicar un entregable de tarea HTML registrado y descargable. No se puede usar un archivo adjunto ordinario o un archivo que aún se esté generando.
+- Si faltan estilos, scripts o imágenes, regenera y registra el entregable web completo en la tarea de origen en lugar de subir solo el HTML de la entrada.
+- Si se toma el nombre del enlace, elige otra combinación de 3–80 caracteres de letras, números o guiones.
+- Un enlace público no está disponible tras la despublicación, la eliminación permanente de la tarea de origen o la desactivación de la cuenta del propietario.
+- Actualizar un sitio no publicado no lo hace automáticamente público. Elige **Republicar** bajo **Biblioteca de recursos → Mis sitios** después de la actualización.
+
+Consulta [Publicar y gestionar sitios](../tasks/index.mdx#publish-websites) para conocer el flujo de trabajo completo y los límites de seguridad.
+
+## El bot feishu no responde [#the-feishu-bot-does-not-respond]
+
+- Confirma que el feishu está conectado bajo **Configuración → Canales de mensajería**. No escanear repetidamente mientras la aprobación del administrador esté pendiente; La conexión se recupera automáticamente tras la aprobación.
+- Solo se aceptan mensajes privados uno a uno del creador del bot. Los chats de grupo, otras personas y los mensajes que no son de texto no inician tareas.
+- Un despliegue local no necesita una devolución de llamada pública, pero el entorno LinkSense debe llegar a Feishu a través de HTTPS y WebSocket.
+- Si Feishu dice que la aplicación no existe, usa la ruta **Crear una nueva aplicación** para reemplazar la aplicación eliminada en lugar de escanear el código QR antiguo.
+- Si aparece una tarea sin título pero nunca se inicia, actualiza el estado de la tarea y del canal, y luego envía un mensaje corto nuevo en lugar de enviar repetidamente el original.
+
+Consulta [Conéctate y usa Feishu](../message-channels/index.mdx#feishu) para los pasos de conexión, aprobación, desconexión y recuperación.
+
+## Weixin no responde [#weixin-does-not-respond]
+
+- Confirma que Weixin está **En línea** bajo **Configuración → Canales de mensajería**.
+- El mensaje debe provenir de la cuenta que escaneó el código y ser texto compatible o voz transcribible.
+- Si no se completó ningún paso de QR, confirmación telefónica o código de emparejamiento, reconecta y sigue la página actual.
+- Revisa las cuotas de crédito, el estado de mantenimiento y la concurrencia de tareas. No envíes repetidamente el mismo mensaje.
+
+Consulta [Conéctate y usa Weixin](../message-channels/index.mdx#weixin) para los pasos de conexión y desconexión.
+
+WeCom, DingTalk y Microsoft Teams tienen requisitos de configuración diferentes. Empieza por la [Resumen del canal de mensajes](../message-channels/index.mdx#overview) y abre la guía correspondiente. Solo Teams requiere un endpoint público de mensajería HTTPS.
+
+## Fallos en la generación de imágenes [#image-generation-fails]
+
+- Confirma que un administrador ha habilitado un modelo de generación de imágenes.
+- Si el proveedor rechaza la solicitud, revisa la consigna, el modelo y la configuración de credenciales. Si el servicio no está disponible, inténtalo de nuevo más tarde.
+- Los fondos transparentes pueden requerir soporte nativo del modelo actual, especialmente para cabello, cristal, humo u otros bordes complejos.
+- No repitas inmediatamente una solicitud tras un fallo en el registro de artefactos o el uso de registro. Puede que el proveedor ya lo haya procesado y cobrado.
+
+Véase [Generar imágenes](../tasks/index.mdx#generate-images).
+
+## Contacta con un administrador [#contact-an-administrator]
+
+Para la salud del sistema, modelo, correo electrónico de autenticación, procesamiento de conocimiento, recuperación o errores de ejecutor, proporciona la hora, la página, el mensaje o código de error estable y los pasos de reproducción segura. Nunca envíes contraseñas, tokens, claves API, URLs temporales ni contenido sensible de archivos.

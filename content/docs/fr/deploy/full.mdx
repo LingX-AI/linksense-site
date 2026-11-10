@@ -1,0 +1,36 @@
+---
+title: "Installer Full"
+description: "Installez LinkSense Full avec Knowledge intégré sur Linux ou macOS."
+---
+
+Full ajoute l’analyse syntaxique, l’indexation et la récupération des connaissances intégrées à Core.
+
+## Vérifiez les prérequis [#check-prerequisites]
+
+Vérifiez le [Exigences Docker](./operations.mdx#environment-and-network) et laissez la marge pour l’OCR, les documents volumineux et la concurrence en utilisant le [Guidage de taille](./index.mdx#plan-resources). Un hôte `x86_64` ou une VM doit exposer `x86-64-v2` à Elasticsearch et Docling. Cette exigence x86 ne s’applique pas à l’ARM64 natif. Voir [Compatibilité hôte](./operations.mdx#virtual-machines-and-knowledge) pour les diagnostics.
+
+Utilisez un nouveau répertoire de déploiement. Ne réécrasez pas une installation existante de Core ou Full, ni ne faites passer l’installateur d’une autre édition par-dessus. Exécutez le script seulement après le succès du téléchargement ; Séparez les étapes si vous souhaitez l’inspecter d’abord.
+
+## Linux [#linux]
+
+```bash
+curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
+  -o install-full.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-full.sh &&
+sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy sh install-full.sh
+```
+
+## macOS [#macos]
+
+Lance Docker Desktop et lance-le en tant qu’utilisateur actuel, sans `sudo`.
+
+Si vous n’avez jamais utilisé Docker auparavant, suivez-[Préparer Docker et le réseau](./prepare.mdx#configure-docker-desktop) d’abord.
+
+```bash
+curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
+  -o install-full.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-full.sh &&
+sh install-full.sh
+```
+
+## Initialisation [#initialize]
+
+Suivez-[Première installation](./first-setup.mdx) pour vérifier une tâche de base. Configurez les modèles de connaissances requis, puis vérifiez l’analyse, la récupération et les citations à l’aide d’un document représentatif.

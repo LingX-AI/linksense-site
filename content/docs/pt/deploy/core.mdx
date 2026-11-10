@@ -1,0 +1,36 @@
+---
+title: "Instale Core"
+description: "Instale imagens publicadas do LinkSense Core Docker no Linux ou macOS."
+---
+
+Core fornece execução de tarefas e compartilhamento organizacional. Escolha [Full](./full.mdx) se precisar de análise e recuperação de conhecimento integradas.
+
+## Verifique os pré-requisitos [#check-prerequisites]
+
+Verifique o [Orientação de dimensionamento](./index.mdx#plan-resources) e [Requisitos do docker](./operations.mdx#environment-and-network). Os comandos abaixo são para instalações novas. Para uma implantação existente, execute `linksense status` primeiro e siga [Reparos e melhorias](./operations.mdx#repair-and-upgrades).
+
+Execute o script somente depois que o download for bem-sucedido. Execute os passos separadamente se quiser inspecionar o script antes da execução.
+
+## Linux [#linux]
+
+```bash
+curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
+  -o install-core.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-core.sh &&
+sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy sh install-core.sh
+```
+
+## macOS [#macos]
+
+Inicie o Docker Desktop e execute como seu usuário atual, sem `sudo`.
+
+Se você nunca usou o Docker antes, siga [Prepare Docker e redes](./prepare.mdx#configure-docker-desktop) primeiro.
+
+```bash
+curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
+  -o install-core.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-core.sh &&
+sh install-core.sh
+```
+
+## Inicializar [#initialize]
+
+Após a inicialização, o instalador imprime o endereço real e uma credencial única. Siga [Primeira configuração](./first-setup.mdx) para criar um administrador, configurar um modelo e verificar sua primeira tarefa.

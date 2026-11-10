@@ -1,0 +1,135 @@
+---
+title: "Premiers pas"
+description: "Connectez-vous, inscrivez-vous, gérez la sécurité du compte et accomplissez votre première tâche."
+---
+
+Suivez les étapes ci-dessous pour préparer votre compte et commencer votre première tâche. Connectez-vous avec un compte existant, ou utilisez l’enregistrement uniquement lorsque vous devez demander un nouveau compte.
+
+## Connectez-vous à LinkSense [#sign-in]
+
+Selon la configuration du déploiement, LinkSense peut proposer l’e-mail et le mot de passe, l’accès unique entreprise et la connexion Microsoft Teams. La page de connexion n’affiche que les méthodes actuellement activées.
+
+Si la page de connexion affiche **Créer un compte**, vous pouvez également utiliser le [Flux d’enregistrement ouvert](#registration) activé par l’administrateur pour demander et activer un compte.
+
+### Email et mot de passe [#sign-in-email-and-password]
+
+1. Ouvrez la page de connexion LinkSense.
+2. Saisissez l’adresse e-mail et le mot de passe associés à votre compte.
+3. Sélectionnez **Se connecter**.
+
+La correspondance par email est insensible à la casse. Des échecs répétés peuvent déclencher une protection temporaire contre la connexion. Vérifiez vos identifiants, attendez avant de réessayer, ou demandez à un administrateur de confirmer le statut du compte.
+
+### Connexion unique [#sign-in-single-sign-on]
+
+Choisissez l’option SSO entreprise et effectuez l’authentification auprès du fournisseur d’identité. Un compte SSO pour la première fois peut être créé dans un état désactivé et nécessiter une activation d’administrateur avant de vous reconnecter.
+
+### Microsoft Teams [#sign-in-microsoft-teams]
+
+Lorsque l’intégration Teams est configurée, LinkSense utilise votre identité Teams. Si l’organisation n’a pas configuré la connexion Teams, l’onglet revient à la page de connexion standard de LinkSense.
+
+### Si la connexion échoue [#sign-in-if-sign-in-fails]
+
+- Confirmez que le compte n’est pas désactivé.
+- Les utilisateurs locaux peuvent choisir **Mot de passe oublié ou première définition du mot de passe**.
+- Redémarrez SSO depuis la page de connexion si un ancien rappel est expiré.
+- En cas d’erreur de service, ne partagez que l’erreur visible et l’heure avec un administrateur — jamais un mot de passe ou un jeton de connexion.
+
+## Inscrivez-vous et activez un compte [#registration]
+
+La page de connexion ne **Créer un compte** que lorsqu’un administrateur a activé l’inscription ouverte et que le service d’authentification est disponible. Les comptes créés directement par un administrateur n’utilisent pas ce flux.
+
+### Demander un email d’activation [#registration-request-an-activation-email]
+
+1. Sélectionnez **Créer un compte** sur la page de connexion.
+2. Saisissez une adresse e-mail accessible à votre sujet.
+3. Sélectionnez **Envoyer l’e-mail d’activation**.
+4. Ouvrez le lien d’activation unique depuis votre boîte mail.
+
+Pour éviter de divulguer si une adresse est enregistrée, la page de demande affiche normalement le même résultat pour chaque soumission. Vérifiez les spams et réessayez plus tard si aucun e-mail n’arrive. Si cela n’arrive toujours pas, demandez à un administrateur de vérifier l’enregistrement ouvert et le service de messagerie.
+
+### Définissez un mot de passe et activez [#registration-set-a-password-and-activate]
+
+Ouvrez le lien avant qu’il expire, puis saisissez et confirmez un nouveau mot de passe. Le mot de passe doit contenir 8–16 caractères et inclure des lettres majuscules et minuscules, un chiffre, ainsi que de la ponctuation ou un symbole. LinkSense vous connecte après l’activation réussie.
+
+Un lien d’activation ne fonctionne qu’une seule fois. Demandez-en un nouveau s’il a expiré, était déjà utilisé, ou si l’enregistrement ouvert a été désactivé. Désactiver l’enregistrement ouvert invalide également les liens d’activation qui n’ont pas encore été utilisés.
+
+### Utilisation disponible pour les comptes enregistrés [#registration-usage-available-to-registered-accounts]
+
+Les comptes auto-enregistrés utilisent la même norme hebdomadaire de quota de crédit que les autres membres de l’organisation. Un quota hebdomadaire non fixé est illimité. Lorsque le quota est épuisé, vous ne pouvez pas commencer des tâches, soumettre des suivis ou transcrire les entrées vocales ; une tâche déjà en cours n’est pas interrompue. Le quota se réinitialise chaque lundi à minuit dans le fuseau horaire du système. La barre latérale affiche les crédits restants sous forme d’entiers sans la partie fractionnaire, tandis que le solde réel conserve une précision fractionnaire. Contactez un administrateur si votre quota doit changer.
+
+### L’e-mail est déjà enregistré [#registration-the-email-is-already-registered]
+
+Si LinkSense indique explicitement que l’adresse possède déjà un compte, retournez sur la page de connexion ou utilisez **Mot de passe oublié ou première définition du mot de passe**. Ne continuez pas à demander des emails d’activation.
+
+## Mots de passe, réinitialisation des liens et SSO [#password-and-sso]
+
+LinkSense n’affiche jamais votre mot de passe existant dans les pages, journaux ou e-mails.
+
+### Définir ou réinitialiser un mot de passe [#password-and-sso-set-or-reset-a-password]
+
+1. Sur la page de connexion, choisissez **Mot de passe oublié ou première définition du mot de passe**.
+2. Saisissez l’adresse e-mail de votre compte.
+3. Si la connexion par mot de passe local est disponible, LinkSense envoie un lien sécurisé à usage unique.
+4. Ouvrez le lien et choisissez un mot de passe qui respecte les règles de la page.
+5. Retournez à la page de connexion et connectez-vous.
+
+La réponse de soumission ne révèle pas l’existence d’un compte. Un lien de réinitialisation est à usage unique et expire ; Demande-en un autre si nécessaire.
+
+### Modifier un mot de passe existant [#password-and-sso-change-an-existing-password]
+
+Ouvrez **Paramètres → Sécurité**, entrez les mots de passe actuels et nouveaux, et soumettez. Toutes les sessions existantes sont révoquées après un changement réussi, vous devez donc vous reconnecter.
+
+### Comptes SSO [#password-and-sso-sso-accounts]
+
+Les administrateurs déterminent quelles méthodes locales, SSO et Teams sont disponibles. Une authentification réussie par le fournisseur d’identité ne prévaut pas à l’activation du compte LinkSense. Un nouveau compte ou un compte désactivé peut toujours nécessiter une intervention d’un administrateur.
+
+<Callout type="warn" title="Protégez le compte">
+
+Ne partagez jamais de mot de passe, de réinitialisation d’URL, de jeton de navigateur ou d’URL de rappel SSO.
+
+</Callout>
+
+## Créez votre première tâche [#first-task]
+
+Une tâche est un espace de travail qui maintient ensemble les messages, fichiers, contexte et livrables associés.
+
+### Première installation [#first-task-first-time-setup]
+
+Choisissez un langage d’interface dans le coin supérieur droit de la page de connexion ou d’initialisation. Après s’être connecté, changez-le en **Paramètres → Général**. LinkSense prend en charge le chinois simplifié, l’anglais, l’espagnol, le portugais brésilien, le français et le japonais.
+
+Lorsqu’un administrateur utilise LinkSense pour la première fois avant de configurer un modèle, la page **Nouvelle tâche** affiche le guide **Commencez** et le menu de compte dans la barre latérale propose un raccourci guide. Les deux disparaissent une fois que le compte et le modèle sont prêts. Les autres membres ne voient pas ces guides.
+
+- Les administrateurs peuvent choisir **Configurer le modèle** ouvrir [Réglages du modèle](../../admin-guide/models-and-usage.mdx#model-settings), ajouter un modèle, tester sa connexion et sauvegarder.
+- Si le statut du modèle ne se charge pas, choisissez **Réessayer**. Vous ne pouvez pas envoyer une nouvelle tâche tant que la configuration du modèle n’est pas prête et que son statut n’a pas été chargé avec succès.
+
+Si aucun modèle n’est disponible, les autres membres doivent demander à un administrateur d’en configurer un, puis de rafraîchir la page **Nouvelle tâche**.
+
+Vous pouvez écarter le guide. Ce navigateur se souvient de ce choix séparément pour chaque compte. Les administrateurs peuvent le rouvrir via **Guide de démarrage** dans le menu de compte de la barre latérale tant que la configuration du modèle est encore inachevée.
+
+### Soumettre des œuvres [#first-task-submit-work]
+
+1. Sélectionnez **Nouvelle tâche** dans la barre latérale.
+2. Décrivez l’objectif, le matériel disponible et les résultats attendus.
+3. Ajoutez des fichiers, des plugins, des compétences ou des bases de connaissances si nécessaire.
+4. Vérifiez le modèle et l’effort de raisonnement.
+5. Envoyez la demande.
+
+Exemple :
+
+> Examinez les données de vente jointes, identifiez les trois changements les plus importants et créez un résumé en anglais ainsi qu’une fiche détaillée Excel.
+
+### Suivre l’exécution [#first-task-follow-execution]
+
+La tâche affiche les réponses, l’activité des capacités et les fichiers générés. LinkSense génère un titre à partir de la première requête ; Vous pouvez le renommer depuis la liste de tâches récentes.
+
+Pendant que le travail est en cours, vous pouvez l’arrêter, le diriger avec une clarification uniquement par texto, ou mettre une nouvelle demande en file d’attente. Les requêtes avec pièces jointes ou sélections de capacités explicites sont automatiquement mises en file.
+
+### Affiner le résultat [#first-task-refine-the-result]
+
+Continuez dans la même mission au lieu de recommencer à zéro :
+
+- Réécrivez le résumé pour un public exécutif.
+- Ajoutez une chronique année après année au cahier d’exercices.
+- Exportez la conclusion finale en PDF.
+
+Chaque tour reste dans l’historique des tâches, et les fichiers générés apparaissent comme livrables téléchargeables.

@@ -1,0 +1,14 @@
+{
+  "title": "Instalación y primeros pasos",
+  "pages": [
+    "index",
+    "prepare",
+    "core",
+    "full",
+    "first-setup",
+    "operations",
+    "development",
+    "architecture"
+  ],
+  "icon": "Rocket"
+}

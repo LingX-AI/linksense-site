@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { Check, Copy } from 'lucide-react'
+import { getDocsUI } from '@/content/docs-ui'
+import { getMessages } from '@/lib/i18n'
 import { buttonVariants } from './ui/button'
 
 export function PageActions({
@@ -11,6 +13,7 @@ export function PageActions({
   markdownUrl: string
   lang: string
 }) {
+  const docs = getDocsUI(lang)
   const [state, setState] = useState<'idle' | 'copied' | 'failed'>('idle')
   async function copy() {
     try {
@@ -33,13 +36,7 @@ export function PageActions({
         ) : (
           <Copy className="size-3.5" />
         )}
-        {lang === 'zh'
-          ? state === 'copied'
-            ? '已复制'
-            : '复制 Markdown'
-          : state === 'copied'
-            ? 'Copied'
-            : 'Copy Markdown'}
+        {state === 'copied' ? getMessages(lang).copied : docs.copyMarkdown}
       </button>
       {state === 'failed' && (
         <a
@@ -47,9 +44,7 @@ export function PageActions({
           className="text-xs text-fd-muted-foreground underline"
           role="status"
         >
-          {lang === 'zh'
-            ? '自动复制失败，打开原文手动复制'
-            : 'Copy unavailable. Open the source to copy it.'}
+          {docs.copyFailed}
         </a>
       )}
     </div>

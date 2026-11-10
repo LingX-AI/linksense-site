@@ -1,0 +1,460 @@
+---
+title: "LinkSenseアプリケーションを埋め込む"
+description: "LinkSenseアプリケーションを外部のビジネスシステムに安全に埋め込み、HTTP MCPセッション認証情報を提供します。"
+---
+
+
+組み込みのLinkSenseアプリケーションは、そのアプリケーションのチャットインターフェースのみを表示します。 ユーザーはLinkSenseのメインナビゲーション、プラグインセンター、管理ページを見ることはできません。
+
+## システムメンテナンス [#system-maintenance]
+
+予定されたメンテナンスウィンドウ中は、両方のアクセスモードがメンテナンス理由と予想される時間ウィンドウが表示され、チャットやその他の業務は利用できません。 オープンフレームは30秒ごとにシステムの状態を確認し、ウィンドウが終了するか管理者がメンテナンスを無効にすると自動的に復旧します。 ユーザーはホストアプリケーションの更新を必要としません。
+
+組み込み型ビジネスエンドポイントは、メンテナンス中にエラーコードを含むHTTP `503`を返`SYSTEM_MAINTENANCE_ACTIVE`します。 フレームロード、システムステータスチェック、既存セッションの更新は引き続き利用可能です。 未終了のセッションは保持され、ユーザーは現在の会話を継続できます。 再認証が必要な場合は、フレームは以下の`linksense:ready`フローを使用します。 メンテナンスを表示するだけでは、すでに稼働中の作業を強制的に停止するわけではありません。
+
+## アクセスモードを選択してください [#choose-an-access-mode]
+
+| モード | ユースケース | チケット | ユーザー履歴 |
+| --- | --- | --- | --- |
+| 認証はできません | 公開ウェブサイトとオープンQ&A | 必須ではありません | ビジネスユーザーごとに復元されていません |
+| 認証が必要です | 内部システムとパートナーポータル | バックエンドからの要請 | 安定した`external_subject`で修復 |
+
+統合前に、LinkSense管理者に以下を依頼してください:
+
+- アプリケーションの外部アクセスを有効にしてください。
+- 正しいアクセスモードを選択してください。
+- ビジネスページの正確なオリジンを「Allowed embed origins」に追加してください。
+- 各許容原点ごとに最大4つの組み込み質問を設定可能です。 LinkSenseは入力したテキストを正確に表示し、翻訳は行いません。
+- App IDを提供し、認証アクセスのために完全なApp Secretも提供してください。
+
+許可された起源の例:
+
+```text
+https://portal.example.com
+https://ops.example.com
+http://127.0.0.1:5055
+```
+
+本番環境でHTTPSを使いましょう。 `localhost`や`127.0.0.1`でのHTTPはローカル開発に適しています。
+
+## 最小限の統合:認証なし [#minimal-integration-no-authentication]
+
+公開ページにはチケットは必要ありません。 iframe URLの`locale`パラメータで初期言語を設定します:
+
+```html
+<iframe
+  id="linksense-app"
+  src="https://linksense.example.com/api/v1/embed/frame/lsa_xxx?parent_origin=https%3A%2F%2Fportal.example.com&amp;locale=en-US"
+  title="LinkSense application"
+  sandbox="allow-scripts allow-same-origin allow-forms allow-downloads"
+  allow="clipboard-write"
+  style="width: 100%; height: 720px; border: 0"
+></iframe>
+```
+
+ここで:
+
+- `lsa_xxx`はApp IDです。
+- `parent_origin`はURLでエンコードされたビジネスページの発信源です。
+- `locale`はオプションの初期インターフェース言語です。 `zh-CN`か`en-US`のみ受け入れています。
+- iframeは独自の公開セッションを作成します。 親はチケットを要求したりトークンを扱ったりしません。
+
+## 最小限の統合:認証が必要です [#minimal-integration-requires-authentication]
+
+認証フローは4つのステップで構成されています。
+
+```text
+iframe が linksense:ready を送信
+  -> アプリのフロントエンドが自分のバックエンドを呼び出す
+  -> バックエンドが App ID + App Secret を使用して一度限りのチケットを要求する
+  -> フロントエンドが postMessage でチケットを iframe に送信する
+```
+
+初期認証と再認証は同じ`linksense:ready`イベントを使用します。
+
+### 1. ビジネスのバックエンドからチケットをリクエストしてください [#1-request-a-ticket-from-the-business-backend]
+
+App Secretはビジネスのバックエンドにのみ存在しなければなりません。 コール:
+
+```http
+POST https://linksense.example.com/api/v1/embed/tickets
+Content-Type: application/json
+```
+
+要請本体:
+
+```json
+{
+  "app_id": "lsa_xxx",
+  "app_secret": "lss_xxx",
+  "origin": "https://portal.example.com",
+  "external_subject": "user-123",
+  "external_tenant": "tenant-a",
+  "display_name": "Jane Doe"
+}
+```
+
+| フィールド | 必須 | 概要 |
+| --- | --- | --- |
+| `app_id` | はい | LinkSenseアプリID |
+| `app_secret` | はい | LinkSenseアプリの秘密;バックエンドのみ |
+| `origin` | はい | 現在のビジネスページの起源;それは許されなければなりません |
+| `external_subject` | いいえ | 安定したビジネスユーザーID;個人的な文脈を復元するために提供してください |
+| `external_tenant` | いいえ | テナントまたは組織のID;マルチテナントシステムに推奨 |
+| `display_name` | いいえ | 表示名;身分証明として使われたことはない |
+
+応答チケットは一度きりで、60秒後に有効期限が切れます。
+
+```json
+{
+  "success": true,
+  "data": {
+    "ticket": "lst_xxx",
+    "iframe_url": "https://linksense.example.com/api/v1/embed/frame/lsa_xxx?parent_origin=https%3A%2F%2Fportal.example.com",
+    "expires_at": "2026-08-25T08:00:00.000Z"
+  }
+}
+```
+
+Node.js / Expressの例:
+
+```js
+app.post("/api/linksense-ticket", async (req, res) => {
+  const response = await fetch(
+    "https://linksense.example.com/api/v1/embed/tickets",
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify({
+        app_id: process.env.LINKSENSE_APP_ID,
+        app_secret: process.env.LINKSENSE_APP_SECRET,
+        origin: "https://portal.example.com",
+        external_subject: req.user.id,
+        external_tenant: req.user.tenantId,
+        display_name: req.user.name,
+      }),
+    },
+  )
+
+  const payload = await response.json()
+  if (!response.ok || payload.success !== true) {
+    res.status(response.status).json({
+      error: "linksense_ticket_failed",
+      message: payload.error?.message ?? "Unable to get LinkSense access",
+    })
+    return
+  }
+
+  res.json({
+    ticket: payload.data.ticket,
+
+    // Optional: for the application's HTTP MCP. This is not a LinkSense session ID.
+    sessionId: req.businessMcpSessionId ?? null,
+  })
+})
+```
+
+<Callout type="warn" title="注記">
+
+ビジネスシステムが下流のMCPサービスに明示的に許可しているセッション認証情報のみを返してください。 HttpOnly クッキー内に残るはずのセッションIDを公開しないでください。
+
+</Callout>
+
+### 2. ビジネスフロントエンドからチケットを送信してください [#2-send-the-ticket-from-the-business-frontend]
+
+以下はコピー対応の最小限の統合です。 `linksense:ready`繰り返しのイベントをまとめるため、ページが複数のチケットを同時にリクエストしないようにします。
+
+```html
+<iframe
+  id="linksense-app"
+  src="https://linksense.example.com/api/v1/embed/frame/lsa_xxx?parent_origin=https%3A%2F%2Fportal.example.com&amp;locale=en-US"
+  title="LinkSense application"
+  sandbox="allow-scripts allow-same-origin allow-forms allow-downloads"
+  allow="clipboard-write"
+  style="width: 100%; height: 720px; border: 0"
+></iframe>
+
+<script>
+  const appId = "lsa_xxx"
+  const linkSenseOrigin = "https://linksense.example.com"
+  const frame = document.getElementById("linksense-app")
+  let ticketRequest = null
+
+  async function provideTicket() {
+    if (ticketRequest) return ticketRequest
+
+    ticketRequest = (async () => {
+      const response = await fetch("/api/linksense-ticket", {
+        method: "POST",
+        credentials: "same-origin",
+      })
+      const payload = await response.json()
+
+      if (!response.ok || !payload.ticket) {
+        frame.contentWindow.postMessage(
+          {
+            type: "linksense:host-authentication-failed",
+            appId,
+            message: payload.message ?? "Unable to get LinkSense access",
+          },
+          linkSenseOrigin,
+        )
+        return
+      }
+
+      frame.contentWindow.postMessage(
+        {
+          type: "linksense:ticket",
+          appId,
+          ticket: payload.ticket,
+          ...(payload.sessionId ? { sessionId: payload.sessionId } : {}),
+        },
+        linkSenseOrigin,
+      )
+    })().finally(() => {
+      ticketRequest = null
+    })
+
+    return ticketRequest
+  }
+
+  window.addEventListener("message", (event) => {
+    if (event.origin !== linkSenseOrigin) return
+    if (event.source !== frame.contentWindow) return
+
+    const message = event.data
+    if (!message || message.appId !== appId) return
+    if (message.type !== "linksense:ready") return
+    if (message.authMode !== "required") return
+
+    void provideTicket()
+  })
+</script>
+```
+
+## ビジネスアイデンティティとコデックスの文脈 [#business-identity-and-codex-context]
+
+`external_subject`はユーザーのコンテキストを復元するために使われる唯一のビジネスアイデンティティです。 ビジネスバックエンドはチケットをリクエストする際にそれを提出します。 `postMessage`を経由せず、MCPに転送されることもありません。
+
+```text
+external_subject + external_tenant + application
+  -> LinkSense の外部ユーザー
+  -> 会話
+  -> Codex スレッドのコンテキスト
+```
+
+おすすめ:
+
+- 表示名、電話番号、メールアドレスではなく、変えられない内部ユーザープライマリキーを使用してください。
+- マルチテナントシステムでは、テナント間のアイデンティティ衝突を防ぐために`external_tenant`を送信することも可能です。
+- 同じユーザーがチケットを要求するたびに同じアイデンティティフィールドを送信します。
+- 認証済みユーザーからバックエンドでこれらの値を生成します。 ブラウザのパラメータを信用しないでください。
+
+パブリックモードには信頼できるビジネスアイデンティティがなく、訪問ごとにユーザーごとの履歴を復元しません。
+
+## インターフェースの場所と組み込みの質問 [#interface-locale-and-built-in-questions]
+
+埋め込みページは、`zh-CN`と`en-US`の2つのインターフェースローカに対応しており、2つの対応設定方法があります。
+
+1. iframe `src`に`locale`を追加して、最初のロードやリロード後に初期言語を設定することができます。
+2. iframeが読み込まれたら、リロードせずにすぐに切り替えを促す専用`linksense:locale`メッセージを送信してください。
+
+```js
+const frame = document.getElementById("linksense-app")
+const linkSenseOrigin = "https://linksense.example.com"
+
+function setLinkSenseLocale(locale) {
+  frame.contentWindow.postMessage(
+    {
+      type: "linksense:locale",
+      appId: "lsa_xxx",
+      locale,
+    },
+    linkSenseOrigin,
+  )
+}
+
+setLinkSenseLocale("en-US")
+```
+
+- URL例:`&locale=en-US`。 欠損またはサポートされていない値は`zh-CN`に戻されます。
+- `linksense:locale`は`zh-CN`または`en-US`のみを受け入れています。空またはサポートされていない値は無視され、現在の言語は変更されません。
+- ランタイムメッセージは現在の言語を上書きします。 iframeのリロード後、URLパラメータは再び初期言語となります。
+- `linksense:ticket`や`linksense:context`に、`locale`を含めないでください。
+- `locale` LinkSenseのボタン、メニュー、状態、エラーメッセージのみを変更します。 ユーザーの質問、タスクコンテキスト、MCPの引数には一切追加されません。
+
+現在のオリジンに設定された組み込みの質問は、新しいタスクの歓迎エリアに表示されます。 テキストは決して変わらない`locale`、ユーザーは管理者が入力した内容を正確に見ることができます。 質問を選択すると作曲者が入力・集中しますが、自動的に送信されるわけではありません。
+
+## 外部MCP統合へのアタッチメントのハンドリング [#handing-attachments-to-external-mcp-integrations]
+
+HTTP MCP引数内のワークスペースパスはファイル転送ではありません。 まずはビジネス所有のSTDIO MCPアダプターを評価してください:公開されたアプリケーションはすでにSTDIOをサポートしているため、アダプターは選択されたタスク添付ファイルを読み取り、そのバイトを固定HTTPSエンドポイントにアップロードできます。 宛先はストレージおよびレコード関連を所有しています。新しいLinkSenseコアエンドポイントは必要ありません。
+
+実行可能な参照、起動コマンド、宛先契約についてはリポジトリの`apps/runner/examples/attachment-handoff/README.md`を参照してください。 モデルで可視化される引数は、非秘密のハンドオフIDのみを含みます。 信頼できるバックエンドは、承認されたマニフェスト、ハッシュ、宛先およびスコープ認証情報を提供します。 ユーザーは認証済みUIで宛先と選択したファイルを確認しなければなりません。プロンプトテキスト、モデルの主張、ブール値の引数はバックエンド認可とは言えません。
+
+リファレンスは会話の範囲、期限切れ、ファイルパスやハッシュ、キャンセル、サイズ/型の制限、部分的な失敗、そして安定した再試行キーをチェックします。 宛先は受信/保存、持続的な冪等性、トランザクションレコードの関連付け、局所エラーを実装しなければなりません。 リポジトリテストは、デプロイされたビジネス統合ではなく、シミュレートされた受信機を使用します。 ツールの引数に長期の公開ダウンロードURL、認証情報、大規模なBase64ペイロードを絶対に含めないでください。
+
+## エンドユーザープレゼンテーション [#end-user-presentation]
+
+アプリケーションの外部アクセス設定で**エンドユーザー向け表示**を有効にして`&presentation=end_user`で埋め込みコードを生成するか、そのパラメータを自分でiframe `src`に追加してください。 これによりコマンド、ツールの活動、推論の要約、実行タイミングが隠されます。 局所的な進捗、ユーザーのフォローアップ指示、最終回答、参考文献、添付ファイルは引き続き表示されます。
+
+確認フォーム、提出およびキャンセル済みの結果、停止コントロール、エラー、接続フィードバックは引き続きご利用いただけます。 このオプションはライブターンと復元履歴の両方に適用されます。 ツールの権限、認証、ネイティブターンの意味は変更されず、再接続もアクションの再生を行いません。
+
+パラメータを省略したり`presentation=technical`を使うことで、既存の技術的見解が維持されます。 構成はiframe単位で行われます。既存のアプリケーションや公開されたバージョンは移行を必要としません。 これは表示オプションであり、セキュリティの境界ではありません。 トラブルシューティング時には技術的なビューを別の開発者やメンテナンスの埋め込みに保管してください。
+
+## タスクリストと自動命名 [#task-list-and-automatic-naming]
+
+埋め込みページのタスクリストには、現在のアプリケーションで外部ユーザーが作成したタスクのみが表示されます。 他のユーザーや他のアプリケーションのタスクを公開することはありません。
+
+- 新しいタスクは独立したコデックスタスクコンテキストを作成します。
+- ユーザーが最初の実際のリクエストを開始すると、LinkSenseはアプリケーション名の表示を続ける代わりに、そのリクエストからタイトルを生成します。
+- 削除は永久的なもので、アーカイブ操作ではありません。 確認後、タスクのメッセージ、添付ファイル、結果は削除され、復元できません。
+- 現在のタスクが削除されると、LinkSenseは新しい空タスクを作成・選択し、古いタスクを削除するため、iframeが無効なコンテキストに付いたまま残りません。
+- 実行中のタスクは永久に削除することはできません。 終わるまで待つか、まず止めてください。
+
+## ビジネスセッションIDをHTTP MCPに送信します [#send-a-business-sessionid-to-http-mcp]
+
+`postMessage`のオプション`sessionId`はビジネスシステムの認証です。 これはLinkSense自身のセッションIDとは関係ありません。
+
+存在する場合、LinkSenseはそのユーザーのアプリケーションタスクがHTTP MCPを呼び出すたびに自動的にこれらのヘッダーを送信します:
+
+```http
+X-Session-Id: business-session-value
+X-API-Key: configured-mcp-api-key
+```
+
+行動:
+
+- 既存のMCP APIキーヘッダーと`X-Session-Id`は互いに上書きせずに一緒に送信されます。
+- MCP APIキーヘッダーも`X-Session-Id`として設定されている場合、ヘッダーの競合により呼び出しは失敗します。 別の名前を使ってください。
+- `sessionId`がなければ、HTTPリクエストには`X-Session-Id`が全く含まれません。
+- LinkSenseは`sessionId`を暗号化し、チャットメッセージ、ツールの引数、イベント、ログには公開しません。
+- AIチャイルドプロセスはそれを読み取ることができません。 現在のセッションのHTTP MCPエグレスプロキシのみが使用可能です。
+- この機能はアプリケーションに接続されたHTTP MCPサーバーにのみ適用されます。
+
+ビジネスセッション認証情報を独立して更新してください:
+
+```js
+frame.contentWindow.postMessage(
+  {
+    type: "linksense:session-id",
+    appId,
+    sessionId: "new-business-session",
+  },
+  linkSenseOrigin,
+)
+```
+
+クリアする:
+
+```js
+frame.contentWindow.postMessage(
+  {
+    type: "linksense:session-id",
+    appId,
+    sessionId: null,
+  },
+  linkSenseOrigin,
+)
+```
+
+## postMessageプロトコル [#postmessage-protocol]
+
+親→iframe:
+
+| イベント | フィールド | 概要 |
+| --- | --- | --- |
+| `linksense:ready` | `appId`, `authMode` | iframeは準備完了です。`required`モードでは現在チケットが必要です。 初期認証と再認証は同じイベントを使用します |
+
+親のiframe→:
+
+| イベント | フィールド | 概要 |
+| --- | --- | --- |
+| `linksense:ticket` | `appId`, `ticket`, `sessionId?` | 一度きりのチケットを提供し、ビジネスセッションIDを拘束する場合があります |
+| `linksense:locale` | `appId`, `locale` | インターフェース言語を動的に変更します。`zh-CN`か`en-US`のみ受け入れます |
+| `linksense:session-id` | `appId`, `sessionId?` | sessionIdを動的に更新します;ご`null`か省略すれば問題は解決します |
+| `linksense:host-authentication-failed` | `appId`, `message?` | ホストバックエンドがチケットを取得できなかったことをiframeに伝えます |
+
+すべてのメッセージは以下のことを検証しなければなりません:
+
+- `event.origin`はLinkSenseやビジネスシステムの起源が予想されます。
+- `event.source`は期待されるiframeまたは親ウィンドウです。
+- `appId`組み込みアプリケーションと一致します。
+
+`"*"`を`postMessage`ターゲットの原産地として使ってはいけません。
+
+## 資格の存続期間 [#credential-lifetimes]
+
+| 資格 | 現在の生涯 | 注記 |
+| --- | --- | --- |
+| チケット | 60秒、使い捨て | 使用直後無効 |
+| LinkSenseアクセストークン | 2時間 | iframeは有効期限の約2分前に更新します |
+| LinkSense更新トークン | ローリング8時間 | 更新ごとにローテーションされ、外部セッションの寿命で上限が設定されます |
+| LinkSense外部セッション | 7日 | 期限切れ後、必要モードは再び送`linksense:ready`します |
+| アプリシークレット | 自動失効はありません | 再生は古い認証情報とセッションを即座に無効化します |
+| ビジネス`sessionId` | ビジネスシステムによって定義されます | LinkSenseはその寿命を検証しません。MCPに転送するだけです |
+| MCP APIキー | MCPサービスによって定義されています | 無効な鍵はMCP呼び出しエラーを引き起こします |
+
+また、外部アクセスが無効化されたり、認証モードや許可された発信元が変更されたり、アプリケーションが無効になったり、ユーザーがログアウトしたり、更新トークンの再プレイが検出された場合、LinkSenseセッションは早期に無効になることもあります。
+
+## セキュリティチェックリスト [#security-checklist]
+
+- App Secretはバックエンド設定やsecretマネージャーでのみ保存してください。
+- App Secretやチケットは、URL、クッキー、ブラウザストレージ、ログ、監視イベント、エラーレポートなどに書かないでください。
+- 配達中は`sessionId`ページメモリにのみ保存してください。 フロントエンドストレージ、ログ、エラーレポートに永続化しないでください。
+- チケットをキャッシュしたり再利用したりしないでください。 すべてのイベントごとに新しいものをリクエスト`linksense:ready`。
+- 認証済みユーザーからバックエンドで`external_subject`と`external_tenant`を生成します。
+- 正確な許容原点を設定する;ワイルドカードは使わないでください。
+- 本番環境でHTTPSを使いましょう。
+- もしApp Secretがリークされた可能性がある場合は、すぐにLinkSenseで再生成し、バックエンドの設定を更新してください。
+
+## 局所検証 [#local-verification]
+
+外部システムのデモを開始してください:
+
+```bash
+LINKSENSE_BASE_URL=http://localhost:5173 \
+LINKSENSE_API_BASE_URL=http://localhost:5173 \
+LINKSENSE_APP_ID=lsa_xxx \
+LINKSENSE_APP_SECRET=lss_xxx \
+node examples/external-embed-demo/server.mjs
+```
+
+`http://127.0.0.1:5055/required`を開いて、その発信地が許可されているか確認してください。
+
+ブラウザの煙を試してみて:
+
+```bash
+node examples/external-embed-demo/smoke.mjs
+```
+
+実際のMCPヘッダー転送の検証:
+
+```bash
+pnpm --filter @linksense/runner exec vitest run \
+  test/http-egress-proxy.integration.test.ts
+```
+
+## トラブルシューティング [#troubleshooting]
+
+### iframeはアクセスを待ち続けています [#the-iframe-keeps-waiting-for-access]
+
+親が`linksense:ready`を受け取り、自身のバックエンドでチケットを取得し、`event.origin`、`event.source`、`appId`を正しく検証していることを確認しましょう。
+
+### App IDやApp Secretは無効です [#app-id-or-app-secret-is-invalid]
+
+バックエンドが現在の完全なApp Secretを使用していることを確認してください。 App Secretを再生成すると、古い値は即座に無効になります。
+
+### 同じユーザーが過去の履歴を見ることができません [#the-same-user-does-not-see-previous-history]
+
+すべてのチケットリクエストでそのユーザーに同じ`external_subject`を送ってください。 マルチテナントシステムも同じ`external_tenant`を送信しなければなりません。
+
+### MCPはX-Session-Idを受け取りません [#mcp-does-not-receive-x-session-id]
+
+ビジネスバックエンドが空でない`sessionId`を返し、親が`linksense:ticket`に含めており、アプリケーションが接続されたHTTP MCPを使用していることを確認します。 MCP APIキーヘッダーを`X-Session-Id`として設定しないでください。
+
+### ブラウザはiframeをブロックします [#the-browser-blocks-the-iframe]
+
+現在のページの発信元が許可されているか、`parent_origin`正確に一致しているか、本環境でHTTPSを使用しているか、ブラウザ拡張機能やエンタープライズポリシーがiframeをブロックしていないかを確認してください。

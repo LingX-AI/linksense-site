@@ -1,0 +1,135 @@
+---
+title: "Primeiros passos"
+description: "Faça login, registre-se, gerencie a segurança da conta e complete sua primeira tarefa."
+---
+
+Siga os passos abaixo para preparar sua conta e começar sua primeira tarefa. Faça login com uma conta existente ou use o registro apenas quando precisar solicitar uma nova conta.
+
+## Faça login no LinkSense [#sign-in]
+
+Dependendo da configuração de implantação, o LinkSense pode oferecer e-mail e senha, login único empresarial e login no Microsoft Teams. A página de login mostra apenas os métodos que estão ativados no momento.
+
+Se a página de login mostrar **Criar conta**, você também pode usar o [Fluxo aberto de registro](#registration) habilitado pelo administrador para solicitar e ativar uma conta.
+
+### E-mail e senha [#sign-in-email-and-password]
+
+1. Abra a página de login do LinkSense.
+2. Insira o e-mail e a senha associados à sua conta.
+3. Selecione **Entrar**.
+
+A correspondência de e-mails é insensível a maiúsculas e minúsculas. Falhas repetidas podem acionar proteção temporária contra logins. Verifique suas credenciais, espere antes de tentar novamente ou peça a um administrador para confirmar o status da conta.
+
+### Login único [#sign-in-single-sign-on]
+
+Escolha a opção SSO empresarial e complete a autenticação com o provedor de identidade. Uma conta SSO pela primeira vez pode ser criada em um estado desativado e exigir ativação do administrador antes que você faça login novamente.
+
+### Microsoft Teams [#sign-in-microsoft-teams]
+
+Quando a integração com o Teams está configurada, o LinkSense usa sua identidade do Teams. Se a organização não tiver configurado o login do Teams, a aba volta para a página padrão de login do LinkSense.
+
+### Se o login falhar [#sign-in-if-sign-in-fails]
+
+- Confirme que a conta não está desativada.
+- Usuários locais podem escolher **Esqueci a senha ou quero definir uma pela primeira vez**.
+- Reinicie o SSO na página de login se um retorno antigo tiver expirado.
+- Para um erro de serviço, compartilhe apenas o erro visível e o horário com um administrador — nunca uma senha ou token de login.
+
+## Registre-se e ative uma conta [#registration]
+
+A página de login mostra **Criar conta** apenas quando um administrador habilitou o registro aberto e o serviço de e-mail de autenticação está disponível. Contas criadas diretamente por um administrador não utilizam esse fluxo.
+
+### Solicite um e-mail de ativação [#registration-request-an-activation-email]
+
+1. Selecione **Criar conta** na página de login.
+2. Insira um endereço de e-mail que você possa acessar.
+3. Selecione **Enviar e-mail de ativação**.
+4. Abra o link de ativação única na sua caixa de entrada.
+
+Para evitar divulgar se um endereço está registrado, a página de solicitação normalmente mostra o mesmo resultado para cada submissão. Verifique spam e tente novamente depois se não chegar nenhum e-mail. Se ainda não chegar, peça a um administrador para verificar o registro aberto e o serviço de e-mail.
+
+### Defina uma senha e ative [#registration-set-a-password-and-activate]
+
+Abra o link antes que expire, depois insira e confirme uma nova senha. A senha deve conter 8–16 caracteres e incluir letras maiúsculas e minúsculas, um número e pontuação ou um símbolo. O LinkSense faz login com você após a ativação ser bem-sucedida.
+
+Um link de ativação funciona apenas uma vez. Solicite um novo se ele expirou, já foi usado ou o registro aberto foi desativado. Desativar o registro aberto também invalida links de ativação que ainda não foram usados.
+
+### Uso disponível para contas registradas [#registration-usage-available-to-registered-accounts]
+
+Contas auto-registradas usam o mesmo padrão semanal de cota de crédito que outros membros da organização. Uma cota semanal não estabelecida é ilimitada. Quando a cota é esgotada, você não pode iniciar tarefas, enviar acompanhamentos ou transcrever voz; uma tarefa que já está em execução não é interrompida. A cota é reiniciada toda segunda-feira à meia-noite no fuso horário do sistema. A barra lateral exibe os créditos restantes como inteiros, com a parte fracionária omitida, enquanto o balanço real mantém precisão fracionária. Entre em contato com um administrador se sua cota precisar mudar.
+
+### O e-mail já está registrado [#registration-the-email-is-already-registered]
+
+Se o LinkSense disser explicitamente que o endereço já tem conta, volte à página de login ou use **Esqueci a senha ou quero definir uma pela primeira vez**. Não fique solicitando e-mails de ativação.
+
+## Senhas, redefinição de links e SSO [#password-and-sso]
+
+O LinkSense nunca exibe sua senha existente em páginas, logs ou e-mails.
+
+### Defina ou redefina uma senha [#password-and-sso-set-or-reset-a-password]
+
+1. Na página de login, escolha **Esqueci a senha ou quero definir uma pela primeira vez**.
+2. Insira o e-mail da sua conta.
+3. Se houver login com senha local disponível, o LinkSense envia um link seguro único.
+4. Abra o link e escolha uma senha que atenda às regras da página.
+5. Volte para a página de login e faça login.
+
+A resposta de submissão não revela se existe uma conta. Um link de reset é de uso único e expira; Peça outro quando necessário.
+
+### Altere uma senha existente [#password-and-sso-change-an-existing-password]
+
+Abra **Configurações → Segurança**, insira as senhas atual e nova, e envie. Todas as sessões existentes são revogadas após uma alteração bem-sucedida, então você deve fazer login novamente.
+
+### Contas SSO [#password-and-sso-sso-accounts]
+
+Os administradores determinam quais métodos locais, SSO e Teams estão disponíveis. A autenticação bem-sucedida pelo provedor de identidade não substitui a ativação da conta do LinkSense. Uma conta nova ou desativada ainda pode exigir ação do administrador.
+
+<Callout type="warn" title="Proteja a conta">
+
+Nunca compartilhe senha, redefina URL, token do navegador ou URL de retorno de SSO.
+
+</Callout>
+
+## Crie sua primeira tarefa [#first-task]
+
+Uma tarefa é um espaço de trabalho que mantém mensagens, arquivos, contexto e entregáveis relacionados juntos.
+
+### Primeira configuração [#first-task-first-time-setup]
+
+Escolha um idioma de interface no canto superior direito da página de login ou inicialização. Depois de fazer login, mude em **Configurações → Geral**. LinkSense suporta chinês simplificado, inglês, espanhol, português brasileiro, francês e japonês.
+
+Quando um administrador usa o LinkSense pela primeira vez antes de configurar um modelo, a página **Nova tarefa** mostra o guia **Comece** e o menu lateral da conta oferece um atalho de guia. Ambos desaparecem assim que a conta e o modelo estão prontos. Outros membros não veem esses guias.
+
+- Os administradores podem escolher **Configurar modelo** abrir [Configurações do modelo](../../admin-guide/models-and-usage.mdx#model-settings), adicionar um modelo, testar sua conexão e salvar.
+- Se o status do modelo não carregar, escolha **Tentar novamente**. Você não pode enviar uma nova tarefa até que a configuração do modelo esteja pronta e seu status tenha sido carregado com sucesso.
+
+Se não houver modelo disponível, outros membros devem pedir a um administrador para configurar um e então atualizar a página **Nova tarefa**.
+
+Você pode dispensar o guia. Este navegador lembra dessa escolha separadamente para cada conta. Os administradores podem reabri-lo através de **Guia de Início** no menu lateral da conta enquanto a configuração do modelo ainda está incompleta.
+
+### Enviar trabalhos [#first-task-submit-work]
+
+1. Selecione **Nova tarefa** na barra lateral.
+2. Descreva o objetivo, o material disponível e o resultado esperado.
+3. Adicione arquivos, plugins, habilidades ou bases de conhecimento quando necessário.
+4. Verifique o modelo e o esforço de raciocínio.
+5. Envie o pedido.
+
+Exemplo:
+
+> Revise os dados de vendas anexados, identifique as três mudanças mais importantes e crie um resumo em inglês além de uma folha de detalhes no Excel.
+
+### Após a execução [#first-task-follow-execution]
+
+A tarefa exibe respostas, atividade de capacidades e arquivos gerados. O LinkSense gera um título a partir da primeira solicitação; Você pode renomeá-lo a partir da lista de tarefas recentes.
+
+Enquanto o trabalho está em andamento, você pode interrompê-lo, direcionar com uma explicação apenas por texto ou colocar outro pedido na fila. Requisições com anexos ou seleções explícitas de capacidades são colocadas automaticamente em fila.
+
+### Refinar o resultado [#first-task-refine-the-result]
+
+Continue na mesma tarefa em vez de começar do zero:
+
+- Reescreva o resumo para um público executivo.
+- Adicione uma coluna ano a ano ao caderno de exercícios.
+- Exporte a conclusão final em PDF.
+
+Cada turno permanece no histórico de tarefas, e os arquivos gerados aparecem como entregues baixáveis.

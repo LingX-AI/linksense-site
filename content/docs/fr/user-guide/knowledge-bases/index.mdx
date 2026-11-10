@@ -1,0 +1,143 @@
+---
+title: "Connaissances"
+description: "Créer des bibliothèques de connaissances, traiter des documents, partager l’accès et utiliser les citations sources dans les tâches."
+---
+
+Suivez le flux de création, de téléchargement, de partage et de tâches, puis vérifiez les sources citées dans les réponses.
+
+## Créer et gérer des bases de connaissances [#create-and-manage]
+
+Une base de connaissances transforme des documents de longue durée en contexte consultable et cité.
+
+### Créez une base de connaissances locale [#create-and-manage-create-a-local-knowledge-base]
+
+1. Ouvrez **Bibliothèque de ressources** depuis la barre latérale, puis choisissez l’onglet **Bases de connaissances**.
+2. Choisis **Créer une base de connaissances**.
+3. Entrez un nom et une description.
+4. Sélectionnez le téléchargement local et l’enregistrement.
+
+Le créateur est le propriétaire unique et peut gérer les métadonnées, les annuaires, les documents, le partage et le cycle de vie.
+
+### Source externe [#create-and-manage-external-source]
+
+Lorsqu’un administrateur a configuré SharePoint, le formulaire de création offre une source externe. Saisissez une URL de dossier SharePoint autorisée. LinkSense vérifie l’accès avant de planifier la synchronisation.
+
+Seuls les administrateurs créent et gèrent des bases de connaissances externes. D’autres utilisateurs peuvent en utiliser un qui leur est partagé.
+
+### Modifier, archiver, restaurer et supprimer [#create-and-manage-edit-archive-restore-and-delete]
+
+- Les modifications de métadonnées ne retraitent pas les documents.
+- L’archivage rend la base de connaissances en lecture seule.
+- La restauration réactive la gestion.
+- La suppression permanente n’est disponible qu’après archivage et ne peut pas être annulée.
+
+### Désactiver et transférer [#create-and-manage-disable-and-transfer]
+
+Un administrateur peut désactiver une base de connaissances globalement ou transférer la propriété à un autre utilisateur actif. La gouvernance n’accorde pas automatiquement l’accès au contenu des documents, à l’aperçu ou au téléchargement.
+
+### Capacité [#create-and-manage-capacity]
+
+La page de détail montre l’utilisation du quota. Les versions actuelles, les versions conservées pour les citations historiques, les originaux défaillants et le nettoyage en attente peuvent consommer de la capacité. Un statut supprimé ne garantit pas la libération immédiate de la capacité.
+
+## Téléchargez et gérez les documents de base de connaissances [#documents]
+
+### Téléversez des fichiers ou dossiers [#documents-upload-files-or-folders]
+
+Choisissez des fichiers ou un dossier dans la page de détails de la base de connaissances. Le téléchargement de dossier conserve les chemins sous la racine sélectionnée ; les répertoires vides ne sont pas stockés.
+
+Le pipeline local accepte les images PDF, DOCX, XLSX, PPTX, ODT, ODT, ODP, TXT, Markdown, HTML, CSV, ainsi que PNG, JPEG, TIFF, PM ou WebP. Les fichiers non pris en charge sont sautés avec une explication.
+
+Les limites de déploiement par défaut sont 200 Mo par fichier, 100 fichiers par lot et 10 Gio par base de connaissances. Utilisez toujours les limites actuelles indiquées par la page.
+
+### Étapes de traitement [#documents-processing-stages]
+
+Les documents passent par validation, mise en file d’attente, analyse syntatique, fragmentation, compréhension optionnelle des images, construction des parents, intégration, indexation et activation. Seule une version **Prête** est récupérable.
+
+Révisez l’étape ratée et réessayez après avoir résolu la cause. Le retraitement exécute l’intégralité du pipeline à partir de l’original stocké.
+
+### Versions, noms et annuaires [#documents-versions-names-and-directories]
+
+- Remplacer un fichier crée une version et ne l’active qu’après succès.
+- Les citations historiques restent fixes à la version exacte utilisée.
+- Le renommage modifie les métadonnées d’affichage, pas le contenu.
+- Les annuaires et les vues plates ou hiérarchiques aident à organiser les entrées.
+
+### Aperçu et téléchargement [#documents-preview-and-download]
+
+La page du document propose des vues en lecture seule analysées et originales. Les originaux sont récupérés via des points de terminaison LinkSense autorisés, jamais des URL arbitraires ; Les originaux HTML sont traités comme du contenu sécurisé. Le téléchargement reste une action distincte.
+
+<Callout type="warn" title="Suppression">
+
+La suppression utilise un processus de nettoyage contrôlé. Après un nettoyage permanent, une citation historique ne conserve que des noms historiques sûrs et des résumés de lieux ; Le contenu, l’aperçu et le téléchargement sont indisponibles.
+
+</Callout>
+
+## Partager et départager des bases de connaissances [#sharing]
+
+Seul le propriétaire gère le partage. Une subvention permet de consulter et de récupérer, pas de gérer des documents, de partager des modifications ou de prendre possession.
+
+### Partager [#sharing-share]
+
+1. Ouvrez la base de connaissances et sa section Partage.
+2. Recherchez un utilisateur ou un groupe.
+3. Confirmez l’autorisation d’utilisation.
+
+L’accès peut venir de la propriété, d’une part directe ou d’un ou plusieurs membres de groupes. La page liste les sources efficaces.
+
+### Ce que les bénéficiaires peuvent faire [#sharing-what-recipients-can-do]
+
+Les destinataires peuvent parcourir le contenu autorisé, prévisualiser et télécharger des documents accessibles, et sélectionner la base de connaissances d’une tâche. Ils ne peuvent pas téléverser, remplacer, supprimer, modifier les métadonnées ou accorder l’accès à d’autres.
+
+### Révoquer l’accès [#sharing-revoke-access]
+
+Supprimer une source peut ne pas supprimer tout l’accéd. Un utilisateur appartenant également à un groupe autorisé reste éligible après la suppression d’une part directe. LinkSense identifie les sources restantes.
+
+Un utilisateur peut retirer sa propre part directe ; si aucune autre source ne subsiste, l’accès prend fin.
+
+### Changements d’État [#sharing-state-changes]
+
+- Les utilisateurs handicapés ne peuvent pas utiliser de bases de connaissances.
+- Les changements d’adhésion affectent l’accès dérivé des groupes.
+- La désactivation des administrateurs ou l’archivage supprime les partages directs et de groupe.
+- Chaque nouveau tour valide à nouveau sa sélection fixe de la base de connaissances.
+
+## Utilisez des bases de connaissances et des citations [#use-and-citations]
+
+### Sélectionnez une base de connaissances [#use-and-citations-select-a-knowledge-base]
+
+Avant d’envoyer, choisissez **Ajouter une base de connaissances** et sélectionnez une ou plusieurs entrées accessibles. La sélection est fixe pour ce tour et peut changer plus tard.
+
+Le prévol rapporte une base de connaissances désactivée, archivée, supprimée ou non partagée. LinkSense n’étend jamais la recherche à toutes les bases de connaissances accessibles de manière silencieuse.
+
+### Posez une question ancrée [#use-and-citations-ask-a-grounded-question]
+
+Par exemple :
+
+> Répondez uniquement à partir des bases de connaissances sélectionnées pour cette période, citez les preuves et déclarez clairement lorsque le matériel est insuffisant.
+
+### Inspecter les citations [#use-and-citations-inspect-citations]
+
+Ouvrez une citation numérotée pour voir :
+
+- des noms de bases de connaissances et de documents ;
+- la version exacte du document utilisée ;
+- Tête de chemin et contenu correspondant ;
+- numéros de page vérifiés, ou une référence au niveau du document lorsqu’aucune page fiable n’existe.
+
+Vous pouvez passer du contenu analysé à l’original pour la même version, puis télécharger l’original séparément.
+
+### Comportement historique [#use-and-citations-historical-behavior]
+
+Remplacer un document ne redirige pas les anciennes réponses vers du nouveau contenu. Après suppression permanente de la source, une citation conserve un nom historique et un résumé de localisation mais ne peut ni afficher ni télécharger le contenu.
+
+### Images dans les conversations [#use-and-citations-images-in-conversations]
+
+Les nouvelles images légitimement renvoyées à une tâche par la récupération de connaissances sont sauvegardées indépendamment sous forme de pièces jointes de conversation. Les tours suivants peuvent les afficher sans sélectionner à nouveau la base de connaissances. Reconstruire ou supprimer une base de connaissances, ou révoquer son autorisation de partage, ne supprime pas les copies déjà enregistrées dans une conversation. Ouvrir la citation originale nécessite toujours l’accès à la source.
+
+Les images restent limitées à l’accès autorisé aux tâches et respectent la politique de rétention des artefacts de tâches. Cela ne s’applique qu’aux nouvelles récupérations après activation du stockage des instantanés d’image ; Les réponses existantes ne sont pas remplies en arrière-plan et les images précédemment cassées ne sont pas corrigées automatiquement.
+
+<Callout type="info" title="Récupération indisponible">
+
+Vous pouvez continuer à utiliser des pièces jointes, plugins et compétences classiques tant que la recherche de connaissances n’est pas disponible. Essayez de recommencer plus tard ou demandez à un administrateur d’inspecter la page santé.
+
+</Callout>

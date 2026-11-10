@@ -1,0 +1,133 @@
+---
+title: "Sistema y configuración de inicio de sesión"
+description: "Gestiona la configuración del producto, concurrencia, ventanas de mantenimiento, correo electrónico de autenticación y métodos de inicio de sesión."
+---
+
+Revisa la configuración del sistema y la autenticación juntos. Cada sección explica el alcance del cambio, el manejo secreto y el comportamiento de fallos.
+
+## Configuración del sistema y del producto [#system-settings]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+Abre **Ajustes → Configuración del sistema**. Solo la configuración explícitamente soportada del producto es escribible; Los secretos de infraestructura siguen siendo gestionados por el despliegue.
+
+</Callout>
+
+### Configuración del producto [#system-settings-product-settings]
+
+La página actual puede mostrar configuraciones no sensibles como el nombre de visualización del producto y el idioma predeterminado. Las actualizaciones guardadas usan una revisión compartida y entran en vigor sin necesidad de reiniciar el servicio.
+
+La auditoría permanente registra el actor, la clave de ajuste, los valores antes y después, y solicita metadatos.
+
+### Configuración de despliegue de solo lectura [#system-settings-read-only-deployment-configuration]
+
+La base de datos, Redis, MinIO, procesamiento de documentos, otros parámetros de ejecución del runner, límites de archivos, claves JWT/HMAC/cifrado, periodos de token y retención permanecen en configuración controlada de `.env` o despliegue.
+
+La página puede mostrar un estado configurado redactado pero nunca cadenas de conexión, endpoints internos completos, contraseñas, claves, tokens o material de cifrado. Los canales de modelo son una excepción explícita gestionada en la página de Configuración de modelos.
+
+### Concurrencia de tareas [#system-settings-task-concurrency]
+
+La pestaña **Tareas simultáneas** permite a los administradores anular dos valores predeterminados de despliegue:
+
+- El límite de tareas de ejecución a nivel de sistema limita las tareas en ejecución a todos los usuarios.
+- El límite de procesos por tarea por usuario limita los procesos Codex del servidor de aplicaciones cargados por cada trabajador usuario.
+
+Dejar cualquiera de los campos en blanco mantiene el valor predeterminado correspondiente de despliegue. Comienza una nueva tarea, lee la última configuración guardada sin reiniciar el servicio. Reducir un límite no interrumpe las tareas en ejecución; la admisión a nuevas tareas o procesos se pausa hasta que el uso actual baje del nuevo límite.
+
+### Actualización del sistema [#system-settings-system-update]
+
+**Actualización del sistema** es una página de administrador separada que revisa las versiones oficiales de GitHub y muestra el flujo de trabajo de actualización segura. La página web nunca actualiza el despliegue de forma silenciosa. Consulta [Comprueba e instala actualizaciones de LinkSense](./operations.mdx#system-update) para la preparación, comandos de host y verificación posterior a la actualización.
+
+### Mantenimiento programado [#system-settings-scheduled-maintenance]
+
+Abre la pestaña **Mantenimiento del sistema**, introduce un motivo y los horarios de inicio y fin, y luego activa el mantenimiento programado. El mantenimiento se activa solo cuando la hora actual entra en la ventana configurada y termina automáticamente en la hora de finalización especificada.
+
+Cuando termina el mantenimiento, el sistema desactiva automáticamente el mantenimiento programado y borra el motivo, la hora de inicio, la hora de finalización y la duración. No se requiere guardado adicional, y la limpieza se ejecuta incluso cuando ningún administrador tiene abierta la página de configuración. Una página de configuración abierta se actualiza en pocos segundos. El mantenimiento que terminó mientras el servicio estaba detenido se autoriza cuando el servicio vuelve a empezar.
+
+Durante el mantenimiento activo, los administradores que inician sesión ven un diálogo **Mantenimiento del sistema activado** en páginas distintas a las configuraciones de inicio de sesión y mantenimiento. Selecciona **No volver a mostrar** para ocultarlo durante el periodo de mantenimiento actual, para tu cuenta en este navegador. La opción sobrevive a la navegación, se actualiza y se vuelve a abrir el navegador, y se sincroniza entre pestañas. Editar los detalles de mantenimiento o ampliar el periodo actual no lo muestra de nuevo; Empezar una nueva regla sí lo hace. Otras cuentas y dispositivos no se ven afectados. Selecciona **Configuración de mantenimiento** para abrir directamente la página de configuración. El recordatorio permanece oculto en esa página, incluso después de refrescar o navegar repetidamente. El botón de cerrar y Esc solo descartan el recordatorio de la página actual; Navegar a otra página lo muestra de nuevo. El diálogo desaparece cuando termina o se desactiva el mantenimiento y nunca aparece en la página de inicio de sesión o configuración de mantenimiento. Un enlace **Mantenimiento del sistema activado** también permanece en la esquina inferior derecha de las páginas de administrador iniciadas sesión y abre la configuración de mantenimiento. Cerrar o suprimir el diálogo no oculta este indicador; desaparece cuando termina el mantenimiento.
+
+Durante el mantenimiento:
+
+- Los usuarios habituales ven la razón y la ventana de mantenimiento esperada en una página dedicada y no pueden llamar a las APIs empresariales.
+- Los administradores aún pueden iniciar sesión y usar el sistema para inspeccionar el estado, ajustar el calendario o finalizar el mantenimiento antes de tiempo.
+- La iniciación de sesión, la inicialización, la salud y la identificación del usuario actual siguen disponibles, por lo que los administradores no pueden ser bloqueados.
+
+Confirma la zona horaria del dispositivo antes de guardar y proporciona una hora realista de finalización.
+
+### Conflicto y fracaso [#system-settings-conflict-and-failure]
+
+Las comprobaciones de revisión impiden que un administrador sobrescriba silenciosamente a otro. En caso de conflicto, actualiza, inspecciona el estado más reciente y confirma el cambio de nuevo.
+
+El servidor rechaza los intentos de modificar una configuración solo de despliegue incluso cuando una solicitud personalizada evita la interfaz.
+
+### Recomendaciones [#system-settings-recommendations]
+
+- Cambiar la configuración de pantalla a nivel de organización durante un periodo de bajo riesgo.
+- Valida los resultados con una cuenta de usuario normal.
+- Utiliza las secciones de autenticación separadas para los cambios en la capacidad de inicio de sesión.
+
+## Correo electrónico de autenticación y métodos de inicio de sesión [#authentication-settings]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+En **Ajustes → Configuración del sistema**, utiliza **Correo de autenticación** para la entrega de correos electrónicos y **Métodos de inicio de sesión** para cuentas empresariales y de terceros. Cada configuración guarda de forma independiente.
+
+</Callout>
+
+### Modos de configuración [#authentication-settings-configuration-modes]
+
+Correo electrónico de autenticación, SSO empresarial (OIDC) e inicio de sesión dentro del soporte de Teams:
+
+- **Heredar del entorno de implementación**;
+- **Gestionado en la configuración del sistema** con almacenamiento cifrado;
+- **Deshabilitado**, sin respaldo ambiental.
+
+Cambiar del modo gestionado o desactivar la autenticación configurada requiere confirmación.
+
+### Correo electrónico de autenticación [#authentication-settings-authentication-email]
+
+Configura el host SMTP, puerto, STARTTLS o TLS directo, remitente, nombre de usuario opcional y contraseña. Un nombre de usuario vacío significa que no hay autenticación con contraseña SMTP. Este servicio envía la primera contraseña y el correo de reinicio; verifica su conexión en la Salud del Sistema.
+
+### Inscripción abierta [#authentication-settings-open-registration]
+
+Activa el registro abierto bajo **Métodos de inicio de sesión → Cuentas de terceros**. Los usuarios autoregistrados comparten el estándar de cuota semanal de miembros en [Gestión de cuotas](./models-and-usage.mdx#quota-settings) con los usuarios creados o importados por los administradores.
+
+Desactivar el registro abierto bloquea nuevas solicitudes e invalida los enlaces de activación que se emitieron pero aún no se usaron. No elimina cuentas creadas directamente por administradores, cuentas activadas existentes u otros métodos de inicio de sesión configurados.
+
+### Cuentas empresariales [#authentication-settings-enterprise-accounts]
+
+Utiliza cuentas gestionadas por la organización. Las cuentas nuevas requieren activación de administrador independientemente de la configuración de registro abierto.
+
+#### SSO empresarial (OIDC) [#authentication-settings-enterprise-sso-oidc]
+
+Introduce una URL del emisor, ID de cliente y secreto del cliente HTTPS. LinkSense deriva y muestra una URL de llamada de solo lectura que también debe registrarse con el proveedor.
+
+Una nueva revisión invalida una callback incompleta iniciada bajo una revisión antigua. El usuario debe reiniciar el inicio de sesión. Una identidad SSO por primera vez crea una cuenta pendiente por correo electrónico; un administrador debe activarlo antes de que el usuario vuelva a iniciar sesión.
+
+#### SSO empresarial (SAML 2.0) [#authentication-settings-enterprise-sso-saml-20]
+
+Configura HTTPS para el sitio, luego introduce el ID de entidad del proveedor de identidad, la URL de inicio de sesión y el certificado de firma PEM. Registra el ID de entidad del proveedor de servicios y la URL de callback ACS mostrados con tu proveedor, o guarda y habilita SAML para descargar e importar los metadatos XML.
+
+El proveedor debe firmar declaraciones y proporcionar direcciones de correo electrónico precisas y gestionadas por la organización. Coincide exactamente con el nombre del atributo del correo; Introduce `NameID` para usar ese identificador como dirección de correo electrónico. El atributo del nombre es opcional. Las cuentas existentes se emparejan por correo electrónico y mantienen sus puestos. Las nuevas cuentas necesitan activación de administrador; Las cuentas deshabilitadas no pueden iniciar sesión.
+
+Si tu proveedor requiere solicitudes de autenticación firmadas, activa la firma de solicitudes e introduce el certificado RSA del proveedor de servicios y la clave privada correspondiente. Las claves guardadas nunca se devuelven; Deja la clave privada en blanco al cambiar otros campos. Guardar con la firma de peticiones desactivada elimina ese certificado y la clave. Sustituye los certificados de proveedor de identidad caducados para restaurar el inicio de sesión.
+
+Los miembros comienzan desde **Inicia sesión con una cuenta empresarial SAML** en la página de inicio de sesión de LinkSense. Completar cada flujo en cinco minutos; Reinicia tras un cambio de configuración. Esta versión soporta solo inicio de sesión iniciado por SP, sin inicio de sesión iniciado por IdP, aserciones cifradas ni cierre de sesión único. Cerrar sesión en LinkSense no implica cerrar sesión en el proveedor de identidad.
+
+#### Iniciar sesión dentro de Teams [#authentication-settings-sign-in-within-teams]
+
+Entra en escena los IDs de tenant y cliente de Microsoft Entra. La configuración de LinkSense no reemplaza el registro de Entra, el URI del ID de aplicación, el manifiesto de Teams ni el consentimiento del administrador.
+
+### Cuentas de terceros [#authentication-settings-third-party-accounts]
+
+Configura cuentas personales de Google, Apple, Microsoft, Facebook y GitHub. Para cuentas de trabajo o colegio de Microsoft, configura Microsoft Entra ID bajo cuentas Enterprise.
+
+Para GitHub, crea una aplicación OAuth en la configuración de desarrollador y copia la dirección de callback desde el diálogo de configuración a la URL de callback de autorización. Introduce su ID de cliente y secreto de cliente en LinkSense y actívalo. Crea aplicaciones separadas para entornos de prueba y producción con diferentes URLs de callback. El inicio de sesión solo solicita acceso por correo electrónico, no acceso al repositorio. Si GitHub no puede proporcionar un correo electrónico verificado, los nuevos usuarios deben verificar su correo a través de LinkSense.
+
+Cuando el registro está abierto, los nuevos usuarios pueden comenzar tras la verificación por correo electrónico sin activar el administrador. Los usuarios existentes deben iniciar sesión primero y vincular su cuenta bajo **Configuración → Seguridad → Cuentas de terceros vinculadas**; Los correos que coinciden no se fusionan automáticamente. Cerrar el registro no bloquea el inicio de sesión en cuentas vinculadas.
+
+### Manejo secreto [#authentication-settings-secret-handling]
+
+La API solo devuelve banderas configuradas, nunca contraseñas SMTP ni secretos OIDC. En modo gestionado, deja un secreto sin cambiar en blanco; Cambiar de modo requiere volver a entrar.
+
+La configuración corrupta o no descifrable falla cerrada y nunca vuelve a un valor antiguo no confirmado.

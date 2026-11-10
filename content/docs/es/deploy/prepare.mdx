@@ -1,0 +1,119 @@
+---
+title: "Preparar Docker y redes"
+description: "Prepara Docker, verifica los recursos del host y comprueba el acceso al registro antes de instalar Core o Full."
+---
+
+Utiliza esta página para una instalación nueva. Para un despliegue existente, empieza con [Operaciones, reparaciones y mejoras](./operations.mdx).
+
+## Hosts compatibles [#supported-hosts]
+
+- Linux x86_64 o ARM64.
+- macOS Intel o Apple Silicon usando los contenedores Linux de Docker Desktop.
+- No se soporta la instalación nativa de Windows.
+- Planifica por separado para el cálculo local del modelo, memoria y GPUs.
+
+## Instalar Docker [#install-docker]
+
+En Linux, instala Docker Engine y el plugin Compose desde el [Guía oficial de Docker](https://docs.docker.com/engine/install/). En macOS, instala Docker Desktop siguiendo los pasos siguientes.
+
+### Configurar Docker Desktop en macOS [#configure-docker-desktop]
+
+1. Abre **Menú de Apple → Acerca de este Mac** y confirma el chip y la memoria. Descarga la **Apple Silicon** o **Intel** versión correspondiente de [Docker Desktop para Mac](https://docs.docker.com/desktop/setup/install/mac-install/).
+2. Abre `Docker.dmg`, mueve **Docker** a **Aplicaciones** y lánzalo. Espera a que Docker Engine esté funcionando.
+3. Abre **Ajustes → Recursos → Avanzado** y asigna recursos para la edición seleccionada.
+4. Selecciona **Solicitud y Reinicio** y espera a que Docker Engine se reinicie. Esto detiene brevemente otros contenedores locales.
+5. Reabre el terminal si es necesario. Instala LinkSense con tu cuenta actual de macOS, sin `sudo`.
+
+| Recurso de escritorio Docker | Core                      | Full                       |
+| ----------------------- | ------------------------- | -------------------------- |
+| CPU                     | Al menos 4                | Al menos 8                 |
+| Memoria                  | Empieza con 10–12 GB       | Prefiero 24 GB o más       |
+| Disco                    | Al menos 60 GiB disponibles | Al menos 120 GiB disponibles |
+
+El límite de memoria es un máximo, mientras que LinkSense preflight comprueba la memoria que Docker Engine puede usar realmente. En un Mac de 16 GiB, empieza con Core. Una evaluación Full generalmente debería usar un Mac de 32 GiB o más grande.
+
+```bash
+docker info --format '{{.NCPU}} {{.MemTotal}}' |
+  awk '{printf "CPUs=%s\nDocker memory=%.2f GiB\n", $1, $2 / 1024 / 1024 / 1024}'
+```
+
+## Revisa al presentador [#check-the-host]
+
+Corre:
+
+```bash
+uname -s
+uname -m
+docker version
+docker compose version
+docker info --format 'CPUs={{.NCPU}} MemoryBytes={{.MemTotal}} DockerRoot={{.DockerRootDir}}'
+curl --version
+df -h
+```
+
+Confirmar:
+
+1. El sistema es `Linux` o `Darwin`, con una arquitectura `x86_64`, `aarch64` o `arm64`.
+2. `docker version` incluye **Servidor** e informa versión `1.45` o posterior de la API.
+3. Docker Compose es la versión `2.24.4` o posterior.
+4. `curl` funciona y el host o la máquina virtual Docker tiene suficiente memoria y espacio en disco.
+
+Full en x86_64 también requiere `x86-64-v2`. El [Guía de operaciones](./operations.mdx#virtual-machines-and-knowledge) proporciona diagnósticos y ejemplos de configuración de CPU de VM.
+
+## Revisa las descargas de imágenes [#check-network]
+
+Las descargas de terminal y los registros de Docker Engine utilizan rutas de red separadas. Después de descargar el instalador, comprueba la edición seleccionada:
+
+```bash
+sh install-core.sh --check-network
+```
+
+Para Full, corre `sh install-full.sh --check-network`. Una comprobación exitosa sale con `0` de estado y sin errores de `[LS_HOST_*]`. Puede extraer y almacenar imágenes en caché sin crear un despliegue.
+
+Si GHCR es lento o inaccesible, el instalador puede rotar a los espejos públicos tras 30 segundos sin progreso en la descarga. Configura un espejo privado antes de la instalación cuando tu organización lo requiera:
+
+```bash
+LINKSENSE_IMAGE_MIRRORS='ghcr.io=registry.example/ghcr' sh install-core.sh
+```
+
+Consulta [Adaptación de la presentación](https://github.com/LingX-AI/linksense/blob/main/deploy/release/HOST-ADAPTATION.md#registry-mirrors-for-release-images) para la sintaxis espejo y la configuración del proxy Docker.
+
+## Instalar con un agente de codificación [#install-with-a-coding-agent]
+
+Da este prompt a un asistente de programación:
+
+```text
+Ayúdame a instalar e iniciar LinkSense siguiendo https://raw.githubusercontent.com/LingX-AI/linksense/main/Install.md
+```
+
+Añade `LinkSense Full` cuando necesites Full. El asistente debe inspeccionar al anfitrión real, preservar las instalaciones existentes e informar de la dirección observada y el estado de salud. Descargar solo el instalador no es una instalación exitosa.
+
+## Puerto personalizado [#custom-port]
+
+Para instalar Core en el puerto `19090`, usa el comando de tu sistema operativo. Sustituye `core` por `full` para Full.
+
+**Linux**
+
+```bash
+sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy \
+  env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
+```
+
+**macOS**
+
+```bash
+env LINKSENSE_HTTP_PORT=19090 sh install-core.sh
+```
+
+El comando anterior asume que el instalador ya estaba descargado con el comando en la página [Core](./core.mdx) o [Full](./full.mdx). Para una instalación existente, usa `linksense port 19090`.
+
+## Problemas comunes de instalación [#common-installation-problems]
+
+| Síntoma                                 | Causa                                                         | Resolución                                                                                                |
+| --------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| No hay conexión con el servidor Docker ni el demonio   | Docker se detiene o la cuenta no puede acceder a su socket     | Inicia Docker y comprueba los permisos de Linux o el estado del escritorio Docker.                                        |
+| La versión API o Compose es demasiado antigua       | La API del servidor está por debajo de `1.45` o Compose por debajo de `2.24.4`       | Actualiza el componente relevante usando el método oficial de Docker.                                            |
+| `[LS_HOST_memory]`                      | El host o la máquina virtual Docker no tienen suficiente memoria utilizable      | Aumenta la memoria de Docker Desktop o pasa a un host más grande.                                                  |
+| `[LS_HOST_storage]`                     | El host, la VM Docker o la ubicación de copia de seguridad tienen poco espacio     | Elimina solo archivos que sepas que puedes desechar o añade capacidad; no ejecutes una limpieza general de Docker. |
+| `[LS_HOST_pull]`, tiempo de espera o error TLS | Docker Engine no puede acceder a un registro ni tiene configuraciones proxy | Haz la comprobación y revisión de red del terminal y de la red del motor Docker por separado.                        |
+| Instalación Core o Full existente      | Otro instalador puede sobrescribir la identidad de despliegue       | Ejecutar `linksense status` y `linksense doctor`; Reanuda solo la misma edición tras una instalación interrumpida. |

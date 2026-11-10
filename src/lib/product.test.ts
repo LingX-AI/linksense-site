@@ -12,7 +12,8 @@ describe('documentation links', () => {
     assert.equal(docsUrl('zh-CN'), '/doc/zh-CN/')
     assert.equal(docsUrl('en-US'), '/doc/')
     assert.equal(docsUrl(undefined), '/doc/')
-    assert.equal(docsUrl('fr-FR', 'user-guide/'), '/doc/user-guide/')
+    assert.equal(docsUrl('fr-FR', 'user-guide/'), '/doc/fr-FR/user-guide/')
+    assert.equal(docsUrl('unsupported', 'user-guide/'), '/doc/user-guide/')
   })
 })
 
@@ -20,7 +21,7 @@ describe('installation guide links', () => {
   for (const [locale, edition, platform, path] of [
     ['zh-CN', 'core', 'linux', '/doc/zh-CN/deploy/core/#linux'],
     ['en-US', 'full', 'macos', '/doc/deploy/full/#macos'],
-    ['ja-JP', 'core', 'macos', '/doc/deploy/core/#macos'],
+    ['ja-JP', 'core', 'macos', '/doc/ja-JP/deploy/core/#macos'],
   ] as const) {
     it(`opens the ${locale} guide for ${edition} on ${platform}`, () => {
       assert.equal(installGuideUrl(locale, edition, platform), path)

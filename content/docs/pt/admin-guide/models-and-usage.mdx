@@ -1,0 +1,200 @@
+---
+title: "Modelos, cotas e uso"
+description: "Configure modelos e capacidades de geração, defina cotas de membros e revise uso, custos e contas."
+---
+
+Configure os modelos disponíveis, defina políticas de cotas e revise registros reais de uso e faturamento.
+
+## Configurações de modelo e geração [#model-settings]
+
+<Callout type="info" title="Operação administrativa">
+
+Abra **Configurações → Configurações de modelos**. Mudanças afetam turnos posteriores ou o processamento de documentos, não trabalhos em execução ou históricos.
+
+</Callout>
+
+### Canais provedores [#model-settings-provider-channels]
+
+Ao adicionar um canal, escolha primeiro o provedor de serviço, depois insira um nome, URL base e chave da API. A escolha de um prestador preenche o endereço e protocolo recomendados. Se nenhum endereço for fornecido, insira o endereço de serviço compatível disponível para sua conta. Esses padrões são pontos de partida; Verifique sua conta, região e as capacidades reais do serviço. O protocolo está sempre visível em **Configurações avançadas** e pode ser ajustado conforme necessário.
+
+Use **Canal atual** para trocar catálogos de modelos e escolha **Editar canal** no menu de três pontos do canal para abrir um diálogo centralizado. Abrir um canal existente preserva seu endereço e protocolo salvos. Uma chave salva nunca é devolvida. Deixe a chave vazia para mantê-la apenas quando o provedor, endereço, projeto e região estiverem inalterados. Após alterar qualquer um desses detalhes da conexão, insira a chave da nova conexão antes de salvar ou testar.
+
+Salve primeiro as configurações de conexão do canal e depois use **Adicionar modelo** para configurar modelos separadamente. Canais sem modelos não adicionam entradas à lista de modelos do compositor. A lista compacta mostra nomes, tipos, preços e disponibilidade de conversas. Abra a janela de edição para configurar um modelo. Salvar envia apenas as mudanças daquele diálogo; Cancelar permite descartar edições não salvas.
+
+### Encontre modelos e teste a conexão [#model-settings-find-models-and-test-the-connection]
+
+Após salvar um canal, selecione **Adicionar modelo** e depois clique **Adquira modelos disponíveis** à direita do seletor de modelos. Pesquise por nome ou ID do modelo e selecione um modelo. O seletor permanece desativado até que os modelos sejam recuperados. Se o serviço não oferecer uma lista de modelos, devolver uma lista vazia ou omitir seu modelo, escolha **Insira um modelo manualmente** e insira o ID fornecido pelo provedor.
+
+O LinkSense preenche apenas o nome, o comprimento do contexto e as informações de entrada de imagem realmente retornadas pelo serviço. Confirme capacidades que não foram fornecidas. Verifique e registre os preços reais do provedor por conta própria; Os preços zero padrão são apenas para estimativas locais de uso. Preços, esforços de raciocínio, comprimento do contexto e capacidades de imagem estão sempre visíveis na **Configurações avançadas** do modelo.
+
+**Adquira modelos disponíveis** e **Conexão com modelos de teste** são operações separadas: recuperar uma lista não confirma que um modelo responde. Insira um ID de modelo para testar enquanto edita um canal, ou teste o modelo de chat atual ao adicioná-lo ou editá-lo. O teste envia uma mensagem curta. Uma resposta de texto normal, não vazia, confirma que a conexão funciona; Não é necessário chamar ferramentas. O teste pode gerar uma pequena carga e nunca salva as configurações. Um resultado bem-sucedido se aplica apenas àquela conexão e modelo no momento do teste; Teste novamente após fazer mudanças. Ela não substitui validação por tarefas reais, compreensão de imagem ou recuperação de conhecimento. Testes de conexão aqui não estão disponíveis para modelos de embedding ou ranker; Valide aqueles nas configurações de recuperação de conhecimento descritas abaixo.
+
+Durante a configuração inicial, salve o primeiro modelo de chat com **Disponível em conversas** ativado. O LinkSense define tanto como padrão da conversa quanto como modelo de nomeação automática de tarefas. Volte ao **Nova tarefa**, verifique o modelo e o esforço de raciocínio, e envie uma solicitação simples para verificar o uso.
+
+### Modos de protocolo [#model-settings-protocol-modes]
+
+Os modos de protocolo são Respostas nativas, compatibilidade funcione-ferramenta de Respostas e conversão de Completação de Chat. Compatibilidade muda apenas a forma do protocolo — nunca executa ferramentas ou repete um turno inteiro.
+
+### Modelos e preços [#model-settings-models-and-prices]
+
+IDs de modelo são únicos em diferentes canais. Configure tipo, nome de visualização, provedor, suporte de imagem, esforços de raciocínio e preços:
+
+- Modelos de chat: entrada, entrada em cache e preços de saída;
+- Modelos de embedding e ranker: preço de entrada.
+
+Os preços usam USD por milhão de tokens e são snapshoted com o uso futuro. Uma mudança de preço nunca recalcula a história.
+
+Defina **Comprimento do contexto do modelo** para uma contagem positiva de tokens ou deixe-a vazia para detecção automática. O LinkSense usa esse valor como indicador de janela de contexto e para deixar o tempo de execução compactar o contexto antes de se aproximar do limite do modelo. Entra a capacidade real do modelo de provedor; um número maior não expande o modelo a montante.
+
+Apenas modelos de chat mostram o interruptor Disponível em conversas; Modelos de embedding e ranker não. A disponibilidade de conversas controla apenas a lista de modelos do compositor. Isso não afeta a nomeação automática de tarefas, a recuperação de conhecimento, a reclassificação ou a compreensão da imagem. Uma vez configurados os modelos de chat, pelo menos um deve permanecer disponível nas conversas. Esconder ou excluir o padrão seleciona outro modelo disponível para conversa.
+
+Esforços de raciocínio suportados são editáveis para modelos de chat. Selecione uma ou mais opções de Leve, Média, Alta, Extra Alta, Máxima e Ultra. O esforço de raciocínio padrão deve permanecer no conjunto selecionado; remover o padrão atual seleciona automaticamente o primeiro esforço restante.
+
+### Ordem dos modelos [#model-settings-model-order]
+
+Arraste a alça inicial de um modelo, ou escolha **Mover para cima** ou **Mover para baixo** no menu de ações para reordenar os modelos dentro do canal atual. Usuários de teclado podem pressionar Espaço para pegar uma alça, usar as setas para mover, pressionar Espaço para confirmar ou Escape para cancelar.
+
+Use **Mover canal para cima** ou **Mover canal para baixo** em **Ações do canal** para reordenar os canais. Muda o save automaticamente. Um salvamento falhado preserva a ordem anterior e exibe um erro. O compositor lista modelos de chat disponíveis para conversas na ordem dos canais, depois na ordem dos modelos dentro de cada canal. A reordenação não altera o modelo selecionado pelo usuário.
+
+### Modelos de nomeação automática de conversas e tarefas [#model-settings-conversation-and-task-auto-naming-models]
+
+No final da lista de provedores, selecione separadamente o padrão de conversa e o modelo de auto-nomeação de tarefas. O padrão da conversa deve estar disponível nas conversas. A nomeação automática de tarefas pode usar qualquer modelo de chat configurado e nunca lê um modelo de nomenclatura embutido fornecido pela implantação. Seus tokens de entrada, entrada em cache e saída são registrados sob a carga de trabalho de nomeação automática de tarefas; O uso é marcado como estimado quando o provedor não retorna a contagem de tokens.
+
+### Modelo de extração de memória [#model-settings-memory-extraction-model]
+
+Selecione **Modelo de extração de memórias** dos modelos de chat existentes. Ele reutiliza o canal, credenciais e preços do modelo; Não são necessárias configurações de conexão separadas. A disponibilidade de conversas não afeta a extração. Limpe a seleção de extração antes de excluir o modelo selecionado ou seu canal.
+
+**Usar o modelo da tarefa atual** usa o modelo de cada tarefa para extração. A extração sempre utiliza o esforço de raciocínio suportado com a configuração mais baixa do modelo selecionado, sem alterar o esforço próprio da tarefa. Essa seleção se aplica apenas à extração; A consolidação continua utilizando o modelo de tarefa atual.
+
+A geração de memória requer a opção do usuário para aderir. Mudanças se aplicam a runtimes de tarefas iniciadas posteriormente e preservam memórias existentes. Tarefas pertencentes a um usuário compartilham o estado nativo da memória. O motor nativo utiliza marcadores de processamento bem-sucedido, bloqueios de trabalho e alterações de entrada para evitar trabalhos duplicados. Trocar de modelo ou reiniciar não reinicia esse estado. A recuperação de falhas e o histórico atualizado ainda podem causar chamadas de novos modelos; Deduplicação não é um limite de retentativa ou gasto.
+
+### Cotas de usuários [#model-settings-user-quotas]
+
+Configure as cotas de usuários na página separada de [Gestão de cotas](#quota-settings), em créditos.
+
+### Modelos de recuperação de conhecimento [#model-settings-knowledge-retrieval-models]
+
+Selecione um modelo de embedding configurado e um ranqueador opcional. A disponibilidade de conversas não afeta esses modelos de sistema. Salvar realiza validação de serviço real e de dimensão vetorial.
+
+<Callout type="warn" title="Alterando o modelo de embedding">
+
+A mudança invalida imediatamente todos os índices de conhecimento existentes. A recuperação permanece indisponível até que uma reconstrução completa seja concluída em Saúde do Sistema. Planeje primeiro uma janela de manutenção.
+
+</Callout>
+
+Sem um ranqueador, ou quando as chamadas de ranqueador falham, o LinkSense usa resultados RRF de peso igual.
+
+### Compreensão de imagem [#model-settings-image-understanding]
+
+Selecione um modelo de chat configurado marcado como suportando compreensão de imagens. A disponibilidade de conversa não afeta a compreensão da imagem. Salvando a entrada de imagens das sondas, saída estruturada e comportamento de raciocínio desativado. Isso afeta apenas novos processamentos ou reconstruções.
+
+### Modelo de transcrição de voz [#model-settings-voice-transcription-model]
+
+Quando ativado, a entrada de microfone em tarefas comuns e aplicações embarcadas utiliza esse serviço. Selecione um provedor, verifique a URL base e insira uma chave de API além de um nome de modelo ou implantação. O Azure OpenAI também exige uma versão da API. Chaves de API salvas nunca são retornadas; Deixe o campo vazio durante a edição para manter a chave existente.
+
+Os provedores disponíveis são Alibaba Cloud Model Studio, OpenAI, serviços compatíveis com OpenAI, Azure OpenAI, Groq, Deepgram, AssemblyAI, ElevenLabs, Rev.ai, Gladia e fal.ai. Os padrões do provedor são apenas pontos iniciais de conexão; Disponibilidade de modelos, região, autorização e faturamento vêm da sua conta de provedor.
+
+Após salvar, use [Entrada de voz](../user-guide/tasks/index.mdx#voice-input) para testar uma gravação curta sem dados sensíveis. Desativar essa configuração bloqueia novas solicitações de transcrição, mas não afeta tarefas digitadas.
+
+### Modelo de geração de imagens [#model-settings-image-generation-model]
+
+Quando ativada, os usuários podem chamar a capacidade embutida de geração de imagens a partir de uma tarefa. Selecione um provedor, insira o modelo e a chave da API, e configure um preço por imagem. O LinkSense registra esse preço em relação ao número de imagens realmente produzidas para uso e créditos. Selecionar um provedor preenche sua URL Base padrão, que você pode alterar para o seu próprio endereço de serviço para qualquer provedor.
+
+Os provedores suportados são Alibaba Cloud Model Studio, OpenAI, serviços compatíveis com OpenAI, Google Gemini, Stability AI, fal.ai, Replicate e Together AI. Para geração de imagens compatíveis com OpenAI, insira a URL Base, a chave API e o nome do modelo fornecidos pelo serviço. O Alibaba Cloud Model Studio também exige um ID e região de Workspace. Os limites de provedores e modelos variam; Uma solicitação pode pedir no máximo 10 imagens, e a saída em tempo de execução é limitada pelo limite atual do modelo.
+
+A saída transparente pode ser gerada nativamente ou manipulada automaticamente para temas adequados e com bordas limpas. Escolha um modelo com transparência nativa para cabelo complexo, pelo, vidro, fumaça, brilho e bordas translúcidas.
+
+A edição de imagem utiliza o serviço e o modelo configurados aqui; As configurações existentes não precisam ser salvas novamente. Contratos suportados incluem OpenAI GPT Image, Gemini Image Models, Bailian Qwen Image 2.x e posteriores ou Qwen Image Edit, fal.ai FLUX. 2 editar / kontext, replicar o kontext do FLUX e juntos o FLUX AI. 2 / Kontext. Um serviço compatível com OpenAI deve implementar o upload de arquivos em `/images/edits`; O apoio a `/images/generations` sozinho é insuficiente. O adaptador Stability atual oferece apenas geração de texto para imagem. A contagem de imagens de referência e o suporte à máscara dependem do modelo selecionado; Solicitações não suportadas são rejeitadas antes de ligar para o provedor.
+
+Chaves de API salvas nunca são retornadas; Deixe o campo vazio durante a edição para manter a chave existente. Insira uma nova chave e verifique o preço após trocar de operadora. Use [Gerar imagens](../user-guide/tasks/index.mdx#generate-images) para uma validação de uma imagem após a configuração.
+
+## Gestão de cotas [#quota-settings]
+
+Administradores abrem **Configurações → Gerenciamento de cotas** para configurar o preço de conversão de crédito e um padrão semanal de cota para todos os membros.
+
+### Conversão de créditos [#quota-settings-credit-conversion]
+
+Defina o valor em USD representado por um crédito. O calote é USD 0.01 por crédito: uma call de USD 0.25 consome 25 créditos. O preço deve ser positivo, com até seis casas decimais.
+
+Os preços dos modelos permanecem nas configurações de modelo, em USD por milhão de tokens. Custos de uso de uso medido e o retrato de preços do modelo; O consumo de crédito utiliza o preço de conversão quando esse uso é registrado. Mudanças posteriores de conversão não reprecificam créditos gravados. O consumo é arredondado para seis casas decimais. Os créditos restantes são exibidos como inteiros ao descartar a fração; Saldos reais e verificações de cotas mantêm precisão decimal.
+
+### Cota semanal dos membros [#quota-settings-member-weekly-quota]
+
+A cota semanal de membros é o padrão compartilhado para membros posteriormente criados por um administrador, importados do Excel ou criados por meio de registro aberto. Insira um valor positivo com até seis casas decimais. Em branco significa ilimitado. A cota é reiniciada toda segunda-feira à meia-noite no fuso horário do sistema.
+
+Salvar a configuração atualiza apenas o padrão e não sobrescreve as cotas semanais individuais dos membros existentes. Os membros existentes ainda podem ser ajustados individualmente ou em massa sob **Usuários e grupos → Usuários**. A chave de registro aberto permanece sob **Configurações do sistema → Cadastro aberto**, mas usuários autoregistrados não possuem mais um padrão de cota separado.
+
+### Resetar e aplicar a todos [#quota-settings-reset-and-apply-to-all]
+
+A gestão de cotas oferece duas ações imediatas em massa. Cada ação abre um diálogo de confirmação; cancelar não causa alterações.
+
+- **Renovar cotas de todos** restaura a cota semanal de cada membro existente para 100% do seu próprio limite atual. Não altera os limites, e os membros ilimitados permanecem ilimitados.
+- **Aplicar limite a todos** salva a cota semanal do formulário e imediatamente sobrescreve a cota semanal individual de cada membro existente, incluindo ajustes individuais anteriores. O blank torna cada membro ilimitado. Essa ação não redefine créditos usados nem salva outras edições não salvas no formulário de preço de conversão.
+
+Ambas as ações incluem membros ativos e desativados e não alteram o status da conta. O uso histórico permanece disponível. O consumo após um reset manual é deduzido normalmente, e o cronograma de reset semanal do calendário permanece inalterado.
+
+Para dar a todos os membros um novo limite com 100% restantes, primeiro aplique o limite a todos e depois reinicie as cotas para todos.
+
+Atingir a cota semanal impede novas tarefas e pedidos de acompanhamento. Tarefas em execução terminam e podem elevar o consumo final acima do limite. Ajustar a cota não exclui nem reprecifica os créditos registrados.
+
+Estatísticas de custo de tokens e USD continuam disponíveis. A gestão de cotas não fornece pagamentos nem recargas.
+
+## Uso, custo e faturamento [#usage]
+
+<Callout type="info" title="Operação administrativa">
+
+Abra **Configurações → Análise de uso**. A aba **Análise de uso** reporta fatos de recursos, enquanto **Faturamento** contém declarações de modelo de mês natural fechadas. As cotas de crédito permanecem abaixo do **Gerenciamento de cotas**.
+
+</Callout>
+
+Configure os créditos no [Gestão de cotas](#quota-settings) e ajuste os usuários existentes sob **Usuários e grupos → Usuários**.
+
+### Intervalo de tempo [#usage-time-range]
+
+Escolha todos os horários, os últimos 7 dias, os últimos 30 dias ou datas personalizadas. As tendências se agregam por dia, mês ou ano com base na faixa.
+
+### Opiniões [#usage-views]
+
+- Global: tarefas, turnos reais, chamadas de modelos, tokens e custo total.
+- Carga de trabalho: respostas de IA, nomeação automática de tarefas, geração de memória, incorporações de documentos, incorporações de consultas de recuperação, reclassificação e geração de imagens.
+- Modelo: método de coleta, calls, turns, detalhes dos tokens e custo para geração, embedding, reclassificação e modelos de imagem.
+- Aplicação: tarefas, turnos, chamadas, tokens, custos e detalhes por modelo atribuídos quando cada tarefa foi criada; Tarefas criadas fora de um aplicativo aparecem como desassociadas.
+- Grupo: atividade dos membros atuais projetada em cada grupo.
+- Usuário: usuários ativos e desativados, grupos atuais e detalhes por modelo.
+
+Tokens são abreviados como K, M ou B; Tarefa, turno, chamada e contagens de membros permanecem inteiros.
+
+### Contagem [#usage-counting]
+
+Uma tarefa e uma vez real criam um fato de atividade imutável cada. Rascunhos, solicitações pendentes, reconexões e eventos duplicados não adicionam turnos. Snapshots nativos cumulativos de tokens são desduplicados por incremento. Cargas de trabalho externas utilizam uso confiável quando disponível ou estimativas de entrada protegidas por rótulos.
+
+### Custo [#usage-cost]
+
+O uso armazena os preços ativos no momento da chamada em USD por milhão de tokens. Entrada em cache faz parte da entrada, e saída de raciocínio faz parte da saída, então nenhuma das duas é carregada.
+
+Mudanças futuras de preço não recalculam o histórico. Zero é um preço válido; Tokens mais antigos sem um preço confiável permanecem **Tokens sem preço**.
+
+### Sobreposição de grupos [#usage-group-overlap]
+
+Um usuário em múltiplos grupos contribui para cada grupo. As linhas de grupo se sobrepõem e não devem ser somadas para um total global. Usuários sem grupo eficaz aparecem como não agrupados.
+
+### Classificação e exportação [#usage-sorting-and-export]
+
+Tabelas de detalhes podem ser ordenadas pelas colunas expostas na página. **Exportar Excel** utiliza as definições atuais de intervalo e filtro para criar uma workbook multi-folha com o resumo, tendências e o modelo atual, carga de trabalho, aplicação, grupo e dimensões e detalhes do usuário. Verifique novamente o escopo antes de exportar e armazene ou transfira o arquivo sob a política organizacional. Exportações não contêm prompts, texto de resposta, conteúdo de arquivos ou credenciais.
+
+### Extratos mensais [#usage-monthly-statements]
+
+Abra a aba **Faturamento** para revisar o período aberto atual e os extratos mensais gerados. Extratos fecham em meses naturais do calendário no fuso horário do sistema e são gerados automaticamente após o término do mês. O cartão do período atual mostra o tempo esperado de geração. Se o serviço for reiniciado ou atualizado, ele também recupera os meses fechados que faltam.
+
+Cada extrato mensal é um snapshot de custo imutável por modelo, com entrada, entrada em cache, saída e token totais, modo de precificação e montante:
+
+- Um modelo com um preço ao longo do mês mostra sua taxa por milhão de tokens. Uma variação de preço durante o mês é rotulada como **Preços mistos**.
+- Tokens sem um snapshot de preço confiável permanecem sem precificação e não são reprecificados com o catálogo atual.
+- As instruções são agregadas apenas por modelo. Eles não incluem prompts, respostas, conteúdo de arquivo, detalhes de usuário ou configurações de cotas.
+- Mudanças posteriores de preço, exclusão de tarefas ou alterações de membros não recalculam uma instrução gerada.
+
+Abra uma instrução para pré-visualizar suas linhas de modelos, ou exporte um PDF na linguagem de interface atual. As exportações são registradas no registro de auditoria. Armazene o arquivo baixado de acordo com a política de faturamento e registros financeiros da sua organização.
+
+### Retenção [#usage-retention]
+
+Fatos de tarefa, turn, call, token, custo, atribuição de aplicação e declarações geradas sobrevivem à exclusão dura da tarefa. Eles não contêm prompts, respostas, conteúdo de arquivo, credenciais, URLs base ou chaves de API.

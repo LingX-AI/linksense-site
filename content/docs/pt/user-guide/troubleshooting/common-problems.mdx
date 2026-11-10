@@ -1,0 +1,90 @@
+---
+title: "Solucionar problemas comuns"
+description: "Resolver problemas comuns de login, tarefas, arquivos, canais de mensagens, plugins, MCP e bases de conhecimento."
+---
+
+
+## Falha no login [#sign-in-fails]
+
+- Use um método ativado e confirme que a conta está ativa.
+- Solicite uma redefinição para uma senha local.
+- Reinicie o SSO na página de login.
+- Espere a proteção de login esfriar em vez de tentar de novo continuamente.
+
+## Uma tarefa não pode começar [#a-task-cannot-start]
+
+Leia a mensagem pré-voo:
+
+- Escolha outro modelo se o selecionado estiver desativado.
+- Remova ou atualize um plugin ou skill indisponível.
+- Corrija uma vinculação explícita de credencial faltante ou conflitante.
+- Teste a URL, autenticação e timeout de um servidor MCP obrigatório.
+- Selecione uma base de conhecimento que ainda esteja habilitada e acessível.
+- Se sua cota semanal de crédito estiver esgotada, espere pelo próximo reset semanal ou peça a um administrador para ajustar ou resetar manualmente.
+
+## Desconexões de execução [#execution-disconnects]
+
+Para negações de acesso do provedor, limites de taxa, pedidos rejeitados, interrupções temporárias ou tempos de espera, siga a mensagem e peça a um administrador para verificar as configurações ou a conectividade do provedor. Os administradores podem executar `linksense logs runner`, correlacionar a solicitação e os IDs de transformação, e inspecionar `upstreamStatus`, `upstreamRequestId`, `protocolMode`, `model` e `failureCode` em entradas `model provider request failed`. Compartilhe apenas campos de diagnóstico redigidos, excluindo credenciais, conteúdo de conversa e respostas completas a montante. Um chat comum bem-sucedido não garante que múltiplas rodadas de ferramentas funcionem.
+
+Ferramentas de gerenciamento atualizadas fornecem `linksense doctor --network` para verificar downloads de terminal e puxadas do Docker de forma independente; Antes da instalação, execute `--check-network` com o bootstrap baixado do `main`. Para versões antigas como a v0.3.8 que não possuem essa opção, o bootstrap baixa o assistente de diagnóstico em uma revisão de código fixo para verificar a versão selecionada sem executar seu instalador. Baixe novamente o bootstrap se uma cópia local antiga devolver 64. O diagnóstico pode baixar imagens, mas não executa contêineres nem reinicia serviços. Eles não verificam a execução de tarefas apoiadas pelo provedor.
+
+Atualize e reabra a mesma tarefa para que o LinkSense possa recuperar o turno original. Não envie cópias repetidas durante uma interrupção da rede. Retente somente depois que o turno tiver falhado definitivamente.
+
+Quando a janela de contexto do modelo é ultrapassada, uma tarefa comum tenta continuar automaticamente uma vez. Se ela falhar, espere a tarefa parar, compacte seu contexto e indique onde o trabalho deve continuar. Veja [Gerenciamento de rascunhos e contexto](../tasks/index.mdx#context-and-drafts).
+
+Se uma decisão de plano não puder ser submetida, verifique se a tarefa já entrou em um novo turno, objetivo ou estado de automação; Uma decisão estagnada não pode sobrescrever um estado mais novo. Se o ramificação falhar, confirme que a tarefa de origem parou, não tem requisição em fila e não está arquivada.
+
+## Falha no upload ou na prévia [#upload-or-preview-fails]
+
+- Verifique o tipo, tamanho e limites de lote.
+- Garanta que a extensão corresponda ao conteúdo real do arquivo.
+- Uma falha na pré-visualização não significa necessariamente que o original está perdido; Tente baixar.
+- Para documentos de conhecimento, inspecione a fase de processamento falhada e tente novamente.
+
+## A busca não tem resultados [#search-has-no-results]
+
+A busca do centro de ajuda é gerada por uma build de produção estática e não está disponível no servidor de desenvolvimento. A busca de produtos retorna apenas os dados acessados que sua conta.
+
+## Um site não pode ser publicado ou aberto [#a-site-cannot-be-published-or-opened]
+
+- Apenas uma entrega registrada e baixável de tarefa em HTML pode ser publicada. Um anexo comum ou um arquivo que ainda está sendo gerado não pode ser usado.
+- Se estilos, scripts ou imagens estiverem faltando, regenere e registre o entregue completo da web na tarefa de origem em vez de enviar apenas o HTML da entrada.
+- Se o nome do link for tomado, escolha outra combinação de 3–80 caracteres de letras, números ou hífens.
+- Um link público não está disponível após a despublicação, exclusão permanente da tarefa de fonte ou desativação da conta do proprietário.
+- Atualizar um site não publicado não o torna automaticamente público. Escolha **Republicação** em **Biblioteca de recursos → Meus sites** após a atualização.
+
+Veja [Publique e gerencie sites](../tasks/index.mdx#publish-websites) para o fluxo de trabalho completo e os limites de segurança.
+
+## O bot Feishu não responde [#the-feishu-bot-does-not-respond]
+
+- Confirme que o Feishu está conectado sob **Configurações → Canais de mensagens**. Não escaneie repetidamente enquanto a aprovação do administrador estiver pendente; A conexão se recupera automaticamente após a aprovação.
+- Apenas mensagens privadas individuais do criador do bot são aceitas. Grupos de conversa, outras pessoas e mensagens não textuais não iniciam tarefas.
+- Uma implantação local não precisa de um callback público, mas o ambiente LinkSense deve alcançar o Feishu via HTTPS e WebSocket.
+- Se o Feishu disser que o aplicativo não existe, use o caminho **Criar uma nova aplicação** para substituir o aplicativo deletado em vez de escanear o código QR antigo.
+- Se uma tarefa sem título aparecer, mas nunca começar, atualize o status da tarefa e do canal, e então envie uma nova mensagem curta em vez de enviar repetidamente a original.
+
+Veja [Conecte-se e use o Feishu](../message-channels/index.mdx#feishu) para conexão, aprovação, desconexão e etapas de recuperação.
+
+## Weixin não responde [#weixin-does-not-respond]
+
+- Confirme que a Weixin está **Online** sob **Configurações → Canais de mensagens**.
+- A mensagem deve vir da conta que escaneou o código e ser texto suportado ou voz transcritiva.
+- Se algum passo de QR, confirmação de telefone ou código de pareamento não for concluído, reconecte e siga a página atual.
+- Verifique cotas de crédito, estado de manutenção e concorrência de tarefas. Não envie a mesma mensagem repetidamente.
+
+Veja [Conecte-se e use o Weixin](../message-channels/index.mdx#weixin) para as etapas de conexão e desconexão.
+
+WeCom, DingTalk e Microsoft Teams têm requisitos de configuração diferentes. Comece pela [Visão geral do canal de mensagens](../message-channels/index.mdx#overview) e abra o guia relevante. Apenas o Teams exige um endpoint público de mensagens HTTPS.
+
+## Falha na geração de imagens [#image-generation-fails]
+
+- Confirme que um administrador ativou um modelo de geração de imagem.
+- Se o provedor rejeitar a solicitação, revise o prompt, modelo e configuração das credenciais. Se o serviço não estiver disponível, tente novamente mais tarde.
+- Fundos transparentes podem exigir suporte nativo do modelo atual, especialmente para cabelo, vidro, fumaça ou outras bordas complexas.
+- Não repita imediatamente uma solicitação após falhas no registro de artefato ou no registro de uso. O provedor pode já ter processado e cobrado por isso.
+
+Veja [Gerar imagens](../tasks/index.mdx#generate-images).
+
+## Entre em contato com um administrador [#contact-an-administrator]
+
+Para erros de saúde do sistema, modelo, e-mail de autenticação, processamento de conhecimento, recuperação ou execução, forneça o tempo, página, mensagem ou código de erro estável e passos de reprodução segura. Nunca envie senhas, tokens, chaves de API, URLs temporárias ou conteúdos sensíveis de arquivos.

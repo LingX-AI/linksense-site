@@ -1,0 +1,9 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "deploy",
+    "user-guide",
+    "admin-guide",
+    "developer-guide"
+  ]
+}

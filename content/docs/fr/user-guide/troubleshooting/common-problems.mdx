@@ -1,0 +1,90 @@
+---
+title: "Dépanner les problèmes courants"
+description: "Résoudre les problèmes courants de connexion, de tâches, de fichiers, de canal de messages, de plugins, de MCP et de base de connaissances."
+---
+
+
+## Échec de la connexion [#sign-in-fails]
+
+- Utilisez une méthode activée et confirmez que le compte est actif.
+- Demandez une réinitialisation d’un mot de passe local.
+- Redémarrez SSO depuis la page de connexion.
+- Attends que la protection de connexion refroidisse au lieu de réessayer sans arrêt.
+
+## Une tâche ne peut pas commencer [#a-task-cannot-start]
+
+Lisez le message pré-vol :
+
+- Choisissez un autre modèle si celui sélectionné est désactivé.
+- Supprimez ou mettez à jour un plugin ou une compétence indisponible.
+- Corrigez une liaison explicite de certification manquante ou conflictuelle.
+- Testez l’URL, l’authentification et le délai d’attente d’un serveur MCP requis.
+- Sélectionnez une base de connaissances encore activée et accessible.
+- Si votre quota de crédit hebdomadaire est épuisé, attendez la prochaine réinitialisation hebdomadaire ou demandez à un administrateur de l’ajuster ou de le réinitialiser manuellement.
+
+## Déconnexions d’exécution [#execution-disconnects]
+
+Pour les refus d’accès des fournisseurs, les limites de tarif, les demandes rejetées, les interruptions temporaires ou les délais d’attente, suivez le message et demandez à un administrateur de vérifier les paramètres ou la connectivité des fournisseurs. Les administrateurs peuvent exécuter `linksense logs runner`, corréler la requête et les IDs, et inspecter `upstreamStatus`, `upstreamRequestId`, `protocolMode`, `model` et `failureCode` sur `model provider request failed` entrées. Partagez uniquement les champs de diagnostic expurgés, à l’exclusion des identifiants, du contenu des conversations et des réponses complètes en amont. Un chat ordinaire réussi ne prouve pas que plusieurs parties d’outils fonctionnent.
+
+Des outils de gestion mis à jour permettent `linksense doctor --network` de vérifier les téléchargements de terminaux et Docker extrait indépendamment ; Avant l’installation, exécutez `--check-network` avec le bootstrap téléchargé depuis `main`. Pour les anciennes versions comme la v0.3.8 qui n’ont pas cette option, le bootstrap télécharge l’assistant de diagnostic à une version source fixe pour vérifier la version sélectionnée sans exécuter son installateur. Retéléchargez le bootstrap si une ancienne copie locale 64. Les diagnostics peuvent télécharger des images mais n’exécutent pas de conteneurs ni ne redémarrent les services. Ils ne vérifient pas l’exécution des tâches soutenues par le fournisseur.
+
+Rafraîchis et rouvre la même tâche pour que LinkSense puisse récupérer le tour original. Ne soumettez pas de copies répétées lors d’une interruption réseau. Réessaie seulement après que le tour ait définitivement échoué.
+
+Lorsque la fenêtre de contexte du modèle est dépassée, une tâche ordinaire tente automatiquement de continuer une fois. Si elle échoue finalement, attendez que la tâche s’arrête, compactez son contexte et précisez où le travail doit continuer. Voir [Gestion du brouillon et du contexte](../tasks/index.mdx#context-and-drafts).
+
+Si une décision de plan ne peut pas être soumise, vérifiez si la tâche est déjà entrée dans un nouveau tour, objectif ou état d’automatisation ; Une décision obsolète ne peut pas écraser un État plus récent. Si le branchement échoue, confirmez que la tâche source s’est arrêtée, n’a pas de requête en file d’attente et n’est pas archivée.
+
+## Échecs de téléchargement ou de prévisualisation [#upload-or-preview-fails]
+
+- Vérifiez le type, la taille et les limites de lots.
+- Assurez-vous que l’extension correspond au contenu réel du fichier.
+- Une défaillance de prévisualisation ne signifie pas nécessairement que l’original est perdu ; Essayez de télécharger.
+- Pour les documents de connaissance, inspectez l’étape de traitement ratée et réessayez.
+
+## La recherche n’a pas de résultats [#search-has-no-results]
+
+La recherche du centre d’assistance est générée par une compilation de production statique et n’est pas disponible dans le serveur de développement. La recherche de produits ne restitue que les données auxquelles votre compte peut accéder.
+
+## Un site ne peut ni être publié ni ouvert [#a-site-cannot-be-published-or-opened]
+
+- Seul un livrable de tâche HTML enregistré et téléchargeable peut être publié. Une pièce jointe ordinaire ou un fichier encore en cours de génération ne peut pas être utilisé.
+- Si des styles, scripts ou images manquent, régénérez et enregistrez le livrable web complet dans la tâche source au lieu de ne télécharger que le HTML d’entrée.
+- Si le nom du lien est pris, choisissez une autre combinaison de 3–80 caractères composée de lettres, chiffres ou traits d’union.
+- Un lien public n’est plus disponible après la désindexation, la suppression permanente de la source ou la désactivation du compte du propriétaire.
+- Mettre à jour un site non publié ne le rend pas automatiquement public. Choisissez **Rééditer** sous **Bibliothèque de ressources → Mes sites** après la mise à jour.
+
+Voir [Publiez et gérez des sites](../tasks/index.mdx#publish-websites) pour l’ensemble du flux de travail et des limites de sécurité.
+
+## Le bot Feishu ne répond pas [#the-feishu-bot-does-not-respond]
+
+- Confirmez que le Feishu est lié sous **Paramètres → Canaux de messagerie**. Ne pas scanner à répétition pendant que l’approbation des administrateurs est en attente ; La connexion se rétablit automatiquement après approbation.
+- Seul le texte privé un à un du créateur du bot est accepté. Les groupes de discussion, les autres personnes et les messages non textuels ne lancent pas les tâches.
+- Un déploiement local n’a pas besoin d’un callback public, mais l’environnement LinkSense doit atteindre Feishu via HTTPS et WebSocket.
+- Si Feishu indique que l’application n’existe pas, utilisez le chemin **Créer une nouvelle application** pour remplacer l’application supprimée au lieu de scanner l’ancien code QR.
+- Si une tâche sans titre apparaît mais ne démarre jamais, rafraîchissez la tâche et le statut du canal, puis envoyez un nouveau message court au lieu de soumettre l’original à répétition.
+
+Voir [Connectez-vous et utilisez le Feishu](../message-channels/index.mdx#feishu) pour les étapes de connexion, d’approbation, de déconnexion et de récupération.
+
+## Weixin ne répond pas [#weixin-does-not-respond]
+
+- Confirmez que Weixin est **En ligne** sous **Paramètres → Canaux de messagerie**.
+- Le message doit provenir du compte qui a scanné le code et être du texte pris en charge ou une voix transcribible.
+- Si aucune étape de QR, de confirmation téléphonique ou de code d’appairage n’a pas été complétée, reconnectez-vous et suivez la page actuelle.
+- Vérifiez les quotas de crédit, l’état de maintenance et la concurrence des tâches. N’envoyez pas le même message à répétition.
+
+Voir [Connectez-vous et utilisez Weixin](../message-channels/index.mdx#weixin) pour les étapes de connexion et de déconnexion.
+
+WeCom, DingTalk et Microsoft Teams ont des exigences de configuration différentes. Commencez par la [Aperçu du canal de messages](../message-channels/index.mdx#overview) et ouvrez le guide correspondant. Seul Teams nécessite un point de terminaison de messagerie HTTPS public.
+
+## Échecs de génération d’images [#image-generation-fails]
+
+- Confirmez qu’un administrateur a activé un modèle de génération d’images.
+- Si le prestataire rejette la demande, examinez la requête, le modèle et la configuration des identifiants. Si le service n’est pas disponible, essayez à nouveau plus tard.
+- Les fonds transparents peuvent nécessiter un support natif du modèle actuel, notamment pour les cheveux, le verre, la fumée ou d’autres bords complexes.
+- Ne répétez pas immédiatement une requête après un échec d’enregistrement ou d’enregistrement d’utilisation des artefacts. Le prestataire a peut-être déjà traité et facturé pour cela.
+
+Voir [Générer des images](../tasks/index.mdx#generate-images).
+
+## Contactez un administrateur [#contact-an-administrator]
+
+Pour la santé du système, le modèle, l’e-mail d’authentification, le traitement des connaissances, la récupération ou les erreurs d’exécution, indiquez l’heure, la page, le message ou code d’erreur stable, ainsi que les étapes de reproduction sécurisée. N’envoyez jamais de mots de passe, de jetons, de clés API, d’URL temporaires ou de contenus sensibles de fichiers.

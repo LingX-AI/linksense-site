@@ -1,0 +1,9 @@
+{
+  "title": "ドキュメント",
+  "pages": [
+    "deploy",
+    "user-guide",
+    "admin-guide",
+    "developer-guide"
+  ]
+}

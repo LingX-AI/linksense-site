@@ -1,0 +1,209 @@
+---
+title: "Paramètres personnels"
+description: "Gérez vos préférences générales, votre profil, vos quotas, votre apparence, la sécurité et les tâches archivées."
+---
+
+Les réglages sont regroupés par objectif ci-dessous. Vérifiez leur portée avant de les changer, et lisez les consignes pertinentes avant de changer les mots de passe, de réinitialiser la mémoire ou de supprimer définitivement le contenu.
+
+## Décors généraux [#general]
+
+Ouvre le menu du compte et choisis **Paramètres → Général**.
+
+### Langage d’interface [#general-interface-language]
+
+LinkSense prend en charge le chinois simplifié et l’anglais. L’interface change immédiatement et la préférence est sauvegardée pour Web et Teams.
+
+Le centre d’aide dispose de son propre menu linguistique. Un lien d’aide ouvert depuis LinkSense utilise automatiquement le langage d’interface actuel.
+
+### Messages envoyés lors de l’exécution [#general-messages-sent-during-execution]
+
+Choisissez la valeur par défaut d’un message envoyé pendant qu’un tour est en cours :
+
+- **Exécution du courant de direction** ajoute une clarification uniquement textuelle au virage en course.
+- **Mettre en attente pour la prochaine demande** commence après que le tour en cours atteigne un état final.
+
+Une requête avec une pièce jointe ou un plugin explicite, une compétence ou une sélection de base de connaissances est mise en file d’attente quel que soit le code par défaut.
+
+Si la sauvegarde échoue, LinkSense restaure la valeur précédente et affiche une erreur. Essaie après le retour de la connexion.
+
+### Notifications du navigateur [#general-browser-notifications]
+
+Les notifications du navigateur sont désactivées par défaut. Lorsque vous activez **Activer les notifications du navigateur**, le navigateur demande une autorisation si elle n’a pas déjà été accordée. Les notifications ne sont activées qu’après avoir autorisé la permission. LinkSense envoie immédiatement une notification de test après l’activation ; Vous pouvez également sélectionner **Envoyer une notification de test** à tout moment.
+
+Si les notifications ne sont pas activées efficacement dans le navigateur actuel, et que celui-ci prend en charge les notifications sans autorisation refusée de façon permanente, LinkSense affiche une invite de notification dans le coin inférieur gauche. **Activer** exécute le même flux complet d’activation et de test que les Paramètres. **Pas maintenant** masque l’invite uniquement pour la session du navigateur en cours, afin qu’elle puisse réapparaître après la réouverture du navigateur. Lorsque les permissions sont bloquées, LinkSense n’affiche pas d’invite inutilisable ; Autorisez d’abord les notifications dans les permissions du navigateur du site.
+
+Ce paramètre ne s’applique qu’à l’utilisateur connecté actuel et au navigateur actuel. Il ne se synchronise pas avec d’autres navigateurs ou appareils. Une page LinkSense doit rester ouverte. Les notifications peuvent apparaître alors que la page est en arrière-plan, mais pas après la fermeture de la page ou du navigateur. LinkSense n’utilise ni Web Push ni Service Worker pour la diffusion en arrière-plan.
+
+Lorsqu’il est activé, LinkSense envoie une notification lorsqu’une tâche ou une automatisation normale atteint un état terminal. La notification reflète le résultat réel :
+
+- **Réussis** : la tâche accomplie avec succès ; Une automatisation doit aussi avoir produit un résultat que vous pouvez voir.
+- **Échec** : la tâche a échoué, ou une automatisation s’est arrêtée sans produire de résultat que vous pouvez voir.
+- **Interrompu** : la tâche ou l’automatisation a été interrompue.
+
+La première fois que vous activez ce paramètre, LinkSense part de la position actuelle du terminal et n’envoie pas de notifications pour les travaux précédents.
+
+LinkSense envoie la notification système même lorsque vous êtes déjà en train de visualiser la tâche. Le titre de notification affiche le nom de la tâche. Son corps identifie une tâche ou une automatisation régulière et affiche le statut réel de **Réussis**, de **Échec** ou de **Interrompu**. Le nom de la tâche est visible pour le navigateur et le système d’exploitation, mais la notification n’inclut pas d’entrée, de réponses, de détails d’erreur, de pièces jointes ou de noms d’artefacts. Cliquer sur la notification focalise LinkSense et ouvre directement la tâche correspondante.
+
+Si le navigateur ne prend pas en charge les notifications, ne peut pas enregistrer le paramètre, ne peut pas accéder au service de notification de fin de tâche, ou si l’autorisation a été refusée, la page des paramètres explique le problème. Le commutateur n’est enregistré comme activé qu’après permission, la notification de test et la ligne de base de l’auditeur complétion-auditeur sont toutes prêtes. Si le navigateur réinitialise une subvention existante en **Demandez**, sélectionnez **Accordez l’autorisation et envoyez le test**. Après avoir refusé l’autorisation, autorisez les notifications pour le site LinkSense dans les paramètres de votre navigateur avant de réactiver l’interrupteur. Si LinkSense indique que le test a été envoyé mais qu’aucune notification système n’apparaît, vérifiez si le système d’exploitation autorise ce navigateur à envoyer des notifications et si Ne pas déranger ou Focus est activé.
+
+### Installer sur un ordinateur de bureau ou sur un écran d’accueil [#general-install-on-a-desktop-or-home-screen]
+
+LinkSense publie les métadonnées d’installation des applications web. Dans un navigateur pris en charge, utilisez **Application d’installation**, **Ajouter à l’écran d’accueil** ou la commande équivalente du menu du navigateur pour ouvrir LinkSense dans une fenêtre autonome. Le nom de la commande dépend du navigateur et du système d’exploitation.
+
+L’installation n’autorise pas l’utilisation hors ligne ; LinkSense a toujours besoin d’une connexion au déploiement. Le lancement depuis l’icône installée revient au point d’entrée de l’application et utilise la session de connexion stockée par ce navigateur. Déconnectez-vous toujours normalement après avoir utilisé un appareil partagé.
+
+## Profil et usage personnel [#profile]
+
+Ouvert **Paramètres → Profil** pour gérer les informations visibles des comptes et les informations d’utilisation.
+
+### Nom d’affichage [#profile-display-name]
+
+Modifiez et enregistrez le nom affiché dans la barre latérale, les listes d’utilisateurs administrateurs et d’autres affichages d’identité sécurisés. Cela ne modifie pas l’e-mail de connexion.
+
+### Avatar [#profile-avatar]
+
+Téléchargez une image prise en charge depuis la zone avatar. LinkSense valide son type et sa taille. Remplacer un avatar ne change que l’affichage et ne change jamais la propriété de la tâche.
+
+### Usage personnel [#profile-personal-usage]
+
+Le profil peut afficher le total des jetons, les tâches, les tours, les appels de modèles, les jours actifs, la moyenne des jetons par tour, une carte thermique d’activité 365 jours, ainsi que les séries actuelles ou les plus longues.
+
+Ces valeurs sont des insights, pas des paramètres d’utilisation, de la facturation ou des contrôles d’exécution. Des informations minimales d’activité et d’utilisation peuvent rester après la suppression de la tâche sans restaurer le contenu de la tâche.
+
+### Échecs de mise à jour [#profile-update-failures]
+
+Corrigez les entrées qui dépassent les limites visibles et réessayez. Un compte désactivé perd sa session active et ne peut pas continuer les modifications de profil.
+
+## Analyses des quotas et de l’utilisation [#quota]
+
+Ouvrez **Paramètres → quota** pour consulter votre propre quota et votre utilisation. Les utilisateurs auto-enregistrés et les membres de l’organisation utilisent la même page.
+
+### Aperçu [#quota-overview]
+
+Consultez les crédits utilisés, les crédits restants, votre limite hebdomadaire et l’heure de réinitialisation suivante. Les comptes illimités affichent toujours la consommation réelle. Les quotas hebdomadaires sont réinitialisés chaque lundi dans le fuseau horaire du système. Après qu’un administrateur ait réinitialisé votre quota, l’aperçu compte l’utilisation depuis cette réinitialisation ; L’analytique conserve les charges historiques.
+
+Les crédits sont arrondis à l’entier le plus proche pour être affichés. Les charges réelles conservent leur précision fractionnaire. Une utilisation inférieure à un demi-crédit peut s’afficher comme 0 mais contribue néanmoins au total.
+
+### Analytique [#quota-analytics]
+
+Choisissez les derniers 7 ou 30 jours. Les dates utilisent le fuseau horaire de votre navigateur. La plage 30 jours est une fenêtre d’analyse, pas un quota mensuel.
+
+- Historique de crédit : frais quotidiens par charge de travail ou modèle, basés sur les frais enregistrés au moment de la consommation.
+- Classement des tâches : développez les détails du modèle et de la charge de travail ou ouvrez une tâche. Les autres tâches d’utilisation et supprimées sont regroupées séparément.
+- Appels plug-in-de-plugin et MCP : appels terminés dans les tâches retenues, y compris les défaillances. Les décomptes d’activités ne sont pas des décomptes de charges.
+- Compétences : la même compétence compte une fois par tour.
+- Messages : messages utilisateur en tours de tâches, regroupés par modèle. Exclut les réponses IA, les messages en file d’attente et l’historique copié dans les forks.
+
+Les graphiques affichent jusqu’à cinq catégories, regroupant les catégories plus petites selon **Autres**. Les valeurs de catégorie arrondies indépendamment peuvent ne pas s’additionner exactement au total affiché.
+
+## Personnalisation, instructions et mémoire [#personalization]
+
+Ouvrez **Paramètres → Personnalisation** pour les préférences applicables aux tâches futures.
+
+### Instructions personnalisées [#personalization-custom-instructions]
+
+Utilisez des instructions personnalisées pour les préférences de stabilité :
+
+- Réponse en anglais par défaut.
+- Effectuez des tests unitaires pertinents après les modifications de code.
+- Mettez les conclusions des rapports avant les preuves à l’appui.
+
+Les instructions sauvegardées s’appliquent aux tours suivants. Les règles de la plateforme, les limites de sécurité et la gouvernance des administrateurs restent une priorité plus élevée. Ne stockez jamais de mots de passe ou de jetons ici.
+
+### Dénomination automatique des tâches [#personalization-automatic-task-naming]
+
+Choisissez quand les noms des tâches se mettent à jour. Les modifications sont enregistrées automatiquement :
+
+- **Premier message** (par défaut) : nommer une tâche lors de l’envoi d’un message, puis garder son nom.
+- **Chaque message** : mettre à jour le nom à chaque nouveau message, en utilisant la dernière requête et le contexte récent.
+
+Les noms de tâches modifiés manuellement restent inchangés. Cette préférence s’applique aux messages futurs, qu’ils soient dans les tâches nouvelles et existantes ; Le changer ne renomme pas les tâches historiques en bloc. Le nommage s’exécute indépendamment de l’exécution de la tâche et conserve le nom actuel en cas d’échec de la génération.
+
+### Montrer le raisonnement [#personalization-show-reasoning]
+
+**Afficher le raisonnement** est activé par défaut, et les préférences enregistrées existantes sont conservées. Lorsqu’il est activé, il affiche le texte de raisonnement complet fourni par le modèle pendant les tâches et dans l’historique des tâches. Certains modèles ne fournissent que des résumés ou pas de texte intégral ; aucun raisonnement complet n’est démontré dans ces cas. Les modifications sont enregistrées par utilisateur et n’affectent que l’affichage, pas l’effort de raisonnement. Les résumés de raisonnement brèus existants et les appels d’outils ne sont pas affectés par ce changement.
+
+Pendant une tâche, survolez **Réflexion** et cliquez sur la flèche à droite pour développer les appels d’outils de ce niveau. Cliquez à nouveau pour les faire plier. La flèche est absente lorsqu’il n’y a pas d’appels d’outils. Après l’avoir terminé, vous pouvez revisiter les enregistrements dans l’historique de l’activité.
+
+### Mémoire [#personalization-memory]
+
+La mémoire est désactivée par défaut, et vous pouvez l’activer quand c’est nécessaire. Une fois activé, LinkSense peut extraire une mémoire personnelle de tâches éligibles et l’utiliser dans des travaux futurs. Les tâches impliquant des outils externes ou un contexte web ne créent pas de mémoire.
+
+Désactiver la mémoire empêche de créer et d’utiliser la mémoire, mais n’efface pas automatiquement les entrées sauvegardées.
+
+### Réinitialisation [#personalization-reset]
+
+Réinitialiser définitivement supprime toute mémoire personnelle et ne peut pas être annulée. Il ne supprime pas les tâches, instructions personnalisées, plugins, compétences, bases de connaissances ou autres paramètres.
+
+Confirmez que vous voulez **Réinitialiser**, plutôt que de simplement éteindre la mémoire.
+
+## Apparence et taille du texte [#appearance]
+
+Ouvrez **Paramètres → Apparence** pour les préférences d’affichage.
+
+### Thème [#appearance-theme]
+
+- **Système** suit le système d’exploitation ou l’hôte WebView et répond aux modifications.
+- **Lumière** utilise toujours l’interface lumineuse.
+- **Sombre** utilise toujours l’interface sombre.
+
+Les changements de thème n’affectent pas le contenu des tâches, les fichiers ou l’exécution.
+
+### Taille de police de l’interface utilisateur [#appearance-ui-font-size]
+
+Ajustez la taille de base dans la plage autorisée de la page. La navigation, les formulaires, les contrôles, les paramètres et l’interface utilisateur des tâches s’adaptent tout en préservant la hiérarchie.
+
+Les contenus de document, Markdown, Office ou PDF peuvent avoir leur propre zoom de visualisation.
+
+### À travers les environnements [#appearance-across-environments]
+
+La préférence d’apparence est appliquée dans Web et Teams pour l’environnement navigateur actuel. Le mode système peut se résoudre différemment selon les appareils.
+
+Utilisez le zoom d’un visualiseur de document si seul le contenu d’aperçu est saturé au lieu de réduire toute l’interface LinkSense.
+
+## Sécurité et changements de mots de passe [#security]
+
+**Paramètres → Sécurité** change un mot de passe de connexion local. Un compte SSO uniquement peut ne pas nécessiter cette opération.
+
+### Changer le mot de passe [#security-change-the-password]
+
+1. Saisissez le mot de passe actuel.
+2. Entrez un nouveau mot de passe qui passe les règles de la page.
+3. Confirmez le nouveau mot de passe.
+4. Soumets-toi.
+
+Après succès, LinkSense révoque toutes les sessions et nécessite une nouvelle connexion, y compris sur d’autres appareils.
+
+### Qualité du mot de passe [#security-password-quality]
+
+Suivez la validation en direct. Évitez les noms d’organisations, les adresses e-mail, les expressions courantes et les mots de passe réutilisés dans un autre système.
+
+### Mot de passe oublié [#security-forgotten-password]
+
+Retournez sur la page de connexion et demandez un lien de réinitialisation unique. Si l’email d’authentification n’est pas configuré ou indisponible, demandez à un administrateur de rétablir cette fonctionnalité.
+
+### Sécurité [#security-safety]
+
+- Les administrateurs n’ont jamais besoin de votre mot de passe.
+- Ne le placez pas dans une tâche, un nom de crédence, une description MCP ou une instruction personnalisée.
+- Pour un comportement de connexion suspect, changez le mot de passe et ne donnez à l’administrateur que l’heure et les symptômes non sensibles pour la revue de l’audit.
+
+## Tâches archivées [#archived-tasks]
+
+Ouvre **Paramètres → Tâches archivées**.
+
+### Restauration [#archived-tasks-restore]
+
+La désarchive renvoie une tâche à la liste récente en utilisant son dernier ordre d’activité. Il ne refait pas un tournant historique.
+
+### Supprimer une tâche [#archived-tasks-delete-one-task]
+
+La suppression permanente nécessite une confirmation et ne peut pas restaurer le corps de la tâche, les pièces jointes, les messages ou les livrables accessibles.
+
+### Effacez toutes les tâches archivées [#archived-tasks-clear-all-archived-tasks]
+
+Cette action concerne uniquement vos tâches archivées, pas les travaux non archivés. Téléchargez d’abord tout ce qui est important car l’opération ne peut pas être annulée.
+
+### Faits conservés [#archived-tasks-retained-facts]
+
+Des informations minimales d’audit, de sécurité, de nettoyage des ressources et d’utilisation peuvent subsister après suppression forcée. Ils peuvent inclure des comptes de tâches ou de tours ainsi que des instantanés de jetons ou de coûts, mais pas de titres récupérables, corps de messages, contenu de fichiers ou arguments d’outils.

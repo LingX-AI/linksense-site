@@ -1,0 +1,46 @@
+---
+title: "LinkSenseドキュメント"
+icon: BookOpen
+description: "自分がやるべきことに合った道を選びましょう。"
+---
+
+import { Boxes, Code2, Play, ShieldCheck } from 'lucide-react'
+
+LinkSenseは、AIタスクの実行、組織機能の共有、チームのモデル、データ、ツールの管理を行うセルフホスト型ワークスペースです。
+
+## 自分の道を選びましょう [#choose-your-path]
+
+<Cards>
+  <Card
+    icon={<Boxes />}
+    title="LinkSenseを展開する"
+    description="CoreかFullを選び、Dockerを準備し、初回セットアップを完了します。"
+    href="./deploy/"
+  />
+  <Card
+    icon={<Play />}
+    title="最初の課題を完了してください"
+    description="モデルを接続し、タスクを作成し、実際の結果を検証します。"
+    href="./user-guide/getting-started/"
+  />
+  <Card
+    icon={<ShieldCheck />}
+    title="LinkSenseの管理"
+    description="メンバー管理、アクセス管理、モデル管理、使用状況管理、健康状態、監査。"
+    href="./admin-guide/overview/"
+  />
+  <Card
+    icon={<Code2 />}
+    title="ビルドと統合"
+    description="アプリケーションを作成し、LinkSenseタスクを他のシステムに組み込みます。"
+    href="./developer-guide/interactive-application/"
+  />
+</Cards>
+
+## システムを理解する [#understand-the-system]
+
+個人作業がどのように共有されたチーム機能になるか、アプリケーションがどのようにリソースを統合し、管理されたワーカー内でタスクがどのように実行されるかについては[組織能力とアーキテクチャ](./deploy/architecture.mdx)をご覧ください。
+
+## AIアシスタントについて [#for-ai-assistants]
+
+[文書索引](/llms.txt)を使って公開ページを見つけ、関連する言語とトピックをマークダウンのリンクで見つけてください。

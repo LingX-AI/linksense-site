@@ -1,0 +1,116 @@
+---
+title: "Governança de Plugins e Conhecimento"
+description: "Revise Plugins e Aplicações, governe bibliotecas de Conhecimento e configure fontes de dados externas."
+---
+
+Revise as capacidades compartilhadas, regule o status do Conhecimento e mantenha conexões de fonte de dados. Privilégios administrativos não concedem automaticamente acesso ao conteúdo dos usuários.
+
+## Revisão do Centro de Plugins e do Centro de Aplicações [#plugin-governance]
+
+<Callout type="info" title="Operação administrativa">
+
+Abra **Configurações → Central de plugins**. A revisão se aplica a um snapshot inviável e imutável, não a um diretório pessoal de fontes mutável.
+
+</Callout>
+
+### Revise um lançamento [#plugin-governance-review-a-release]
+
+Inspecione o publicador, tipo, número de lançamento, notas de lançamento, arquivos, bits executáveis, conteúdo SHA-256, manifesto, conteúdo de Skills, logo e declarações para MCP, scripts, conexões externas, variáveis de ambiente, credenciais ou downloads de dependências.
+
+Cada lançamento exige uma revisão separada e o LinkSense verifica novamente a integridade do snapshot antes da aprovação.
+
+### Revise os lançamentos do Centro de Inscrições [#plugin-governance-review-application-center-releases]
+
+Uma avaliação de aplicação mostra seu criador, tipo padrão ou interativo, versão, notas de lançamento e opções de uso oferecidas. Abra o detalhe para inspecionar suas instruções, nomes de plugins e habilidades, contagens de base de conhecimento e MCP e—para uma aplicação interativa—os caminhos dos arquivos dos pacotes.
+
+Um **Pacote de aplicativo** torna-se uma cópia de usuário mantida de forma independente, cujo código-fonte os usuários podem visualizar e cujas credenciais necessárias configuram. Um **Serviço de aplicativo online** roda online com recursos gerenciados pelo criador e credenciais configuradas, sem que os usuários instalem sua própria cópia local. Aplicações interativas não podem ser distribuídas como pacotes copiados-instalados e suportam apenas a opção de serviço. Antes da aprovação, confirme que as notas de lançamento correspondem ao comportamento enviado e avalie as instruções, conexões externas, escopo de dados e opções de uso. A rejeição exige um motivo.
+
+### Aprovar ou rejeitar [#plugin-governance-approve-or-reject]
+
+- A aprovação torna esse snapshot atualizado e publica um rascunho de listagem pela primeira vez.
+- A rejeição exige um motivo claro e não afeta uma versão antiga aprovada ou cópias instaladas.
+
+Um administrador que também é o editor pode revisar seu próprio comunicado, sujeito a qualquer política mais rigorosa da organização.
+
+### Suspender e restaurar [#plugin-governance-suspend-and-restore]
+
+A suspensão esconde a listagem e bloqueia a instalação, atualizações e todas as cópias instaladas para que não iniciem novas tarefas. As curvas em movimento mantêm seu snapshot de inicialização e não recebem um estado final fabricado.
+
+A restauração torna a listagem e as cópias instaladas elegíveis para trabalhos posteriores.
+
+O Centro de Inscrições tem um status de listagem separado. A suspensão do administrador exige um motivo e bloqueia novas instalações e inícios de serviços, preservando o histórico de tarefas. Ele não apaga remotamente pacotes de aplicativos independentes que os usuários já instalaram; Essas permanecem sujeitas à governança do estado de recursos pessoais e da capacidade da plataforma. Restaurar a listagem permite que usuários elegíveis instalem ou usem o serviço novamente.
+
+### Não listados versus suspensos [#plugin-governance-unlisted-versus-suspended]
+
+Uma entrada não listada pela editora não aceita novas instalações, enquanto cópias existentes podem rodar e atualizar. A suspensão do administrador é uma aplicação de risco e bloqueia novas execuções em cópias existentes.
+
+### Auditoria e privacidade [#plugin-governance-audit-and-privacy]
+
+As ações de revisão e governança são auditadas. A análise da inscrição expõe apenas as instruções exigidas da versão submetida e o resumo dos recursos. A função não concede acesso a plugins pessoais não enviados, Skill ou conteúdo de rascunho de aplicação.
+
+## Governança baseada em base de conhecimento [#knowledge-governance]
+
+<Callout type="info" title="Operação administrativa">
+
+Abra **Configurações → Bases de conhecimento**. A página expõe metadados de governança sem conceder automaticamente conteúdo do documento, prévia ou acesso para download.
+
+</Callout>
+
+### Encontre entradas [#knowledge-governance-find-entries]
+
+Pesquise por nome ou proprietário e revise o ciclo de vida, disponibilidade, fonte, contagem de documentos e resumos de capacidade.
+
+### Ações de governança [#knowledge-governance-governance-actions]
+
+- Desative ou habilite o uso em tarefas futuras.
+- Arquiver no estado somente leitura.
+- Exclua permanentemente uma base de conhecimento já arquivada.
+- Retente a limpeza de recursos com falha.
+- Revogue uma fonte de acesso selecionada.
+- Transfira a propriedade para outro usuário ativo.
+
+Ações que exigem um motivo armazenam isso em metadados seguros de auditoria. A exclusão permanente permanece uma confirmação separada após o arquivamento.
+
+### Proprietário com deficiência [#knowledge-governance-disabled-owner]
+
+Uma base de conhecimento própria permanece e os destinatários mantêm o acesso existente. O proprietário com deficiência não pode mantê-lo. Transfira a propriedade ou desative a base de conhecimento quando necessário.
+
+### Recuperação e indexação [#knowledge-governance-retrieval-and-indexing]
+
+Os proprietários retentam falhas individuais em documentos. Uma incorporação ou incompatibilidade de índice em toda a implantação requer uma reconstrução completa a partir da Saúde do Sistema, não alterações ad hoc na base de conhecimento de todos os usuários.
+
+### Limite de autorização [#knowledge-governance-authorization-boundary]
+
+Se um administrador precisar ler um documento, o proprietário deve conceder acesso pelo caminho normal de compartilhamento. APIs de governança não devem burlar a autorização de conteúdo.
+
+## Fontes baseadas em base de conhecimento [#knowledge-sources]
+
+<Callout type="info" title="Operação administrativa">
+
+Abrir **Configurações → Bases de conhecimento → Fontes de conhecimento** para configuração de código externo.
+
+</Callout>
+
+### Configurar SharePoint [#knowledge-sources-configure-sharepoint]
+
+Insira o tenant do Microsoft Entra e as informações da aplicação solicitadas pela página. O LinkSense verifica a identidade da aplicação no save e nunca retorna o segredo armazenado.
+
+Use `Sites.Selected` sempre que possível, com administradores da Microsoft 365 concedendo acesso apenas de leitura a sites aprovados.
+
+### Crie uma base de conhecimento externa [#knowledge-sources-create-an-external-knowledge-base]
+
+Após ativar a fonte, um administrador pode inserir uma URL de pasta SharePoint ao criar uma base de conhecimento. O LinkSense verifica o acesso a essa pasta antes de agendar a sincronização.
+
+### Sincronização [#knowledge-sources-synchronization]
+
+- Novos arquivos usam o mesmo pipeline de processamento seguro que os uploads locais.
+- Conteúdo alterado cria uma versão substituta.
+- Uma alteração apenas com o nome realiza uma renomeação.
+- A exclusão remota entra na limpeza controlada de citações, índice, objetos e cotas.
+- Formatos não suportados são marcados como pulados sem bloquear outros arquivos.
+
+### Solução de problemas [#knowledge-sources-troubleshoot]
+
+Para falha de autenticação, verifique o locatário, o ID do app, a validade do segredo e a autorização do site-destino na Microsoft 365. Nunca cole um segredo de cliente em notas de auditoria, tickets ou chat.
+
+O LinkSense não inicia ou reconfigura automaticamente um serviço externo inacessível. Restaure a conectividade e tente novamente pela interface suportada.

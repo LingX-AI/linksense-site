@@ -1,0 +1,36 @@
+---
+title: "Desarrollo de fuentes y construcción de imágenes"
+description: "Inicia el entorno de desarrollo Docker, encuentra los puntos de entrada de código fuente y crea imágenes."
+---
+
+
+## Iniciar el entorno de desarrollo [#start-the-development-environment]
+
+Prepara Node.js 24+, pnpm 10.34.6, Docker Engine / Compose, `rsync` y `mkcert`. Ejecuta desde la raíz del repositorio:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm dev:prepare
+pnpm dev
+```
+
+`pnpm dev:prepare` inicia servicios, crea imágenes y el centro de ayuda, e inicializa la base de datos de desarrollo preservando la configuración existente. La primera tirada puede pedir confiar en el `mkcert` local de California. `pnpm dev` acopla vigilantes y troncos; `pnpm dev:stop` detiene la pila de desarrollo.
+
+Direcciones predeterminadas: Web `http://localhost:18172` / `https://localhost:18173`, API `http://localhost:4000`, Runner `http://localhost:4010`. Utiliza las direcciones reales que reporta el lanzador.
+
+## Puntos de entrada de fuentes [#source-entry-points]
+
+- [Espacio de trabajo web y administración](https://github.com/LingX-AI/linksense/tree/main/apps/web)
+- [API, permisos y lógica de negocio](https://github.com/LingX-AI/linksense/tree/main/apps/api)
+- [Corredores y trabajadores de tarea](https://github.com/LingX-AI/linksense/tree/main/apps/runner)
+
+Consulta el [Arquitectura](./architecture.mdx), [Guía de desarrollo de repositorios](https://github.com/LingX-AI/linksense/blob/main/deploy/development/README.md) y [Guía de contribuciones](https://github.com/LingX-AI/linksense/blob/main/.github/CONTRIBUTING.md). Ejecuta pruebas afectadas, pruebas de tipos, lint y builds antes de enviar cambios.
+
+## Compilar imágenes Docker desde la fuente [#build-docker-images-from-source]
+
+```bash
+docker compose --env-file .env.example build \
+  migrate api runner runner-worker-image web
+```
+
+El API Dockerfile proporciona `runtime` y `migration` objetivos; el Corredor proporciona `controller` y `worker`. Para imágenes multiarquitectura, usa `docker buildx build --platform linux/amd64,linux/arm64` con el Dockerfile y destino adecuados. Prefiero [Imágenes publicadas](./index.mdx) con pins digestos para instalaciones de producción normales. El [Runbook de producción git](https://github.com/LingX-AI/linksense/blob/main/deploy/production/README.md) de mantenedores cubre un flujo de trabajo separado para la construcción del código fuente.

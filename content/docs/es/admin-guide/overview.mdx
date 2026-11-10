@@ -1,0 +1,45 @@
+---
+title: "Resumen de la guía para administradores"
+description: "Comprende las áreas administrativas de LinkSense, los límites de autorización y las responsabilidades."
+---
+
+
+Cualquiera puede leer esta guía, mientras que las páginas y operaciones de administración de LinkSense requieren una cuenta de administrador activa.
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+Administración aparece bajo el grupo **Administración** en Configuraciones. El servidor valida el rol y el estado en cada solicitud; Un menú oculto no es el límite de seguridad.
+
+</Callout>
+
+## Áreas administrativas [#administration-areas]
+
+| Página | Responsabilidad |
+| --- | --- |
+| Usuarios y grupos | Crear cuentas, importar usuarios, controlar el estado y mantener grupos planos |
+| Roles y permisos | Revisa los límites fijos de usuario y administrador |
+| Centro de Plugins | Revisa los lanzamientos y suspende o restaura los listados de riesgo |
+| Bases de conocimiento | Regulan los metadatos, el estado, el acceso y la propiedad |
+| Fuentes de conocimiento | Configurar fuentes externas como SharePoint |
+| Configuración de modelos | Gestionar modelos y precios de chat, recuperación, transcripción, comprensión de imágenes y generación de imágenes |
+| Configuración del sistema | Gestionar la configuración de productos y autenticación compatibles |
+| Salud del sistema | Inspeccionar dependencias, tiempo de ejecución, recursos del contenedor y limpieza fallida |
+| Comentarios de los usuarios | Revisa el texto y las capturas de pantalla de los problemas enviadas por los usuarios |
+| Registros de auditoría | Consulta eventos permanentes, metadatos de ejecución de tareas y resúmenes de artefactos de tareas eliminadas |
+| Uso | Analizar tareas, turnos, modelos, fichas y costes |
+| Actualización del sistema | Consulta las versiones oficiales y sigue el proceso de actualización de despliegue seguro |
+
+## Los administradores de contenido no reciben [#content-administrators-do-not-receive]
+
+El rol no concede automáticamente el cuerpo de tarea, los archivos adjuntos, entregables, contenido de capacidades personales o contenido de documentos de base de conocimiento de otro usuario. Nunca revela contraseñas, tokens, claves API, cadenas de conexión ni secretos cifrados.
+
+## Configuración inicial [#initial-setup]
+
+Un despliegue sin inicializar muestra un asistente de un solo uso que crea al primer administrador local. Esta cuenta no es un superadministrador y tiene el mismo papel que los administradores posteriores.
+
+## Principios de funcionamiento [#operating-principles]
+
+- Confirma el alcance antes de desactivar, eliminar, transferir o cambiar de modelo.
+- Guarda pruebas de aprobación empresarial para acciones irreversibles.
+- Verifica los resultados de la gestión con registros de auditoría.
+- Utiliza System Health para el diagnóstico y luego deja que los operadores autorizados por despliegue cambien la configuración de infraestructura.

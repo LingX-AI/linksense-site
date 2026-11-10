@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { existsSync, globSync, readFileSync } from 'node:fs'
+import { existsSync, globSync, readFileSync, statSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { InputSettingsSchema, resolveAndParseConfig } from '@cloudflare/config'
 import {
@@ -10,6 +10,8 @@ import {
   writeWorkerConfig,
 } from '@cloudflare/build-output-utils'
 import config from '../cloudflare.config'
+import { homeLocales } from '../src/lib/i18n'
+import { languageNames } from '../src/content/messages'
 
 const root = process.cwd()
 const context = { isPreview: false, mode: 'production' }
@@ -24,19 +26,45 @@ for (const page of [
   'doc/index.html',
   'doc/zh-CN/index.html',
   'doc/en-US/index.html',
+  ...Object.values(homeLocales)
+    .filter((locale) => locale !== 'en-US' && locale !== 'zh-CN')
+    .map((locale) => `doc/${locale}/index.html`),
   'api/search',
+  ...Object.keys(homeLocales).map((locale) => `api/search-index/${locale}`),
   'llms.txt',
 ]) {
   assert(existsSync(join(root, 'out', page)), `Missing static export: ${page}`)
 }
+for (const page of globSync('**/*', { cwd: join(root, 'out') })) {
+  const size = statSync(join(root, 'out', page))
+  if (size.isFile())
+    assert(
+      size.size <= 25 * 1024 * 1024,
+      `Cloudflare static asset exceeds 25 MiB: ${page} (${size.size} bytes)`,
+    )
+}
+for (const locale of Object.keys(homeLocales)) {
+  const index = JSON.parse(
+    readFileSync(join(root, 'out/api/search-index', locale), 'utf8'),
+  )
+  assert.equal(index.type, 'i18n')
+  assert.deepEqual(Object.keys(index.data), [locale])
+}
+const legacySearch = JSON.parse(
+  readFileSync(join(root, 'out/api/search'), 'utf8'),
+)
+assert.equal(legacySearch.type, 'i18n')
+assert.deepEqual(Object.keys(legacySearch.data).sort(), ['en', 'zh'])
 const llmsIndex = readFileSync(join(root, 'out/llms.txt'), 'utf8')
 assert(
   llmsIndex.startsWith('# LinkSense\n'),
   'Missing llms.txt project heading',
 )
-assert(llmsIndex.includes('## English\n'), 'Missing English llms.txt index')
-assert(llmsIndex.includes('## 简体中文\n'), 'Missing Chinese llms.txt index')
-for (const locale of ['en', 'zh']) {
+for (const [locale, code] of Object.entries(homeLocales)) {
+  assert(
+    llmsIndex.includes(`## ${languageNames[code]}\n`),
+    `Missing ${locale} llms.txt index`,
+  )
   assert(
     llmsIndex.includes(`/markdown/${locale}/index.txt`),
     `Missing deployment entry in the ${locale} LLM index`,

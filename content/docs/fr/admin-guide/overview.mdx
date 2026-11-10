@@ -1,0 +1,45 @@
+---
+title: "Aperçu du guide administrateur"
+description: "Comprenez les domaines d’administration de LinkSense, les limites d’autorisation et les responsabilités."
+---
+
+
+N’importe qui peut lire ce guide, tandis que les pages d’administration et opérations de LinkSense nécessitent un compte administrateur actif.
+
+<Callout type="info" title="Fonctionnement administrateur">
+
+L’administration apparaît sous le groupe **Gestion** dans les Réglages. Le serveur valide le rôle et le statut à chaque requête ; Un menu caché n’est pas la limite de sécurité.
+
+</Callout>
+
+## Zones administratives [#administration-areas]
+
+| Page | Responsabilité |
+| --- | --- |
+| Utilisateurs & groupes | Créer des comptes, importer des utilisateurs, contrôler le statut et maintenir des groupes plats |
+| Rôles et permissions | Examinez les limites fixes entre utilisateurs et administrateurs |
+| Centre de plugins | Examiner les publications et suspendre ou restaurer les annonces à risque |
+| Bases de connaissances | Régir les métadonnées, l’état, l’accès et la propriété |
+| Sources de connaissances | Configurez des sources externes telles que SharePoint |
+| Réglages du modèle | Gérer les modèles et tarifs de chat, de récupération, de transcription, de compréhension d’images et de génération d’images |
+| Paramètres système | Gérer les paramètres de produit et d’authentification pris en charge |
+| Santé du système | Inspecter les dépendances, l’exécution, les ressources du conteneur et le nettoyage échoué |
+| Retour des utilisateurs | Consultez les textes et captures d’écran des problèmes soumis par les utilisateurs |
+| Journaux d’audit | Requête des événements permanents, métadonnées d’exécution de tâches et résumés d’artefacts de tâches supprimées |
+| Utilisation | Analysez les tâches, les tours, les modèles, les jetons et les coûts |
+| Mise à jour du système | Vérifiez les versions officielles et suivez le processus de mise à niveau sécurisée |
+
+## Les administrateurs de contenu ne reçoivent pas [#content-administrators-do-not-receive]
+
+Le rôle n’accorde pas automatiquement le corps de tâche, les pièces jointes, livrables, le contenu de capacités personnelles ou le contenu de documents de base de connaissances d’un autre utilisateur. Il ne révèle jamais de mots de passe, de jetons, de clés API, de chaînes de connexion ou de secrets chiffrés.
+
+## Configuration initiale [#initial-setup]
+
+Un déploiement non initialisé affiche un assistant à usage unique qui crée le premier administrateur local. Ce compte n’est pas un super administrateur et a le même rôle que les administrateurs ultérieurs.
+
+## Principes de fonctionnement [#operating-principles]
+
+- Confirmez la portée avant de désactiver, supprimer, transférer ou changer de modèle.
+- Conservez les preuves d’approbation de l’entreprise pour des actions irréversibles.
+- Vérifiez les résultats de la gestion avec des enregistrements d’audit.
+- Utilisez System Health pour le diagnostic, puis laissez les opérateurs autorisés à déploiement modifier la configuration de l’infrastructure.

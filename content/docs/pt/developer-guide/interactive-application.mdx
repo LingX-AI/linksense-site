@@ -1,0 +1,496 @@
+---
+title: "Construa uma aplicação interativa"
+description: "Gerar declarações de recursos por nome, configurar o Manifesto, combinar recursos e compartilhar aplicativos, depois enviar tarefas e receber eventos de negócios com o SDK."
+---
+
+
+Aplicativos interativos colocam seus formulários de fluxo de trabalho, visualizações e controles dentro do LinkSense. Seu código roda em um iframe sem sandbox, enquanto o chat completo do LinkSense ocupa um painel separado à direita, preservando o progresso da tarefa, formulários, aprovações, anexos e artefatos. Os usuários podem arrastar o divisor para redimensionar ambos os painéis, e o chat nunca cobre a interface do aplicativo.
+
+## Desenvolvimento conversacional embutido [#built-in-conversational-development]
+
+A `linksense-interactive-app-builder` Skill incorporada usa `linksense_core.open_application_development` para criar ou abrir um projeto na tarefa regular atual. Forneça um diretório implantável existente ou deixe a plataforma gerar um SDK starter. `linksense_core.inspect_application_development` sincroniza arquivos e retorna o estado de pré-visualização, falhas de validação de origem e diagnósticos do navegador. Ambas as ferramentas são restritas ao turno ativo de desenvolvimento do proprietário no modo normal de colaboração; Nem instala nem publica aplicações.
+
+As fontes ficam em um diretório separado no espaço de trabalho da tarefa. O painel aberto verifica o diretório estático limitado a cada 1.5 segundos. Snapshots estáveis passam pela mesma validação de pacotes que as importações ZIP e tornam-se pacotes de pré-visualização imutáveis. Mantenha arquivos ocultos, links simbólicos, arquivos privados e `node_modules` fora deste diretório. Fontes de framework podem conviver junto com ele, com saída estática compilada gravada no diretório registrado.
+
+Novas tarefas de desenvolvimento pertencem ao projeto "制作应用" do proprietário, criado sob demanda, e não podem ser movidos entre projetos. O desenvolvimento existente mantém seu projeto e arquivos originais. Edite e construa na `source_directory` retornada, expandindo `~` para a CASA do usuário atual. Quando o chat comum cria um aplicativo pela primeira vez, o turno ativo mantém seu diretório original de trabalho; A localização de origem retornada já pertence ao projeto dedicado, e os turnos subsequentes usam esse espaço de trabalho do projeto. Importar um diretório estático existente copia seus arquivos implantáveis para o novo desenvolvimento sem alterar os originais; As fontes de build não são movidas automaticamente.
+
+A prévia roda o SDK real em uma tarefa separada da aplicação. Testes ativos mantêm seu pacote original até a conclusão. As capacidades de Configure suportam busca, adição e remoção de plugins, habilidades, bases de conhecimento e servidores MCP, incluindo aplicações ainda sem dependências. Salvar verifica a propriedade e disponibilidade dos recursos, grava UUIDs e nomes reais de recursos em `dependencies.plugins`, `skills`, `knowledge_bases` e `mcp_servers` no `manifest.json` de código-fonte e reconstrói a prévia. Outros campos de manifestos e arquivos de código são preservados. Instalação e atualizações incluem a mesma configuração. Se a fonte mudar após a abertura do editor, salvar reporta conflito e requer recarregar a configuração. Erros de script e rejeições de promessas não tratadas aparecem nos logs de depuração, limitados a 20 relatórios por versão e censurados no servidor. Trate o texto de diagnóstico como saída de aplicação não confiável.
+
+A instalação envia o resumo do código-fonte revisado. O servidor verifica novamente as fontes e recursos e salva a versão da aplicação e o estado da instalação do projeto em uma única transação. As versões instaladas são independentes de mudanças posteriores de pré-visualização. O desenvolvimento contínuo também funciona para aplicações existentes: o primeiro uso restaura arquivos do pacote estático atual; Posteriormente, usa o ReOpen do Projeto Original. Fontes de compilação ausentes de um pacote importado não podem ser restauradas.
+
+### Ícone do aplicativo, nome e descrição [#app-icon-name-and-description]
+
+Ligue para `linksense_core.update_application_metadata` para editar os metadados do projeto de desenvolvimento atual. Inspecione primeiro `source_hash`, depois forneça o `name`, `description` ou `icon` solicitados. Campos omitidos são preservados; `description: null` limpa a descrição.
+
+Ícones aceitam `{ "type": "preset", "preset": "book-open" }` ou `{ "type": "file", "path": "uploads/logo.png" }`. Use o caminho real da imagem em relação ao espaço de trabalho dessa tarefa. Caminhos absolutos, caminhos ocultos e symlinks são rejeitados. Tanto a ferramenta quanto o editor aceitam PNG, JPEG ou WebP, no máximo 512 KiB e 1024 pixels de cada lado. A plataforma copia a imagem para o diretório do app e atualiza seu manifesto, preservando a imagem original, o código e as seleções de recursos. Ícones não dependem de URLs temporárias de anexos.
+
+O ícone do cabeçalho de desenvolvimento e a ação Editar detalhes do app de rascunho em Minhas aplicações usam o mesmo fluxo de salvamento. Publique edições de rascunhos para aplicá-las. Editando em um aplicativo instalado altera seus metadados atuais; Versões compartilhadas ou listadas ainda precisam de republicação.
+
+## Layout do pacote [#package-layout]
+
+Crie um ZIP cuja raiz contenha diretamente `manifest.json` e `index.html`.
+
+```text
+manifest.json
+index.html
+app.js
+styles.css
+assets/
+  logo.png
+```
+
+O arquivo pode ter até 10 MiB, expandir-se para no máximo 30 MiB, conter no máximo 200 arquivos e não ter arquivos individuais maiores que 5 MiB. Não inclua diretórios de dependências, caches, links simbólicos, código de servidor ou credenciais. Arquivos e diretórios ocultos como `.DS_Store` e `.git` causam falhas na importação, assim como caminhos de arquivo que diferem apenas em letras maiúsculas.
+
+Extensões suportadas são `.html`, `.css`, `.js`, `.mjs`, `.json`, `.map`, `.txt`, `.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`, `.svg`, `.ico`, `.woff` e `.woff2`. Ao usar uma ferramenta de compilação, empacote apenas os arquivos estáticos gerados e configure referências relativas para ativos agrupados, como `./app.js` e `./assets/logo.png`. Fontes, scripts, estilos e imagens podem ser agrupados ou carregados a partir de CDNs externas.
+
+## Manifesto [#manifest]
+
+`manifest.json` descreve a identidade da aplicação, recursos necessários, instruções de tarefa, permissões do SDK e contratos de eventos de negócio. O LinkSense valida durante a importação, registra o pacote adotado ao criar uma tarefa e usa as permissões e definições de eventos da versão correspondente em tempo de execução. Serviços publicados podem adotar uma nova versão em execuções posteriores, conforme explicado abaixo.
+
+### Configuração mínima [#minimal-configuration]
+
+Se a primeira versão apenas coleta entrada e inicia o trabalho, comece com essa configuração. Ele solicita explicitamente `tasks:write`; Outros campos opcionais usam seus valores padrão:
+
+```json title="manifest.json"
+{
+  "schema_version": 1,
+  "id": "research-workbench",
+  "name": "Research workbench",
+  "version": "1.0.0",
+  "sdk_version": 1,
+  "permissions": ["tasks:write"]
+}
+```
+
+Empacotem este arquivo com `index.html`. Ele permite que a página envie e interrompa trabalhos, mas não declara eventos comerciais, para que os usuários visualizem os resultados no painel nativo do LinkSense.
+
+### Referência de campo de nível superior [#top-level-field-reference]
+
+Os limites de texto abaixo se aplicam após o corte dos espaços em branco dianteiros e traseiros. A raiz manifesta e as definições individuais `custom_events` rejeitam campos desconhecidos. Não adicione campos como `author`, `homepage`, `model` ou `mcp_server_ids`.
+
+| Campo | Tipo e limites | Obrigatório / padrão | Significado e efeito | Prática recomendada |
+| --- | --- | --- | --- | --- |
+| `schema_version` | Inteiro; somente `1` é suportado | Obrigatório | Versão do formato de arquivo Manifest, determinando como a plataforma o analisa. | Continue `1`. Mude `version` ao liberar o aplicativo, em vez de incrementar esse campo. |
+| `id` | String, 1–120 caracteres; deve corresponder a `^[a-z][a-z0-9]*(?:[-_][a-z0-9]+)*$` | Obrigatório | Identificador de aplicação dentro do pacote, como `research-workbench`; não é o UUID da aplicação atribuído à plataforma. | Use um nome minúsculo estável com palavras separadas por hífen, mantenha-o inalterado ao longo das atualizações e omita os números de versão. Importar o mesmo `id` não sobrescreve automaticamente uma aplicação; Atualize pelo menu da aplicação alvo. |
+| `name` | Caracteres de 1–160 string | Obrigatório | Nome exibido aos usuários em locais como a lista de aplicativos; Importar e atualizar pacotes escreve isso no nome da aplicação. | Use um nome comercial curto e reconhecível, como "Banco de Trabalho de Pesquisa", sem acumular versões ou termos técnicos. |
+| `version` | String em formato `x.x.x` | Obrigatório | Rótulo de versão do aplicativo; Atualizações com o mesmo rótulo têm registros separados de pacote e publicação. | As atualizações podem manter ou aumentar a versão, mas não podem diminuí-la. |
+| `description` | Texto ou `null`; no máximo 4.000 caracteres | Opcional; `null` | Resumo de aplicações voltado para o usuário; Importar e atualizar isso se inscreva na descrição da aplicação. Não é uma instrução de tarefa. | Explique o caso de uso, entrada e saída esperada. Isso aceita uma sequência, não um objeto de traduções. |
+| `instructions` | Texto ou `null`; no máximo 20.000 caracteres | Opcional; `null` | Instruções de tarefas em nível de aplicação. Em tempo de execução, nomes de eventos, descrições e esquemas de carga útil declarados também são adicionados. | Descreva objetivos estáveis de negócio, requisitos de saída e gatilhos de eventos. Coloque a entrada do formulário desta submissão em `tasks.run().prompt`. Omitir esse campo ou usar `null` seleciona as instruções básicas da plataforma; uma cadeia vazia não faz isso. |
+| `icon` | Texto ou `null`; caminho de 1–500 caracteres | Opcional; `null` | Caminho para uma imagem dentro do pacote, usado como ícone de aplicação; não é uma URL de imagem externa. | Use um caminho relativo como `assets/logo.png`. PNG, JPEG e WebP são suportados, até 512 KiB e 8.192 pixels por dimensão. Prefira uma imagem quadrada compactada. Caminhos não podem começar com `/` nem conter `..`. Omitir a imagem e `icon_preset` preserva o ícone existente na atualização. Para escolher um preset, defina `icon` para `null` e informe `icon_preset`. |
+| `icon_preset` | Identificador de ícone predefinido, como `book-open`, `sparkles` ou `code-xml` | Opcional | Escolhe um preset quando nenhuma imagem é fornecida; também fornece o plano B para uma imagem personalizada. | Use o editor ou a ferramenta de metadados para selecionar um valor suportado. |
+| `entry` | Texto; somente `"index.html"` é suportado | Opcional; `"index.html"` | Documento de entrada aberto no iframe; ele deve existir na raiz do ZIP. | Mantenha o padrão. Não use uma URL completa, documento de entrada aninhado ou rota frontend. |
+| `sdk_version` | Inteiro; somente `1` é suportado | Obrigatório | Versão do protocolo SDK do LinkSense usada pela página. | Carregue `/sdk/v1.js` usando o caminho completo mostrado abaixo. Não use a versão em string do SDK `"1.0.0"`. |
+| `permissions` | Array de cadeias de permissões; no máximo 6, sem duplicados | Opcional; As cinco permissões originais (excluindo `files:write`) abaixo | Controla quais capacidades SDK a página pode chamar; não amplia o acesso aos recursos do usuário atual. | Liste explicitamente o que é necessário. Use `["tasks:write"]` apenas para começar a trabalhar. `[]` não solicita nenhuma dessas capacidades; omitir o campo solicita os cinco originais, excluindo `files:write`. |
+| `custom_events` | Conjunto de definições de eventos; no máximo 50, com nomes únicos | Opcional; `[]` | Declara dados estruturados de negócio que as tarefas podem entregar à aplicação para exibição e restauração. | Comece com alguns eventos significativos, como "pronto para a seção"; Não projete eventos em torno de deltas de chat ou registros de ferramentas. |
+
+### Declaração e correspondência dos recursos necessários [#declaring-and-matching-required-resources]
+
+| Campo | Tipo e limites | Obrigatório / padrão | Significado e comportamento | Prática recomendada |
+| --- | --- | --- | --- | --- |
+| `dependencies` | Objeto com arrays `plugins`, `skills`, `mcp_servers` e `knowledge_bases` | Opcional; cada array tem como padrão `[]` | Cada entrada é `{ "id": "resource UUID", "name": "display name" }`. Até 50 plugins e habilidades combinados, 20 servidores MCP e 20 bases de conhecimento. | Combine por UUID de recurso, nunca nome ou slug. Nomes são indicações de 1–160 caracteres. UUIDs duplicados entre plugins e habilidades também são rejeitados. |
+
+#### Gerar declarações de recursos por nome [#generate-resource-declarations-by-name]
+
+Você não precisa consultar manualmente UUIDs de recursos ao desenvolver um aplicativo:
+
+1. Abra **Meus aplicativos → Criar aplicativo** e clique **Lista de declaração de recursos** no canto inferior direito do cartão **Importar aplicativo interativo**.
+2. Pesquise pelo nome e selecione os recursos que seu aplicativo precisa. Cada categoria usa duas colunas em telas mais largas e possui seu próprio controle **Selecionar tudo**. Selecionar plugins, skills, servidores MCP ou bases de conhecimento não afeta outras categorias. Ao buscar, **Selecionar todos os resultados da pesquisa** afeta apenas os resultados atuais daquela categoria e preserva outras seleções.
+3. Clique **Copiar JSON de dependências**. Adicione o campo de `dependencies` copiado ao `manifest.json` junto com `name` e `version`. Substitua qualquer campo de dependências existente; Não sobrescreva o arquivo inteiro.
+
+Esta ferramenta preenche nomes e UUIDs para os recursos disponíveis que você possui. Ele não cria um aplicativo, não copia recursos, não exporta credenciais nem concede acesso. Outros usuários ou ambientes ainda podem precisar combinar recursos ao importar o pacote. Se os limites de declaração forem ultrapassados, reduza a seleção antes de copiar.
+
+Apenas as linhas de recursos mostram nomes. Clique em qualquer lugar de uma linha arredondada e com bordas para selecioná-la ou desmarcá-la. Cada cabeçalho de categoria mostra a contagem selecionada para sua lista atual; O rodapé sempre mostra a contagem total de seleções. Em telas mais largas, selecione recursos à esquerda e visualize a **Prévia da declaração** sempre visível à direita, atualizada conforme você seleciona. Em telas menores, essas seções se empilham verticalmente. Se a cópia falhar, selecione o texto de pré-visualização e copie manualmente.
+
+Se um recurso estiver faltando, confirme que sua conta atual é dona dele e que ele está disponível. Recursos que você só pode visualizar ou que outros compartilharam com você não estão listados. A cópia é desativada quando nada é selecionado; Omita `dependencies` se o app não precisar desses recursos.
+
+O objeto gerado inclui todos os quatro arrays de recursos; Categorias não selecionadas são arrays vazios. Os seguintes UUIDs são apenas exemplos:
+
+```json title="dependencies.json"
+{
+  "dependencies": {
+    "plugins": [{ "id": "10000000-0000-4000-8000-000000000001", "name": "Document tools" }],
+    "skills": [{ "id": "20000000-0000-4000-8000-000000000001", "name": "Procurement review" }],
+    "mcp_servers": [{ "id": "30000000-0000-4000-8000-000000000001", "name": "Procurement system" }],
+    "knowledge_bases": [{ "id": "40000000-0000-4000-8000-000000000001", "name": "Procurement policies" }]
+  }
+}
+```
+
+#### Adicione a declaração ao pacote [#add-the-declaration-to-the-package]
+
+O **Lista de declaração de recursos** gera um objeto JSON contendo `dependencies`, não uma configuração completa do app. Misture esse campo ao seu `manifest.json` existente sem aninhar um objeto de `dependencies` extra ou remover instruções, permissões ou eventos existentes. Por exemplo, após selecionar uma habilidade e uma base de conhecimento:
+
+```json title="manifest-with-dependencies.json"
+{
+  "schema_version": 1,
+  "id": "policy-assistant",
+  "name": "Policy assistant",
+  "version": "1.0.0",
+  "sdk_version": 1,
+  "permissions": ["tasks:write"],
+  "dependencies": {
+    "plugins": [],
+    "skills": [{ "id": "20000000-0000-4000-8000-000000000001", "name": "Policy review" }],
+    "mcp_servers": [],
+    "knowledge_bases": [{ "id": "40000000-0000-4000-8000-000000000001", "name": "Company policies" }]
+  }
+}
+```
+
+Substitua os UUIDs de exemplo por valores gerados pela lista de declaração de recursos, nomeie o arquivo `manifest.json` e o empache com `index.html` e outros arquivos estáticos. Nomes de recursos são apenas dicas de exibição: nomes idênticos não necessariamente identificam o mesmo recurso. Não substitua UUIDs por nomes.
+
+| Configuração | Pergunta que ele responde | O que ele não faz |
+| --- | --- | --- |
+| `dependencies` | Quais plugins, skills, servidores MCP e bases de conhecimento o app precisa? | Instale ou copie recursos, mantenha credenciais ou conceda acesso a recursos. |
+| `permissions` | Quais métodos de SDK a página da aplicação pode chamar? | Substitua declarações de recursos ou vincule automaticamente recursos. |
+| Configuração de recursos após a importação | Quais recursos reais pertencem a essa conta atendem às declarações? | Altere os UUIDs originais do pacote ou mude diretamente as versões publicadas. |
+
+Um app que só envia tarefas pode solicitar apenas `tasks:write`, mesmo que essas tarefas exijam habilidades ou conhecimentos básicos. Adicione permissões de leitura de recursos apenas quando a página precisa ler listas de recursos.
+
+#### Importar e configurar recursos [#import-and-configure-resources]
+
+A pré-visualização da importação compara UUIDs apenas com recursos disponíveis do tipo correto pertencente ao importador. Mapear as entradas não combinadas para outro recurso do mesmo tipo no diálogo de importação ou atualização de pacotes. Declarações originais e estados não resolvidos são mantidos. Toda declaração deve ser resolvida antes de publicar o rascunho ou publicar. Declarações não copiam recursos, não possuem credenciais nem concedem acesso. Recursos desativados ou excluídos também devem ser tratados.
+
+1. Selecione um código postal no **Importar aplicativo interativo** e revise seus recursos declarados.
+2. Um **ponto de exclamação amarelo circulado** ao lado de um nome significa que um recurso disponível ainda precisa ser configurado. Pesquise e selecione um recurso do mesmo tipo no seletor à direita. Um **marca de verificação circulada verde** significa que está configurado.
+3. Para alterar uma seleção, use a **Ícone de limpeza** dentro da extremidade direita do seletor e depois escolha novamente. A limpeza não exclui o recurso nem sua declaração.
+4. Depois que os recursos estiverem configurados, clique **Importar** ou **Atualizar**. Se algum recurso estiver faltando, siga as instruções de diálogo para completar a configuração e tente novamente.
+
+#### Atualizações, compartilhamento e listagem [#updates-sharing-and-listing]
+
+Atualizações de pacotes preservam mapeamentos, incluindo seleções vazias explícitas, para pares tipo/UUID inalterados. Novas declarações tentam o emparelhamento automático; declarações removidas são não vinculadas. Mapeamentos pertencem ao rascunho e não reescrevem UUIDs de pacotes. Versões publicadas mantêm seus próprios snapshots de recursos e permanecem inalteradas por rascunhos incompletos até que uma nova versão seja compartilhada ou listada.
+
+Atualizações de publicação e pacotes de desenvolvimento ativam apenas para o criador. O pacote, os bindings de recursos, o registro de release e a instalação mudam em uma única transação. A falha não deixa nenhuma configuração parcial. Salve compartilhamento ou atualização do anúncio do centro separadamente; os destinatários instalam manualmente a nova versão.
+
+Aplicativos interativos só podem ser compartilhados ou listados como serviços online, não copiados ou instalados. Os usuários usam os recursos vinculados pelo criador sem remapear; Credenciais permanecem no servidor. Os aplicativos padrão permanecem instaláveis quando autorizados. Cópias interativas existentes permanecem aplicativos independentes, mas não recebem mais atualizações copiadas da fonte. Bolsas históricas apenas de instalação não se tornam automaticamente concessões de serviço; O criador deve alterar as permissões de compartilhamento. Pacotes existentes sem `dependencies` permanecem legíveis e utilizáveis.
+
+### Escolhendo permissões [#choosing-permissions]
+
+Uma permissão habilita os métodos correspondentes do SDK. Ele não instala plugins nem concede acesso a recursos. As tarefas usam recursos vinculados pelo criador, não IDs arbitrários fornecidos pelos usuários na página. Chamadas sem a permissão necessária falham com `LINKSENSE_SDK_PERMISSION_DENIED`.
+
+| Permissão | Métodos SDK | Dados retornados ou efeito | Quando solicitar |
+| --- | --- | --- | --- |
+| `user.profile:read` | `context.getCurrentUser()` | Usuários atuais `id`, `name`, `avatar_url` e `language`. | Ao exibir informações do usuário ou escolher o idioma da interface; Caso contrário, omita. |
+| `capabilities:read` | `resources.listCapabilities()` | Resumos de habilidades e plugins: `id`, `name`, `type`, `description`, `status`, `can_select`, `logo_url`. | Exiba as habilidades do usuário atual ou os resumos dos plugins. Ler a lista não altera os recursos configurados da aplicação. |
+| `knowledge_bases:read` | `resources.listKnowledgeBases()` | Resumos da base de conhecimento: `id`, `name`, `description`, `lifecycle_status`, `availability_status`. | Exiba os resumos da base de conhecimento do usuário atual. As tarefas de aplicação utilizam as bases de conhecimento configuradas pelo criador, independentemente dessa lista. |
+| `mcp_servers:read` | `resources.listMcpServers()` | Resumos de serviço MCP: `id`, `name`, `status`, `transport`; Sem endereços ou credenciais. | Ao exibir informações de conexão. Essa permissão não expõe chamadas diretas de MCP, e `tasks.run()` não aceita `mcp_server_ids`. |
+| `tasks:write` | `tasks.run(input)`, `tasks.interrupt(turnId)`, `tasks.getState()`, `tasks.onStateChange(...)` | Submete trabalhos na tarefa atual da aplicação ou solicita interrupção de um turno especificado. | Para gerar, submeter ou parar os controles. Lide com falhas de aceitação e conflitos com trabalhos em andamento. |
+| `files:write` | `files.upload(file)`, `files.list()`, `files.remove(fileId)` | Faça upload e liste os anexos desta tarefa do aplicativo; remova arquivos não enviados. | Solicite explicitamente essa permissão para uploads. Não é concedido por padrão a aplicações antigas. |
+
+`ready()`, `events.on(...)` e `chat.show()/hide()/toggle()` não precisam de permissão adicional para entrada. Não adicione nomes de métodos como novas cadeias de permissões. Os métodos da lista de recursos retornam `{ items: [...] }`. Métodos de leitura expõem resumos, nunca senhas, tokens, credenciais MCP, fonte de capacidades ou conteúdo da base de conhecimento.
+
+### Instruções de escrita [#writing-instructions]
+
+`description` ajuda os usuários a decidir se querem usar o aplicativo; `instructions` orienta a execução das tarefas; `tasks.run().prompt` especifica o que essa submissão deve realizar. Mantenha esses documentos separados para que a orientação da aplicação e a entrada de formulários possam mudar de forma independente.
+
+Organize `instructions` em torno de:
+
+1. **Objetivo comercial**: o problema a ser resolvido e o que está fora do seu escopo.
+2. **Entregáveis**: conclusões, seções ou resultados necessários, e quando pedir ao usuário informações faltantes.
+3. **Gatilhos de eventos**: quando enviar cada evento e se ele representa um registro ou um snapshot completo.
+4. **Responsabilidades no chat**: comunicar e gerenciar formulários e aprovações no chat nativo; Envie apenas dados comerciais adequados para a aplicação.
+
+O exemplo completo abaixo envia um evento após cada seção de pesquisa estar pronta. Evite regras vagas como "envie eventos conforme necessário" e não coloque segredos, identidades fixas de usuários ou todos os valores de uma determinada submissão em instruções duradouras.
+
+### Referência de campo de eventos personalizados [#custom-event-field-reference]
+
+Cada `custom_events` entrada possui os seguintes campos. Os nomes dos eventos devem corresponder a `^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$` e não podem começar com `linksense.`, `conversation.`, `turn.` ou `item.`.
+
+| Campo | Tipo e limites | Obrigatório / padrão | Significado e efeito | Prática recomendada |
+| --- | --- | --- | --- | --- |
+| `custom_events[].name` | String, 1–120 caracteres, seguindo as regras de nomeação acima; Único dentro do pacote | Obrigatório | Nome exato conectando a declaração, emissão da tarefa e `events.on(name, handler)` ouvinte. | Use um domínio de negócio e uma ação que tenha ocorrido, como `research.section_ready`. Compare a grafia nos três lugares e evite nomes vagos como `update`. |
+| `custom_events[].description` | String, 1–2.000 caracteres; não vazio após aparar | Obrigatório | Explica quando emitir o evento e o que seus dados significam; fornecido ao modelo executante junto com o contrato. | Especifique o gatilho, granularidade e semântica de atualização, como "enviar um resumo completo da seção quando estiver pronto; o mesmo ID de seção substitui seu conteúdo anterior". |
+| `custom_events[].schema_version` | Inteiro, 1–1.000 | Opcional; `1` | Versão do contrato de dados deste evento, entregue junto com o evento; independente do formato Manifest e das versões do pacote. | Incremente quando tipos de campo, significados ou regras obrigatórias mudarem, e atualize o handler e o pacote `version` juntos. Ele não converte automaticamente dados antigos. |
+| `custom_events[].payload_schema` | Objeto de esquema JSON; `type` de nível superior devem ser explicitamente `"object"` | Obrigatório | Define dados de eventos permitidos. O esquema é compilado na importação, as cargas úteis são verificadas na emissão e dados inválidos não são entregues. | Use o 2020-12 de esquema JSON, especifique tipos e campos obrigatórios, além de limitar strings e arrays. Prefiro `additionalProperties: false` excluir dados indefinidos. |
+
+### Escrita payload_schema [#writing-payload_schema]
+
+O LinkSense utiliza seu validador existente de 2020 Ajv para contratos de eventos. As palavras-chave comuns abaixo abrangem a maioria dos eventos de pequenas empresas. Veja o [Referência de objeto de esquema JSON](https://json-schema.org/understanding-json-schema/reference/object) para comportamento opcional e adicional de campo, e [Documentação do Esquema JSON do Ajv](https://ajv.js.org/json-schema.html) para suporte ao dialeto.
+
+| Palavra-chave | Significado e efeito | Prática recomendada |
+| --- | --- | --- |
+| `$schema` | Declaração opcional de dialeto do esquema JSON; Quando incluída, use `https://json-schema.org/draft/2020-12/schema`. | Declare 2020-12 explicitamente para que editores e a plataforma interpretem o contrato de forma consistente. |
+| `type` | Restringe o tipo de dado. A raiz do evento deve ser `object`; Campos podem usar tipos como `string`, `number`, `integer`, `boolean`, `array` ou `object`. | Dê a cada campo um tipo e defina completamente as estruturas de objetos aninhados. |
+| `properties` | Descreve campos de objeto e suas restrições; Declarar uma propriedade sozinha não a torna obrigatória. | Inclua apenas os campos de negócio que a interface precisa, usando nomes estáveis. |
+| `required` | Array de nomes de campos que devem existir. Sem ele, campos em `properties` são opcionais. | Exigir campos necessários para exibir ou calcular resultados; Defina estados vazios para campos opcionais. |
+| `additionalProperties` | Determina se campos fora do contrato são aceitos; Permitido por padrão. | Geralmente configurado para `false`, inclusive separadamente em objetos aninhados. |
+| `description` | Explica um campo de negócios na carga útil. | Descrever unidades, fontes ou estabilidade de identificadores para orientar a geração de dados; Não é uma regra de validação. |
+| `minLength` / `maxLength` | Limita o comprimento das cadeias de texto. | Defina limites adequados à interface para títulos e resumos; O texto exigido geralmente precisa de `minLength: 1`. |
+| `enum` | Restringe valores a um conjunto especificado. | Use códigos estáveis como `high`, `medium` e `low` para status ou prioridade, e depois traduza-os para exibição. |
+| `items` / `maxItems` | Define elementos de array e o número máximo de itens. | Linhas e listas de tabelas encadernadas; Divida grandes resultados em eventos empresariais menores e significativos. |
+
+Envie um objeto JSON que corresponda ao esquema, não o esquema em si ou uma string produzida por `JSON.stringify(payload)`. Cada carga útil também é limitada por `JSON.stringify(payload).length <= 65,536`. Mantenha eventos bem abaixo desse limite e entregue arquivos ou relatórios longos como artefatos do LinkSense.
+
+### Exemplo completo de configuração [#complete-configuration-example]
+
+Essa versão inicia a pesquisa e recebe eventos de seção, então ainda solicita apenas `tasks:write`. Não lê informações de usuários ou listas de recursos; Adicione as permissões correspondentes ao adicionar esses seletores.
+
+```json title="manifest.json"
+{
+  "schema_version": 1,
+  "id": "research-workbench",
+  "name": "Research workbench",
+  "version": "1.0.0",
+  "description": "Collect research criteria and display structured progress.",
+  "instructions": "Research the topic in the user's current submission. Ask for missing information in native chat first. After completing each independently useful section, use emit_application_event to send research.section_ready with a stable section_id, title, and summary. When updating a section, reuse its section_id and send the complete summary. Give the full research conclusions in native chat. Do not send chat deltas, reasoning, or tool progress as business events.",
+  "icon": null,
+  "entry": "index.html",
+  "sdk_version": 1,
+  "permissions": ["tasks:write"],
+  "custom_events": [
+    {
+      "name": "research.section_ready",
+      "description": "Send a complete summary when an independently useful research section is ready. A new event with the same section_id replaces that section's displayed content.",
+      "schema_version": 1,
+      "payload_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["section_id", "title", "summary"],
+        "properties": {
+          "section_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "description": "Stable section identifier within one research turn; preserve it when updating the section."
+          },
+          "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+          "summary": { "type": "string", "minLength": 1, "maxLength": 2000 }
+        }
+      }
+    }
+  ]
+}
+```
+
+Um payload de evento que corresponde a este contrato:
+
+```json title="research.section_ready.payload.json"
+{
+  "section_id": "market-overview",
+  "title": "Market overview",
+  "summary": "This section outlines the main participants, changing demand, and scope of research in the target market."
+}
+```
+
+`section_id` é o identificador de negócio da sua aplicação, não o evento gerado pela plataforma `id`. A tarefa `{ name, payload }` envia pela ferramenta `emit_application_event` do LinkSense. A página recebe por meio de `events.on(...)`; o SDK não tem método `events.emit()` para o iframe publicar eventos de negócios por conta própria.
+
+### Distinguindo quatro tipos de informação de versão [#distinguishing-four-kinds-of-version-information]
+
+| Valor | Quais versões | Quando mudar |
+| --- | --- | --- |
+| Nível superior `schema_version` | Formato manifesto | Atualmente fixo em `1`, de acordo com o formato suportado pela plataforma. |
+| `sdk_version` | Protocolo SDK | Atualmente corrigido em `1`, correspondendo ao script do SDK v1. |
+| `version` | Pacote completo de lançamento de aplicativos | Atualizações podem manter ou aumentar o rótulo; Cada salvamento cria um registro separado. |
+| `custom_events[].schema_version` | Contrato de evento empresarial | Incremente quando sua estrutura ou significado mudar e publique com uma nova versão do pacote. |
+
+### Quando as aplicações publicadas, adotam uma nova versão [#when-published-applications-adopt-a-new-version]
+
+Criadores usam sua instalação atual sob permissões de propriedade em tarefas históricas, incluindo tarefas originalmente iniciadas no Centro de Aplicações. Remover o anúncio não bloqueia a aplicação ativa do criador. Outros usuários mantêm as verificações originais de compartilhamento ou acesso ao centro. Uma listagem de centro removida mostra "Esta solicitação foi removida do Centro de Inscrições." em um aviso centralizado sem antecedentes; O histórico de conversas permanece visível e a execução adicional é bloqueada. Desabilitar ou excluir o próprio aplicativo também bloqueia seu proprietário.
+
+Para serviços online usados por meio de compartilhamento organizacional ou Centro de Aplicações, a versão depende do canal de acesso e do limite de execução:
+
+- O compartilhamento organizacional e o Centro de Aplicações mantêm as versões enviadas. Criadores devem compartilhar ou relistar atualizações, e os destinatários instalam-nas manualmente.
+- Novas tarefas e turnos subsequentes em tarefas existentes usam a versão instalada pelo usuário atual, não atualizações desinstaladas do criador.
+- Salvar ou instalar atualizações é bloqueado enquanto o mesmo usuário tem tarefas regulares rodando ou iniciando para aquele aplicativo. A depuração de desenvolvimento utiliza um ambiente separado.
+- Abrir ou atualizar uma tarefa histórica carrega o pacote registrado atualmente. Isso pode ser o pacote adotado na criação ou um pacote mais novo adotado por uma execução posterior. Restaurar a página não executa nem atualiza automaticamente a tarefa.
+
+Essas regras se aplicam a serviços online publicados. Eles não implicam que rascunhos de aplicações não publicados ou prévias de desenvolvimento sigam versões compartilhadas automaticamente.
+
+Eventos históricos e resultados não são reescritos para o novo contrato; Uma tarefa pode conter eventos com múltiplos valores de `schema_version`. Novos manipuladores de pacotes devem reconhecer versões históricas de eventos em vez de tratar cargas antigas como a nova estrutura. Antes de publicar, teste a criação de uma nova tarefa, reabrindo apenas uma tarefa antiga, executando novamente em uma tarefa antiga e publicando uma atualização enquanto a tarefa está em execução.
+
+## Carregar o SDK [#load-the-sdk]
+
+```html
+<script src="/api/v1/interactive-app-runtime/sdk/v1.js?v=1.1.0"></script>
+<script type="module" src="./app.js"></script>
+```
+
+O SDK é exposto como `window.LinkSense`. Registre os ouvintes de eventos empresariais no início de `app.js` e depois aguarde a prontidão antes de habilitar as interações:
+
+```js
+const sections = new Map()
+const unsubscribe = LinkSense.events.on("research.section_ready", (event) => {
+  const key = `${event.turn_id}:${event.payload.section_id}`
+  sections.set(key, event.payload)
+  renderSections([...sections.values()])
+})
+
+await LinkSense.ready()
+```
+
+Implemente `renderSections` na sua aplicação. Renderize a saída por meio de `textContent` ou interpolação de texto do framework, evitando a atribuição direta da saída da tarefa ao `innerHTML`. Combinar o ID de turno e o ID de seção substitui o resumo anterior de uma seção sem sobrescrever resultados de outros turnos. Ligue para `unsubscribe()` quando o componente for desmontado.
+
+Para ler o contexto ou recursos, adicione a permissão primeiro e chame o método após `ready()`. Por exemplo, após adicionar `knowledge_bases:read`, use `const { items } = await LinkSense.resources.listKnowledgeBases()` para obter opções.
+
+O runtime suporta blocos de `<script>` inline, atributos de gerenciadores de eventos, scripts agrupados e scripts externos. Use a URL da plataforma acima para o SDK e caminhos relativos para scripts de aplicação agrupados. Abrir o HTML fora do LinkSense não fornece aperto de mão do host, então `ready()` não será concluído. Você pode desenvolver a interface pura localmente, mas a integração do SDK precisa de um aplicativo importado.
+
+## Enviar trabalhos [#submit-work]
+
+```js
+const receipt = await LinkSense.tasks.run({
+  prompt: "Complete the competitive analysis and emit research.section_ready for each section.",
+})
+```
+
+| Parâmetro | Significado e limites | Prática recomendada |
+| --- | --- | --- |
+| `prompt` | Obrigatório; 1–200.000 caracteres após aparar; O pedido atual de tarefa. | Construa-o a partir de valores validados do formulário, com um tema claro, restrições e entregáveis. Evite submeter valores sem contexto. |
+| `capability_ids` | Opcional, padrão `[]`; até 50 ID de habilidade ou plugin. | As tarefas da aplicação utilizam as habilidades e plugins configurados. Esse parâmetro não pode sobrescrever recursos da aplicação e normalmente deve ser omitido. |
+| `knowledge_base_ids` | Opcional, padrão `[]`; até 20 UUIDs da base de conhecimento. | As tarefas da aplicação utilizam as bases de conhecimento configuradas. Esse parâmetro não pode sobrescrever recursos da aplicação e normalmente deve ser omitido. |
+| `file_ids` | Opcional, por padrão é `[]`; até 100 UUIDs de arquivo único. | Selecione IDs em etapas retornados por `files.upload()` ou `files.list()`; apenas esses arquivos estão anexados, excluindo rascunhos de chat. |
+| `idempotency_key` | Opcional; 1–120 caracteres após aparar. | Geralmente deixo o anfitrião gerenciar isso. Se fornecido, identifique uma submissão lógica; Não reutilize um valor fixo entre diferentes solicitações. |
+
+Ao enviar, o LinkSense imediatamente abre o painel do chat e mostra a mensagem como enviando. Uma vez aceita, a mensagem pendente é reconciliada com a mensagem persistente. `tasks.run()` devolve o recibo de aceitação do servidor sem esperar por atualizações do histórico de chat ou resultados de pesquisa. Chamadas repetidas para a mesma submissão em voo compartilham um pedido; Os aplicativos ainda devem desativar o botão de geração durante o envio e lidar com falhas.
+
+Mensagens enviadas pelo aplicativo que excedam cinco linhas renderizadas na largura atual do chat são colapsadas por padrão com um fade na parte inferior. Botões de ícone de seta expandem ou dobram todo o conteúdo. O prompt completo ainda é enviado, salvo e copiado. Mensagens digitadas manualmente no chat não são afetadas.
+
+O chat nativo do LinkSense exibe fluxo de mensagens, raciocínio e progresso da ferramenta; Esses não são duplicados no iFrame. A aplicação recebe apenas seus eventos comerciais declarados, com os seguintes campos de retorno:
+
+| Campo de retorno de chamada | Significado e uso |
+| --- | --- |
+| `id` | ID de evento gerado pela plataforma estável para deduplicação; não um documento de registro comercial. |
+| `name` | Nome do evento declarado no Manifesto. |
+| `schema_version` | Versão do esquema a partir da definição daquele evento. |
+| `payload` | Objeto de negócio validado contra o esquema de eventos. |
+| `turn_id` | Identificação da turno de tarefa que produziu o evento; separa os resultados de múltiplas submissões. |
+| `sequence` | Posição no fluxo de eventos da tarefa, usada para ordens; Eventos empresariais não têm necessariamente valores consecutivos. |
+| `created_at` | Carimbo de tempo do evento para exibição. |
+
+O mesmo evento pode acontecer novamente após a reconexão. O SDK se desduplica por `id` de evento, e as atualizações de aplicativos também devem ser idempotentes. O recibo de aceitação significa que o pedido foi aceito, não que o trabalho tenha sido concluído. Para parar de trabalhar, use `await LinkSense.tasks.interrupt(receipt.turn_id)`; Esconder o chat não é uma interrupção.
+
+### Reinserir uma tarefa e restaurar eventos [#re-entering-a-task-and-restoring-events]
+
+Após mudar para outra tarefa, os usuários podem reabrir um aplicativo interativo na barra lateral da tarefa ou nos resultados de busca. O LinkSense carrega o pacote do aplicativo atualmente gravado para essa tarefa, reproduz todos os eventos personalizados persistidos em `sequence` ordem e então continua com eventos ao vivo. Após um serviço publicado adotar um novo pacote em sua próxima execução, reabrir a tarefa usa esse pacote. Apenas abrir a página não altera a versão gravada. Restaurar a página nunca reexecuta a tarefa nem pede que o modelo emita os dados novamente.
+
+O SDK armazena eventos que chegam antes do aplicativo registrar um ouvinte e os deduplica pelo ID de evento estável. Registre os ouvintes de eventos empresariais cedo e mantenha os manipuladores idempotentes para que a interface possa ser reconstruída a partir dos callbacks. Rascunhos de formulário não enviados que nunca foram representados por eventos personalizados não são mantidos automaticamente.
+
+
+### Consultas e assinaturas de estado de tarefa (SDK 1.2.0) [#task-state-queries-and-subscriptions-sdk-120]
+
+`tasks.getState()` lê o estado mais recente da conversa atual sobre a aplicação. `tasks.onStateChange(handler, onError?)` assina as mudanças e retorna uma função de cancelamento de inscrição. Ambos usam a permissão `tasks:write` existente; manter a `sdk_version` do Manifesto e a URL do SDK `/api/v1/interactive-app-runtime/sdk/v1.js` inalteradas. Consultas leem registros existentes de admissão, turno e pedidos pendentes; Eles nunca entregam trabalhos.
+
+| Campo estadual | Significado |
+| --- | --- |
+| `status` | `idle`: nenhuma tarefa; `starting`: aceito, titular; `running`: executar; `waiting_for_input`: responder perguntas ou um plano no chat nativo; `completed`: terminado; `failed`: reprovou; `interrupted`: parado. |
+| `turn_id` | Admissão atual ou última turn ID, ou `null` quando ocioso. A admissão reprovada pode ter um documento de identificação sem um turno nativo. |
+| `file_ids` | IDs de anexo de aplicação associados a esta solicitação/turno. Uma solicitação inicial pode reservar arquivos que ainda estão `staged`. |
+| `can_submit` | Se uma nova submissão pode ser tentada. Trabalho em fila também torna isso `false`. Isso não é um bloqueio: ainda lide com conflitos causados por outras janelas. |
+| `interrupt_requested` | Se o servidor registrou uma solicitação de parada, não confirmação de que a execução foi interrompida. |
+
+Registre os ouvintes de eventos empresariais e estaduais antes de ler o snapshot inicial. Desative a submissão até que essa leitura tenha sucesso, e depois de uma falha na leitura. Um novo ouvinte recebe imediatamente o estado mais recente se o SDK já tiver um; Os estados históricos do ciclo de vida não são reproduzidos. Revisões de instância de página impedem que respostas tardas substituam os push mais recentes; as aplicações não persistem nessas revisões. `onError` recebe falhas de leitura; Leituras bem-sucedidas subsequentes ou empurram a entrega do currículo para `handler`. Foco, reconexão de rede e notificações do ciclo de vida atualizam o snapshot; Tarefas ocupadas também recebem reconciliação periódica. Nenhuma dessas ações tenta a execução novamente.
+
+```js title="task-state.js"
+await LinkSense.ready()
+let current = null
+let submitting = false
+const button = document.querySelector('[type="submit"]')
+button.disabled = true
+function render(state) {
+  current = state
+  button.disabled = submitting || !state.can_submit
+  // Translate state.status using the app's locale and group results by state.turn_id.
+}
+function unavailable() {
+  current = null
+  button.disabled = true
+  // Show a localized status-unavailable message and allow reopening the page.
+}
+const unsubscribe = LinkSense.tasks.onStateChange(render, unavailable)
+await LinkSense.tasks.getState().catch(unavailable)
+window.addEventListener('pagehide', unsubscribe, { once: true })
+// Check current?.can_submit and submitting on submit; only user actions call tasks.run.
+```
+
+Um recibo `tasks.run()` significa aceitação, não conclusão. Após solicitar interrupção, continue exibindo o estado real até que `interrupted` ou outro estado terminal chegue. Eventos empresariais podem ser reproduzidos após a conclusão observada; continue recebendo, deduplique por `id` de evento e agrupe por `turn_id` para que múltiplas submissões permaneçam distintas.
+
+Restaure listas de arquivos com `files.list()` e marque o snapshot `file_ids` como enviado/em andamento. Não reenvie ou remova arquivos em etapas reservados por um início aceito, nem reenvie arquivos vinculados. Rascunhos de formulário não enviados estão fora dessa API. Não há necessidade de armazenar etiquetas derivadas de início/execução em um banco de dados ou localStorage.
+
+Aplicações existentes mantêm seus métodos atuais sem alterações no Manifesto ou reimportação. Para restaurar os próprios controles de uma aplicação, atualize seu código para usar esses métodos, depois publique e instale pelo fluxo normal de atualização. Conversas existentes carregam sua versão gravada do pacote; Atualizar não reescreve pacotes antigos. Verifique a versão realmente adotada pelas tarefas existentes. A plataforma não edita automaticamente o código fonte da aplicação publicada.
+
+## Controles de chat [#chat-controls]
+
+Os usuários podem redimensionar o painel de chat no desktop e mostrá-lo ou escondê-lo a qualquer momento. As aplicações também podem solicitar uma mudança de visibilidade:
+
+```js
+await LinkSense.chat.show()
+await LinkSense.chat.hide()
+await LinkSense.chat.toggle()
+```
+
+Esconder o painel nunca impede a tarefa. Peça ao usuário para reabri-lo quando um formulário, aprovação ou erro do LinkSense precisar de atenção.
+
+## Acesso à rede, downloads e limites de confiança [#network-access-downloads-and-trust-boundaries]
+
+- Aplicações interativas não possuem `sandbox` iframe, e recursos em tempo de execução não enviam CSP, Permissions-Policy ou X-Frame-Options. Aplicativos podem usar `fetch`, `XMLHttpRequest`, `WebSocket` e `EventSource` diretamente, carregar recursos externos, enviar formulários HTML, abrir novas janelas e baixar arquivos sem adicionar permissões de Manifesto.
+- Downloads podem usar links de arquivo comuns, o atributo `download` ou URLs de Blob criadas a partir de arquivos recuperados com `fetch`. Atributos de `download` de origem cruzada, popups e downloads automáticos continuam sujeitos às regras do navegador; Servidores de terceiros podem servir downloads com `Content-Disposition: attachment`.
+- Cors do navegador, regras de conteúdo misto HTTPS e prompts de permissão ainda se aplicam. Permissões - Política de um host externo ou gateway de implantação também pode restringir as capacidades do dispositivo. APIs de terceiros devem permitir a origem da página no LinkSense; Páginas HTTPS devem usar APIs HTTPS e conexões WSS. A conectividade do lado do servidor não estabelece a conectividade a partir do navegador do usuário.
+- Importe apenas pacotes confiáveis e scripts externos. As aplicações compartilham a origem do host e não são mais uma fronteira de isolamento de segurança: podem acessar a página principal, armazenamento da mesma origem e cookies não-HttpOnly, além de solicitar APIs do LinkSense como usuário atual. Cookies HttpOnly permanecem ilegíveis pelo JavaScript. Nunca agrupe tokens duradouros ou segredos de serviços de terceiros em arquivos frontend.
+- Aplicações existentes usam a nova política após implantar tanto a API quanto as atualizações Web e recarregar a página; não são necessárias mudanças de reimportação ou históricos no Manifesto. O CSP declarado pela própria aplicação ou políticas adicionais de um proxy externo ainda se aplicam.
+- Cada chamada de SDK é verificada contra permissões de manifestos e autorizações do lado do servidor.
+- Payloads personalizados de eventos devem corresponder ao seu Manifest JSON Schema.
+- Não use eventos personalizados para conteúdo de chat, raciocínio, logs de ferramentas, credenciais ou arquivos grandes. Entregar arquivos como artefatos do LinkSense.
+
+## Importação e atualização [#import-and-update]
+
+Abra **Central de plugins → Aplicativos → Criar aplicativo → Importar aplicativo interativo**. Após importar, habilite, desative e compartilhe como um aplicativo padrão. Use **Atualizar pacote do aplicativo** para importar uma nova versão.
+
+Construa a primeira versão nesta ordem:
+
+1. Comece com o Manifesto mínimo, um formulário e `tasks.run()` para completar o fluxo da entrada até o resultado do chat.
+2. Defina um evento de negócio útil e implemente seu esquema, regras de emissão e ouvinte de página.
+3. Verifique se sair e reabrir a tarefa restaura os resultados de eventos reproduzidos, então adicione seletores de recursos e visualizações.
+4. Verifique carregamentos, resultados vazios, envio, falhas, permissões negadas e envios duplicados antes do lançamento. O layout deve se adaptar quando o painel de chat for redimensionado.
+5. Atualize o `version` do pacote, contratos de eventos e handlers juntos, verificando tarefas novas e existentes separadamente.
+
+O diretório `examples/interactive-research-brief/` do repositório contém um exemplo estático completo com um Manifesto, formulário, seleção de recursos e exibição de evento que você pode usar como referência de extensão.
+
+## Solução de problemas [#troubleshooting]
+
+| Sintoma | Verifique primeiro | Resolução |
+| --- | --- | --- |
+| Importação reporta um pacote inválido | Raiz do ZIP, campos desconhecidos, tipos de versão, permissões ou eventos duplicados, limites de arquivos e ícones. | Compare com a configuração mínima. Use `1` numérica, não `"1"` de cadeia, e coloque `index.html` e `manifest.json` diretamente na raiz. |
+| Um esquema de eventos impede a importação | `payload_schema.type`, dialeto de esquemas e referências resolvíveis. | Use 2020-12 com uma raiz de objeto e um esquema autônomo; Não confie em baixar `$ref` alvos externos em tempo de execução. |
+| Uma atualização reporta uma versão inferior | Se a versão do pacote está abaixo da versão mais alta existente. | Use a mesma versão ou uma versão x.x.x superior. |
+| O ícone falha na importação | Se `icon` aponta para SVG, GIF ou uma URL externa. | Use um pacote válido de PNG, JPEG ou WebP. O suporte para recursos de página SVG não implica suporte a ícones de aplicação SVG. |
+| Scripts, requisições ou assets falham | Verifique erros do navegador, CORS, conteúdo misto HTTPS, caminhos de ativos e conectividade da rede do usuário. | Conexões diretas e scripts externos são permitidos. Configure o serviço de terceiros para permitir a origem da página, use HTTPS/WSS e corrija caminhos de ativos, e verifique se o CSP foi adicionado pelo aplicativo ou por um proxy. |
+| O SDK relata que não está pronto ou que a permissão é negada | Se `ready()` concluído e com a permissão necessária presente. | Ative os controles após a inicialização. Adicione permissões exigidas pelas chamadas reais, publique um novo pacote e verifique em uma nova tarefa. |
+| O chat tem resultados, mas a aplicação não recebe dados comerciais | Correspondência dos nomes dos eventos em declaração, instruções e ouvinte; uso de ferramentas de emissão; validade da carga útil. | Indique gatilhos precisos, verifique os campos, tipos, comprimentos e campos extras necessários, e registre os ouvintes antecipadamente. |
+| Reabrir gera duplicados ou perde rascunhos | Se cada evento é adicionado como um novo registro, ou rascunhos não enviados são tratados como resultados salvos. | Duplique-se por ID de evento e atualize por ID de negócio. Reconstrua a interface a partir de eventos persistentes em vez de depender da memória da página para restaurar rascunhos. |
+
+
+## Carregar arquivos de referência [#upload-reference-files]
+
+Métodos de arquivo estão disponíveis no SDK `1.1.0`; O protocolo `sdk_version` permanece `1`. Ao atualizar um pacote, use a URL do script `v1.js?v=1.1.0` acima para contornar qualquer SDK previamente armazenado em cache com uma longa vida imutável.
+
+Adicione explicitamente `files:write` às permissões do Manifesto; A submissão de tarefas também precisa `tasks:write`. O aplicativo possui seu seletor de arquivos, área de drop, lista de arquivos e estados de upload. O SDK não cria uma interface. Passe os objetos `File` do navegador para o host; não os codifique como Base64, não ligue diretamente para as APIs da plataforma ou envie por eventos personalizados.
+
+```js
+await LinkSense.ready()
+const file = document.querySelector('input[type="file"]').files[0]
+const uploaded = await LinkSense.files.upload(file)
+const receipt = await LinkSense.tasks.run({
+  prompt: "Analyze this reference and summarize the key findings.",
+  file_ids: [uploaded.id],
+})
+```
+
+| Método | Resultado e comportamento |
+| --- | --- |
+| `files.upload(file)` | Faça upload de um `File` e retorne seus metadados. Ligue separadamente para vários arquivos. Fazer upload não inicia uma tarefa. |
+| `files.list()` | Devolva `{ items }` contendo os arquivos em estágio e vinculados desta tarefa de aplicação, inclusive após reabrir a página. |
+| `files.remove(fileId)` | Remover um anexo de inscrição não enviado; Retorne `{ removed: true }`. Arquivos já enviados ou em processo de admissão não podem ser removidos. |
+
+Metadados de arquivos contêm apenas `id`, `filename`, `mime_type`, `size_bytes`, `status` e `turn_id`. Um arquivo `staged` pode ser selecionado para submissão; Um arquivo `bound` pertence a um turno. Ao reabrir, mostre os arquivos que precisar, mas selecione apenas os arquivos em estágio para a próxima submissão. A plataforma não restaura mapeamentos específicos de aplicativos entre arquivos e campos de formulário.
+
+Os uploads utilizam os limites existentes da plataforma em tamanho de arquivo e contagem por conversa. As aplicações podem restringir ainda mais os tipos com `accept` e sua própria validação. Múltiplos uploads têm sucesso ou falham de forma independente: retêm arquivos bem-sucedidos, permitem que arquivos falhados sejam tentados novamente ou removidos, e permitem o envio apenas quando todos os arquivos selecionados estiverem prontos. Gerencie promessas de SDK rejeitadas com feedback localizado. O host rejeita a submissão de tarefas enquanto os uploads ou remoções estão em andamento. Uma submissão de tarefa falhada mantém arquivos em estágio para uma retentativa iniciada pelo usuário.
+
+Omitir `file_ids` ou passar `[]` não envia nenhum arquivo. Anexos de aplicações e rascunhos nativos de chat são gerenciados separadamente: uma aplicação só pode enviar os anexos de aplicação em etapas da sua tarefa atual, e o chat não os consome automaticamente. Anexos aceitos pertencem ao turno submetido, aparecem no histórico do chat e são passados pelo contexto existente do anexo do corredor. Não envie um arquivo vinculado novamente como um novo anexo. Reutilize o mesmo `idempotency_key` para a mesma submissão lógica; Use uma nova chave ao alterar a seleção de arquivos.
+
+Pacotes existentes continuam enviando texto sem necessidade de reimportação. Para permitir uploads, declare `files:write` em um pacote atualizado e atualize a versão compartilhada ou listada correspondente. Prefiro uma nova tarefa ao verificar os uploads. Uma tarefa compartilhada ou listada existente usa as novas permissões somente após adotar o novo pacote em sua próxima execução. Atualizar sozinho não atualiza as permissões; Os uploads usam o pacote atualmente gravado para essa tarefa.
+
+Veja `examples/interactive-research-brief/` para seleção múltipla, retentativa, remoção, restauração e envio explícito de IDs de arquivo.
+
+Antes de implantar essa capacidade, execute `pnpm db:migrate:deploy` para estender a restrição do banco de dados de origem de anexos, depois implante as versões correspondentes da API e do frontend. A migração mantém todos os valores de origem existentes, anexos e definições de campos. Depois que os anexos de nova origem forem escritos, não volte para uma versão da API que não possa analisar essa origem ou misturar instâncias antigas e novas da API.
+
+Se os uploads de todos os tipos de arquivo retornam `INTERNAL_ERROR` e logs do servidor reportarem uma violação de restrição `conversation_files_source_check`, confirme que a implantação inclui e aplicou `20260918210000_allow_interactive_application_uploads`. Tente o upload novamente após o reparo; Reimportar o aplicativo é desnecessário. `pnpm test:interactive-files:postgres` verifica atualizações históricas e instalações novas em um contêiner PostgreSQL temporário sem se conectar ao banco de dados da aplicação. Essa verificação também roda no CI e requer Docker.

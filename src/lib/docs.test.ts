@@ -38,7 +38,7 @@ test('the sidebar keeps four primary menus with at most two levels', () => {
     url: (slugs, lang) => docsPath(lang ?? 'en', `${slugs.join('/')}/`),
     source: { files },
   })
-  for (const locale of ['zh', 'en']) {
+  for (const locale of docsI18n.languages) {
     const tree = source.getPageTree(locale)
     assert.equal(tree.children.length, 4)
     assert.deepEqual(
@@ -71,7 +71,7 @@ test('the sidebar keeps four primary menus with at most two levels', () => {
 })
 
 test('the documentation home routes by task without duplicating the runbook', () => {
-  for (const locale of ['zh', 'en']) {
+  for (const locale of docsI18n.languages) {
     const source = read(`content/docs/${locale}/index.mdx`)
     assert(source.split('\n').length < 100, `${locale}: docs home is too long`)
     assert.equal((source.match(/<Card\b/g) ?? []).length, 4)
@@ -80,7 +80,7 @@ test('the documentation home routes by task without duplicating the runbook', ()
 })
 
 test('guide menus contain topic pages instead of nested article folders', () => {
-  for (const locale of ['zh', 'en']) {
+  for (const locale of docsI18n.languages) {
     for (const guide of ['user-guide', 'admin-guide']) {
       const directory = `content/docs/${locale}/${guide}`
       const { pages } = JSON.parse(read(`${directory}/meta.json`)) as {
@@ -96,22 +96,88 @@ test('guide menus contain topic pages instead of nested article folders', () => 
   }
 })
 
-test('both languages retain the same sections in every consolidated guide', () => {
-  const sectionIds = (source: string) =>
-    [...source.matchAll(/^## .+ \[#([^\]]+)]$/gm)].map(([, id]) => id)
-
-  for (const [path, source] of documents) {
-    if (!path.startsWith('content/docs/zh/') || !source.includes('[#')) continue
-    const englishPath = path.replace('/zh/', '/en/')
-    const english = documents.get(englishPath)
-    assert(english, `Missing English guide: ${englishPath}`)
-    assert.deepEqual(sectionIds(source), sectionIds(english), path)
-    const anchors = [...source.matchAll(/\[#([^\]]+)]/g)].map(([, id]) => id)
-    assert.equal(
-      new Set(anchors).size,
-      anchors.length,
-      `Duplicate anchor: ${path}`,
+test('every language preserves documentation pages, anchors, links, and code blocks', () => {
+  const english = [...documents].filter(([path]) =>
+    path.startsWith('content/docs/en/'),
+  )
+  const matches = (text: string, pattern: RegExp) =>
+    [...text.matchAll(pattern)].map((match) => match[1]).sort()
+  const codeBlocks = (text: string) =>
+    [...text.matchAll(/(^```([^\n]*)\n[\s\S]*?^```)/gm)]
+      .filter((match) => match[2].trim() !== 'text')
+      .map((match) => match[1])
+      .sort()
+  for (const locale of docsI18n.languages.filter((lang) => lang !== 'en')) {
+    const localized = [...documents.keys()].filter((path) =>
+      path.startsWith(`content/docs/${locale}/`),
     )
+    assert.equal(localized.length, english.length, `${locale}: page count`)
+    for (const [path, source] of english) {
+      const localizedPath = path.replace('/en/', `/${locale}/`)
+      const translated = documents.get(localizedPath)
+      assert(translated, `Missing translated page: ${localizedPath}`)
+      const anchors = matches(translated, /\[#([^\]]+)]/g)
+      assert.equal(new Set(anchors).size, anchors.length, localizedPath)
+      if (locale === 'zh') {
+        assert.deepEqual(
+          matches(translated, /^## .+ \[#([^\]]+)]$/gm),
+          matches(source, /^## .+ \[#([^\]]+)]$/gm),
+          localizedPath,
+        )
+        continue
+      }
+      for (const anchor of matches(source, /\[#([^\]]+)]/g))
+        assert(anchors.includes(anchor), `${localizedPath}: missing ${anchor}`)
+      assert.deepEqual(
+        matches(translated, /\b(v\d+(?:\.\d+)+\+?)/g),
+        matches(source, /\b(v\d+(?:\.\d+)+\+?)/g),
+        `${localizedPath}: version numbers changed`,
+      )
+      const headings =
+        translated
+          .replace(/^```[^\n]*\n[\s\S]*?^```/gm, '')
+          .match(/^#{2,6} .+$/gm) ?? []
+      assert(
+        headings.every((heading) => /\s\[#[-\w.]+]$/.test(heading)),
+        `${localizedPath}: a translated heading has no stable anchor`,
+      )
+      assert.deepEqual(
+        matches(translated, /\]\(([^)\s]+)\)/g),
+        matches(source, /\]\(([^)\s]+)\)/g),
+        localizedPath,
+      )
+      assert.deepEqual(
+        codeBlocks(translated),
+        codeBlocks(source),
+        localizedPath,
+      )
+      for (const token of [
+        'linksense:ready',
+        'postMessage',
+        'external_subject',
+        'external_tenant',
+      ])
+        if (source.includes(token))
+          assert(
+            translated.includes(token),
+            `${localizedPath}: missing ${token}`,
+          )
+    }
+  }
+})
+
+test('translated deployment requirements keep the release and memory together', () => {
+  for (const locale of ['es', 'pt', 'fr', 'ja']) {
+    const overview = read(`content/docs/${locale}/deploy/index.mdx`)
+    const full = overview.match(/^\| Full .*$/m)?.[0] ?? ''
+    assert.match(full, /v0\.3\.13/)
+    assert.match(full, /10\s*(?:GiB|Gio)/)
+
+    const operations = read(`content/docs/${locale}/deploy/operations.mdx`)
+    const prerequisites =
+      operations.split('\n').find((line) => line.includes('v1.45+')) ?? ''
+    assert(prerequisites.includes('v2.24.4+'))
+    assert(prerequisites.includes('`docker version`'))
   }
 })
 

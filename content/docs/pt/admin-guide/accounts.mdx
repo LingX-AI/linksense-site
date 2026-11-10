@@ -1,0 +1,110 @@
+---
+title: "Contas, grupos e permissões"
+description: "Crie e mantenha contas e grupos, e entenda os limites administrativos e de acesso ao conteúdo."
+---
+
+Mantenha as contas dos membros, organize grupos para colaboração e verifique os limites entre funções e acesso ao conteúdo.
+
+## Gerenciamento de usuários [#users]
+
+<Callout type="info" title="Operação administrativa">
+
+Abra **Configurações → Usuários e grupos → Usuários**. Os administradores podem ativar o registro aberto nas configurações do sistema.
+
+</Callout>
+
+### Criar usuários [#users-create-users]
+
+Forneça um nome, e-mail único, função e grupos opcionais. Um novo usuário não tem senha local e o LinkSense não envia automaticamente um convite.
+
+O usuário pode fazer login por meio do SSO ou Teams configurados, ou solicitar um e-mail para definir uma senha local. Administradores não podem definir, visualizar, importar ou redefinir senhas de usuário.
+
+### Importação do Excel [#users-excel-import]
+
+Baixe o modelo, preencha nome, e-mail, vaga e grupos, e então envie. A importação valida os campos obrigatórios, a unicidade global do e-mail, os papéis válidos e os nomes dos grupos existentes. O modelo não possui coluna de senha e reporta linhas inválidas para correção.
+
+### Edit [#users-edit]
+
+Você pode atualizar nome, e-mail, vaga e associação ao grupo. Uma alteração de e-mail revoga imediatamente todas as sessões e links de senha não utilizados, exigindo login com o novo e-mail.
+
+### Cotas de crédito [#users-credit-quotas]
+
+Defina cotas semanais individualmente ou em grande quantidade, em créditos. Valores positivos aceitam até seis casas decimais. Em branco significa ilimitado, e mudanças em massa afetam apenas os usuários selecionados.
+
+Atingir o limite impede novas tarefas enquanto as tarefas em execução terminam. As cotas semanais são resetadas toda segunda-feira à meia-noite no fuso horário do sistema.
+
+Membros criados, importados ou autoregistrados compartilham a cota semanal padrão em [Gestão de cotas](./models-and-usage.mdx#quota-settings). Salvar o padrão não afeta os membros existentes; Use **Aplicar limite a todos** quando for pretendido fazer uma sobrescritura.
+
+### Desativar e restaurar [#users-disable-and-restore]
+
+Desativar rejeita novo login, expira as sessões ativas na próxima solicitação, bloqueia novas atividades e downloads, e cancela solicitações que não começaram. Uma curva em movimento continua até seu estado final nativo. Histórico, bases de conhecimento, releases publicadas e dados de auditoria permanecem.
+
+Restaurar permite o acesso novamente, mas não reinicia os pedidos cancelados em fila.
+
+### Proteção do administrador [#users-administrator-protection]
+
+Um administrador não pode se desabilitar ou rebaixar, e pelo menos um administrador ativo deve permanecer. O servidor verifica isso transacionalmente mesmo durante mudanças simultâneas. Tentativas rejeitadas são auditadas.
+
+## Gerenciamento de grupos de usuários [#groups]
+
+<Callout type="info" title="Operação administrativa">
+
+Abra **Configurações → Usuários & grupos → Grupos**. Um grupo é uma conveniência de autorização, não uma hierarquia organizacional.
+
+</Callout>
+
+### Regras [#groups-rules]
+
+- Grupos são planos e não podem conter grupos filhos.
+- Um usuário pode pertencer a vários grupos.
+- Os nomes são únicos globalmente.
+- A associação nunca altera o papel de usuário ou administrador.
+
+### Criar e editar [#groups-create-and-edit]
+
+Adicione um nome e uma descrição opcional, depois selecione os usuários existentes. Adições e remoções de membros registram o ator e o tempo.
+
+A remoção normal revoga o relacionamento, mantendo o histórico necessário. Um usuário pode manter o acesso à base de conhecimento por meio de outro grupo ou compartilhamento direto.
+
+### Veja as associações [#groups-view-memberships]
+
+A tabela de usuários pode mostrar apenas um subconjunto compacto de nomes. Use os detalhes completos do grupo ou a prévia acessível do overflow antes de tomar decisões.
+
+### Exclua um grupo [#groups-delete-a-group]
+
+A deleção é irreversível. A mesma transação remove associações ativas e revogadas e subsídios de base de conhecimento para evitar disputas de órfãos. A auditoria permanente mantém apenas metadados mínimos de ID de grupo e contagem afetada.
+
+Antes de excluir, identifique o acesso derivado do grupo, crie um substituto quando necessário e leve em conta a semântica de membros atuais nos relatórios de uso.
+
+### Relatórios de uso [#groups-usage-reporting]
+
+O uso de grupos aplica a atividade de cada usuário a todos os grupos aos quais atualmente pertencem. As linhas se sobrepõem e não devem ser somadas para calcular os totais globais.
+
+## Funções e limites de autorização [#roles]
+
+<Callout type="info" title="Operação administrativa">
+
+**Configurações → Funções e permissões** é uma visão geral somente leitura. Funções personalizadas não estão disponíveis.
+
+</Callout>
+
+### Papéis fixos [#roles-fixed-roles]
+
+- **Usuário** gerencia tarefas pessoais, capacidades e bases de conhecimento próprias, utilizando recursos concedidos a eles.
+- **Administrador** também gerencia usuários, grupos, governança de catálogo, governança do conhecimento, modelos, configurações, saúde, auditoria e uso.
+
+Não existe super administrador, administrador de departamento, administrador somente leitura ou pacote de permissões personalizado. O primeiro administrador não tem privilégios ocultos.
+
+### Função não é acesso ao conteúdo [#roles-role-is-not-content-access]
+
+A governança administrativa não expõe automaticamente as tarefas de outro usuário, o conteúdo de capacidades pessoais ou documentos da base de conhecimento. A propriedade e o compartilhamento continuam controlando o acesso ao conteúdo.
+
+### Mudar de papel [#roles-change-a-role]
+
+Troque outra conta do Gerenciamento de Usuários. Antes de rebaixar um administrador, certifique-se de que outro administrador ativo permaneça.
+
+Um administrador não pode se rebaixar ou desativar, nem rebaixar ou desabilitar o administrador ativo final. O servidor aplica isso dentro da transação de atualização.
+
+### Grupos e funções [#roles-groups-and-roles]
+
+Os grupos oferecem associação fixa e subsídios de recursos. Adicionar um usuário a qualquer grupo não pode torná-lo administrador.

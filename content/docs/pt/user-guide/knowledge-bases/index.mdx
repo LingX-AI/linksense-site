@@ -1,0 +1,143 @@
+---
+title: "Conhecimento"
+description: "Crie bibliotecas de conhecimento, processe documentos, compartilhe acesso e use citações de fontes em tarefas."
+---
+
+Siga o fluxo de trabalho de criação, upload, compartilhamento e tarefas, depois verifique as fontes citadas nas respostas.
+
+## Criar e gerenciar bases de conhecimento [#create-and-manage]
+
+Uma base de conhecimento transforma documentos de longa duração em contextos recuperáveis e citados.
+
+### Crie uma base de conhecimento local [#create-and-manage-create-a-local-knowledge-base]
+
+1. Abra **Biblioteca de recursos** na barra lateral e escolha a aba **Bases de conhecimento**.
+2. Escolha **Criar base de conhecimento**.
+3. Insira um nome e uma descrição.
+4. Selecione upload local e salve.
+
+O criador é o único proprietário e pode gerenciar metadados, diretórios, documentos, compartilhamento e ciclo de vida.
+
+### Fonte externa [#create-and-manage-external-source]
+
+Quando um administrador configura o SharePoint, o formulário de criação oferece uma fonte externa. Insira uma URL de pasta SharePoint permitida. O LinkSense verifica o acesso antes de agendar a sincronização.
+
+Apenas administradores criam e gerenciam bases de conhecimento de fontes externas. Outros usuários podem usar um que é compartilhado com eles.
+
+### Editar, arquivar, restaurar e excluir [#create-and-manage-edit-archive-restore-and-delete]
+
+- Edições de metadados não reprocessam documentos.
+- Arquivar torna a base de conhecimento somente leitura.
+- Restaurar reativa o gerenciamento.
+- A exclusão permanente só está disponível após o arquivamento e não pode ser desfeita.
+
+### Desativar e transferir [#create-and-manage-disable-and-transfer]
+
+Um administrador pode desabilitar uma base de conhecimento globalmente ou transferir a propriedade para outro usuário ativo. A governança não concede automaticamente conteúdo de documentos, pré-visualização ou acesso ao download.
+
+### Capacidade [#create-and-manage-capacity]
+
+A página de detalhes mostra o uso da cota. Versões atuais, versões mantidas para citações históricas, originais falhados e limpeza pendente podem consumir capacidade. Um status excluído não garante liberação imediata da capacidade.
+
+## Enviar e gerenciar documentos de base de conhecimento [#documents]
+
+### Enviar arquivos ou pastas [#documents-upload-files-or-folders]
+
+Escolha arquivos ou uma pasta na página de detalhes da base de conhecimento. O upload da pasta preserva caminhos abaixo da raiz selecionada; Diretórios vazios não são armazenados.
+
+O pipeline local aceita imagens PDF, DOCX, XLSX, PPTX, ODT, ODT, ODP, TXT, Markdown, HTML, CSV e PNG, JPEG, TIFF, BMP ou WebP. Arquivos não suportados são pulados com uma explicação.
+
+Os limites padrão de implantação são 200 MiB por arquivo, 100 arquivos por lote e 10 GiB por base de conhecimento. Sempre use os limites atuais retornados pela página.
+
+### Estágios de processamento [#documents-processing-stages]
+
+Os documentos passam por validação, enfileiramento, análise sintática, fragmentação, compreensão opcional de imagens, construção dos pais, incorporação, indexação e ativação. Apenas uma versão **Pronto** pode ser recuperada.
+
+Revise a fase que falhou e tente novamente depois de resolver a causa. O reprocessamento executa todo o pipeline a partir do original armazenado.
+
+### Versões, nomes e diretórios [#documents-versions-names-and-directories]
+
+- Substituir um arquivo cria uma versão e só a ativa após o sucesso.
+- As citações históricas permanecem fixas à versão exata utilizada.
+- Renomear muda os metadados de exibição, não o conteúdo.
+- Diretórios e visualizações planas ou hierárquicas ajudam a organizar as entradas.
+
+### Prévia e download [#documents-preview-and-download]
+
+A página do documento oferece visualizações sintéticas e originais em leitura somente analisada. Originais são obtidos por meio de endpoints autorizados do LinkSense, nunca URLs arbitrárias; Originais HTML são tratados como conteúdo seguro. Download continua sendo uma ação separada.
+
+<Callout type="warn" title="Exclusão">
+
+A exclusão utiliza um processo de limpeza controlado. Após a limpeza permanente, uma citação histórica mantém apenas nomes históricos seguros e resumos de localização; Conteúdo, prévia e download não estão disponíveis.
+
+</Callout>
+
+## Compartilhe e descompartilhe bases de conhecimento [#sharing]
+
+Só o dono consegue compartilhar. Uma concessão permite visualização e recuperação, não gestão de documentos, compartilhamento de alterações ou propriedade.
+
+### Compartilhe [#sharing-share]
+
+1. Abra a base de conhecimento e sua seção de Compartilhamento.
+2. Procure por um usuário ou grupo.
+3. Confirme a concessão de uso.
+
+O acesso pode vir da propriedade, de uma participação direta ou de uma ou mais associações a grupos. A página lista fontes eficazes.
+
+### O que os beneficiários podem fazer [#sharing-what-recipients-can-do]
+
+Os destinatários podem navegar pelo conteúdo permitido, pré-visualizar e baixar documentos acessíveis, e selecionar a base de conhecimento em uma tarefa. Eles não podem enviar, substituir, excluir, editar metadados ou conceder acesso a terceiros.
+
+### Revogar acesso [#sharing-revoke-access]
+
+Remover uma fonte pode não remover todo o acesso. Um usuário que também pertence a um grupo autorizado permanece elegível após a remoção de uma participação direta. O LinkSense identifica as fontes restantes.
+
+Um usuário pode remover sua própria participação direta; se não restar outra fonte, o acesso termina.
+
+### Mudanças estaduais [#sharing-state-changes]
+
+- Usuários com deficiência não podem usar bases de conhecimento.
+- Mudanças na membresia afetam o acesso derivado do grupo.
+- Desabilitação de administrador ou arquivamento sobrepõe compartilhamentos diretos e em grupo.
+- Cada novo turno valida novamente sua seleção fixa de base de conhecimento.
+
+## Use bases de conhecimento e citações [#use-and-citations]
+
+### Selecione uma base de conhecimento [#use-and-citations-select-a-knowledge-base]
+
+Antes de enviar, escolha **Adicionar base de conhecimento** e selecione uma ou mais entradas acessíveis. A seleção é fixa para aquele turno e pode mudar depois.
+
+O pré-voo reporta uma base de conhecimento que está desativada, arquivada, excluída ou não é mais compartilhada. O LinkSense nunca expande a recuperação para todas as bases de conhecimento acessíveis silenciosamente.
+
+### Faça uma pergunta concreta [#use-and-citations-ask-a-grounded-question]
+
+Por exemplo:
+
+> Responda apenas das bases de conhecimento selecionadas para esta vez, cite as evidências e declare claramente quando o material for insuficiente.
+
+### Inspecionar as citações [#use-and-citations-inspect-citations]
+
+Abra uma citação numerada para ver:
+
+- nomes de bases de conhecimento e documentos;
+- a versão exata do documento utilizada;
+- Caminho e conteúdo correspondente;
+- números de página verificados, ou uma referência em nível de documento quando não existe uma página confiável.
+
+Você pode alternar entre conteúdo analisado e o original para a mesma versão, e depois baixar o original separadamente.
+
+### Comportamento histórico [#use-and-citations-historical-behavior]
+
+Substituir um documento não redireciona respostas antigas para conteúdo novo. Após a exclusão permanente da fonte, uma citação mantém um nome histórico e um resumo de localização, mas não pode mostrar ou baixar conteúdo.
+
+### Imagens em conversas [#use-and-citations-images-in-conversations]
+
+Novas imagens legitimamente retornadas a uma tarefa por meio da recuperação de conhecimento são salvas independentemente como anexos de conversa. Turnos posteriores podem exibi-los sem precisar selecionar novamente a base de conhecimento. Reconstruir ou excluir uma base de conhecimento, ou revogar sua permissão de compartilhamento, não remove cópias já salvas em uma conversa. Abrir a citação original ainda requer acesso à fonte.
+
+As imagens permanecem restritas ao acesso autorizado a tarefas e seguem a política de retenção de artefatos de tarefa. Isso se aplica apenas a novas recuperações após o armazenamento de snapshots de imagem ser habilitado; Respostas existentes não são preenchidas e imagens anteriormente quebradas não são reparadas automaticamente.
+
+<Callout type="info" title="Recuperação indisponível">
+
+Você pode continuar usando anexos, plugins e habilidades regulares enquanto a recuperação de conhecimento não estiver disponível. Tente novamente depois ou peça a um administrador para inspecionar a página de saúde.
+
+</Callout>

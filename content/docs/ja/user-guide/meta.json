@@ -1,0 +1,17 @@
+{
+  "title": "ユーザーガイド",
+  "pages": [
+    "overview",
+    "getting-started/index",
+    "tasks/index",
+    "automations/create-and-manage",
+    "message-channels/index",
+    "plugin-center/index",
+    "mcp/connect-and-manage",
+    "knowledge-bases/index",
+    "settings/index",
+    "feedback",
+    "troubleshooting/common-problems"
+  ],
+  "icon": "BookOpen"
+}

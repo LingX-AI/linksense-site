@@ -1,0 +1,36 @@
+---
+title: "インストールFull"
+description: "LinuxまたはmacOSでKnowledge内蔵のLinkSense Fullをインストールしてください。"
+---
+
+Full Coreに組み込みのナレッジ解析、インデックス作成、検索機能を追加しています。
+
+## 前提条件を確認してください [#check-prerequisites]
+
+[Dockerの要件](./operations.mdx#environment-and-network)を確認し、OCRや大きな文書、[サイズ調整の指針](./index.mdx#plan-resources)を使った並行処理のための余裕を残してください。 `x86_64`ホストやVMは、`x86-64-v2`をElasticsearchやDoclingに公開しなければなりません。 このx86要件はネイティブのARM64には適用されません。 診断については[ホスト互換性](./operations.mdx#virtual-machines-and-knowledge)を参照してください。
+
+新しいデプロイメントディレクトリを使いましょう。 既存のCoreやFullインストールを上書きしたり、別のエディションのインストーラーを実行したりしないでください。 ダウンロードが成功した後にのみスクリプトを実行してください。まず点検したいなら、工程を分けて確認してください。
+
+## Linux [#linux]
+
+```bash
+curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
+  -o install-full.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-full.sh &&
+sudo --preserve-env=http_proxy,https_proxy,HTTP_PROXY,HTTPS_PROXY,ALL_PROXY,all_proxy,NO_PROXY,no_proxy sh install-full.sh
+```
+
+## macOS [#macos]
+
+Docker Desktopを起動し、`sudo`せずに現在のユーザーとして実行してください。
+
+もしDockerを使ったことがなければ、まずは[Dockerとネットワークの準備をする](./prepare.mdx#configure-docker-desktop)を参考にしてください。
+
+```bash
+curl --http1.1 --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 300 -fsSL \
+  -o install-full.sh https://raw.githubusercontent.com/LingX-AI/linksense/main/install-full.sh &&
+sh install-full.sh
+```
+
+## 初期化 [#initialize]
+
+基本的な作業を確認するために[初のセットアップ](./first-setup.mdx)をフォローしてください。 必要なナレッジモデルを設定し、代表的な文書を使って解析、検索、引用を検証します。

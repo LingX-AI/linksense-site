@@ -1,0 +1,143 @@
+---
+title: "Conocimiento"
+description: "Crear bibliotecas de conocimiento, procesar documentos, compartir acceso y utilizar citas de fuentes en tareas."
+---
+
+Sigue el flujo de trabajo de creación, subida, compartir y tareas, y luego verifica las fuentes citadas en las respuestas.
+
+## Crear y gestionar bases de conocimiento [#create-and-manage]
+
+Una base de conocimiento convierte documentos de larga duración en contexto consultable y citado.
+
+### Crear una base de conocimiento local [#create-and-manage-create-a-local-knowledge-base]
+
+1. Abre **Biblioteca de recursos** desde la barra lateral y luego elige la pestaña **Bases de conocimiento**.
+2. Elige **Crear base de conocimiento**.
+3. Introduce un nombre y una descripción.
+4. Selecciona subida local y guarda.
+
+El creador es el único propietario y puede gestionar metadatos, directorios, documentos, compartir y ciclo de vida.
+
+### Fuente externa [#create-and-manage-external-source]
+
+Cuando un administrador ha configurado SharePoint, el formulario de creación ofrece una fuente externa. Introduce una URL de carpeta de SharePoint permitida. LinkSense verifica el acceso antes de programar la sincronización.
+
+Solo los administradores crean y gestionan bases de conocimiento de fuentes externas. Otros usuarios pueden usar uno que se comparte con ellos.
+
+### Editar, archivar, restaurar y eliminar [#create-and-manage-edit-archive-restore-and-delete]
+
+- Las ediciones de metadatos no reprocesan documentos.
+- El archivo hace que la base de conocimiento sea de solo lectura.
+- Restaurar vuelve a activar la gestión.
+- La eliminación permanente solo está disponible tras el archivo y no puede deshacerse.
+
+### Desactivar y transferir [#create-and-manage-disable-and-transfer]
+
+Un administrador puede desactivar una base de conocimiento globalmente o transferir la propiedad a otro usuario activo. La gobernanza no concede automáticamente el acceso al contenido de los documentos, a la vista previa o a la descarga.
+
+### Capacidad [#create-and-manage-capacity]
+
+La página de detalles muestra el uso de cuotas. Las versiones actuales, las que se conservan por citas históricas, los originales fallidos y la limpieza pendiente pueden consumir capacidad. Un estado eliminado no garantiza la liberación inmediata de capacidad.
+
+## Subir y gestionar documentos de la base de conocimiento [#documents]
+
+### Subir archivos o carpetas [#documents-upload-files-or-folders]
+
+Elige archivos o una carpeta desde la página de detalles de la base de conocimiento. La subida de carpetas conserva las rutas por debajo de la raíz seleccionada; No se almacenan directorios vacíos.
+
+La tubería local acepta imágenes PDF, DOCX, XLSX, PPTX, ODT, ODT, ODP, TXT, Markdown, HTML, CSV y PNG, JPEG, TIFF, BMP o WebP. Los archivos no compatibles se saltan con una explicación.
+
+Los límites de despliegue por defecto son 200 MiB por archivo, 100 archivos por lote y 10 GiB por base de conocimiento. Utiliza siempre los límites actuales que devuelve la página.
+
+### Etapas de procesamiento [#documents-processing-stages]
+
+Los documentos pasan por validación, cola, análisis sintáctico, fragmentación, comprensión opcional de imágenes, construcción de padres, incrustación, indexación y activación. Solo se puede recuperar una versión **Lista**.
+
+Revisa la fase fallida y vuelve a intentarlo tras resolver la causa. El reprocesamiento ejecuta toda la tubería desde el original almacenado.
+
+### Versiones, nombres y directorios [#documents-versions-names-and-directories]
+
+- Reemplazar un archivo crea una versión y solo la activa tras el éxito.
+- Las citas históricas permanecen fijas a la versión exacta utilizada.
+- El cambio de nombre cambia los metadatos de la pantalla, no el contenido.
+- Los directorios y las vistas planas o jerárquicas ayudan a organizar las entradas.
+
+### Vista previa y descarga [#documents-preview-and-download]
+
+La página del documento ofrece vistas analizadas y originales de solo lectura. Los originales se obtienen a través de endpoints autorizados de LinkSense, nunca a URLs arbitrarias; Los originales HTML se gestionan como contenido seguro. Descargar sigue siendo una acción separada.
+
+<Callout type="warn" title="Eliminación">
+
+La eliminación utiliza un proceso de limpieza controlado. Tras la limpieza permanente, una citación histórica solo conserva nombres históricos seguros y resúmenes de ubicaciones; El contenido, la vista previa ni la descarga no están disponibles.
+
+</Callout>
+
+## Compartir y descompartir bases de conocimiento [#sharing]
+
+Solo el propietario gestiona el compartir. Una subvención permite la visualización y recuperación, no la gestión de documentos, la compartición de cambios o la propiedad.
+
+### Compartir [#sharing-share]
+
+1. Abre la base de conocimiento y su sección de Compartir.
+2. Busca un usuario o grupo.
+3. Confirma la concesión de uso.
+
+El acceso puede venir de la propiedad, una participación directa o una o más membresías de grupo. La página enumera fuentes efectivas.
+
+### Lo que pueden hacer los beneficiarios [#sharing-what-recipients-can-do]
+
+Los destinatarios pueden navegar por el contenido permitido, previsualizar y descargar documentos accesibles, y seleccionar la base de conocimientos de una tarea. No pueden subir, reemplazar, eliminar, editar metadatos ni conceder acceso a otros.
+
+### Revocar acceso [#sharing-revoke-access]
+
+Eliminar una fuente puede no eliminar todo el acceso. Un usuario que también pertenezca a un grupo autorizado sigue siendo elegible tras la eliminación de una acción directa. LinkSense identifica las fuentes restantes.
+
+Un usuario puede eliminar su propia parte directa; si no queda otra fuente, el acceso termina.
+
+### Cambios en el estado [#sharing-state-changes]
+
+- Los usuarios con discapacidad no pueden usar bases de conocimiento.
+- Los cambios en la membresía afectan al acceso derivado de grupos.
+- La deshabilitación del administrador o el archivo anulan los recursos compartidos directos y de grupo.
+- Cada nuevo turno valida de nuevo su selección fija de base de conocimiento.
+
+## Utiliza bases de conocimiento y citas [#use-and-citations]
+
+### Seleccionar una base de conocimiento [#use-and-citations-select-a-knowledge-base]
+
+Antes de enviar, elige **Añadir base de conocimiento** y selecciona una o más entradas accesibles. La selección está fija para ese turno y puede cambiar más adelante.
+
+Preflight informa de una base de conocimiento que está desactivada, archivada, eliminada o ya no compartida. LinkSense nunca amplía la recuperación a todas las bases de conocimiento accesibles de forma silenciosa.
+
+### Haz una pregunta con base en la tierra [#use-and-citations-ask-a-grounded-question]
+
+Por ejemplo:
+
+> Responde solo de las bases de conocimiento seleccionadas para este turno, cita la evidencia y indica claramente cuándo el material es insuficiente.
+
+### Inspeccionar las citas [#use-and-citations-inspect-citations]
+
+Abre una cita numerada para ver:
+
+- nombres de bases de conocimiento y documentos;
+- la versión exacta del documento utilizada;
+- encabezando el camino y el contenido correspondiente;
+- números de página verificados, o una referencia a nivel de documento cuando no existe una página fiable.
+
+Puedes cambiar entre contenido analizado y el original para la misma versión, y luego descargar el original por separado.
+
+### Comportamiento histórico [#use-and-citations-historical-behavior]
+
+Reemplazar un documento no redirige respuestas antiguas a contenido nuevo. Tras la eliminación permanente de la fuente, una cita conserva un nombre histórico y un resumen de ubicación, pero no puede mostrar ni descargar contenido.
+
+### Imágenes en conversaciones [#use-and-citations-images-in-conversations]
+
+Las nuevas imágenes que se devuelven legítimamente a una tarea mediante recuperación de conocimiento se guardan de forma independiente como archivos adjuntos de conversación. En turnos posteriores pueden mostrarlos sin seleccionar de nuevo la base de conocimiento. Reconstruir o eliminar una base de conocimiento, o revocar su permiso de compartir, no elimina copias ya guardadas en una conversación. Abrir la cita original aún requiere acceso a la fuente.
+
+Las imágenes permanecen restringidas al acceso autorizado a tareas y siguen la política de retención de artefactos de tareas. Esto solo se aplica a nuevas recuperaciones después de habilitar el almacenamiento de instantáneas de imagen; Las respuestas existentes no se rellenan y las imágenes previamente rotas no se reparan automáticamente.
+
+<Callout type="info" title="Recuperación no disponible">
+
+Puedes seguir usando archivos adjuntos, plugins y habilidades habituales mientras no se pueda recuperar conocimiento. Vuelve a intentarlo más tarde o pide a un administrador que inspeccione la página de salud.
+
+</Callout>

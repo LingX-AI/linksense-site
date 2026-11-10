@@ -1,0 +1,110 @@
+---
+title: "Cuentas, grupos y permisos"
+description: "Crea y mantén cuentas y grupos, y entiende los límites administrativos y de acceso al contenido."
+---
+
+Mantener las cuentas de los miembros, organizar grupos para la colaboración y verificar los límites entre roles y acceso al contenido.
+
+## Gestión de usuarios [#users]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+Abre **Configuración → Usuarios y grupos → Usuarios**. Los administradores pueden habilitar el registro abierto en la configuración del sistema.
+
+</Callout>
+
+### Crear usuarios [#users-create-users]
+
+Proporciona un nombre, correo electrónico único, rol y grupos opcionales. Un usuario nuevo no tiene contraseña local y LinkSense no envía automáticamente una invitación.
+
+El usuario puede iniciar sesión a través de SSO o Teams configurados, o solicitar un correo electrónico para establecer una contraseña local. Los administradores no pueden configurar, ver, importar ni restablecer contraseñas de usuario.
+
+### Importación de Excel [#users-excel-import]
+
+Descarga la plantilla, rellena nombre, correo electrónico, rol y grupos, y luego súbela. La importación valida los campos requeridos, la unicidad global del correo electrónico, los roles válidos y los nombres de los grupos existentes. La plantilla no tiene columna de contraseñas y reporta las filas inválidas para corrección.
+
+### Edición [#users-edit]
+
+Puedes actualizar el nombre, correo electrónico, rol y membresía del grupo. Un cambio de correo electrónico revoca inmediatamente todas las sesiones y enlaces de contraseña no utilizados, requiriendo iniciar sesión con el nuevo correo.
+
+### Cuotas de crédito [#users-credit-quotas]
+
+Establece cuotas semanales individualmente o en bloque, en créditos. Las cantidades positivas aceptan hasta seis decimales. En blanco significa ilimitado, y los cambios masivos afectan solo a los usuarios seleccionados.
+
+Alcanzar el límite impide nuevas tareas mientras las tareas en ejecución terminan. Las cuotas semanales se reinician todos los lunes a medianoche en la zona horaria del sistema.
+
+Los miembros creados, importados o autoregistrados comparten la cuota semanal predeterminada en [Gestión de cuotas](./models-and-usage.mdx#quota-settings). Guardar el valor predeterminado no afecta a los miembros existentes; Úsalo **Aplicar el límite a todos** cuando se pretende sobrescribir.
+
+### Desactivar y restaurar [#users-disable-and-restore]
+
+Desactivar rechaza el nuevo inicio de sesión, expira las sesiones activas en la siguiente solicitud, bloquea nueva actividad y descargas, y cancela solicitudes que no han comenzado. Un giro en movimiento continúa hasta su estado final nativo. Se mantienen historias, bases de conocimiento, publicaciones publicadas y datos de auditoría.
+
+Restaurar permite el acceso de nuevo pero no reinicia las solicitudes canceladas en cola.
+
+### Protección de administradores [#users-administrator-protection]
+
+Un administrador no puede desactivar ni degradarse a sí mismo, y al menos un administrador activo debe permanecer. El servidor comprueba esto de forma transaccional incluso durante cambios simultáneos. Los intentos rechazados son auditados.
+
+## Gestión de grupos de usuarios [#groups]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+Abre **Configuración → Usuarios y grupos → Grupos**. Un grupo es una conveniencia de autorización, no una jerarquía organizativa.
+
+</Callout>
+
+### Reglas [#groups-rules]
+
+- Los grupos son planos y no pueden contener grupos hijos.
+- Un usuario puede pertenecer a varios grupos.
+- Los nombres son únicos a nivel mundial.
+- La membresía nunca cambia el rol de usuario o administrador.
+
+### Crear y editar [#groups-create-and-edit]
+
+Añade un nombre y una descripción opcional, luego selecciona usuarios existentes. Las incorporaciones y eliminaciones de membresía registran el actor y el tiempo.
+
+La eliminación normal revoca la relación aunque se conserva la historia necesaria. Un usuario puede conservar el acceso a la base de conocimiento a través de otro grupo o de un recurso compartido directo.
+
+### Ver membresías [#groups-view-memberships]
+
+La tabla de usuario puede mostrar solo un subconjunto compacto de nombres. Utiliza los detalles completos del grupo o la vista previa de desbordamiento accesible antes de tomar decisiones.
+
+### Eliminar un grupo [#groups-delete-a-group]
+
+La deleción es irreversible. La misma transacción elimina membresías activas y revocadas y subvenciones a la base de conocimiento para evitar disputas huérfanas. La auditoría permanente mantiene solo los metadatos mínimos de ID de grupo y de conteo afectado.
+
+Antes de eliminarlo, identifica el acceso derivado del grupo, crea un reemplazo cuando sea necesario y ten en cuenta la semántica de la membresía actual en los informes de uso.
+
+### Informes de uso [#groups-usage-reporting]
+
+El uso por grupo aplica la actividad de cada usuario a todos los grupos al que pertenecen actualmente. Las filas se solapan y no deben sumarse para calcular los totales globales.
+
+## Roles y límites de autorización [#roles]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+**Configuración → Roles y permisos** es una visión general de solo lectura. No hay roles personalizados disponibles.
+
+</Callout>
+
+### Roles fijos [#roles-fixed-roles]
+
+- **Usuario** gestiona tareas personales, capacidades y bases de conocimiento propias, y utiliza los recursos que se les conceden.
+- **Administrador** también gestiona usuarios, grupos, gobernanza de catálogos, gobernanza del conocimiento, modelos, configuraciones, salud, auditoría y uso.
+
+No existe superadministrador, administrador de departamento, administrador de solo lectura ni paquete de permisos personalizado. El primer administrador no tiene privilegios ocultos.
+
+### El puesto no es acceso al contenido [#roles-role-is-not-content-access]
+
+La gobernanza administrativa no expone automáticamente las tareas de otro usuario, el contenido de capacidades personales ni los documentos de la base de conocimiento. La propiedad y el compartir siguen controlando el acceso al contenido.
+
+### Cambiar de rol [#roles-change-a-role]
+
+Cambia otra cuenta desde Gestión de Usuarios. Antes de degradar a un administrador, asegúrate de que quede otro administrador activo.
+
+Un administrador no puede degradarse ni deshabilitar a sí mismo, ni degradar o deshabilitar al último administrador activo. El servidor hace cumplir esto dentro de la transacción de actualización.
+
+### Grupos y roles [#roles-groups-and-roles]
+
+Los grupos ofrecen subvenciones de membresía y recursos fijos. Añadir a un usuario a ningún grupo no puede convertirlo en administrador.

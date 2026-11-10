@@ -1,0 +1,116 @@
+---
+title: "Gobernanza de plugins y conocimiento"
+description: "Revisa Plugins y Aplicaciones, gobierna las bibliotecas de Conocimiento y configura fuentes de datos externas."
+---
+
+Revisa las capacidades compartidas, regula el estado del Conocimiento y mantén las conexiones con la fuente de datos. Los privilegios administrativos no conceden automáticamente acceso al contenido del usuario.
+
+## Revisión del Centro de Plugins y del Centro de Aplicaciones [#plugin-governance]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+Abre **Configuración → Centro de plugins**. La revisión se aplica a una instantánea inmutable enviada, no a un directorio personal de fuentes mutables.
+
+</Callout>
+
+### Revisa una edición [#plugin-governance-review-a-release]
+
+Inspecciona el editor, tipo, número de versión, notas de versión, archivos, bits ejecutables, contenido SHA-256, manifiesto, contenido de Skills, logotipo y declaraciones para MCP, scripts, conexiones externas, variables de entorno, credenciales o descargas de dependencias.
+
+Cada versión requiere una revisión separada y LinkSense verifica la integridad de las instantáneas antes de la aprobación.
+
+### Revisar las publicaciones del Centro de Solicitudes [#plugin-governance-review-application-center-releases]
+
+Una revisión de la aplicación muestra su creador, tipo estándar o interactivo, versión, notas de lanzamiento y opciones de uso ofrecidas. Abre el detalle para inspeccionar sus instrucciones, nombres de plugins y habilidades, conteos de base de conocimiento y MCP y—para una aplicación interactiva—rutas de archivos de empaques.
+
+Un **Paquete de aplicación** se convierte en una copia de usuario mantenida de forma independiente cuyo código fuente los usuarios pueden consultar y cuyas credenciales requeridas configuran. Un **Servicio de aplicación en línea** funciona en línea con recursos gestionados por el creador y credenciales configuradas, sin que los usuarios tengan que instalar su propia copia local. Las aplicaciones interactivas no pueden distribuirse como paquetes copiados e instalables y solo soportan la opción de servicio. Antes de aprobarla, confirma que las notas de lanzamiento coinciden con el comportamiento enviado y evalúa las instrucciones, conexiones externas, alcance de datos y opciones de uso. El rechazo requiere una razón.
+
+### Aprobar o rechazar [#plugin-governance-approve-or-reject]
+
+- La aprobación actualiza esa instantánea y publica un borrador de la lista por primera vez.
+- El rechazo requiere una razón clara y no afecta a una versión anterior aprobada ni a copias instaladas.
+
+Un administrador que también sea el editor puede revisar su propio comunicado, sujeto a cualquier política de organización más estricta.
+
+### Suspender y restaurar [#plugin-governance-suspend-and-restore]
+
+La suspensión oculta el anuncio y bloquea la instalación, las actualizaciones y todas las copias instaladas para que no inicien nuevas tareas. Los turnos en marcha conservan su instantánea de arranque y no se les asigna un estado final fabricado.
+
+La restauración hace que las copias de la lista y las instalaciones sean elegibles para trabajos posteriores.
+
+El Centro de Solicitudes tiene un estado de anuncio separado. La suspensión del administrador requiere una razón y bloquea el inicio de nuevas instalaciones y servicios mientras se conserva el historial de tareas. No elimina remotamente paquetes de aplicaciones independientes que los usuarios ya hayan instalado; Esos siguen sujetos a la gobernanza de su estado de recursos personales y de la capacidad de la plataforma. Restaurar la lista permite a los usuarios elegibles volver a instalar o usar el servicio.
+
+### No listados frente a suspendidos [#plugin-governance-unlisted-versus-suspended]
+
+Una entrada no listada por la editorial no acepta nuevas instalaciones, mientras que las copias existentes pueden ejecutarse y actualizarse. La suspensión de administradores es la aplicación del riesgo y bloquea nuevas ejecuciones desde copias existentes.
+
+### Auditoría y privacidad [#plugin-governance-audit-and-privacy]
+
+Las acciones de revisión y gobernanza son auditadas. La revisión de la solicitud solo expone las instrucciones requeridas de la versión enviada y el resumen de los recursos. El puesto no concede acceso a contenido personal no enviado, Skill o borrador de la solicitud.
+
+## Gobernanza basada en la base de conocimiento [#knowledge-governance]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+Abre **Configuración → Bases de conocimiento**. La página expone metadatos de gobernanza sin conceder automáticamente el contenido del documento, la vista previa o el acceso a descarga.
+
+</Callout>
+
+### Encontrar entradas [#knowledge-governance-find-entries]
+
+Busca por nombre o propietario y revisa el ciclo de vida, disponibilidad, fuente, recuento de documentos y resúmenes de capacidad.
+
+### Acciones de gobernanza [#knowledge-governance-governance-actions]
+
+- Desactiva o habilita el uso en tareas futuras.
+- Archivar en estado de solo lectura.
+- Elimina permanentemente una base de conocimiento ya archivada.
+- Intenta de nuevo la limpieza fallida de recursos.
+- Revoca una fuente de acceso seleccionada.
+- Transfiere la propiedad a otro usuario activo.
+
+Las acciones que requieren una razón la almacenan en metadatos seguros de auditoría. La eliminación permanente sigue siendo una confirmación separada tras el archivo.
+
+### Propietario discapacitado [#knowledge-governance-disabled-owner]
+
+Permanece una base de conocimiento propia y los receptores mantienen el acceso existente. El propietario discapacitado no puede mantenerlo. Transfiere la propiedad o desactiva la base de conocimientos cuando sea necesario.
+
+### Recuperación e indexación [#knowledge-governance-retrieval-and-indexing]
+
+Los propietarios vuelven a intentar fallos individuales de documentos. Una incrustación o desajuste de índice a nivel de despliegue requiere una reconstrucción completa desde la Salud del Sistema, no cambios ad hoc en la base de conocimiento de cada usuario.
+
+### Límite de autorización [#knowledge-governance-authorization-boundary]
+
+Si un administrador debe leer un documento, el propietario debe conceder el acceso a través de la ruta normal de compartida. Las APIs de gobernanza no deben eludir la autorización de contenido.
+
+## Fuentes de base de conocimiento [#knowledge-sources]
+
+<Callout type="info" title="Funcionamiento administrativo">
+
+Abierto **Configuración → Bases de conocimiento → Fuentes de conocimiento** para configuración de código fuente externo.
+
+</Callout>
+
+### Configurar SharePoint [#knowledge-sources-configure-sharepoint]
+
+Introduce la información de los tenantes y aplicaciones de Microsoft Entra solicitada por la página. LinkSense verifica la identidad de la aplicación en la partida guardada y nunca devuelve el secreto almacenado.
+
+Utiliza `Sites.Selected` siempre que sea posible, con los administradores de Microsoft 365 otorgando acceso solo de lectura a los sitios aprobados.
+
+### Crea una base de conocimiento externa [#knowledge-sources-create-an-external-knowledge-base]
+
+Tras habilitar el código fuente, un administrador puede introducir una URL de carpeta de SharePoint al crear una base de conocimiento. LinkSense verifica el acceso a esa carpeta antes de programar la sincronización.
+
+### Sincronización [#knowledge-sources-synchronization]
+
+- Los archivos nuevos utilizan la misma cadena de procesamiento seguro que las subidas locales.
+- El contenido modificado crea una versión de reemplazo.
+- Un cambio solo de nombre realiza un cambio de nombre.
+- La eliminación remota introduce la limpieza controlada de citas, índice, objetos y cuotas.
+- Los formatos no compatibles se marcan como saltados sin bloquear otros archivos.
+
+### Solución de problemas [#knowledge-sources-troubleshoot]
+
+En caso de fallo de autenticación, comprueba el inquilino, el ID de la aplicación, la validez secreta y la autorización del sitio destino en Microsoft 365. Nunca pegues un secreto de cliente en notas de auditoría, tickets o chats.
+
+LinkSense no inicia ni reconfigura automáticamente un servicio externo inalcanzable. Restaura la conectividad y vuelve a intentarlo desde la interfaz soportada.

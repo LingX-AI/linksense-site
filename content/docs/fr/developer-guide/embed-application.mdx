@@ -1,0 +1,460 @@
+---
+title: "Intégrer une application LinkSense"
+description: "Intégrez de manière sécurisée une application LinkSense dans un système métier externe et fournissez des identifiants de session HTTP MCP."
+---
+
+
+Une application LinkSense intégrée n’affiche que l’interface de chat de cette application. Les utilisateurs ne voient pas la navigation principale LinkSense, le Centre de plugins ou les pages d’administration.
+
+## Maintenance du système [#system-maintenance]
+
+Lors d’une fenêtre de maintenance programmée, les deux modes d’accès affichent la raison de la maintenance et la fenêtre temporelle attendue, le chat et les autres opérations métier étant indisponibles. Les images ouvertes vérifient l’état du système toutes les 30 secondes et se récupèrent automatiquement lorsque la fenêtre se termine ou qu’un administrateur désactive la maintenance. Les utilisateurs n’ont pas besoin de rafraîchir l’application hôte.
+
+Les terminaux métier intégrés renvoient `503` HTTP avec un code d’erreur `SYSTEM_MAINTENANCE_ACTIVE` pendant la maintenance. Le chargement des trames, les vérifications de statut système et le renouvellement des sessions existantes restent disponibles. Les sessions non expirées sont conservées afin que les utilisateurs puissent poursuivre la conversation en cours. Si une réauthentification est nécessaire, la trame utilise le flux `linksense:ready` ci-dessous. L’affichage de la maintenance ne force pas les tâches déjà en cours.
+
+## Choisissez un mode d’accès [#choose-an-access-mode]
+
+| Mode | Cas d’utilisation | Billet | Historique utilisateur |
+| --- | --- | --- | --- |
+| Pas d’authentification | Sites publics et questions ouvertes | Pas obligatoire | Non restauré par utilisateur professionnel |
+| Nécessite une authentification | Systèmes internes et portails partenaires | Demandé par votre backend | Restauré grâce à un `external_subject` stable |
+
+Avant d’intégrer, demandez à l’administrateur LinkSense de :
+
+- Activez l’accès externe à l’application.
+- Sélectionnez le bon mode d’accès.
+- Ajoutez l’origine exacte de votre page d’entreprise à Origines d’intégration autorisées.
+- Configurez optionnellement jusqu’à quatre questions intégrées pour chaque origine autorisée. LinkSense affiche le texte exactement tel qu’il est entré et ne le traduit pas.
+- Fournissez l’identifiant de l’application et, pour un accès authentifié, le secret complet de l’application.
+
+Exemples d’origines autorisées :
+
+```text
+https://portal.example.com
+https://ops.example.com
+http://127.0.0.1:5055
+```
+
+Utilisez HTTPS en production. HTTP sur `localhost` ou `127.0.0.1` est acceptable pour le développement local.
+
+## Intégration minimale : pas d’authentification [#minimal-integration-no-authentication]
+
+Une page publique n’a pas besoin de ticket. Définissez le langage initial avec le paramètre `locale` de l’URL iframe :
+
+```html
+<iframe
+  id="linksense-app"
+  src="https://linksense.example.com/api/v1/embed/frame/lsa_xxx?parent_origin=https%3A%2F%2Fportal.example.com&amp;locale=en-US"
+  title="LinkSense application"
+  sandbox="allow-scripts allow-same-origin allow-forms allow-downloads"
+  allow="clipboard-write"
+  style="width: 100%; height: 720px; border: 0"
+></iframe>
+```
+
+Où :
+
+- `lsa_xxx`’est l’identifiant de l’application.
+- `parent_origin` est l’origine de la page d’entreprise encodée par URL.
+- `locale` est le langage d’interface initial optionnel. Il n’accepte que `zh-CN` ou `en-US`.
+- L’iframe crée sa propre session publique. Le parent ne demande pas de ticket ni ne gère les jetons.
+
+## Intégration minimale : nécessite une authentification [#minimal-integration-requires-authentication]
+
+Le flux d’authentification comporte quatre étapes :
+
+```text
+L’iframe envoie linksense:ready
+  -> le frontend de l’application appelle son propre backend
+  -> le backend demande un ticket à usage unique avec App ID + App Secret
+  -> le frontend envoie le ticket à l’iframe avec postMessage
+```
+
+L’authentification initiale puis la réauthentification utilisent le même événement `linksense:ready`.
+
+### 1. Demandez un ticket depuis l’équipe professionnelle [#1-request-a-ticket-from-the-business-backend]
+
+App Secret doit exister uniquement sur le backend professionnel. Annonce :
+
+```http
+POST https://linksense.example.com/api/v1/embed/tickets
+Content-Type: application/json
+```
+
+Corps de la demande :
+
+```json
+{
+  "app_id": "lsa_xxx",
+  "app_secret": "lss_xxx",
+  "origin": "https://portal.example.com",
+  "external_subject": "user-123",
+  "external_tenant": "tenant-a",
+  "display_name": "Jane Doe"
+}
+```
+
+| Terrain | Obligatoire | Description |
+| --- | --- | --- |
+| `app_id` | Oui | ID d’application LinkSense |
+| `app_secret` | Oui | LinkSense App Secret ; Uniquement en backend |
+| `origin` | Oui | Origine actuelle de la page d’entreprise ; Il faut le permettre |
+| `external_subject` | Non | ID utilisateur professionnel stable ; le fournir pour restaurer son contexte personnel |
+| `external_tenant` | Non | ID locataire ou organisation ; recommandé pour les systèmes multi-locataires |
+| `display_name` | Non | Nom d’affichage ; Jamais utilisé comme identité |
+
+Le ticket de réponse est à usage unique et expire après 60 secondes :
+
+```json
+{
+  "success": true,
+  "data": {
+    "ticket": "lst_xxx",
+    "iframe_url": "https://linksense.example.com/api/v1/embed/frame/lsa_xxx?parent_origin=https%3A%2F%2Fportal.example.com",
+    "expires_at": "2026-08-25T08:00:00.000Z"
+  }
+}
+```
+
+Node.js / Exemple express :
+
+```js
+app.post("/api/linksense-ticket", async (req, res) => {
+  const response = await fetch(
+    "https://linksense.example.com/api/v1/embed/tickets",
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify({
+        app_id: process.env.LINKSENSE_APP_ID,
+        app_secret: process.env.LINKSENSE_APP_SECRET,
+        origin: "https://portal.example.com",
+        external_subject: req.user.id,
+        external_tenant: req.user.tenantId,
+        display_name: req.user.name,
+      }),
+    },
+  )
+
+  const payload = await response.json()
+  if (!response.ok || payload.success !== true) {
+    res.status(response.status).json({
+      error: "linksense_ticket_failed",
+      message: payload.error?.message ?? "Unable to get LinkSense access",
+    })
+    return
+  }
+
+  res.json({
+    ticket: payload.data.ticket,
+
+    // Optional: for the application's HTTP MCP. This is not a LinkSense session ID.
+    sessionId: req.businessMcpSessionId ?? null,
+  })
+})
+```
+
+<Callout type="warn" title="Note">
+
+Retournez uniquement une certification de session que votre système métier autorise explicitement aux services MCP en aval à utiliser. N’exposez pas un identifiant de session qui devait rester dans un cookie HttpOnly.
+
+</Callout>
+
+### 2. Envoyez le ticket depuis le front-end professionnel [#2-send-the-ticket-from-the-business-frontend]
+
+Voici une intégration minimale prête à la copie. Il condense des événements `linksense:ready` répétés afin que la page ne demande pas plusieurs tickets simultanément.
+
+```html
+<iframe
+  id="linksense-app"
+  src="https://linksense.example.com/api/v1/embed/frame/lsa_xxx?parent_origin=https%3A%2F%2Fportal.example.com&amp;locale=en-US"
+  title="LinkSense application"
+  sandbox="allow-scripts allow-same-origin allow-forms allow-downloads"
+  allow="clipboard-write"
+  style="width: 100%; height: 720px; border: 0"
+></iframe>
+
+<script>
+  const appId = "lsa_xxx"
+  const linkSenseOrigin = "https://linksense.example.com"
+  const frame = document.getElementById("linksense-app")
+  let ticketRequest = null
+
+  async function provideTicket() {
+    if (ticketRequest) return ticketRequest
+
+    ticketRequest = (async () => {
+      const response = await fetch("/api/linksense-ticket", {
+        method: "POST",
+        credentials: "same-origin",
+      })
+      const payload = await response.json()
+
+      if (!response.ok || !payload.ticket) {
+        frame.contentWindow.postMessage(
+          {
+            type: "linksense:host-authentication-failed",
+            appId,
+            message: payload.message ?? "Unable to get LinkSense access",
+          },
+          linkSenseOrigin,
+        )
+        return
+      }
+
+      frame.contentWindow.postMessage(
+        {
+          type: "linksense:ticket",
+          appId,
+          ticket: payload.ticket,
+          ...(payload.sessionId ? { sessionId: payload.sessionId } : {}),
+        },
+        linkSenseOrigin,
+      )
+    })().finally(() => {
+      ticketRequest = null
+    })
+
+    return ticketRequest
+  }
+
+  window.addEventListener("message", (event) => {
+    if (event.origin !== linkSenseOrigin) return
+    if (event.source !== frame.contentWindow) return
+
+    const message = event.data
+    if (!message || message.appId !== appId) return
+    if (message.type !== "linksense:ready") return
+    if (message.authMode !== "required") return
+
+    void provideTicket()
+  })
+</script>
+```
+
+## Identité métier et contexte du codex [#business-identity-and-codex-context]
+
+`external_subject` est la seule identité métier utilisée pour restaurer le contexte utilisateur. Le backend de l’entreprise le soumet lors de la demande d’un ticket. Il n’est pas envoyé via `postMessage` et n’est jamais transféré à MCP.
+
+```text
+external_subject + external_tenant + application
+  -> utilisateur externe LinkSense
+  -> conversation
+  -> contexte du fil Codex
+```
+
+Recommandations :
+
+- Utilisez une clé interne principale immuable, et non un nom d’affichage, un numéro de téléphone ou une adresse e-mail.
+- Dans les systèmes multi-locataires, il est également possible d’envoyer des `external_tenant` pour éviter les collisions d’identité entre locataires.
+- Envoyez les mêmes champs d’identité chaque fois que le même utilisateur demande un ticket.
+- Générez ces valeurs en backend à partir de l’utilisateur authentifié. Ne faites pas confiance aux paramètres du navigateur.
+
+Le mode public n’a pas d’identité professionnelle fiable et ne restaure pas l’historique par utilisateur entre les visites.
+
+## Questions sur la localisation de l’interface et les questions intégrées [#interface-locale-and-built-in-questions]
+
+La page intégrée accepte deux emplacements d’interface, `zh-CN` et `en-US`, avec deux méthodes de configuration prises en charge :
+
+1. Ajoutez `locale` à l’iframe `src` pour définir le langage initial après le premier chargement ou tout rechargement.
+2. Après le chargement de l’iframe, envoyez un message dédié `linksense:locale` pour changer immédiatement sans le recharger.
+
+```js
+const frame = document.getElementById("linksense-app")
+const linkSenseOrigin = "https://linksense.example.com"
+
+function setLinkSenseLocale(locale) {
+  frame.contentWindow.postMessage(
+    {
+      type: "linksense:locale",
+      appId: "lsa_xxx",
+      locale,
+    },
+    linkSenseOrigin,
+  )
+}
+
+setLinkSenseLocale("en-US")
+```
+
+- Exemple d’URL : `&locale=en-US`. Une valeur manquante ou non supportée revient à `zh-CN`.
+- `linksense:locale` n’accepte que `zh-CN` ou `en-US` ; Les valeurs vides ou non prises en charge sont ignorées et laissent le langage actuel inchangé.
+- Un message d’exécution supprime le langage actuel. Après un rechargement iframe, le paramètre URL redevient la langue initiale.
+- N’incluez pas `locale` dans `linksense:ticket` ou `linksense:context`.
+- `locale` ne modifie que les boutons, menus, états et messages d’erreur de LinkSense. Il n’est jamais ajouté à la question de l’utilisateur, au contexte de la tâche ou aux arguments MCP de l’utilisateur.
+
+Les questions intégrées configurées pour l’origine actuelle apparaissent dans la zone de bienvenue nouvelle tâche. Leur texte ne change jamais avec `locale` : les utilisateurs voient exactement ce que l’administrateur a saisi. Sélectionner une question remplit et focalise le compositeur, mais ne l’envoie pas automatiquement.
+
+## Transfert des pièces jointes vers des intégrations MCP externes [#handing-attachments-to-external-mcp-integrations]
+
+Un chemin d’espace de travail dans un argument HTTP MCP n’est pas un transfert de fichiers. Commencez par évaluer un adaptateur STDIO MCP appartenant à une entreprise : les applications publiées prennent déjà en charge STDIO, donc un adaptateur peut lire les pièces jointes de tâches sélectionnées et télécharger leurs octets vers des terminaux HTTPS fixes. La destination possède le stockage et l’association des archives ; aucun nouveau point de terminaison LinkSense core n’est requis.
+
+Consultez `apps/runner/examples/attachment-handoff/README.md` dans le dépôt pour un exemple exécutable, les commandes de lancement et le contrat de destination. Les arguments accessibles au modèle ne contiennent qu’un identifiant de transfert non secret. Le backend de confiance fournit le manifeste approuvé, les empreintes, la destination et un identifiant aux autorisations limitées. Les utilisateurs doivent examiner et confirmer la destination et les fichiers sélectionnés dans une interface authentifiée ; le texte d’une invite, l’affirmation d’un modèle ou un argument booléen ne constituent pas une autorisation côté backend.
+
+La référence vérifie la portée de la conversation, l’expiration, les chemins de fichiers et les hachages, l’annulation, les limites de taille/type, les défaillances partielles et une clé de retentative stable. La destination doit toujours implémenter la réception/stockage, l’idempotence persistante, l’association des enregistrements transactionnels et des erreurs localisées. Les tests de dépôt utilisent un récepteur simulé, et non une intégration métier déployée. Ne mettez jamais d’URL de téléchargement publique durable, d’identifiants ou de grandes charges utiles Base64 dans les arguments des outils.
+
+## Présentation utilisateur final [#end-user-presentation]
+
+Activez **Présentation pour l’utilisateur final** dans les paramètres d’accès externe de l’application pour générer du code intégré avec `&presentation=end_user`, ou ajoutez ce paramètre à l’iframe `src` vous-même. Cela masque les commandes, l’activité des outils, les résumés de raisonnement et les délais d’exécution. Les progrès localisés, les instructions de suivi des utilisateurs, les réponses finales, les références et les pièces jointes restent visibles.
+
+Les formulaires de confirmation, résultats soumis et annulés, contrôles d’arrêt, erreurs et retours de connexion restent disponibles. Cette option s’applique aussi bien aux tours en temps réel qu’à l’historique restauré. Il ne modifie pas les permissions de l’outil, l’authentification ni la sémantique native des tours, et la reconnexion ne rejoue pas une action.
+
+Omettre le paramètre ou utiliser `presentation=technical` préserve la vue technique existante. La configuration est par cadre ; Les applications existantes et les versions publiées n’ont pas besoin de migration. C’est une option d’affichage, pas une frontière de sécurité. Gardez la vue technique dans un développeur séparé ou une intégration de maintenance lors du dépannage.
+
+## Liste des tâches et nommage automatique [#task-list-and-automatic-naming]
+
+La liste des tâches de la page intégrée affiche uniquement les tâches créées par l’utilisateur externe actuel dans l’application actuelle. Cela ne met jamais en lumière les tâches d’un autre utilisateur ou d’une autre application.
+
+- Une nouvelle tâche crée un contexte de tâche Codex indépendant.
+- Après que l’utilisateur a lancé la première vraie requête, LinkSense génère un titre à partir de cette requête au lieu de continuer à afficher le nom de l’application.
+- La suppression est permanente, ce n’est pas une opération d’archivage. Après confirmation, les messages, pièces jointes et résultats de la tâche sont supprimés et ne peuvent pas être récupérés.
+- Lorsque la tâche en cours est supprimée, LinkSense crée et sélectionne une nouvelle tâche vide avant de supprimer l’ancienne, afin que l’iframe ne reste jamais attaché à un contexte invalide.
+- Une tâche en cours ne peut pas être supprimée définitivement. Attends qu’il se termine ou arrête-le d’abord.
+
+## Envoyer un business sessionId vers HTTP MCP [#send-a-business-sessionid-to-http-mcp]
+
+La `sessionId` optionnelle dans `postMessage` est une certification de système d’affaires. Il n’a aucun lien avec l’ID de session propre à LinkSense.
+
+Lorsqu’il est présent, LinkSense envoie automatiquement ces en-têtes chaque fois que la tâche de l’application de cet utilisateur appelle un MCP HTTP :
+
+```http
+X-Session-Id: business-session-value
+X-API-Key: configured-mcp-api-key
+```
+
+Comportement :
+
+- L’en-tête de clé de l’API MCP existant et `X-Session-Id` sont envoyés ensemble sans se surécraser.
+- Si l’en-tête clé de l’API MCP est également configuré en `X-Session-Id`, l’appel échoue à cause du conflit d’en-tête. Utilise un autre nom.
+- Sans `sessionId`, la requête HTTP ne contient pas du tout `X-Session-Id`.
+- LinkSense chiffre `sessionId` et ne l’expose pas dans les messages de chat, les arguments d’outils, les événements ou les journaux.
+- Le processus enfant IA ne peut pas le lire. Seul le proxy de sortie HTTP MCP de la session en cours peut l’utiliser.
+- Cette fonctionnalité s’applique uniquement aux serveurs HTTP MCP connectés à l’application.
+
+Mettez à jour la certification de la session d’affaires de manière indépendante :
+
+```js
+frame.contentWindow.postMessage(
+  {
+    type: "linksense:session-id",
+    appId,
+    sessionId: "new-business-session",
+  },
+  linkSenseOrigin,
+)
+```
+
+Effacez :
+
+```js
+frame.contentWindow.postMessage(
+  {
+    type: "linksense:session-id",
+    appId,
+    sessionId: null,
+  },
+  linkSenseOrigin,
+)
+```
+
+## Protocole postMessage [#postmessage-protocol]
+
+iFrame → parent :
+
+| Événement | Champs | Description |
+| --- | --- | --- |
+| `linksense:ready` | `appId`, `authMode` | L’iframe est prêt ; En mode `required`, il nécessite actuellement un ticket. L’authentification initiale et la réauthentification utilisent le même événement |
+
+Parent → iframe :
+
+| Événement | Champs | Description |
+| --- | --- | --- |
+| `linksense:ticket` | `appId`, `ticket`, `sessionId?` | Fournit un ticket unique et peut lier un Id de session d’affaires |
+| `linksense:locale` | `appId`, `locale` | Modifie dynamiquement le langage de l’interface ; n’accepte que `zh-CN` ou `en-US` |
+| `linksense:session-id` | `appId`, `sessionId?` | Met à jour sessionId dynamiquement ; `null` ou omission le dégage |
+| `linksense:host-authentication-failed` | `appId`, `message?` | Indique à l’iframe que le backend hôte n’a pas pu obtenir de ticket |
+
+Chaque message doit valider :
+
+- `event.origin` est l’origine attendue de LinkSense ou de système métier.
+- `event.source` est la fenêtre iframe attendue ou parent.
+- `appId` correspond à l’application embarquée.
+
+N’utilisez jamais `"*"` comme origine cible `postMessage`.
+
+## Durée de vie des titres [#credential-lifetimes]
+
+| Diplôme | Durée actuelle | Notes |
+| --- | --- | --- |
+| Billet | 60 secondes, usage unique | Invalide immédiatement après utilisation |
+| Jeton d’accès LinkSense | 2 heures | L’iframe le renouvelle environ 2 minutes avant l’expiration |
+| Jeton de renouvellement LinkSense | Des heures 8 | Tourné à chaque renouvellement et plafonné par la durée de vie externe de la session |
+| Session externe LinkSense | 7 jours | Après expiration, le mode requis envoie `linksense:ready` à nouveau |
+| App Secret | Pas d’expiration automatique | La régénération invalide immédiatement les anciens identifiants et sessions |
+| Business `sessionId` | Défini par le système économique | LinkSense ne valide pas sa durée de vie ; il ne fait que le transmettre à MCP |
+| Clé API MCP | Défini par le service MCP | Une clé invalide produit une erreur d’appel MCP |
+
+La session LinkSense peut également devenir invalide tôt lorsque l’accès externe est désactivé, que le mode d’authentification ou les origines autorisées changent, que l’application est désactivée, que l’utilisateur se déconnecte ou qu’une relecture du jeton de renouvellement est détectée.
+
+## Liste de contrôle de sécurité [#security-checklist]
+
+- Stocker App Secret uniquement en configuration backend ou dans un gestionnaire de secrets.
+- Ne jamais écrire un secret d’application ou un ticket vers des URL, cookies, stockage du navigateur, journaux, événements de surveillance ou rapports d’erreurs.
+- Gardez `sessionId` uniquement en mémoire de page pendant la livraison. Ne le faites pas persister dans le stockage frontend, les journaux ou les rapports d’erreur.
+- Ne mettez jamais un ticket en cache ni ne réutilisez. Demandez-en un nouveau pour chaque événement `linksense:ready`.
+- Générez `external_subject` et `external_tenant` en backend à partir de l’utilisateur authentifié.
+- Configurez les origines autorisées exactes ; N’utilisez pas de jokers.
+- Utilisez HTTPS en production.
+- Si App Secret a fuité, régénérez-le immédiatement dans LinkSense et mettez à jour la configuration du backend.
+
+## Vérification locale [#local-verification]
+
+Commencez la démo du système externe :
+
+```bash
+LINKSENSE_BASE_URL=http://localhost:5173 \
+LINKSENSE_API_BASE_URL=http://localhost:5173 \
+LINKSENSE_APP_ID=lsa_xxx \
+LINKSENSE_APP_SECRET=lss_xxx \
+node examples/external-embed-demo/server.mjs
+```
+
+Ouvrez `http://127.0.0.1:5055/required` et assurez-vous que cette origine est autorisée.
+
+Faites passer la fumée du navigateur :
+
+```bash
+node examples/external-embed-demo/smoke.mjs
+```
+
+Vérifiez le transfert réel des en-têtes MCP :
+
+```bash
+pnpm --filter @linksense/runner exec vitest run \
+  test/http-egress-proxy.integration.test.ts
+```
+
+## Dépannage [#troubleshooting]
+
+### L’iframe attend toujours l’accès [#the-iframe-keeps-waiting-for-access]
+
+Confirmez que le parent reçoit `linksense:ready`, obtient un ticket via son propre backend, et valide correctement `event.origin`, `event.source` et `appId`.
+
+### L’identifiant d’application ou le secret de l’application est invalide [#app-id-or-app-secret-is-invalid]
+
+Assurez-vous que le backend utilise l’App Secret complet actuel. Régénérer App Secret invalide immédiatement l’ancienne valeur.
+
+### Le même utilisateur ne voit pas l’historique précédent [#the-same-user-does-not-see-previous-history]
+
+Envoyez le même `external_subject` pour cet utilisateur à chaque demande de ticket. Les systèmes multi-locataires doivent également envoyer la même `external_tenant`.
+
+### MCP ne reçoit pas X-Session-Id [#mcp-does-not-receive-x-session-id]
+
+Confirmez que le backend métier a renvoyé un `sessionId` non vide, que le parent l’a inclus dans `linksense:ticket`, et que l’application utilise un MCP HTTP attaché. Ne configurez pas l’en-tête clé de l’API MCP comme `X-Session-Id`.
+
+### Le navigateur bloque l’iframe [#the-browser-blocks-the-iframe]
+
+Confirmez que l’origine actuelle de la page est autorisée, que `parent_origin` correspond exactement, que la production utilise HTTPS, et qu’aucune extension de navigateur ni politique d’entreprise ne bloque les iframes.

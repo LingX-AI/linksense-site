@@ -1,0 +1,387 @@
+---
+title: "Plugins, compétences et applications"
+description: "Découvrez et installez des capacités, puis gérez les compétences personnelles, les applications, le partage et les identifiants."
+---
+
+Commencez par découvrir et installer des fonctionnalités, puis créez, gérez et partagez vos propres compétences et applications selon les besoins.
+
+## Découvrir, installer et mettre à jour les capacités [#discover-and-install]
+
+Plugin Center fournit un catalogue pour les plugins publiés, les compétences, les extensions MCP et les applications.
+
+Le **Dépôt de compétences ClawHub** est une source externe de compétence distincte. Voir [Install Skills depuis ClawHub](#clawhub) pour ses vérifications préalables à l’installation et la frontière de confiance.
+
+### Parcourir et rechercher [#discover-and-install-browse-and-search]
+
+1. Ouvre **Centre de plugins**.
+2. Sélectionnez plugins, compétences, MCP ou applications.
+3. Recherchez par nom, description ou éditeur.
+4. Ouvrez les détails et consultez l’éditeur, les notes de publication, le résumé des risques, le manifeste et le hachage du contenu.
+
+### Installation [#discover-and-install-install]
+
+L’installation crée une copie personnelle à partir de la version approuvée actuelle. Avant de confirmer, vérifiez s’il contient des scripts exécutables ou un serveur MCP, atteint des services externes, nécessite des variables d’environnement ou des identifiants, et provient d’un éditeur de confiance.
+
+Gérez l’état activé de la copie installée depuis la zone Installée ou Personnelle.
+
+Les applications utilisent un flux de distribution séparé. Les actions directes apparaissent sous **Applications → partagées avec moi**, tandis que les communiqués publics apparaissent en **Centre d’applications**. Selon l’option d’utilisation proposée par le créateur, installez une copie indépendante de l’application ou installez le service d’application en ligne avant de l’utiliser. Voir [Utilisation des applications d’organisation](#organization-apps) pour la différence. Les créateurs peuvent [Créer et gérer des applications](#create-applications).
+
+### Mise à jour [#discover-and-install-update]
+
+Quand **Mise à jour disponible** apparaît, comparez les notes de sortie et mettez à jour explicitement. L’approbation d’une nouvelle sortie de catalogue ne remplace jamais silencieusement votre copie installée.
+
+### Désinstaller [#discover-and-install-uninstall]
+
+Désinstaller supprime votre copie et la configuration personnelle associée sans modifier la version du catalogue ni les installations des autres utilisateurs. Les faits historiques de la tâche et de l’audit subsistent.
+
+<Callout type="warn" title="Suspension à risque">
+
+Un administrateur peut suspendre une inscription risquée. Une fiche suspendue est cachée et toutes les copies installées sont bloquées pour le démarrage de nouvelles tâches tant qu’elles ne sont pas restaurées.
+
+</Callout>
+
+## Install Skills depuis ClawHub [#clawhub]
+
+ClawHub est une source externe de compétences. LinkSense affiche les métadonnées synchronisées localement, mais ni LinkSense ni ClawHub ne vérifient ni ne cautionnent toutes les compétences tierces présentées là-bas.
+
+### Trouvez et inspectez une compétence [#clawhub-find-and-inspect-a-skill]
+
+Allez sur **Centre de plugins → dépôt de compétences ClawHub**, cherchez par nom, et triez éventuellement par téléchargements ou étoiles. Ouvrez les détails pour inspecter l’auteur, la version, l’heure de mise à jour, les sujets, les exigences de la plateforme, le journal des modifications et la page canonique de ClawHub.
+
+Les téléchargements et le nombre d’étoiles peuvent donner un contexte sur l’utilisation, mais ce n’est pas une revue de sécurité.
+
+### Installation ou mise à jour [#clawhub-install-or-update]
+
+1. Choisissez la version à installer.
+2. Attendez que LinkSense récupère et valide le colis.
+3. Consultez les avis de source, d’intégrité et de risque.
+4. Confirmez l’installation selon vos compétences personnelles.
+
+Lorsque vous avez déjà le même code source installé, LinkSense propose une mise à jour ; Il ne réinstalle pas la même version. La compétence installée reste visible et gérable sous **Mes capacités**.
+
+### Sécurité et disponibilité [#clawhub-security-and-availability]
+
+LinkSense peut bloquer l’installation lorsqu’une compétence est signalée, ne possède pas de version installable, ne répond pas aux exigences de la plateforme ou échoue à la validation de l’intégrité. Ne contournez pas l’avertissement ni ne considérez les identifiants demandés par une compétence inconnue comme des paramètres ordinaires.
+
+Rafraîchir plus tard lorsque le dépôt est temporairement indisponible ou n’a pas synchronisé de données. La désinstallation supprime votre copie personnelle et sa configuration ; Il ne modifie pas les métadonnées du dépôt ni ne supprime l’historique des tâches complétées.
+
+## Gérer les plugins personnels et les compétences [#personal-content]
+
+Les capacités personnelles vous appartiennent et ne sont pas automatiquement visibles pour les autres utilisateurs.
+
+### Importer un paquet ZIP [#personal-content-import-a-zip-package]
+
+1. Ouvrez **Centre de plugins → Personnel** et choisissez **Capacité d’ajout**.
+2. Sélectionnez un forfait ZIP local.
+3. Attendez que LinkSense analyse sa source, ses fichiers, ses déclarations de manifestes et ses risques.
+4. Examinez l’aperçu et confirmez les risques avant l’installation.
+
+L’aperçu expire. Répétez la vérification si c’est le cas, et n’installez jamais un paquet non fiable.
+
+### Créer une compétence [#personal-content-create-a-skill]
+
+Choisissez l’option manuelle Compétence et entrez un `SKILL.md` complet. LinkSense prévisualise le contenu et les déclarations avant l’installation.
+
+Entrez d’abord l’identifiant de compétence, suivi d’un nom d’affichage optionnel. LinkSense génère un titre lisible à partir de l’identifiant, comme « Notes de réunion » pour `meeting-notes`. Vous pouvez le remplacer par un nom contenant des caractères et espaces chinois, ou le nettoyer. Une fois que vous avez modifié ou effacé le nom affiché, changer l’identifiant ne supprimera pas votre choix. Les noms d’affichage supportent jusqu’à 64 caractères et ne changent pas l’identifiant utilisé pour invoquer la compétence.
+
+Les compétences importées conservent leurs noms d’affichage lorsqu’ils sont fournis. Sinon, LinkSense affiche un titre lisible basé sur l’identifiant. Les compétences existantes n’ont pas besoin d’être importées à nouveau.
+
+Une compétence générée dans une tâche doit d’abord être validée et enregistrée comme un code zip téléchargeable complet. Il n’est installé qu’après votre confirmation explicite.
+
+### Voir et désinstaller Compétences dans une conversation [#personal-content-view-and-uninstall-skills-in-a-conversation]
+
+Demandez à l’assistant de « lister toutes mes compétences activées ». La liste inclut les compétences intégrées disponibles et les compétences personnelles que vous avez créées, importées ou installées depuis Plugin Center ou ClawHub, qu’elles soient sélectionnées ou non pour la tâche en cours. Les compétences désactivées ou échouées, les packs complets de plugins et les compétences incluses dans ces plugins sont exclues.
+
+Pour retirer une compétence personnelle, dites « désinstaller ma compétence notes de réunion ». Si le nom n’est pas clair ou correspond à plusieurs compétences, l’assistant vous demandera d’identifier celle visée. Les compétences intégrées sont fournies par le système et ne peuvent pas être désinstallées. Le mode Plan peut lister les Compétences mais ne peut pas les désinstaller.
+
+La désinstallation supprime définitivement votre copie d’installation, les fichiers Compétences, les paramètres personnels associés et les liaisons d’identifiants. L’historique des tâches, les enregistrements d’audit, les installations d’autres utilisateurs et les versions publiées du Plugin Center sont préservés. Une tâche en cours peut continuer à utiliser ses compétences chargées ; Les tours suivants chargent l’état d’installation mis à jour.
+
+### Gérer le cycle de vie [#personal-content-manage-lifecycle]
+
+- La désactivation exclut cette capacité des nouvelles tâches.
+- La mise à jour effectue à nouveau les vérifications de source et de risque.
+- Supprimer définitivement les liaisons de capacité, de configuration et d’identifiants.
+- Les archives historiques ne conservent que la version et les faits sources nécessaires à la traçabilité.
+
+Lors de la mise à jour d’une compétence personnelle, la boîte de dialogue charge son nom d’affichage actuel, sa description, ses instructions complètes et sa liste de fichiers. L’identifiant reste le même. Que vous ayez initialement créé la compétence manuellement ou importé un ZIP, choisissez l’une des options radio **Méthode de mise à jour** :
+
+- **Modifier le contenu** : Mettez à jour le nom affiché, la description et les instructions. Les scripts, modèles, images, autres fichiers et paramètres que vous n’avez pas modifiés existants sont préservés.
+- **Remplacer le paquet complet** : Téléchargez un ZIP contenant tous les fichiers nécessaires. Le nouveau paquet remplace la compétence actuelle, supprimant ainsi les fichiers manquants du nouveau paquet. Pour modifier des scripts ou des ressources, utilisez **Télécharger le paquet complet**, modifiez les fichiers localement et téléchargez le paquet mis à jour.
+
+Choisissez **Examiner les modifications et les risques** pour vérifier les fichiers ajoutés, modifiés et supprimés ainsi que les risques liés à la compétence résultante. La suppression de fichiers nécessite une accusée de réception séparée avant de confirmer la mise à jour. Vérifier les modifications, changer de méthode ou revenir à l’éditeur ne modifie pas la compétence installée.
+
+La modification ne peut pas être soumise sans modifications. Si les instructions sont trop longues pour une édition en ligne, vous pouvez toujours télécharger et remplacer le paquet complet. Si la compétence change pendant que vous montez, rouvrez la boîte de dialogue et examinez son contenu récent avant de soumettre. Les aperçus de mise à jour en attente créés avant une mise à jour doivent également être vérifiés à nouveau.
+
+### Publier [#personal-content-publish]
+
+Choisissez une capacité possédée dans **Mes publications**, ajoutez des notes de version et soumettez-la. LinkSense crée un instantané immuable pour la consultation des administrateurs ; Les modifications ultérieures de votre copie personnelle ne modifient pas le snapshot.
+
+Chaque publication nécessite une décision distincte. Vous pouvez retirer une libération en attente. Après approbation, la version devient la version actuelle du Plugin Center.
+
+## Créer et gérer des applications [#create-applications]
+
+Les applications fournissent des points d’entrée contrôlés pour des flux de travail reproductibles. Un créateur peut combiner un modèle, des instructions, des plugins, des compétences, des bases de connaissances et des serveurs MCP, puis partager le résultat. Une application n’étend pas les permissions que son créateur ou ses utilisateurs ne possèdent pas déjà.
+
+Dans **Mes applications**, utilisez le filtre à côté de la recherche pour choisir **Toutes les applications**, **En développement**, **Applications standard** ou **Applications interactives**. Les filtres fonctionnent ensemble avec la recherche. Les applications interactives incluent des brouillons de développement non publiés, tandis que les applications Standard les excluent. L’URL conserve le filtre sélectionné lorsque vous rechargez la page.
+
+### Voir les détails de la candidature [#create-applications-view-application-details]
+
+**Mes applications** affiche la version publiée dès qu’il en existe une. Les candidatures avec seulement un brouillon affichent **Brouillon** et une icône de coin de code. Les applications publiées n’affichent jamais cette icône d’angle ; lorsqu’ils ont des modifications non publiées, **Nouvelle version de développement** apparaît après le décompte du MCP. Les détails indiquent séparément la version de développement, incluant son nom, sa description, son icône, son plugin / compétence, le nombre de bases de connaissances et MCP, ainsi que son dernier temps économisé. **En développement** inclut à la fois des applications uniquement en brouillon et des applications publiées avec de nouvelles versions de développement, avec une carte par application.
+
+Les actions de développement se trouvent dans le menu à trois points de la carte : **Poursuivre le développement** ouvre un projet existant, tandis que **Développer une nouvelle version** en démarre un. L’action **Utiliser** de la carte ouvre toujours la version publiée.
+
+Cliquez sur le corps d’une carte d’application dans **Mes applications**, **Partagé avec moi** ou **Centre d’applications** pour voir son nom, sa description complète, son créateur, son type, son modèle, sa version (lorsque disponible), les dates et les ressources regroupés en plugins, compétences, serveurs MCP et bases de connaissances. **Utiliser** et le menu actions restent des contrôles séparés.
+
+- Les cartes et détails dans **Mes applications** affichent la même version installée, incluant son nom, sa description, son icône et ses ressources. Les applications non publiées affichent leur configuration actuelle, et les brouillons de développement sont affichés séparément. Les listes de ressources pour les applications partagées et le centre d’applications utilisent leur version publiée correspondante, sans les sélections de ressources non publiées du créateur.
+- Les listes de ressources affichent d’abord le nom de la ressource configurée. Lorsqu’il diffère de la déclaration de la demande, **Déclaré par demande** apparaît en dessous. Un coche vert indique **Configuré** ; Passez le souris dessus pour voir l’inscription. Les déclarations non appariées apparaissent comme **Non configuré**, et les ressources désactivées ou supprimées apparaissent comme **Indisponible**. **Configuré** signifie seulement qu’une ressource est liée ; L’utilisation réelle dépend toujours des identifiants, de l’autorisation et de la disponibilité des services.
+- Les détails n’affichent pas les identifiants de ressources, les identifiants, les paramètres de connexion ni les instructions d’application. Voir les noms des ressources ne donne pas la permission de naviguer ou de gérer ces ressources.
+
+### Créer une application standard [#create-applications-create-a-standard-application]
+
+1. Va à **Centre de plugins → Applications → Mes applications**.
+2. Sélectionnez **Créer une application → Créer une application standard**.
+3. Entrez un nom et une description, choisissez une icône prédéfinie ou téléchargez une image. Les applications standard et interactives utilisent par défaut l’icône de cube colorée. Les réglages d’icônes existants sont conservés.
+4. Fixez un modèle et un effort de raisonnement, ou laissez les utilisateurs les choisir dans le chat.
+5. Saisissez les instructions d’application et sélectionnez les plugins, compétences, bases de connaissances et serveurs MCP que vous gérez.
+6. Enregistrez, puis sélectionnez **Utiliser** pour vérifier le flux de travail complet.
+
+Les utilisateurs partagés ne peuvent pas voir les instructions de l’application. Les plugins utilisent les identifiants liés par le créateur. Les outils MCP peuvent avoir des effets secondaires externes, alors vérifiez leur utilité et leurs autorisations avant de les ajouter.
+
+### Construire une application interactive en conversation [#create-applications-build-an-interactive-application-in-conversation]
+
+1. Dans Mes applications, choisissez Créer une application → Créer une application interactive via le chat, saisissez un nom, puis commencez à construire. Vous pouvez aussi demander à une tâche classique de créer une application interactive LinkSense.
+2. Décrivez vos exigences dans la conversation sur le développement. L’aperçu adjacent se met à jour au fur et à mesure que les fichiers changent, sans exporter ni importer des paquets. Cliquez sur le nom ou la description au-dessus de l’aperçu pour le modifier. Ça change automatiquement la sauvegarde après que vous ayez arrêté de taper ou quitté le champ.
+3. Essayez l’application avec de vraies tâches, fichiers et résultats. Sa conversation de test est distincte de la conversation sur le développement.
+4. Utilisez les capacités Configure pour rechercher, sélectionner ou supprimer des plugins, compétences, bases de connaissances et serveurs MCP que l’application peut utiliser. La sauvegarde écrit vos choix dans la configuration de l’application, met à jour l’aperçu et les inclut lors de l’installation ou de la mise à jour de l’application. Si la conversation modifie l’application en même temps, rechargez la configuration avant de sauvegarder. Les erreurs d’aperçu apparaissent dans les journaux de débogage et peuvent être inspectées par l’assistant.
+5. Choisissez Publier quand vous êtes prêt et confirmez dans la boîte de dialogue. Cela permet à l’application de vous permettre votre propre usage dans Mes applications. Ensuite, choisissez Développer dans le menu de l’application, puis Publier la mise à jour et confirmer. Cela ne partage ni ne liste automatiquement la demande.
+
+Les modifications incomplètes conservent la dernière prévisualisation en cours. Un test actif se termine sur sa version originale avant de passer aux derniers changements. La publication vérifie tout changement qui n’a pas encore été présenté en aperçu. Si le contenu change après l’ouverture de la boîte de confirmation, relisez-le et confirmez-le à nouveau.
+
+Un statut subtil **Brouillon** ou **Publié** se trouve à côté du nom de la demande. D’autres modifications ramènent le contenu actuel à **Brouillon**. Le menu à trois points en haut à droite contient **Publier / Publier mise à jour**, **Configurer les fonctionnalités**, **Nouvelle conversation de débogage**, **Historique des conversations de débogage** et **Journaux de débogage**. L’aperçu de l’application se met à jour automatiquement, sans rafraîchissement manuel. Sélectionnez historique ou journaux pour voir leur contenu ci-dessous, puis utilisez le bouton fermer en haut à droite de cette vue pour revenir à l’application sans perdre vos entrées de formulaire. Seuls les tests soumis apparaissent sous **Historique des conversations de débogage** dans le panneau de développement, en dehors de la barre latérale, la recherche de tâches régulière et la liste d’archives. Examinez les entrées, sorties, fichiers et activités là-bas. Modifier le code ou rafraîchir un aperçu ne crée aucun enregistrement vide, et les numéros de version de prévisualisation internes ne sont pas affichés. **Nouvelle conversation de débogage** réinitialise la prévisualisation et conserve les tests soumis. Les anciens dossiers peuvent être supprimés individuellement. Arrêtez tout test actif et résolvez les requêtes en attente avant de redémarrer ou supprimer l’application.
+
+Les modifications de brouillon laissent les versions installées, partagées et listées inchangées. **Publier la mise à jour** active la mise à jour uniquement pour le créateur. Sauvegardez à nouveau le partage de l’organisation ou soumettez une nouvelle fiche du Centre d’applications, puis les destinataires installent manuellement la mise à jour. Voir [Partagez des applications et configurez l’accès externe](#application-access).
+
+L’archivage ou la suppression d’une tâche de développement conserve l’historique des conversations applicatives, de brouillons et de débogage dans **Mes applications**. Sélectionnez **Poursuivre le développement** dans le menu à trois points pour continuer ; Si la tâche originale a été supprimée, une nouvelle tâche s’ouvre avec les mêmes fichiers sources et le même historique de conversation de débogage. Choisissez **Supprimer le brouillon de développement** dans le menu à trois points pour supprimer le brouillon et ses conversations de débogage tout en conservant l’application publiée. **Supprimer** supprime l’ensemble de l’application, y compris son historique de brouillons et de débogage. Ces deux actions préservent les tâches de développement, les tâches régulières et les fichiers de l’espace de travail, et nettoient les ressources d’exécution associées en arrière-plan.
+
+### Annotez l’aperçu et demandez à LinkSense de le modifier [#create-applications-annotate-the-preview-and-ask-linksense-to-change-it]
+
+Sélectionnez **Annoter** immédiatement à gauche du menu à trois points en haut à droite de la vue développement. Cliquez sur un élément ou glissez pour sélectionner une zone, puis choisissez **Demandez à LinkSense** à côté de la sélection. Décrivez le changement du popover et choisissez **Ajouter une annotation**. Continuez à ajouter des demandes pour d’autres sélections. Chaque annotation possède un marqueur numéroté. La liste d’annotation vous permet de localiser, supprimer, effacer ou envoyer toutes les annotations ensemble.
+
+Les demandes vont à la conversation développement à gauche. LinkSense modifie l’application en cours, et la version preview reprend la mise à jour après votre envoi. Si la conversation de développement est occupée, les annotations rejoignent ses requêtes en attente sans créer une autre tâche de test. Les boutons de l’application ne s’activent pas pendant l’annotation. Vous pouvez quitter le mode annotation pour essayer l’application et revenir plus tard avec vos annotations ajoutées conservées.
+
+Les mises à jour de prévisualisation automatiques sont mises en pause pendant l’annotation afin que certains emplacements restent stables. Si une autre action met à jour l’application, il vous sera demandé de sélectionner à nouveau. Les soumissions ratées conservent des annotations. Effacez-les et quittez le mode annotion, attendez la mise à jour de l’aperçu, puis sélectionnez à nouveau.
+
+### Modifier l’icône de l’application et les détails [#create-applications-edit-the-app-icon-and-details]
+
+Cliquez sur l’icône à côté du nom de l’application dans l’en-tête de développement pour sélectionner un préréglage ou télécharger une image, puis modifiez le nom et la description. Dans Mes applications, choisissez Modifier pour une application installée ou Modifier les détails de l’application pour un brouillon. Les images doivent être en PNG, JPEG ou WebP, au maximum 512 KiB et 1024 pixels de chaque côté.
+
+Vous pouvez aussi télécharger une image dans la conversation de développement en disant « Utilisez ceci comme icône d’application », ou demander à changer le nom ou la description. Modifications : sauvegarder dans le brouillon et mettre à jour sa prévisualisation. Publiez quand vous êtes prêt à les utiliser dans mes candidatures.
+
+### Importer une application interactive [#create-applications-import-an-interactive-application]
+
+Sélectionnez **Importation d’une application interactive** et téléchargez un code postal dont la racine contient `manifest.json` et `index.html`. La page s’exécute dans un iframe isolé et utilise le SDK LinkSense pour lancer des tâches ou contrôler le panneau de discussion natif. Voir [Créer une application interactive](../../developer-guide/interactive-application.mdx) pour le package et le contrat API.
+
+Lors de la préparation d’un paquet, ouvrez **Liste de déclaration des ressources** depuis la boîte d’importation pour choisir les ressources dont il a besoin. La fermeture de la liste revient à la boîte d’importation et préserve le package sélectionné.
+
+Lors de la mise à jour d’un package interactif, la version manifeste peut rester inchangée ou augmenter, mais ne peut pas être inférieure à la version existante la plus élevée. **Mettre à jour** active immédiatement la configuration du package et des ressources pour vous. Sauvegardez l’organisation en partageant ou mettez à jour séparément la fiche du Centre d’applications ; Les destinataires installent manuellement les mises à jour. Si vous avez des tâches régulières en cours pour cette application, la mise à jour est bloquée jusqu’à ce que vous les arrêtiez ou qu’elles se terminent.
+
+### Mettre à jour, désactiver et supprimer [#create-applications-update-disable-and-delete]
+
+La prochaine exécution d’une tâche existante utilise la version actuellement installée, plutôt que de rester liée à sa version originale. Les tâches en cours ne changent pas de version en cours d’exécution, et les résultats historiques restent inchangés. Ouvrir ou rafraîchir simplement une tâche historique n’installe pas automatiquement les mises à jour.
+
+Pour les applications standard et interactives, choisissez **Modifier**, puis **Enregistrer**. Le montage conserve la version actuelle ; Les candidatures sans version commencent à 0.0.1. Vous pouvez entrer une version supérieure x.x.x, mais ne pouvez pas la baisser. La sauvegarde met à jour votre carte, vos informations et les tâches suivantes ensemble. Les étiquettes de version inchangées produisent toujours des disques séparés. Les sauvegardes ratées ne laissent aucun changement partiel. La sauvegarde est bloquée alors que vous avez des tâches normales en cours pour cette application. Le partage organisationnel et les mises à jour du Centre d’applications restent séparés et nécessitent que les destinataires installent manuellement. Les boutons créer, importer et mettre à jour des paquets indiquent **Créer**, **Importer** et **Mettre à jour** ; Chacun active immédiatement l’application enregistrée pour vous.
+
+- Les modifications de configuration sont enregistrées dans l’application actuelle. Utilisez **Enregistrer le partage** pour mettre à jour le partage organisationnel, et mettez à jour séparément la liste du Centre d’applications. Aucune des deux actions ne réécrit les tours courants ni les résultats historiques.
+- La désactivation empêche les nouvelles tâches mais conserve l’historique existant.
+- L’application devient indisponible lorsqu’une dépendance requise est désactivée, supprimée ou n’est plus accessible. Réparez la dépendance avant de réactiver ou de tester à nouveau.
+- Supprimer l’application du Centre de plugins et empêche de nouvelles tâches ; il ne supprime pas les tâches existantes des utilisateurs.
+
+Avant la publication organisationnelle, examinez également [Partage et accès externe](#application-access) et [Utilisation des applications](#application-usage).
+
+## Utilisez les applications partagées et du Centre d’applications [#organization-apps]
+
+Une application d’organisation peut combiner des modèles, des plugins, des compétences, des bases de connaissances et des instructions fixes sous forme de paquet d’application installable ou de service d’application en ligne géré par un créateur.
+
+Les applications peuvent être standard ou interactives. Une application interactive ouvre une interface de workflow fournie par le créateur avec le chat LinkSense de confiance dans un panneau séparé à droite. Faites glisser le séparateur pour redimensionner la conversation, ou la cacher et la rouvrir sans arrêter la tâche ni perdre les données de l’application.
+
+### Trouvez une application [#organization-apps-find-an-application]
+
+Ouvert **Centre de plugins → Applications** :
+
+- **Partagé avec moi** contient des versions qui vous sont attribuées directement ou à l’un de vos groupes.
+- **Centre d’applications** contient des communiqués publics approuvés par les administrateurs.
+- **Mes applications** contient les applications que vous avez créées et les paquets installés en copies personnelles.
+
+Les cartes identifient les options d’utilisation disponibles. Les détails indiquent le créateur, le but, la version, le guide d’utilisation et un résumé des ressources.
+
+### Choisissez une option d’utilisation [#organization-apps-choose-a-usage-option]
+
+Une demande standard peut proposer une ou les deux options. Les applications interactives ne prennent en charge **Service d’application en ligne** que :
+
+| Option | Ce que l’installation crée | Qui gère les ressources et la configuration |
+| --- | --- | --- |
+| Dossier de candidature | Une copie indépendante sous **Mes applications** dont le code source est accessible et édité | L’application et les plugins ou Skills inclus sont sauvegardés sur votre compte ; Vous configurez toutes les identifiants, bases de connaissances et connexions externes dont elle pourrait avoir besoin |
+| Service de candidature en ligne | Accès en ligne au service du créateur sans installer votre propre copie locale | Vous utilisez les identifiants configurés par le créateur ; Le créateur conserve la version de l’application et les ressources, et vous n’obtenez pas la permission de naviguer sur son contenu ou sa configuration |
+
+Consultez la version, le guide d’utilisation et la configuration requise avant d’installer. Un package d’application peut utiliser un nom personnalisé installé. S’il montre **Configuration requise** ensuite, complétez ses ressources et accréditations sous **Mes applications**. Pour un service, choisissez **Utiliser** après l’installation pour commencer une tâche.
+
+### Lancer une tâche d’application [#organization-apps-start-an-application-task]
+
+Sélectionnez une application ou un service installé et suivez son interface de tâche. Selon sa configuration :
+
+- le modèle est fixé par le créateur ou sélectionné par vous ;
+- les plugins, compétences, bases de connaissances et instructions dans un service sont maintenus par le créateur ; vous les conservez dans votre copie de colis indépendant ;
+- Les bases de connaissances d’un service ne sont consultables que dans l’application et n’accordent pas l’accès à la navigation, à l’aperçu, au téléchargement ou à la gestion.
+
+L’installation épingle une version explicite. Après que le créateur a repartagé ou que le Centre d’applications a approuvé une nouvelle version, **Mise à jour disponible** apparaît mais ne remplace pas silencieusement votre installation. Terminez toutes les tâches normales de cette application, puis installez la mise à jour manuellement. Les nouvelles tâches et la prochaine exécution dans une tâche existante utilisent la nouvelle version après une mise à jour réussie ; Les virages en course et les résultats historiques ne sont pas réécrits. Les mises à jour des packages identifient quels paramètres personnels peuvent être conservés, et une mise à jour ratée laisse l’ancienne installation disponible.
+
+Les tâches interactives de l’application restent disponibles dans la barre latérale des tâches. Après avoir changé de tâche, rafraîchi ou revenu plus tard, LinkSense ouvre la version de l’application actuellement enregistrée pour cette tâche, restaure ses données structurées précédemment émises et continue de recevoir de nouveaux résultats. Cela ne relance pas la tâche ni n’installe une version plus récente simplement en ouvrant la page. Après avoir mis à jour manuellement l’installation, une tâche existante adopte cette version lors de son exécution suivante ; La rouvrir ensuite utilise la version qu’il a adoptée.
+
+### Applications indisponibles [#organization-apps-unavailable-applications]
+
+Une application désactivée, une subvention de service révoquée, un service du Centre d’applications non répertorié, ou un modèle, une capacité, une qualification ou une base de connaissances indisponibles peuvent bloquer un nouveau travail de service. L’historique des tâches existant subsiste. La révocation d’une subvention ne supprime pas un paquet installé indépendamment, bien que ses ressources personnelles et ses contrôles de risque administrateur restent applicables. Contactez le créateur ou un administrateur pour résoudre une dépendance de service.
+
+Pour construire ou maintenir un point d’entrée, voir [Créer et gérer des applications](#create-applications). [Partagez des applications et configurez l’accès externe](#application-access) explique les subventions des organisations et l’accès à iframe.
+
+### Analyses d’utilisation pour les créateurs [#organization-apps-usage-analytics-for-creators]
+
+Les créateurs d’applications peuvent ouvrir **Plus d’actions → Analytique d’utilisation** sur une carte d’application et examiner les utilisateurs actifs, les tâches, les tours, les appels de modèles, les jetons et les coûts pour toutes les durées, les derniers 7 ou 30 jours, ou une plage de dates personnalisée. La page fournit également des tendances, la composition des jetons et des coûts, ainsi que des découpes par modèle et charge de travail sans révéler les noms d’utilisateur ni les adresses e-mail.
+
+Les totaux de jetons et de coûts ne couvrent que les appels enregistrés après le début de la collecte. Le nombre de tâches et de tours peut inclure l’historique antérieur, mais LinkSense n’estime pas les jetons ou coûts plus anciens en utilisant les prix actuels des modèles. Les jetons sans instantané fiable des prix sont identifiés comme non valorisés.
+
+Voir [Voir l’utilisation des applications](#application-usage) pour les définitions de portée et de métrique.
+
+### Différence avec les tâches ordinaires [#organization-apps-difference-from-regular-tasks]
+
+Vous sélectionnez les ressources pour les tâches régulières. Un service utilise une combinaison gérée par le créateur, tandis qu’un package crée une copie indépendante que vous maintenez. Aucune des deux options n’accorde de permissions supplémentaires — LinkSense valide toujours toutes les ressources du serveur.
+
+## Partagez des applications et configurez l’accès externe [#application-access]
+
+### Partager au sein de l’organisation [#application-access-share-inside-the-organization]
+
+Sous **Mes applications**, ouvrez le menu à trois points de l’application, choisissez **Partager dans l’organisation**, ajoutez des utilisateurs ou des groupes, et sélectionnez les options d’utilisation :
+
+- **Dossier de candidature :** disponible uniquement pour les applications standards. Les utilisateurs installent leur propre copie de l’application, configurent les identifiants nécessaires et peuvent consulter son code source. Ils configurent également leurs propres bases de connaissances et connexions externes.
+- **Service de candidature en ligne :** publier la candidature sous forme de service en ligne. Les utilisateurs y accèdent en ligne avec vos identifiants configurés, sans installer leur propre copie locale. Les applications interactives ne prennent en charge que cette option.
+
+Une demande standard peut offrir les deux options. Les destinataires doivent installer explicitement avant utilisation. Un utilisateur du service n’obtient pas la permission de naviguer dans les instructions cachées, les identifiants du créateur ou les documents dans les bases de connaissances de l’application.
+
+La révocation d’une subvention empêche l’installation et l’utilisation de nouveaux services mais ne supprime pas un paquet applicatif installé indépendamment. Les tâches et résultats existants restent avec chaque utilisateur. Si un utilisateur a accès à la fois directement et via un groupe, la suppression d’une subvention peut ne pas retirer l’accès.
+
+#### Mettre à jour une application interactive partagée [#application-access-update-a-shared-interactive-application]
+
+Les **Publier la mise à jour** ou **Mettre à jour le paquet d’application** réussies ne mettent à jour que l’installation du créateur. Le partage d’organisation et le Centre d’applications doivent être mis à jour séparément, et les autres utilisateurs doivent installer manuellement la nouvelle version. Les modifications de brouillon ne sont pas publiées en avance.
+
+1. Choisissez **Publier la mise à jour** dans la vue développement et confirmez, ou choisissez **Mettre à jour le paquet d’application** dans le menu de l’application et importez le nouveau code ZIP.
+2. Configurez toutes les ressources nécessaires et entrez une version de version supérieure `x.x.x` version.
+3. Ouvrez **Partager dans l’organisation** à nouveau et choisissez **Enregistrer le partage** pour rendre cette version publiée disponible. La boîte de dialogue présélectionne les utilisateurs existants et les groupes d’utilisateurs ; Ajustez-les au besoin.
+
+Les destinataires doivent installer manuellement une mise à jour disponible. Si l’une de leurs tâches pour cette application est en cours, ils doivent les arrêter ou attendre la fin avant de les installer. Après l’installation :
+
+| Scénario | Version utilisée |
+| --- | --- |
+| Nouvelle tâche | La version actuellement installée ; Aucune mise à jour disponible n’est encore installée. |
+| Exécution suivante dans une tâche existante | La version actuellement installée, qui conserve les conversations et les fichiers de travail. |
+| Déjà en cours | Conserve sa version ; il ne bascule pas en cours d’exécution et empêche l’installation simultanée. |
+| Ouvrez ou rafraîchez une tâche historique uniquement sans soumettre de demande | Aucune n’exécute de tâche ni n’installe automatiquement une mise à jour. |
+
+Les résultats historiques ne sont pas réécrits. Les fichiers de tâches et le contexte de conversation restent disponibles. Une installation ratée laisse la version précédemment installée inchangée.
+
+Application Center propose sa version approuvée et listée actuellement, que les utilisateurs doivent toujours installer manuellement. Publication ou **Enregistrer le partage** ne met pas à jour le Centre d’application ; Soumettez une mise à jour de l’annonce séparée pour examen.
+
+### Accès à l’iframe externe [#application-access-external-iframe-access]
+
+Seul le créateur de l’application peut ouvrir **Plus d’actions → Accès externe**. Configurez-le comme suit :
+
+1. Ajoutez les origines autorisées du site web, une par ligne sans doublons. Utilisez HTTPS en production ; le développement local peut utiliser HTTP sur localhost ou 127.0.0.1.
+2. Choisissez **Authentification requise** ou **Sans authentification**.
+3. En option, ajoutez jusqu’à quatre questions de départ par origine, chacune ne dépassant pas 500 caractères.
+4. Sauvegardez la configuration de sécurité et copiez l’URL ou le extrait de l’iframe pour cette origine.
+5. Testez l’intégration complète de l’hôte, puis activez **Activer l’accès externe**.
+
+Une origine autorisée doit correspondre exactement au protocole, à l’hôte et au port de la page hôte. Désactiver l’accès externe invalide les nouvelles requêtes et les sessions externes déjà ouvertes.
+
+#### Comment l’accès externe reçoit les mises à jour [#application-access-how-external-access-receives-updates]
+
+L’accès externe utilise la version actuelle du créateur. Il n’attend pas le partage de l’organisation ni la liste d’un Centre d’applications, et les utilisateurs externes n’installent pas manuellement les mises à jour.
+
+- Une nouvelle session externe commence avec la version actuelle du créateur.
+- Avant de commencer une nouvelle tâche ou de poursuivre une conversation, l’installation d’un utilisateur externe existant se met à jour automatiquement si toutes les tâches de cet utilisateur pour cette application sont terminées.
+- Si une tâche démarre, s’exécute ou s’arrête encore, la version précédente reste en cours sans interruption des tâches actives. Lors d’une mise à jour, d’autres demandes de nouveau démarrage sont invitées à réessayer sous peu.
+- Si une mise à jour échoue, cette requête de démarrage signale une erreur. La version précédente, les conversations et les fichiers de travail sont conservés ; Le prochain démarrage vérifie à nouveau une mise à jour.
+- Se contenter d’ouvrir, de rafraîchir ou de restaurer une session ne déclenche pas de mise à jour. Les brouillons non publiés n’affectent pas les utilisateurs externes.
+
+Ces règles s’appliquent aux accès authentifiés et publics. Le partage organisationnel et le Centre d’application continuent de nécessiter une installation manuelle.
+
+### Authentification requise [#application-access-authentication-required]
+
+Un backend de confiance échange l’ID et le Secret de l’App contre un ticket de courte durée. Le frontend ne transmet que le ticket vers l’iframe. Gardez l’application secrète sur le serveur ; Ne le mettez jamais dans le code du navigateur, les URL, les journaux ou les captures d’écran. Faire tourner le secret invalide immédiatement l’ancien secret et les billets inutilisés associés.
+
+Voir [Intégrer une application LinkSense](../../developer-guide/embed-application.mdx) pour le flux de requêtes, l’identité de l’utilisateur et le protocole `postMessage`.
+
+### Pas d’authentification [#application-access-no-authentication]
+
+Le mode public ne nécessite pas que le backend métier émette un ticket, mais les demandes restent limitées aux origines autorisées. Toute personne pouvant accéder à la page hôte peut créer une session de candidature. Utilisez-le uniquement pour des contenus à faible risque qui ne nécessitent pas l’identité d’un utilisateur externe ; Ce n’est pas un contrôle d’accès.
+
+## Voir l’utilisation des applications [#application-usage]
+
+Un créateur d’application peut sélectionner **Plus d’actions → d’utilisation** sur une application sous **Créé par moi**. Être un utilisateur partagé ou avoir accès à la page d’utilisation à l’échelle de l’administrateur ne garantit pas automatiquement cette vue du créateur.
+
+### Choisissez une plage [#application-usage-choose-a-range]
+
+Choisissez toutes les heures, les 7 derniers jours, les 30 derniers jours ou les dates personnalisées. La page affiche les utilisateurs actifs, les tâches, les rotations réelles, les appels de modèles, les jetons et les coûts, avec les tendances, la composition des jetons et des coûts, ainsi que la répartition des modèles et des charges de travail.
+
+Un utilisateur actif est un utilisateur distinct qui a créé une tâche d’application ou a réellement commencé un tour pendant la période sélectionnée. La vue créateur ne divulgue pas les noms d’utilisateur ni les adresses e-mail.
+
+### Interpréter les données [#application-usage-interpret-the-data]
+
+- Une tâche est attribuée à l’application enregistrée lors de sa création. Renommer ou mettre à jour l’application ne modifie pas l’attribution historique.
+- Les tours comptent les exécutions réelles, pas les drafts, les reconnexions ou les événements en double.
+- Les appels de modèles de jetons et de données de coût couvrent le début de la collecte. Les tâches antérieures peuvent encore être comptabilisées, mais LinkSense n’estime pas leurs coûts en utilisant les prix actuels.
+- Les jetons sans instantané fiable des prix apparaissent comme **Jetons sans tarif**.
+- Le coût utilise le prix économisé au moment de l’appel ; Les variations ultérieures des prix ne recalculent pas l’historique.
+
+Les administrateurs peuvent comparer les applications à l’échelle de l’organisation en [Analyse d’utilisation et de coûts](../../admin-guide/models-and-usage.mdx#usage), sous réserve de la limite des données administrateur.
+
+## Gérer les identifiants des plugins [#credentials]
+
+Les identifiants des plugins contiennent des clés API, des jetons et d’autres détails d’autorisation utilisés par les plugins pour accéder à des services externes. Ajoutez une certification et liez-la à un plugin pour utiliser ces informations automatiquement lors de l’exécution du plugin. Les valeurs d’autorisation enregistrées ne sont plus affichées.
+
+### Ajoutez un diplôme [#credentials-add-a-credential]
+
+1. Ouvre **Paramètres → Identifiants des plugins** et sélectionne **Ajouter des identifiants**.
+2. Saisissez un nom et un identifiant de service reconnaissables. N’incluez pas de secrets dans le nom.
+3. Suivez les instructions du plugin pour entrer les noms de configuration et les valeurs d’autorisation. Vous pouvez ajouter plusieurs éléments.
+4. Enregistrez, puis sélectionnez **Associer un plugin**.
+
+Lors de la modification, laissez une valeur vide pour la conserver, ou entrez une nouvelle valeur pour la remplacer.
+
+### Vérifiez les plugins et la configuration liés [#credentials-check-linked-plugins-and-configuration]
+
+Chaque identifiant indique combien de plugins l’utilisent. Plusieurs éléments pour le même plugin sont regroupés, tels que « Utilisé par 1 plugin » et « 2 éléments liés ».
+
+- **Identifiants configurés** : les éléments de configuration déclarés du plugin contiennent des informations correspondantes. Cela ne vérifie pas l’accès aux services externes.
+- **Informations supplémentaires nécessaires** : consultez les détails de configuration pour voir ce qui manque, puis sélectionnez **Terminer la configuration** dans le menu à trois points du plugin.
+- **Ces identifiants sont désactivés** : sélectionne **Activer les identifiants** pour l’utiliser à nouveau.
+- **Liens conflictuels / Configuration à mettre à jour** : vérifiez les informations enregistrées et sélectionnez **Résoudre les associations** dans le menu à trois points du plugin.
+- **Plugin indisponible** : le plugin n’est pas disponible ou vous n’avez pas accès. Déconnectez-le ou contactez un administrateur.
+
+Les noms de configuration et les liens apparaissent sous **Voir les détails de configuration**. Sélectionnez **Détails des identifiants** dans le menu plus de la certification pour voir son identifiant de service. Les identifiants non liés ne sont pas utilisés automatiquement.
+
+### Lier un plugin [#credentials-link-a-plugin]
+
+1. Sélectionnez **Associer un plugin**, ou choisissez **Gérer les associations** dans le menu à trois points à côté d’un plugin existant.
+2. Choisissez le plugin et examinez le nombre d’éléments sélectionnés. Les noms correspondants sont sélectionnés automatiquement.
+3. Pour les éléments non appariés, sélectionnez **Sélectionner ou ajuster les informations** et sélectionnez les informations correspondantes de cette certification. Si une valeur n’a pas encore été enregistrée, modifiez l’identifiant pour l’ajouter en premier.
+4. Sélectionnez **Enregistrer les associations**. Le plugin utilisera ces informations lors des exécutions suivantes.
+
+Chaque élément de configuration doit avoir une source d’identifiant explicite. La sauvegarde met à jour les informations que vous avez sélectionnées pour le plugin.
+
+### Désactiver, délier ou supprimer [#credentials-disable-unlink-or-delete]
+
+- **Désactiver un identifiant** : conservez les identifiants et les liens, mais arrêtez de les utiliser lors des runs suivants. Activez-le pour l’utiliser à nouveau.
+- **Dissocier le plugin** : sélectionnez **Dissocier le plugin** dans le menu plus du plugin. Après confirmation, supprimez tous les liens entre cette identifiante et le plugin sélectionné. Conservez la certification elle-même.
+- **Supprimer un lien d’information** : supprimer une relation individuelle dans les détails de configuration. Gardez la valeur économisée.
+- **Supprimer une accréditation** : supprimer définitivement l’identifiant et ses liens. Cela ne peut pas être annulé.
+
+Les identifiants ne sont utilisés que pour vos propres plugins. Les identifiants des autres utilisateurs ne sont jamais sélectionnés automatiquement.

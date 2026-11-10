@@ -1,0 +1,217 @@
+---
+title: "Canales de mensajería"
+description: "Compara, conecta y utiliza WeChat, Feishu, WeCom, DingTalk y Teams en una sola guía."
+---
+
+Compara primero las capacidades compatibles y luego sigue los pasos de conexión y resolución de problemas para tu plataforma.
+
+## Resumen del canal de mensajes [#overview]
+
+Abre **Configuración → Canales de mensajería** para conectar LinkSense a una plataforma de chat. Los mensajes de canal siguen procesándose dentro de tu espacio privado de tareas y siguen sujetos a límites de modelo, capacidad, concurrencia y crédito.
+
+### Elige un canal [#overview-choose-a-channel]
+
+| Canal | Método de conexión | Mensajes soportados | Requisito de red |
+| --- | --- | --- | --- |
+| [Weixin](#weixin) | Escanea un código QR con una cuenta personal de Weixin | Texto y voz transcrible desde la cuenta vinculada | No hay llamada pública |
+| [Feishu](#feishu) | Escanea un código QR para crear o actualizar un bot oficial | Texto uno a uno del creador del bot | HTTPS y WebSocket salientes; No hay llamada pública |
+| [WeCom](#wecom) | Configuración de administrador seguida de que cada miembro vincule su cuenta | Texto privado y grupo @ menciones de miembros vinculados | HTTPS saliente y conexión larga; No hay llamada pública |
+| [DingTalk](#dingtalk) | Creación y autorización de QR personal, luego vinculación de cuentas | Tus mensajes privados y el grupo @ menciones | Conexión por arroyo; No hay llamada pública |
+| [Microsoft Teams](#teams) | Bot Entra/Azure gestionado por el administrador seguido de vinculación de cuentas de miembro | Menciones privadas, de grupo o de canal @ de miembros vinculados | Se requiere un punto final de mensajería HTTPS accesible públicamente |
+
+Los canales continúan la tarea correspondiente para cada miembro y chatean. Diferentes miembros de un bot de organización tienen contextos de tarea separados. Las respuestas de grupo pueden ser visibles para otras personas de ese grupo, así que no envíes contenido que deba permanecer privado.
+
+### Dónde ver los resultados completos [#overview-where-to-view-complete-results]
+
+Los canales de mensajería suelen responder el texto final. Volver a la tarea correspondiente de LinkSense para la actividad de la herramienta, detalles de ejecución, archivos adjuntos, archivos generados y resultados largos. Añade archivos o tipos de mensajes no compatibles desde la interfaz web en su lugar.
+
+### Antes de conectar [#overview-before-connecting]
+
+- Utiliza tu propia cuenta de plataforma o una aplicación de bots aprobada por la organización.
+- Vincula las identidades de WeCom, DingTalk y Teams a tu propia cuenta activa de LinkSense. No necesitas introducir un ID de miembro.
+- Asegúrate de que los proxies empresariales, los cortafuegos y el DNS no bloqueen las conexiones salientes necesarias.
+- Solo Teams necesita una devolución de llamada HTTPS pública. Nunca compartas secretos, códigos QR, códigos de emparejamiento o credenciales de llamada mientras buscas la solución de problemas.
+
+## Conéctate y usa Weixin [#weixin]
+
+### Conecta mediante código QR [#weixin-connect-by-qr-code]
+
+1. Ve a **Configuración → Canales de mensajería**.
+2. Selecciona **Conectar Weixin** en la tarjeta de Weixin.
+3. Escanea el código QR con Weixin en tu móvil y confirma ahí.
+4. Si tu teléfono muestra un código de emparejamiento, introdúcelo en LinkSense y mándalo.
+5. Cierra el diálogo después de que el estado se vuelva **En línea**.
+
+Selecciona **Generar de nuevo** si el código QR caduca o falla la conexión. Usa **Reconectar** para restaurar una conexión existente; una nueva conexión exitosa reemplaza la antigua conexión en tiempo de ejecución.
+
+### Alcance soportado [#weixin-supported-scope]
+
+La conexión Weixin procesa solo mensajes de texto y de voz transcribibles enviados por la cuenta que escaneó el código. Otras cuentas, grupos de chat y tipos de mensajes no soportados no inician solicitudes de LinkSense. Cada mensaje aceptado se ejecuta en el espacio de tareas de ese usuario y permanece sujeto a modelos, capacidades, base de conocimiento, concurrencia y cuotas de crédito.
+
+### Desconexión [#weixin-disconnect]
+
+Selecciona **Desconectar** y confirma para dejar de recibir y responder mensajes de Weixin. Las tareas, mensajes y artefactos existentes siguen disponibles en la aplicación web.
+
+### Problemas de conexión o respuesta [#weixin-connection-or-reply-problems]
+
+- Asegúrate de que el código QR sea válido y que hayas completado la confirmación o el paso de emparejamiento en el teléfono.
+- Comprueba que el estado esté **En línea**. Reconecta cuando sea **Conectando**, **Error de conexión** o **Es necesario reconectar**.
+- Envía un mensaje de texto o de voz compatible desde la cuenta que escaneó el código.
+- Revisa las cuotas de crédito, el mantenimiento programado y los límites de concurrencia de tareas.
+- Si los intentos siguen fallando, indica al administrador el estado visible y la hora. No compartas el código QR, el código de emparejamiento ni las credenciales de inicio de sesión.
+
+## Conéctate y usa Feishu [#feishu]
+
+Después de conectar a Feishu, puedes enviar mensajes de texto al bot en un chat privado. LinkSense procesa el mensaje y devuelve la respuesta final en el mismo chat.
+
+### Conecta mediante código QR [#feishu-connect-by-qr-code]
+
+1. Abre **Configuración → Canales de mensajería**.
+2. En la carta Feishu, selecciona **Escanear para crear el bot**.
+3. Escanea el código QR con Feishu y aprueba la solicitud.
+4. Espera a que la página muestre una conexión exitosa, luego abre el nuevo bot en Feishu y envía un mensaje de texto.
+
+LinkSense crea un bot oficial de Feishu y almacena de forma segura la información necesaria para la conexión. No necesitas introducir credenciales de aplicación ni configurar manualmente una URL de devolución de llamada.
+
+Cuando vuelves a escanear, LinkSense actualiza la aplicación feishu asociada en lugar de crear un duplicado para la misma cuenta. Si Feishu creó la aplicación durante un intento anterior pero LinkSense no terminó de asociarla, sigue el diálogo para seleccionar la aplicación existente y continúa.
+
+### Espera la aprobación del administrador [#feishu-wait-for-administrator-approval]
+
+Algunas organizaciones requieren que un administrador apruebe nuevas solicitudes o permisos. El canal muestra entonces **Pendiente de aprobación del administrador** o un estado similar:
+
+- No necesitas escanear de nuevo.
+- Tras la aprobación, LinkSense detecta automáticamente el cambio y restaura la conexión, normalmente en pocos segundos.
+- El bot puede no poder enviar ni recibir mensajes mientras la aprobación esté pendiente.
+
+Si la aprobación está completa pero el estado no se actualiza durante un periodo prolongado, actualice la página de Canales de Mensajes y confirme que la solicitud Feishu sigue existiendo y que sus permisos requeridos no han sido revocados.
+
+### Mensajes soportados [#feishu-supported-messages]
+
+- Solo se aceptan mensajes de texto privados uno a uno de la persona que creó el bot.
+- Cada mensaje aceptado crea o continúa una tarea privada de LinkSense y comienza un turno de procesamiento.
+- Feishu solo recibe el resultado final del texto. Abre la tarea de LinkSense para ver el progreso completo, la actividad de la herramienta y los resultados de los archivos.
+- Actualmente no se soportan chats grupales, mensajes de otras personas, imágenes, archivos, mensajes de voz, tarjetas ni campañas proactivas.
+
+### Uso con un despliegue local [#feishu-use-with-a-local-deployment]
+
+Se soporta el despliegue local. El ordenador o servidor que ejecuta LinkSense se conecta hacia fuera a Feishu, por lo que no necesitas exponer `localhost` públicamente ni configurar una URL pública de devolución de llamada.
+
+El entorno LinkSense debe poder acceder a Feishu a través de HTTPS y WebSocket. Un proxy corporativo, un firewall, un problema DNS o una interceptación TLS puede hacer que el canal parezca conectado mientras que los mensajes o respuestas no llegan.
+
+### Feishu dice que la solicitud no existe [#feishu-feishu-says-the-application-does-not-exist]
+
+Si la solicitud original de Feishu fue eliminada, no sigas escaneando un código QR que la apunte:
+
+1. Cierra el cuadro de diálogo QR actual y vuelve a iniciar la conexión Feishu.
+2. Selecciona **¿Solicitud eliminada? Crear una nueva aplicación** o la opción equivalente que aparece en la página.
+3. Escanea el nuevo código QR y apruébalo.
+
+Después de que la nueva aplicación se conecta, reemplaza la asociación inválida. Escaneos posteriores actualizarán esta aplicación.
+
+### Desconexión [#feishu-disconnect]
+
+Tras la desconexión, LinkSense deja de recibir nuevos mensajes del bot. La aplicación oficial de Feishu y las tareas existentes de LinkSense siguen disponibles. Cuando te reconectas, LinkSense primero intenta reutilizar y actualizar la aplicación original.
+
+Para eliminar la solicitud también de Feixu, elimínala por separado en la administración Feixu. Usa el camino **Crear una nueva aplicación** la próxima vez que conectes.
+
+### El bot no responde [#feishu-the-bot-does-not-respond]
+
+Revisa estos artículos en orden:
+
+1. El canal está conectado, no espera la aprobación del administrador ni solicita la reconexión.
+2. El creador del bot envía texto plano en un chat privado uno a uno.
+3. La solicitud feishu sigue existiendo y sus permisos aprobados no han sido revocados.
+4. El entorno LinkSense puede llegar a Feishu a través de HTTPS y WebSocket.
+5. Actualiza la página de canales de mensajes, espera unos segundos y envía un mensaje de texto corto. No envíes copias repetidas.
+
+### Aparece una tarea sin título pero no comienza [#feishu-an-untitled-task-appears-but-does-not-start]
+
+Una tarea recién creada puede aparecer brevemente como **Tarea sin título**. Si se queda vacío y nunca arranca:
+
+1. Abre la tarea y actualiza la página para comprobar si el mensaje original ha llegado.
+2. Vuelve a los canales de mensajes y confirma que el feishu sigue conectado.
+3. Envía un mensaje de texto nuevo y corto en el mismo chat de bots en lugar de repetir el original.
+4. Si el problema continúa, anota la hora, el remitente feishu y el mensaje de error estable mostrado en la página antes de contactar con un administrador. No compartas códigos QR, credenciales de solicitud ni contenido sensible de mensajes.
+
+Consulta [Solucionar problemas comunes](../troubleshooting/common-problems.mdx) para comprobaciones adicionales.
+
+## Conéctate y usa WeCom [#wecom]
+
+### Configuración de administrador [#wecom-administrator-setup]
+
+1. Crea un bot inteligente interno de WeCom en modo API con una conexión larga. Ponla a disposición de los miembros que necesiten acceso.
+2. En LinkSense, abre **Configuración de la administración → del sistema → canales de mensajes de la organización** y elige **Conecta WeCom**.
+3. Introduce el ID y secreto del bot, elige si los miembros pueden mencionar el bot en grupos y guarda. Espera a que la conexión se active. No hay un solo ajuste permitido para miembros.
+
+Los administradores mantienen la conexión y pueden pausarla, activarla o desconectarla. Los miembros no necesitan credenciales de bot. Pausar mantiene las asociaciones de cuentas y las tareas existentes.
+
+### Acceso para miembros [#wecom-member-access]
+
+1. Inicia sesión en tu cuenta activa de LinkSense existente y abre **Configuración → Canales de mensajería**.
+2. Elige **Vincular mi cuenta** en la tarjeta de WeCom y recibe un mensaje de confirmación.
+3. Envía el mensaje completo al bot de WeCom en un chat privado. Es válido durante 10 minutos y un solo uso. No lo reenvíes a nadie más.
+4. Una vez que la página muestre **Cuenta vinculada**, envía un mensaje privado o menciona al bot en un grupo permitido.
+
+Las tareas utilizan los permisos, recursos y cuota propios de LinkSense del remitente. Las cuentas no registradas, desactivadas o no vinculadas no pueden iniciar tareas. Diferentes miembros del mismo grupo tienen contextos de tarea separados; las respuestas en el grupo siguen siendo visibles para sus miembros.
+
+### Alcance y resolución de problemas [#wecom-scope-and-troubleshooting]
+
+Se admiten mensajes de texto internos de miembros y menciones de grupos. Los mensajes, imágenes, archivos, voces y tarjetas de los clientes aún no son compatibles.
+
+Pide a un administrador que configure o active un canal no disponible. Los administradores deben comprobar las credenciales, visibilidad y acceso a la red de los bots cuando falla la conexión. Los miembros pueden elegir **Desvincular cuenta** en su página de canales de mensajes.
+
+Para reemplazar el bot o su secreto, un administrador lo desconecta y lo configura de nuevo; Los miembros vuelven a vincular sus cuentas. Desconectar elimina asociaciones y mensajes de canal en cola mientras se mantienen las tareas existentes de LinkSense.
+
+## Conéctate y usa DingTalk [#dingtalk]
+
+### Conecta mediante código QR [#dingtalk-connect-by-qr-code]
+
+1. Inicia sesión en una cuenta de LinkSense activa y activa y abre **Configuración → Canales de mensajería**.
+2. Elige **Conectar con código QR** en la tarjeta de DingTalk y espera el código QR.
+3. Escanea con DingTalk en tu móvil. Sigue los pasos de DingTalk para crear y autorizar un bot. No necesitas introducir credenciales de solicitud ni un ID de miembro.
+4. Tras la autorización, elige **Vincular mi cuenta**, recibe un mensaje de confirmación y envía el mensaje completo al bot en un chat privado. Es válido durante 10 minutos y un solo uso. No lo reenvíes a nadie más.
+5. Una vez que la página muestre **Cuenta vinculada**, envía una tarea de texto al bot.
+
+El bot pertenece al usuario actual de LinkSense. Otras personas no pueden usar tu cuenta a través de ella. Escanear o autorizar un bot no registra cuentas de LinkSense para otras personas.
+
+### Comportamiento apoyado [#dingtalk-supported-behavior]
+
+El canal admite tus mensajes privados y mensajes de grupo que mencionan al bot. Cada chat continúa con su tarea correspondiente usando tus permisos, modelos, capacidades y cuota. Las respuestas grupales son visibles para los miembros del grupo. Las imágenes, archivos, voces y tarjetas aún no están soportados.
+
+### Problemas de conexión o acceso [#dingtalk-connection-or-access-problems]
+
+Genera un nuevo código QR si expira o no se completa la autorización. Cumple con los requisitos de autorización y aprobación de la organización de DingTalk, y asegúrate de que la red pueda acceder a DingTalk.
+
+Si tu cuenta no está vinculada, recibe un mensaje de confirmación en LinkSense y envíalo de forma privada al bot. Las cuentas no registradas o desactivadas no pueden iniciar tareas. Configura un modelo disponible y cuotas suficientes, o contacta con tu administrador si es necesario.
+
+### Desvincular o desconectar [#dingtalk-unlink-or-disconnect]
+
+**Desvincular cuenta** impide que esta identidad de DingTalk use LinkSense y te permite enlazarla de nuevo más adelante. Desconectar DingTalk elimina la conexión, la asociación de identidad y los mensajes de canal en cola. Se conservan las tareas existentes de LinkSense y el bot en DingTalk.
+
+## Conéctate y usa Microsoft Teams [#teams]
+
+### Configuración de administrador [#teams-administrator-setup]
+
+1. Registra una aplicación de inquilino único en la nube pública en Microsoft Entra y crea un secreto cliente. Crea un bot de Azure con el mismo ID de aplicación y tenant, y activa el canal de Microsoft Teams.
+2. En LinkSense, abre **Configuración de la administración → del sistema → canales de mensajes de la organización** y elige **Conecta Microsoft Teams**. Introduce el ID del cliente, el secreto y el ID del inquilino de la aplicación. Elige si los miembros pueden mencionar el bot en los grupos y guarda. No se requiere carné de miembro.
+3. Copia el **Punto de conexión de mensajería** mostrado en Azure Bot. La dirección debe ser accesible públicamente a través de HTTPS.
+4. Crea un paquete de aplicación de Teams que contenga el bot con los ámbitos personales, de chat grupal o de equipo necesarios. Haz que un administrador de la organización lo apruebe, instale o distribuya entre los miembros.
+
+Los administradores mantienen la conexión y pueden pausarla, activarla o desconectarla. Los miembros no necesitan credenciales de solicitud ni permisos para leer directorios para vincular sus cuentas. La configuración de inicio de sesión de Teams y la configuración de mensajería de bots se gestionan por separado.
+
+### Acceso para miembros [#teams-member-access]
+
+1. Inicia sesión en tu cuenta activa de LinkSense existente y abre **Configuración → Canales de mensajería**.
+2. Elige **Vincular mi cuenta** en la tarjeta de Microsoft Teams y recibe un mensaje de confirmación.
+3. Envía el mensaje completo al bot de Teams en un chat privado. Es válido durante 10 minutos y un solo uso. No lo reenvíes a nadie más.
+4. Una vez que la página muestre **Cuenta vinculada**, envía mensajes privados o menciona al bot en un chat grupal o canal permitido.
+
+Las tareas utilizan los permisos, recursos y cuota propios de LinkSense del remitente. Las cuentas no registradas, desactivadas o no vinculadas no pueden iniciar tareas. Los miembros tienen contextos de tareas separados en el mismo grupo; Las publicaciones en los canales también mantienen hilos separados. Las respuestas grupales siguen siendo visibles para los miembros.
+
+### Alcance y resolución de problemas [#teams-scope-and-troubleshooting]
+
+Se admite el texto. Las imágenes, archivos, voces y tarjetas aún no están soportados. Una dirección accesible solo en localhost no puede recibir mensajes de Teams.
+
+Los administradores deben comprobar el ID de la aplicación, el tenant, el secreto, los ámbitos de la aplicación de Teams, la aprobación de la organización, el endpoint HTTPS público y la red cuando fallan los mensajes. Los miembros pueden desvincular sus propias identidades de los canales de mensajes.
+
+Para reemplazar la aplicación o secreto, un administrador lo desconecta y lo vuelve a configurar; Los miembros vuelven a vincular sus cuentas. Desconectar elimina asociaciones y mensajes de canal en cola mientras se mantienen las tareas existentes de LinkSense.

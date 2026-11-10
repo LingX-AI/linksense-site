@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation'
 import { source } from '@/lib/source'
-import { withoutDocLocale } from '@/lib/i18n'
+import { docsI18n, withoutDocLocale } from '@/lib/i18n'
 
 export const dynamic = 'force-static'
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  return ['zh', 'en'].flatMap((lang) =>
+  return docsI18n.languages.flatMap((lang) =>
     source.getPages(lang).map((page) => ({
       lang,
       slug: withoutDocLocale(page.path)
@@ -21,7 +21,8 @@ export async function GET(
   { params }: { params: Promise<{ lang: string; slug: string[] }> },
 ) {
   const { lang, slug } = await params
-  if (!['zh', 'en'].includes(lang) || !slug.at(-1)?.endsWith('.txt')) notFound()
+  if (!docsI18n.languages.includes(lang) || !slug.at(-1)?.endsWith('.txt'))
+    notFound()
   const slugs = slug
     .join('/')
     .replace(/\.txt$/, '')

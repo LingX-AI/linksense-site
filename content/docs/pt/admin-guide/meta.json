@@ -1,0 +1,12 @@
+{
+  "title": "Guia do administrador",
+  "pages": [
+    "overview",
+    "accounts",
+    "resource-governance",
+    "models-and-usage",
+    "configuration",
+    "operations"
+  ],
+  "icon": "Shield"
+}

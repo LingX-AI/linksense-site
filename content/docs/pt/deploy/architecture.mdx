@@ -1,0 +1,94 @@
+---
+title: "Capacidades organizacionais e arquitetura"
+description: "Desde um espaço de trabalho pessoal de IA até aplicações compartilhadas de equipe, e como as tarefas rodam na sua infraestrutura."
+---
+
+## Capacidades organizacionais [#organizational-capabilities]
+
+O LinkSense oferece a cada membro seu próprio espaço de trabalho de IA. O que uma pessoa constrói ali pode se tornar uma capacidade que a organização compartilha, governa e reutiliza entre as suas equipes.
+
+| Capacidade | O que a organização pode reutilizar |
+| --- | --- |
+| Bases de conhecimento | Dê acesso à IA a documentos organizacionais autorizados. Análise sintética, indexação e recuperação de documentos integradas estão disponíveis em Full. |
+| Habilidades | Transforme um método comprovado de trabalho em um procedimento repetível. |
+| Servidores MCP | Dê às tarefas acesso controlado aos sistemas e ações de negócios. |
+| Plugins | Integrações com Habilidades e MCP para distribuição revisada. |
+
+### Do trabalho pessoal à reutilização em equipe [#from-personal-work-to-team-reuse]
+
+O Teams pode desenvolver e testar Habilidades e Plugins em um espaço de trabalho pessoal, enviar uma versão fixa para revisão do administrador e publicá-la para que outros possam instalar. As atualizações são explícitas. Veja [Revisão de Lançamentos e Governança](../admin-guide/resource-governance.mdx#plugin-governance) para o fluxo de trabalho de aprovação.
+
+![Espaço de trabalho pessoal → construir e testar → capacidade organizacional. Liberação e revisão, autorização de usuários e grupos, e conexões de sistema tornam essa funcionalidade reutilizável.](/diagrams/organizational-capability-lifecycle.svg)
+
+### Conecte recursos organizacionais [#connect-organizational-resources]
+
+Os donos da base de conhecimento podem conceder acesso a usuários ou grupos selecionados. Conectores fornecem acesso a documentos e e-mails, e o MCP pode integrar sistemas como ERP ou CRM. Conexões e suas credenciais são gerenciadas separadamente: **Delegue o trabalho, não as credenciais**. Verifique se o modelo escolhido suporta ferramentas e se conecta com sucesso.
+
+### Aplicações: colocar as capacidades em prática [#applications-put-capabilities-to-work]
+
+Uma Aplicação combina instruções mantidas e configuração de modelos com Conhecimento, Habilidades, Plugins e conexões MCP. É um ponto de entrada reutilizável, não um agente autônomo: um membro autorizado inicia e assume sua própria tarefa.
+
+![Instruções, configurações de modelo, Conhecimento, Habilidades, Plugins e servidores MCP formam uma Aplicação. Membros autorizados iniciam suas próprias tarefas.](/diagrams/application-composition.svg)
+
+#### Exemplo: uma aplicação de finanças [#example-a-finance-application]
+
+Uma equipe financeira pode combinar sua base de conhecimento em políticas, uma habilidade para revisar despesas e uma integração ERP em uma única aplicação. Membros autorizados da equipe podem começar a trabalhar sem precisar recriar essa configuração. Um serviço online gerenciado pode fornecer uso controlado do Conhecimento mantido pelo criador e do MCP sem dar acesso direto à gestão dos usuários ou mostrar as credenciais subjacentes na interface normal. Um pacote instalável, por outro lado, cria uma cópia pessoal que pode precisar de sua própria configuração. Veja [Acesso e uso de aplicações](../user-guide/plugin-center/index.mdx#application-access).
+
+![Conhecimento financeiro + habilidade financeira + integração ERP → aplicação financeira → equipe financeira autorizada.](/diagrams/finance-application.svg)
+
+### Uma camada de capacidade aberta [#an-open-capability-layer]
+
+O LinkSense conecta modelos de IA às pessoas, dados e sistemas de uma organização. Ele gerencia a propriedade e permissões, revisão e publicação, configuração de credenciais e modelos, registros de uso e auditoria, além do ambiente que executa tarefas.
+
+![O LinkSense conecta modelos e Codex a espaços de trabalho pessoais e capacidades organizacionais compartilhadas, com autorização, governança e operações em tempo de execução.](/diagrams/open-capability-layer.svg)
+
+## Construído sobre o runtime Codex de código aberto [#built-on-the-open-source-codex-runtime]
+
+O LinkSense executa o pacote de `@openai/codex` upstream em seus Workers gerenciados e se comunica com `codex app-server --stdio` via JSON-RPC. Ele não faz fork do Codex nem substitui seu loop de agentes. Não requer o aplicativo web Codex nem um runtime hospedado no LinkSense. A inferência de modelos é configurada separadamente.
+
+| Alças do códex | LinkSense lida com |
+| --- | --- |
+| Raciocínio e turnos, ferramentas nativas, habilidades e plugins, subagentes e semântica sandbox | Espaços de trabalho, identidade e acesso a recursos, publicação e governança, configuração de modelos, gestão de trabalhadores, persistência, uso e operações |
+
+O tempo de execução a montante usa o [Licença Apache-2.0](https://github.com/openai/codex/blob/main/LICENSE). Codex é uma marca registrada da OpenAI. LinkSense é um projeto independente e não é afiliado nem endossado pela OpenAI.
+
+## Código aberto e autohospedado [#open-source-and-self-hosted]
+
+Execute o LinkSense em seus próprios servidores, nuvem privada ou VPC. Você pode inspecionar e modificar a fonte, escolher seus modelos e integrações. Uma implantação autohospedada não requer um plano de controle de nuvem operado pelo LinkSense ou ativação de licença online.
+
+Com endpoints privados de modelos, Conhecimento local e serviços MCP locais, prompts, arquivos, histórico de tarefas, índices, credenciais e registros de auditoria podem permanecer na infraestrutura que você controla. Provedores externos e integrações ainda podem receber dados quando configurados. **Hospedar por conta própria não significa estar isolado da rede.** Veja [Configuração do modelo](../admin-guide/models-and-usage.mdx#model-settings) e as [Exceções de licença e atribuição](https://github.com/LingX-AI/linksense/blob/main/LICENSE-EXCEPTIONS.md) do repositório.
+
+## Arquitetura do sistema [#system-architecture]
+
+O espaço de trabalho web envia tarefas para a API. A API lida com identidade, permissões, uso e estado da tarefa. O Runner gerencia os Trabalhadores Docker que executam tarefas.
+
+![Visão geral do sistema: o gateway atende ao espaço de trabalho web e à API. A API utiliza armazenamento e serviços de suporte e se comunica com o Runner via HTTP autenticado. O Runner gerencia Docker Workers por usuário.](/diagrams/system-architecture.svg)
+
+| Camada | Componentes |
+| --- | --- |
+| Espaço de trabalho | React, TypeScript, Vite, TanStack Query |
+| Serviços e armazenamento | Node.js, Fastify, PostgreSQL, Redis, armazenamento de objetos compatível com S3 |
+| Execução | Trabalhadores Docker por usuário, Codex `app-server` |
+| Full Conhecimento | Análise sintática de documentos Docling, indexação e recuperação com Elasticsearch |
+
+### Modelo operário [#worker-model]
+
+O LinkSense inicia e reutiliza um Docker Worker por usuário ativo. Tarefas do mesmo usuário podem compartilhar arquivos de `HOME`, `CODEX_HOME` e projeto. Trabalhadores Ociosos são recuperados; Ambientes de pacotes por usuário podem persistir, e artefatos gerados são armazenados independentemente no armazenamento de objetos.
+
+### Caminho de execução de tarefas [#task-execution-path]
+
+Para um início normal em tempo real, a API persiste a tarefa e despacha para o Runner via HTTP. O Runner direciona o trabalho para o Worker do usuário, onde o Codex é executado. As partidas em tempo real normalmente não passam pelo BullMQ; a fila é usada para automações e outros trabalhos agendados e em segundo plano.
+
+![Início em tempo real: usuário → API → controlador Runner → Worker → Codex do usuário.](/diagrams/realtime-execution-path.svg)
+
+### Realização de eventos [#event-delivery]
+
+O Runner mapeia e redige eventos de execução e os armazena em uma caixa de saída durável antes de encaminhá-los para a API. A API persiste eventos e transmite atualizações para o navegador via SSE.
+
+![Mapeamento e redação Codex → Worker → Runner → outbox → API durável → PostgreSQL e Redis Pub/Sub → SSE → browser.](/diagrams/event-delivery.svg)
+
+### Limites de execução [#execution-boundaries]
+
+O **Trabalhador do usuário**, não o diretório de tarefas, é o limite de isolamento. A execução normal não solicita aprovação em cada comando. Uma injeção de prompt em uma resposta de página, arquivo ou ferramenta não confiável pode levar à leitura, modificação ou envio dos arquivos compartilhados daquele usuário. O modo plano usa um sandbox somente leitura com acesso à rede desativado.
+
+Task Workers rodam sem privilégios, não montam o socket Docker e não entram diretamente nas redes de serviços PostgreSQL ou Redis. O controlador Runner tem acesso ao daemon Docker e é um componente de gerenciamento confiável. A saída normal da internet do Trabalhador é permitida; A aplicação não impõe por padrão uma lista geral de saída ou bloqueia metadados na nuvem. Configure esses controles no nível de implantação e leia o [Política de Segurança de Execução](https://github.com/LingX-AI/linksense/blob/main/.github/SECURITY.md#execution-boundaries) antes de abrir o acesso para mais usuários.
