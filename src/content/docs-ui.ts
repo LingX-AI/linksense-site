@@ -1,6 +1,6 @@
 export const docsUIStrings = {
   en: {
-    search: 'Search documentation',
+    search: 'Search',
     searchNoResult: 'No results',
     toc: 'On this page',
     tocNoHeadings: 'No headings',
@@ -21,7 +21,7 @@ export const docsUIStrings = {
     englishOriginal: 'View the English original.',
   },
   zh: {
-    search: '搜索文档',
+    search: '搜索',
     searchNoResult: '没有结果',
     toc: '目录',
     tocNoHeadings: '目录为空',
@@ -42,7 +42,7 @@ export const docsUIStrings = {
     englishOriginal: '查看英文原文。',
   },
   es: {
-    search: 'Buscar en la documentación',
+    search: 'Buscar',
     searchNoResult: 'Sin resultados',
     toc: 'En esta página',
     tocNoHeadings: 'No hay encabezados',
@@ -63,7 +63,7 @@ export const docsUIStrings = {
     englishOriginal: 'Ver el original en inglés.',
   },
   pt: {
-    search: 'Pesquisar na documentação',
+    search: 'Pesquisar',
     searchNoResult: 'Nenhum resultado',
     toc: 'Nesta página',
     tocNoHeadings: 'Nenhum título',
@@ -84,7 +84,7 @@ export const docsUIStrings = {
     englishOriginal: 'Ver o original em inglês.',
   },
   fr: {
-    search: 'Rechercher dans la documentation',
+    search: 'Rechercher',
     searchNoResult: 'Aucun résultat',
     toc: 'Sur cette page',
     tocNoHeadings: 'Aucun titre',
@@ -105,7 +105,7 @@ export const docsUIStrings = {
     englishOriginal: 'Voir la version originale en anglais.',
   },
   ja: {
-    search: 'ドキュメントを検索',
+    search: '検索',
     searchNoResult: '結果がありません',
     toc: 'このページの内容',
     tocNoHeadings: '見出しがありません',
